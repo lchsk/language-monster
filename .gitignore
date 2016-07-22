@@ -67,3 +67,7 @@ cache/
 node_modules/
 dump/
 data/output/
+
+*~
+*#
+#*
