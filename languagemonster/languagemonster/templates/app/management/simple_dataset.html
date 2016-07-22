@@ -1,0 +1,48 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+                {% if simple_dataset_id %}
+                <form method="post" action="{% url 'management:update_simple_dataset' simple_dataset_id %}" class="form-horizontal">
+                {% else %}
+                <form method="post" action="{% url 'management:update_simple_dataset' %}" class="form-horizontal">
+                {% endif %}
+                    {% csrf_token %}
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">
+                        {% if simple_dataset_id %}
+                            Edit
+                        {% else %}
+                            Create simple dataset
+                        {% endif %}
+                    </h2>{% include "app/management/handy_menu.html" %}
+                    <br />
+                        Syntax:<br />Each word in new line
+                    {% if simple_dataset_id %}
+                    <div>
+                        <input class="form-control" type="text" name="title" id="title" value="{{name}}" />
+                    </div>
+                    <div>
+                        <textarea class="form-control" name="data" style="width: 100%; min-height: 500px; height: 100%;">{{data}}</textarea>
+                    </div>
+                    {% else %}
+                    <div>
+                        <input class="form-control" type="text" name="title" id="title" value="" />
+                    </div>
+                    <div>
+                        <textarea class="form-control" name="data" style="width: 100%; min-height: 500px; height: 100%;"></textarea>
+                    </div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary" name="go">Go</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

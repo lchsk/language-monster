@@ -1,0 +1,144 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">Management</h2>
+                    {% include "app/management/handy_menu.html" %}
+
+                    {% if correct %}
+                        <div class="alert alert-success" role="alert">
+                            Data set appears to be OK.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger" role="alert">
+                            There are some problems with the data set: <b>{{error_msg}}</b>
+                            <br /><br />
+                            Path: {{path}}<br />
+                            Set with this English name exists: {{exists}}<br />
+                            Base: {{base}}<br />
+                            Pair {{lp}}<br />
+                            Target: {{target}}<br />
+                            English name: {{name_en}}<br />
+                            Words: {{words}}<br />
+                        </div>
+                    {% endif %}
+
+                    {% if exists %}
+                        <div class="alert alert-danger" role="alert">
+                            Data set named {{name_en}} already exists.
+                        </div>
+                    {% endif %}
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Metadata</div>
+                        <div class="panel-body">
+
+                            <form method="post" action="{% url 'management:save_set_meta' path %}" class="form-horizontal">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                  <label for="name_en" class="col-sm-2 control-label">Name (En)</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name_en" id="name_en" value="{{name_en}}">
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="name_en" class="col-sm-2 control-label">POS</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="pos" id="pos" value="{{pos}}">
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="icon" class="col-sm-2 control-label">Icon</label>
+                                  <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="icon" id="icon" placeholder="">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-success" data-toggle="modal" data-target="#modal-font-awesome" href="#">Icon</a>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="name_base" class="col-sm-2 control-label">Name (base)</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name_base" id="name_base" placeholder="">
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label for="name_target" class="col-sm-2 control-label">Name (target)</label>
+                                  <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="name_target" id="name_target" placeholder="">
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Words</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">{{words}}</p>
+                                        <input type="text" value="{{words}}" name="words" class="hidden" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Base</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">{{base}}</p>
+                                        <input type="text" value="{{base.acronym}}" name="base" class="hidden" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Target</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">{{target}}</p>
+                                        <input type="text" value="{{target.acronym}}" name="target" class="hidden" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">From exported file</label>
+                                    <div class="col-sm-10">
+                                        <p class="form-control-static">{{from_exported_file}}</p>
+                                        <input type="text" value="{{from_exported_file}}" name="from_exported_file" class="hidden" />
+                                    </div>
+                                </div>
+                                <div class="well">
+                                Data set will not be visible.
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+
+                            <br />
+                            <h4>Words in the file</h4>
+
+                            <table class="table table-striped">
+                            <tr>
+                                <th>Base ({{base}})</th><th>Target ({{target}})</th></tr>
+                            {% for i in wordlist %}
+                                    <td><input type="text" class="data form-control" value="{{i.b}}" disabled>
+                            </td>
+                                    <td><input type="text" class="data form-control" value="{{i.t}}" disabled>
+                            </td>
+                                </tr>
+                            {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "forms/form-fa.html" %}
+{% endblock main %}

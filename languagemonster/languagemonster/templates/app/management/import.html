@@ -1,0 +1,32 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<strong>{{error}}</strong>
+<br /><br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+
+                {% if dataset_id %}
+                <form method="post" action="{% url 'management:import_diff' dataset_id %}" class="form-horizontal">
+                {% else %}
+                <form method="post" action="{% url 'management:do_import_set' %}" class="form-horizontal">
+                {% endif %}
+                    {% csrf_token %}
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">Import</h2>{% include "app/management/handy_menu.html" %}
+                    <div>
+                        <textarea name="data" style="width: 100%; min-height: 500px; height: 100%;"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" name="import">Go</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

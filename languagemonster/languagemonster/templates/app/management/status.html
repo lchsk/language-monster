@@ -1,0 +1,187 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<style>
+.ok{ background-color: green; color: white; font-weight: bold; width: 100%; }
+.wrong { background-color: #ee0000; color: white; font-weight: bold; }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">Language Monster Status Page</h2>
+                    {% include "app/management/handy_menu.html" %}
+
+                    <h4>Settings</h4>
+                    <table class="table table-striped">
+                        <tr><td>ID</td><td>{{ID}}</td></tr>
+                        <tr><td>Base directory</td><td>{{BASE_DIR}}</td></tr>
+                        <tr><td>Project root</td><td>{{PROJECT_ROOT}}</td></tr>
+                        <tr><td>Debugging</td><td>
+                            {% if DEBUG %}
+                                <span class="wrong">True</span>
+                            {% else %}
+                                <span class="ok">False</span>
+                            {% endif %}
+                        </td></tr>
+                        <tr><td>Thumbnail format</td><td>{{THUMBNAIL_FORMAT|lower}}</td></tr>
+                        <tr><td>Allowed hosts</td><td>{{ALLOWED_HOSTS|join:", "}}</td></tr>
+                        <tr><td>Installed apps</td><td>{{INSTALLED_APPS|join:"<br />"}}</td></tr>
+                        <tr><td>Use I18N</td><td>{{USE_I18N}}</td></tr>
+                        <tr><td>Language code</td><td>{{LANGUAGE_CODE}}</td></tr>
+                        <tr><td>Time zone</td><td>{{TIME_ZONE}}</td></tr>
+                        <tr><td>Use L10N</td><td>{{USE_L10N}}</td></tr>
+                        <tr><td>Use timezones</td><td>{{USE_TZ}}</td></tr>
+                        <tr><td>Main email address</td><td>{{EMAIL_HOST_USER}}</td></tr>
+                        <tr><td>Static directories</td><td>{{STATICFILES_DIRS|join:", "}}</td></tr>
+                        <tr><td>Media root</td><td>{{MEDIA_ROOT}}</td></tr>
+                        <tr><td>Avatars root</td><td>{{AVATARS_ROOT}}</td></tr>
+                        <tr><td>Avatars writable</td><td>
+                            {% if AVATARS_WRITABLE %}
+                                <span class="ok">True</span>
+                            {% else %}
+                                <span class="wrong">False</span>
+                            {% endif %}
+                        </td></tr>
+                        <tr><td>Locale paths</td><td>{{LOCALE_PATHS|join:", "}}</td></tr>
+                        <tr><td>Confirm registration by email</td><td>{{REGISTRATION_CONFIRMATION}}</td></tr>
+                        <tr><td>Celerybeat schedule</td><td>
+                            <table class="table table-condensed">
+                            {% for k, v in CELERYBEAT_SCHEDULE.items %}
+                                <tr><td>
+                                <b>{{k}}</b>
+                            </td><td>{{v.task}}</td><td>{{v.schedule}}</td></tr>
+                            {% endfor %}
+                            </table>
+                            </td></tr>
+                    </table>
+
+                    <h4>User</h4>
+                    <table class="table table-striped">
+                        <tr><td>Public name</td><td>{{user.public_name}}</td></tr>
+                        <tr><td>Email</td><td>{{user.email}}</td></tr>
+                        <tr><td>Superuser</td><td>{{user.is_superuser}}</td></tr>
+                        <tr><td>Number of superusers</td><td>{{superusers_count}}</td></tr>
+                    </table>
+
+                    <h4>Languages</h4>
+                    <table class="table table-striped">
+                        <tr><td>Base languages</td><td>#{{BASE_LANGUAGES|length}}<br />
+                            {{BASE_LANGUAGES|join:"<br />"}}</td></tr>
+                        <tr><td>Language Pairs</td><td>
+                            {% for k, v in LANGUAGE_PAIRS.items %}
+                                <b>{{k}}</b><ul>
+                                {% for p in v %}
+                                    <li>{{p}}</li>
+                                {% endfor %}</ul>
+                            {% endfor %}
+                        </td></tr>
+                    </table>
+
+                    <h4>General stats</h4>
+                    <table class="table table-striped">
+                        <tr><td>Number of registered users</td><td>{{users}}</td></tr>
+                        <tr><td>No. of users (logged in < 5 mins)</td><td>{{users_5min}}</td></tr>
+                        <tr><td>No. of users (logged in < 1 h)</td><td>{{users_1h}}</td></tr>
+                        <tr><td>No. of users (logged in < 24 h)</td><td>{{users_24h}}</td></tr>
+                    </table>
+
+                    <h4>Celery</h4>
+                    <table class="table table-striped">
+                        <tr><td>Celery beat</td><td>
+                            {% if celerybeat %}
+                                <span class="ok">Running</span>
+                            {% else %}
+                                <span class="wrong">Not running</span>
+                            {% endif %}
+                        </td></tr>
+                        <tr><td>Workers</td><td>
+                            <table class="table table-striped table-condensed">
+                                {% for k, v in celery.items %}
+                                    <tr><td>{{k}}</td><td>
+                                        <table class="table table-striped table-condensed">
+                                        {% for kk, vv in v.items %}
+                                            <tr><td>{{kk}}</td><td>{{vv}}</td></tr>
+                                        {% endfor %}
+                                        </table>
+                                    </td></tr>
+                                {% endfor %}
+                            </table>
+
+                        </td></tr>
+                    </table>
+
+                    <h4>Redis</h4>
+                    <table class="table table-striped">
+                        <tr><td>Celery (localhost:6379)</td><td>
+                            {% if redis_celery %}
+                                <span class="ok">Running</span>
+                            {% else %}
+                                <span class="wrong">Not running</span>
+                            {% endif %}
+                        </td></tr>
+                        <tr><td>Sorl (localhost:6379)</td><td>
+                            {% if redis_sorl %}
+                                <span class="ok">Running</span>
+                            {% else %}
+                                <span class="wrong">Not running</span>
+                            {% endif %}
+                            </td></tr>
+                    </table>
+
+                    <h4>MongoDB</h4>
+                    <table class="table table-striped">
+                        <tr><td>Name</td><td>{{dbname}}</td></tr>
+                        <tr><td>DB stats</td><td>
+                            <table class="table table-striped table-condensed">
+                            {% for k, v in dbstats.items %}
+                                <tr><td>{{k}}</td><td>{{v}}</td></tr>
+                            {% endfor %}
+                            </table>
+                        </td></tr>
+                        <tr><td>Number of collections</td><td>{{collections|length}}</td></tr>
+                        <tr><td>Collections</td><td>
+                            {% for c in collections %}
+                                {{c}}<br />
+                            {% endfor %}
+                        </td></tr>
+                        <tr>
+                            <td>Collections stats</td><td>
+                                <table class="table table-striped table-condensed">
+                                    {% for k, v in collstats.items %}
+                                    <tr><td>{{k}}</td><td>
+
+                                        <table class="table table-striped table-condensed">
+                                        {% for key, val in v.items %}
+                                            <tr><td>{{key}}</td><td>{{val}}</td></tr>
+                                        {% endfor %}
+                                        </table>
+                                    </td></tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h4>Logs</h4>
+                    <table class="table">
+                        <tr>
+                            <td>Log files</td>
+                            <td>{{LOGS_COUNT}}</td>
+                        </tr>
+                            {% for k, v in LOGS.items %}
+                                <tr><td colspan="2"><b>{{k}}</b></td></tr>
+                                <tr><td colspan="2"><pre>{{v}}</pre></td></tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,80 @@
+{% extends "app/content.html" %}
+{% debug%}
+
+{% load i18n %}
+
+{% block main %}
+
+{% for msg in messages %}
+  <div class="alert alert-{{msg.tags}} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{msg}}</div>
+{% endfor %}
+{% for p, lang_pair in progression %}
+        {% if forloop.first %}
+            <div class="row">
+        {% endif %}
+            <div class="col-md-6">
+                <div class="language-box img-rounded light-border" style="margin-bottom: 30px;">
+
+                        <div class="container-fluid" style="padding: 0 40px 12px 40px;">
+                            <div class="row header" style="text-align: left;">
+                            <div class="col-md-8">
+                                <h2>
+                                <a style="padding-top: 0; margin-top: 0;" title="{% trans 'Learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}">
+                                {% trans lang_pair.target_language.english_name %}</a><span>{{ lang_pair.target_language.original_name }}</span></h2>
+                            </div>
+                            <div class="col-md-4" style="text-align: right; padding-top: 20px;">
+                                <div
+                                    style="width: 30px; height: 30px; display: inline-block;"
+                                    class="{{lang_pair.target_language.flag_filename}}_30px img-circle flag-border"
+                                    title="{% trans lang_pair.target_language.english_name %}">
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row" style="position: relative;">
+                                <div class="col-md-12 col-xs-12">
+                                    <div class="row stats">
+                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-education"></span> {% trans "Words" %}</div>
+                                        <div class="col-md-6 col-xs-6 value">{{ p.words }}</div>
+                                    </div>
+                                    <div class="row stats">
+                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-stats"></span> {% trans "Streak" %}</div>
+                                        <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.streak %} {{value}} day(s){% endblocktrans %}</div>
+                                    </div>
+                                    <div class="row stats">
+                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-scale"></span> {% trans "Average" %}</div>
+                                        <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.average %} {{value}} %{% endblocktrans %}</div>
+                                    </div>
+                                    <div class="row stats">
+                                        <div class="col-md-6 col-xs-6 definition">
+                                            {% if p.trend == 1 %}
+                                                <span class="glyphicon glyphicon glyphicon-arrow-up color-positive"></span>
+                                            {% elif p.trend == -1 %}
+                                                <span class="glyphicon glyphicon glyphicon-arrow-down color-negative"></span>
+                                            {% else %}
+                                                <span class="glyphicon glyphicon glyphicon-minus"></span>
+                                            {% endif %}
+
+                                            {% trans "Strength" %}
+                                        </div>
+                                        <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.strength %} {{value}} pts{% endblocktrans %}</div>
+                                    </div>
+                                    <div class="row">
+                                            <a title="{% trans 'Learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" class="learn btn btn-submit">{% trans "Learn" %} <span class="glyphicon glyphicon-play"></span></a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-4">
+                                </div>
+                            </div>
+                </div>
+                </div>
+            </div>
+
+            {% if forloop.counter|divisibleby:"2" %}
+                <div style="" class="clear"></div>
+            {% endif %}
+
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+    {% endfor %}
+{% endblock %}

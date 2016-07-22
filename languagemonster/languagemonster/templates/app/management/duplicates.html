@@ -1,0 +1,43 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">Potential duplicates</h2>{% include "app/management/handy_menu.html" %}
+                    <h4><a href="{% url 'management:edit_set' ds.id %}">{{ds.name_en}}</a></h4>
+                    <h5>{{ds.pair}}</h5>
+                    <h6>{{suspected|length}} item(s)</h6>
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Base 1</th>
+                            <th>Base 2</th>
+                            <th>Base Ratio</th>
+                            <th>Target 1</th>
+                            <th>Target 2</th>
+                            <th>Target Ratio</th>
+                            <th>Final Ratio</th>
+                        </tr>
+                        {% for i in suspected %}
+                        <tr>
+                            <td>{{i.base1}}</td>
+                            <td>{{i.base2}}</td>
+                            <td>{{i.ratio_base|floatformat:"2"}}</td>
+                            <td>{{i.target1}}</td>
+                            <td>{{i.target2}}</td>
+                            <td>{{i.ratio_target|floatformat:"2"}}</td>
+                            <td><b>{{i.ratio|floatformat:"2"}}</b></td>
+                        </tr>
+                        {% endfor%}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

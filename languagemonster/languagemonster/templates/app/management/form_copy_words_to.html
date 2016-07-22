@@ -1,0 +1,70 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+                <form method="post" action="{% url 'management:do_copy_words' target_ds.id %}" class="form-horizontal">
+                    {% csrf_token %}
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">
+                        Copy words
+                    </h2>{% include "app/management/handy_menu.html" %}
+                    <table class="table table-striped">
+                        <tr>
+                            <td><strong>From</strong></td>
+                            <td></td>
+                            <td><strong>To</strong></td>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'management:edit_set' source_ds.pk %}">{{source_ds}}</a></td>
+                            <td>-></td>
+                            <td><a href="{% url 'management:edit_set' target_ds.pk %}">{{target_ds}}</a></td>
+                        </tr>
+                    </table>
+                    <h4>In both data sets</h4>
+                    {% if words_both|length == 0 %}
+                        None
+                    {% else %}
+                    <table class="table table-striped">
+                        <tbody>
+                            {% for i in words_both %}
+                                <tr><td>{{i}}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                    <h4>In target set only</h4>
+                    {% if words_target_only|length == 0 %}
+                        None
+                    {% else %}
+                    <table class="table table-striped">
+                        <tbody>
+                            {% for i in words_target_only %}
+                                <tr><td>{{i}}</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                    <h4>In source set only</h4>
+                    {% if words_source_only|length == 0 %}
+                        None
+                    {% else %}
+                            {% for i in words_source_only %}
+                                <div style="float: left; margin: 5px; margin-right: 20px;">
+                                    <span><label for="{{i.id}}">{{i}}</label></span>
+                                    <input type="checkbox" name="copy" id="{{i.id}}" value="{{i.id}}" />
+                                </div>
+                            {% endfor %}
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary" name="go">Go</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,128 @@
+{% load i18n %}
+
+<!-- Section 1 -->
+<span id="what-it-is"></span>
+<section class="text-section" id="text-1" data-speed="6" data-type="background">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <video width="480" height="200" autoplay loop>
+  <source src="/static/images/marketing/runner.mp4" type="video/mp4">
+<img class="img-rounded" src="{{STATIC_URL}}images/marketing/runner.png" alt="{% trans 'Many games to choose from' %}" />
+</video>
+
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+                <h1>{% trans "What it is?" %}</h1>
+                {% trans "Language Monster is a brand new technology that will teach you a foreign language in fun and engaging way. Period." %}
+            </div>
+        </div>
+        <div class="absolute-center-bottom"><a href="#how-it-works" data-scroll class="btn-transparent-filled"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>
+        </div>
+    </div>
+</section>
+
+<!-- Photo 1 -->
+<section class="photo-section" id="photo-1" data-speed="4" data-type="background">
+    <div class="container"></div>
+</section>
+
+<!-- Section 2 -->
+<span id="how-it-works"></span>
+<section class="text-section" id="text-2" data-speed="2" data-type="background">
+    <div class="container">
+        <div class="col-md-6">
+            <h1>{% trans "How it works?" %}</h1>
+            {% trans "That is how it works" %}
+        </div>
+        <div class="col-md-4">
+            <img class="img-rounded" src="{{STATIC_URL}}images/marketing/paper2.png" alt="{% trans 'Learning may be fun!' %}" />
+        </div>
+        <div class="absolute-center-bottom"><a href="#what-can-you-learn" data-scroll class="btn-transparent-filled"><span class="glyphicon glyphicon-circle-arrow-down"></span></a>
+        </div>
+    </div>
+</section>
+
+<!-- Photo 2 -->
+<section class="photo-section" id="photo-2" data-speed="4" data-type="background">
+    <div class="container"></div>
+</section>
+
+<!-- Section 3 -->
+<span id="what-can-you-learn"></span>
+<section class="text-section" id="text-3" data-speed="2" data-type="background">
+    <div class="container">
+        <div class="col-xs-6">
+            <h1>{% trans "What can you learn?" %}</h1>
+            {% trans "where can you learn" %}
+        </div>
+        <div class="col-xs-6">
+            <img src="{{STATIC_URL}}images/marketing/add_language.png" alt="{% trans 'There are many languages you can learn' %}" />
+        </div>
+        <div class="absolute-center-bottom"><a href="#and-some-more" data-scroll class="btn-transparent-filled"><span class="glyphicon glyphicon-circle-arrow-down"></span></a></div>
+    </div>
+</section>
+
+<!-- Photo 3 -->
+<section class="photo-section" id="photo-3" data-speed="4" data-type="background">
+    <div class="container"></div>
+</section>
+
+<!-- Section 4 -->
+<span id="and-some-more"></span>
+<section class="text-section" id="text-4" data-speed="2" data-type="background">
+    <div class="container">
+        <div class="col-xs-4">
+            <h1>{% trans "It is fun" %}</h1>
+            {% trans "Yes it is" %}
+            </div>
+            <div class="col-xs-8">
+                <img class="img-rounded" src="{{STATIC_URL}}images/marketing/shooter.png" alt="{% trans 'Many games to choose from' %}" />
+            </div>
+        <div class="absolute-center-bottom"><a href="#where-you-can-use-it" data-scroll class="btn-transparent-filled"><span class="glyphicon glyphicon-circle-arrow-down"></span></a></div>
+    </div>
+</section>
+
+<!-- Photo 4 -->
+<section class="photo-section" id="photo-4" data-speed="4" data-type="background">
+    <div class="container"></div>
+</section>
+
+<!-- Section 5 -->
+<span id="where-you-can-use-it"></span>
+<section class="text-section" id="text-5" data-speed="2" data-type="background">
+    <div class="container">
+        <div class="col-xs-6">
+            <h1>{% trans "Where you can use it?" %}</h1>
+            {% trans "Everywhere" %}
+        </div>
+        <div class="col-xs-6">
+            <p><a class="btn btn-submit" href="#" data-toggle="modal" data-target="#modal-signup">{% trans "Sign Up" %}</a></p>
+            <p class="alert alert-success" style="padding: 3px; font-weight: bold;">{% trans "Takes less than 10 seconds!" %}</p>
+        </div>
+        <div class="absolute-center-bottom"><a href="#contact" data-scroll class="btn-transparent-filled"><span class="glyphicon glyphicon-circle-arrow-down"></span></a></div>
+    </div>
+</section>
+
+<!-- Photo 5 -->
+<span id="contact"></span>
+<section class="photo-section" id="photo-5" data-speed="4" data-type="background">
+    <div class="container">
+        {#% include "landing/contact.html" %#}
+        <div class="absolute-bottom" style="text-align: left;">
+
+<div id="links-collection">
+    <!-- <a title="{% trans 'About Us' %}" href="{% url 'core:static_page' 'about-us' %}">{% trans "About Us" %}</a><br /> -->
+    <!-- <a title="{% trans 'Press Kit' %}" href="{% url 'core:static_page' 'press-kit' %}">{% trans "Press Kit" %}</a><br /> -->
+    <!-- <a title="{% trans 'Terms of Use' %}" href="{% url 'core:static_page' 'terms' %}">{% trans "Terms of Use" %}</a><br /> -->
+    <!-- <a title="{% trans 'Privacy Policy' %}" href="{% url 'core:static_page' 'privacy' %}">{% trans "Privacy Policy" %}</a><br /> -->
+    <a title="{% trans 'Contact' %}" href="#" data-toggle="modal" data-target="#modal-contact">{% trans "Contact" %}</a><br /><br />
+    <a title="Language Monster - Facebook" href="https://www.facebook.com/languagemonster"><span class="fa fa-facebook"></span></a>&nbsp;&nbsp;&nbsp;<a title="Language Monster - Twitter" href="https://twitter.com/languagemonste"><span class="fa fa-twitter"></span></a>&nbsp;&nbsp;&nbsp;<a title="Language Monster - Google Plus" href="https://plus.google.com/u/0/b/108974167410387695649/108974167410387695649/"><span class="fa fa-google-plus"></span></a>&nbsp;&nbsp;&nbsp;<a data-scroll title="{% trans 'Go to top' %}" href="#top"><span class="fa fa-chevron-up"></span></a>
+    <br />
+    <div class="small-print">
+        {% trans "Language Monster uses cookies. By continuing to use this website you are giving consent to cookies being used." %}
+    </div>
+</div>
+        </div>
+        </div>
+</section>

@@ -1,0 +1,58 @@
+$color-red: #c2060e;
+$color-navy: #160E41;
+$color-white: #ffffff;
+$color-text: #333333;
+$color-black: #000000;
+$color-white-trans: rgba(255, 255, 255, 0.1);
+$color-white-trans2: rgba(255, 255, 255, 0.3);
+
+$color-light-grey: #555555;
+$color-vlight-grey: #eeeeee;
+
+$color-basic-blue: #3B7B7B;
+
+$color-light-blue: #C0EFD2;
+$test: #E25858;
+$test-dark: #FFFFDD;
+
+$color-dark-bg: #1B1E24;
+
+$color-positive: #3D9949;
+$color-negative: #9E3333;
+
+$font-base: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+
+/*html,
+body {
+   margin:0;
+   padding:0;
+   height:100%;
+}
+*/
+#container {
+   min-height: 100%;
+   position: relative;
+   margin: 0;
+   padding: 0;
+}
+
+/* for IE < 7*/
+/*    #container {
+        height:100%;
+    }
+*/
+#body {
+   /*padding-bottom: 200px;*/
+   padding: 0;
+   margin: 0;
+   min-height: 650px;
+}
+
+#footer {
+    margin-left: 0;
+   /*position: absolute;*/
+   bottom: 0;
+   width: 100%;
+   /*height: 60px;*/
+   left: 0;
+}

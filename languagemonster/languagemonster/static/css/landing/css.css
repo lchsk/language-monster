@@ -1,0 +1,374 @@
+/* Links */
+.modal-body a, .info-block a,
+.modal-body a:focus, .info-block a:focus,
+.modal-body a:active, .info-block a:active {
+  color: #333333;
+  border-bottom: 1px solid #C0EFD2; }
+
+.modal-body a:hover, .info-block a:hover {
+  color: #333333;
+  text-decoration: none;
+  border-bottom: 1px solid #c2060e; }
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  text-shadow: none;
+  /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff; }
+
+.btn {
+  -webkit-border-radius: 3em;
+  -moz-border-radius: 3em;
+  border-radius: 3em; }
+
+.round {
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em; }
+
+/* Top level menu for an unlogged user */
+.navbar-transparent {
+  background-color: transparent;
+  border-width: 0; }
+
+#navbar-unlogged {
+  text-transform: uppercase;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 700; }
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav > .open > a:hover {
+  background-color: transparent;
+  color: #c2060e; }
+
+ul.nav > li.dropdown > ul.dropdown-menu > li > a {
+  font-family: Helvetica, Arial, sans-serif;
+  text-transform: none; }
+
+ul.nav > li.page-scroll > a, ul.nav > li.dropdown > a {
+  color: #ffffff; }
+
+ul.nav > li.page-scroll > a:hover, ul.nav > li.dropdown > a:hover {
+  color: #c2060e; }
+
+ul.nav > li.page-scroll > a:focus, ul.nav > li.dropdown > a:focus {
+  outline: 0; }
+
+#navbar-unlogged .navbar-nav {
+  letter-spacing: 1px; }
+
+#navbar-unlogged .navbar-nav li a:focus {
+  outline: 0; }
+
+/* Logo */
+#logo {
+  background-image: url(../images/website/logo200.png);
+  background-repeat: no-repeat;
+  width: 200px;
+  height: 101px;
+  margin: 8px 0 0 8px;
+  padding: 0; }
+
+@media screen and (max-width: 1000px) {
+  #logo {
+    background: url(../images/website/logo90.png);
+    width: 90px;
+    height: 45px; }
+  #navbar-unlogged li a {
+    margin-top: 8px; } }
+
+.absolute-center-bottom {
+  position: absolute;
+  bottom: 5%;
+  left: 49%; }
+
+.absolute-bottom {
+  position: absolute;
+  bottom: 5%;
+  left: 5%; }
+
+.jumbotron {
+  background-color: transparent; }
+
+.jumbotron h1, h2, h3 {
+  color: white; }
+
+h2.static {
+  color: #000000;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.xxlarge {
+  font-size: 48px;
+  font-weight: bold; }
+
+.xlarge {
+  font-size: 32px; }
+
+.large {
+  font-size: 26px; }
+
+.color-white {
+  color: #ffffff; }
+
+#intro-header {
+  display: block;
+  text-transform: uppercase;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 3em;
+  font-weight: 700;
+  color: #ffffff; }
+
+#intro-text {
+  font-size: 1.25em;
+  font-weight: 300;
+  color: #ffffff; }
+
+.btn-transparent {
+  color: #ffffff;
+  background-color: transparent;
+  border-width: 0;
+  font-size: 30px; }
+
+.btn-transparent:active,
+.btn-transparent:focus,
+.btn-transparent:hover {
+  border-width: 0;
+  color: #ffffff;
+  background-color: transparent; }
+
+.btn-transparent-filled {
+  color: #c2060e;
+  background-color: transparent;
+  border-width: 0;
+  font-size: 30px; }
+
+.btn-transparent-filled:active,
+.btn-transparent-filled:focus,
+.btn-transparent-filled:hover {
+  border-width: 0;
+  color: #c2060e;
+  background-color: transparent; }
+
+.btn-normal {
+  color: #ffffff;
+  background-color: #160E41; }
+
+.btn-normal:active,
+.btn-normal:focus,
+.btn-normal:hover {
+  color: #ffffff;
+  background-color: #c2060e; }
+
+/*
+    Landing page parallax sections
+*/
+.text-section {
+  background-color: #ffffff;
+  height: auto;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  padding: 80px 0; }
+
+.photo-section {
+  height: auto;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  padding: 200px 0; }
+
+#photo-1 {
+  background: url(../../images/cover/rome.jpg) 50% 0 fixed; }
+
+#photo-2 {
+  background: url(../../images/cover/krakow.jpg) 50% 0 fixed; }
+
+#photo-3 {
+  background: url(../../images/cover/paris.jpg) 50% 0 fixed; }
+
+#photo-4 {
+  background: url(../../images/cover/germany.jpg) 50% 0 fixed; }
+
+#photo-5 {
+  background: url(../../images/cover/cuba.jpg) 50% 0 fixed;
+  padding: 350px 0; }
+
+#modal-login {
+  overflow: hidden; }
+
+.modal-round {
+  -webkit-border-radius: 1.8em;
+  -moz-border-radius: 1.8em;
+  border-radius: 1.8em; }
+
+.btn-submit {
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #ffffff;
+  background-color: #c2060e;
+  font-size: 16px;
+  border-width: 0; }
+
+.btn-submit:hover {
+  background-color: #160E41;
+  color: #ffffff;
+  border-width: 0; }
+
+.info-block {
+  min-height: 200px;
+  background-color: #ffffff;
+  padding: 20px; }
+
+#links-collection a,
+#links-collection a:focus, #links-collection a:active {
+  color: #ffffff;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.smooth-links a {
+  display: block;
+  white-space: nowrap;
+  text-align: left;
+  padding: 4px;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333333;
+  text-decoration: none;
+  border: 0; }
+
+.smooth-links a:hover {
+  background-color: #eeeeee;
+  border: 0; }
+
+.small-print {
+  font-size: 11px;
+  color: #888888;
+  font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 200px;
+  text-align: justify;
+  margin-top: 20px; }
+
+.form-text {
+  display: none; }
+
+.flag-border {
+  border: 1px solid #ccc; }
+
+/*
+ * Base structure
+ */
+html,
+body {
+  height: 100%;
+  background: url(../../images/cover/finland.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+
+body {
+  text-align: center;
+  overflow-y: scroll !important; }
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%;
+  /* For at least Firefox */
+  min-height: 100%;
+  -webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5); }
+
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top; }
+
+.cover-container {
+  margin-right: auto;
+  margin-left: auto; }
+
+/* Padding for spacing */
+.inner {
+  padding: 30px; }
+
+/*
+ * Header
+ */
+.text-section h1 {
+  text-transform: uppercase;
+  font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 3em;
+  font-weight: 700; }
+
+.masthead-brand {
+  margin: 0; }
+
+.outside-logo {
+  margin-top: 15px; }
+
+.masthead-nav {
+  margin-top: 35px; }
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left; }
+  .masthead-nav {
+    float: right; } }
+
+@media (max-width: 768px) {
+  header {
+    margin-top: 10%; }
+  #navbar-unlogged {
+    background-color: black; } }
+
+.navbar-toggle {
+  border: 1px solid black;
+  background-color: #ffffff;
+  color: #ffffff; }
+
+/*
+ * Cover
+ */
+.cover {
+  padding: 0 20px; }
+
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold; }
+
+/*
+ * Footer
+ */
+.mastfoot {
+  color: #999;
+  /* IE8 proofing */
+  color: rgba(255, 255, 255, 0.5); }
+
+/*
+ * Affix and center
+ */
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0; }
+  .mastfoot {
+    position: fixed;
+    bottom: 0; }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle; }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%;
+    /* Must be percentage or pixels for horizontal alignment */ } }
+
+@media (min-width: 992px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 700px; } }

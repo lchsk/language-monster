@@ -1,0 +1,254 @@
+{% extends "app/content.html" %}
+{% load i18n %}
+{% load thumbnail %}
+
+{% block main %}
+
+{% for msg in messages %}
+  <div class="alert alert-{{msg.tags}} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{msg}}</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 20px 40px;">
+                <div class="row" style="text-align: left;">
+                    <h2>{% trans "Profile" %}</h2>
+                </div>
+
+                <div class="row" role="tabpanel">
+                    <div class="col-md-9">
+<div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="details">
+                            <form class="form-horizontal" action="{% url 'core:update_profile' %}" method="post">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <label for="first_name" class="col-sm-2 control-label">{% trans "First Name" %}</label>
+                                <div class="col-sm-5">
+                                  <input name="first_name" type="text" class="form-control" id="first_name" value="{{ruser.first_name }}">
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="last_name" class="col-sm-2 control-label">{% trans "Last Name" %}</label>
+                                <div class="col-sm-5">
+                                  <input name="last_name" type="text" class="form-control" id="last_name" value="{{ruser.last_name}}">
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="last_name" class="col-sm-2 control-label">{% trans "Gender" %}</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" name="gender">
+                                        <option value="">{% trans "Select gender" %}</option>
+                                        {% for k, v in gender.items %}
+                                            {% if k == user.gender %}
+                                                <option selected="selected" value="{{ k }}">{{ v }}</option>
+                                            {% else %}
+                                                <option value="{{ k }}">{{ v }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="location" class="col-sm-2 control-label">{% trans "Location" %}</label>
+                                <div class="col-sm-5">
+                                  <input name="location" type="text" class="form-control" id="location" value="{% firstof user.location %}">
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="country" class="col-sm-2 control-label">{% trans "Country" %}</label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" name="country">
+                                        <option value="">{% trans "Select your country" %}</option>
+                                        {% for k, v in countries %}
+                                            {% if k == user.country %}
+                                                <option selected="selected" value="{{ k }}">{{ v }}</option>
+                                            {% else %}
+                                                <option value="{{ k }}">{{ v }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="www" class="col-sm-2 control-label">{% trans "Website" %}</label>
+                                <div class="col-sm-5">
+                                  <input name="www" type="text" class="form-control" id="www" value="{% firstof user.www %}">
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="about" class="col-sm-2 control-label">{% trans "About Me" %}</label>
+                                <div class="col-sm-5">
+                                    <textarea name="about" class="form-control" rows="3">{% firstof user.about %}</textarea>
+                                  <!-- <input name="about" type="text" class="form-control" id="about" value="{% firstof user.about %}"> -->
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="uri" class="col-sm-2 control-label">{% trans "Profile Page Address" %}</label>
+                                <div class="col-sm-5">
+                                  <input name="uri" type="text" class="form-control" id="uri" value="{% firstof user.uri %}">
+                                </div>
+                              </div>
+
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                  <button type="submit" class="btn btn-default btn-submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans "Save details" %}</button>
+                                </div>
+                              </div>
+                            </form>
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="email">
+                            <form class="form-horizontal" action="{% url 'core:update_email' %}" method="post">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label">{% trans "Current email" %}</label>
+                                <div class="col-sm-5">
+                                  <p class="form-control-static"><strong>{{ ruser.email }}</strong></p>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="email" class="col-sm-2 control-label">{% trans "New email" %}</label>
+                                <div class="col-sm-5">
+                                  <input name="email" type="email" class="form-control" id="email" placeholder="{% trans 'New email address' %}">
+                                </div>
+                              </div>
+
+                              <div class="alert alert-info" role="alert">{% trans "Please note that you may be asked to confirm your new address by clicking on a link in an email you'll receive." %}</div>
+
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                  <button type="submit" class="btn btn-default btn-submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans "Update" %}</button>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="password">
+                          <form class="form-horizontal" action="{% url 'core:update_password' %}" method="post">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <label for="password0" class="col-sm-2 control-label">{% trans "Current password" %}</label>
+                                <div class="col-sm-5"><input name="password0" type="password" class="form-control" id="password0" placeholder="{% trans 'Current password' %}"></div>
+                              </div>
+                              <div class="form-group">
+                                <label for="password1" class="col-sm-2 control-label">{% trans "New password" %}</label>
+                                <div class="col-sm-5"><input name="password1" type="password" class="form-control" id="password1" placeholder="{% trans 'New password' %}"></div>
+                              </div>
+                              <div class="form-group">
+                                <label for="password2" class="col-sm-2 control-label">{% trans "Confirm" %}</label>
+                                <div class="col-sm-5"><input name="password2" type="password" class="form-control" id="password2" placeholder="{% trans 'Repeat your new password' %}"></div>
+                              </div>
+
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                  <button type="submit" class="btn btn-default btn-submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans "Update" %}</button>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="avatar">
+                          <form class="form-horizontal" action="{% url 'core:upload_image' %}" enctype="multipart/form-data" method="post">
+                                {% csrf_token %}
+                              <div class="form-group">
+                                <div class="col-sm-12">
+                                    {% load thumbnail %}
+                                    {% if user.avatar %}
+                                      {% with basic.urls.avatar|add:user.avatar as path %}
+                                        {% thumbnail path "140x140" crop="center" as im %}
+                                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" />
+                                        {% endthumbnail %}
+                                      {% endwith %}
+                                    {% else %}
+                                      {% trans "No avatar." %}
+                                    {% endif %}
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2" for="avatar-input">{% trans "Change avatar" %}</label>
+                                 <div class="col-sm-5">
+                                    <input type="file" name="file" id="avatar-input">
+                                 </div>
+                              </div>
+
+                              <div class="alert alert-info" role="alert">{% trans "Please note there are few constraints regarding avatars. An avatar can be up to 0.5 MB and should be in PNG or JPG format." %}</div>
+
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-3">
+                                  <button type="submit" class="btn btn-default btn-submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans "Upload" %}</button>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+
+<div role="tabpanel" class="tab-pane" id="games">
+<form class="form-horizontal" action="{% url 'core:update_profile_games' %}" method="post">
+    {% csrf_token %}
+
+    <div class="alert alert-info" role="alert">{% trans "Here you can select which games you want to play when learning" %}</div>
+
+    <div class="row">
+        {% for k, v in games.items %}
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            {% with basic.urls.static|add:"images/marketing/games/"|add:v.image as path %}
+                {% thumbnail path "220x220" as im %}
+                <img src="{{ im.url }}" class="img-rounded" />
+            {% endthumbnail %}
+            {% endwith %}
+          <div class="caption">
+            <h4><strong>{{ v.name }}</strong></h4>
+            <div class="form-group">
+                <label>
+                    <div class="checkbox">
+                        {% if v.available %}
+                            <input name="{{k}}" type="checkbox" checked>
+                        {% else%}
+                            <input name="{{k}}" type="checkbox">
+                        {% endif %}
+                        {% trans "Available" %}
+                    </div>
+                </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-3">
+      <button type="submit" class="btn btn-default btn-submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans "Save" %}</button>
+    </div>
+  </div>
+</form>
+</div>
+
+                    </div>
+                    </div>
+                    <div class="col-md-3">
+                        <ul class="nav nav-tabs nav-stacked" role="tablist">
+                          <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">{% trans "Details" %}</a></li>
+                          <li role="presentation"><a href="#email" aria-controls="email" role="tab" data-toggle="tab">{% trans "Email" %}</a></li>
+                          {% if not user.social_account %}
+                          <li role="presentation"><a href="#password" aria-controls="password" role="tab" data-toggle="tab">{% trans "Password" %}</a></li>
+                          {% endif %}
+                          <li role="presentation"><a href="#avatar" aria-controls="avatar" role="tab" data-toggle="tab">{% trans "Avatar" %}</a></li>
+                          <li role="presentation"><a href="#games" aria-controls="games" role="tab" data-toggle="tab">{% trans "Games" %}</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

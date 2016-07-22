@@ -1,0 +1,66 @@
+{% extends "app/content.html" %}
+{% load i18n %}
+
+{% block main %}
+
+{% for msg in messages %}
+  <div class="alert alert-{{msg.tags}} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{msg}}</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border">
+            <div class="container-fluid" style="padding: 0 40px 40px 40px;">
+                <div class="row" style="text-align: left;">
+                    <ol class="breadcrumb">
+                        <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}">{% trans "Dashboard" %}</a></li>
+                        <li class="active">{% trans "Languages" %}</li>
+                    </ol>
+                    <h2 class="margin-crumbs">{% trans "Learn" %}</h2>
+                </div>
+
+    {% for item in languages %}
+        {% if forloop.first %}
+            <div class="row">
+        {% endif %}
+            <div class="col-md-4">
+            <div class="add-language-box img-rounded" style="overflow:hidden; -webkit-mask-image: -webkit-radial-gradient(circle, white, black);">
+                                <div style="position: absolute; width: 250px; height: 147px;" class="{{item.lang.image_filename}} img-rounded add-language-image">
+                                </div>
+                            <!-- </div> -->
+                            <div style="height: 8px;"></div>
+                            <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-9" style="text-align: left;"><h3>{% trans item.lang.english_name %}</h3></div>
+                                <div class="col-xs-3">
+                                    <div class="{{item.lang.flag_filename}}_24px img-circle">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position: absolute; bottom: 8px; right: 8px; ">
+                                {% if item.learning %}
+                                    <a title="{% trans 'Continue learning' %}" href="{% url 'vocabulary:study' item.lang.slug %}" class="btn btn-submit add-language-box-btn">{% trans "Continue" %} <span class="glyphicon glyphicon-play"></span></a>
+
+                                {% else %}
+                                    <a title="{% trans 'Join' %}" href="{% url 'vocabulary:save_language' item.lang.slug %}" class="btn btn-submit add-language-box-btn">{% trans "Learn" %} <span class="glyphicon glyphicon-plus"></span></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            {% if forloop.counter|divisibleby:"3" %}
+                <div style="height: 50px;" class="clear"></div>
+            {% endif %}
+
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+    {% endfor %}
+
+</div>
+    </div>
+        </div>
+            </div>
+                </div>
+{% endblock %}

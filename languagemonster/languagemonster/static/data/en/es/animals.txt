@@ -1,0 +1,6 @@
+lion=león
+cat=gato
+dog=perro
+rabbit=conejo
+snake=serpiente
+bird=pájaro

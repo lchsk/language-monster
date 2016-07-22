@@ -1,0 +1,32 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 0 40px;">
+                <form method="post" action="{% url 'management:view_copy_words_to' dataset_id %}" class="form-horizontal">
+                    {% csrf_token %}
+                <div class="row" style="text-align: left;">
+                    <h2 style="display: inline-block;">
+                        Copy words to: {{ds.name_en}} ({{ds.pair}})
+                    </h2>{% include "app/management/handy_menu.html" %}
+                    <br />
+                    From:
+                    <div>
+                        <select class="form-control" name="source_dataset_id">
+                        {% for i in datasets %}
+                            <option value="{{i.id}}">{{i.name_en}} ({{i.pair}})</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" name="go">Go</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

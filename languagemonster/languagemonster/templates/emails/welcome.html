@@ -1,0 +1,15 @@
+{% extends "emails/base_email.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<h1>{% trans "Hello" %} {{PUBLIC_NAME}}</h1>
+
+<p><b>{% trans "Welcome to Language Monster!" %}</b></p>
+
+<p>{% trans "We are happy to welcome you to Language Monster - platform for fast language learning. Please enjoy what we have to offer!" %}</p>
+
+<p>{% trans "Cheers" %}</p>
+<p>{% trans "Language Monster Team" %}</p>
+
+{% endblock content %}

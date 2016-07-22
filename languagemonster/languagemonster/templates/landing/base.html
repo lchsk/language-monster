@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include "landing/head.html" %}
+<body>
+<span id="top"></span>
+
+<div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container" style="margin-top: 0; padding-top: 0;">
+      <div class="masthead clearfix">
+        {% include "landing/nav.html" %}
+      </div>
+        {% block content %}
+        {% include "landing/centre.html" %}
+        {% endblock content %}
+
+    </div>
+  </div>
+</div>
+
+{% include "landing/sections.html" %}
+{% include "forms/form-login.html" %}
+{% include "forms/form-signup.html" %}
+{% include "forms/form-contact.html" %}
+{% include "forms/form-language.html" %}
+
+
+<script src="{{STATIC_URL}}lib/jquery-1.11.2.min.js"></script>
+<script src="{{STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{STATIC_URL}}lib/smooth-scroll.min.js"></script>
+
+<script src="{{STATIC_URL}}js/out/landing.js"></script>
+
+<script src='http://app1.sugester.com/7098/widget.js' type='text/javascript'></script>
+{% include "google.html" %}
+
+</body>
+</html>

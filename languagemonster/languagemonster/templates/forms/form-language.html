@@ -1,0 +1,42 @@
+{% load thumbnail %}
+{% load partition %}
+{% load i18n %}
+
+<div class="modal fade modal-fix smooth-links" id="modal-change" tabindex="-1" role="dialog" aria-labelledby="modal-change">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{% trans "Change the language" %}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          {% for obj, d in basic.base_languages.items %}
+                {% if forloop.first %}
+                <div class="col-md-4">
+                {% endif %}
+
+                <a
+                  class="link img-rounded"
+                  href="{% url 'core:change_language' obj %}">
+                <div
+                  class="{{d.flag_filename}}_24px img-circle flag-border"
+                  style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"
+                  title="{{d.language.original_name}}">
+                    </div>
+              {{ d.original_name }}</a>
+              {% if forloop.counter|divisibleby:"3" %}
+          </div>
+          <div class="col-md-4">
+              {% endif %}
+              {% if forloop.last %}
+          </div>
+              {% endif %}
+            {% endfor %}
+
+
+  </div>
+  </div>
+    </div>
+  </div>
+</div>

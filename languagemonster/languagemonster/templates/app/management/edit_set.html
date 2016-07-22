@@ -1,0 +1,295 @@
+{% extends "app/content.html" %}
+
+{% load thumbnail %}
+
+{% block main %}
+
+<div class="row">
+<div class="col-md-12">
+<div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+<div class="container-fluid" style="padding: 0 40px 20px 40px;">
+
+<div class="row" style="text-align: left;">
+    <h2 style="display: inline-block;">Edit set "{{ds.name_en}}"</h2>
+    {% include "app/management/handy_menu.html" %}
+<form method="post" action="{% url 'management:save_edit_form' ds.id %}" class="form-horizontal">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Names</h3>
+                </div>
+                <div class="panel-body">
+                    <label for="name_en">
+                        Name in English
+                    </label>
+                    <input
+                        class="data form-control"
+                        name="name_en"
+                        id="name_en"
+                        value="{{ds.name_en}}"
+                        type="text"
+                        />
+                    <br />
+                    <label for="name_base">
+                        Name in {{ds.pair.base_language}} (Base)
+                    </label>
+                    <input
+                        class="data form-control"
+                        name="name_base"
+                        id="name_base"
+                        value="{{ds.name_base}}"
+                        type="text"
+                    />
+                    <br />
+                    <label for="name_target">
+                        Name in {{ds.pair.target_language}} (Target)
+                    </label>
+                    <input
+                        class="data form-control"
+                        name="name_target"
+                        id="name_target"
+                        value="{{ds.name_target}}"
+                        type="text"
+                    />
+                    <br />
+                    <label for="icon">
+                        Icon
+                    </label>
+                    <input
+                        class="data form-control"
+                        name="icon"
+                        id="icon"
+                        value="{{ds.icon}}"
+                        type="text"
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Stats</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td>Pair</td>
+                            <td>{{ds.pair}}</td>
+                        </tr>
+                        <tr>
+                            <td>Words</td>
+                            <td>{{stats.all}}</td>
+                        </tr>
+                        <tr>
+                            <td>Slug</td>
+                            <td>{{ds.slug}}</td>
+                        </tr>
+                        <tr>
+                            <td>Clean</td>
+                            <td>{{stats.clean}}</td>
+                        </tr>
+                        <tr>
+                            <td>Clean (zero)</td>
+                            <td>{{stats.clean_zero}}</td>
+                        </tr>
+                        <tr>
+                            <td>Susp</td>
+                            <td>{{stats.susp}}</td>
+                        </tr>
+                        <tr>
+                            <td>Susp (zero)</td>
+                            <td>{{stats.susp_zero}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Controls</h3>
+                </div>
+                <div class="panel-body">
+                    <div style="padding-bottom: 8px;">
+                        <div class="list-group">
+                            <button
+                                type="submit"
+                                class="list-group-item"
+                                name="export"
+                                value="export">
+                                Export words
+                            </button>
+                            <button
+                                type="submit"
+                                class="list-group-item"
+                                name="import"
+                                value="import">
+                                Import words
+                            </button>
+                            <button
+                                type="submit"
+                                class="list-group-item"
+                                name="export_set"
+                                value="export_set">
+                                Export data set
+                            </button>
+                        </div>
+                        <div class="list-group">
+                            <button
+                                type="button"
+                                id="btn-unselect-zero"
+                                class="list-group-item">
+                                Unselect zero items
+                            </button>
+                            <a
+                                href="{% url 'management:edit_set' ds.id %}?sort_by=baselen&sort_ord=DESC"
+                                class="list-group-item">
+                                Sort by base length
+                            </a>
+                            <a
+                                href="{% url 'management:edit_set' ds.id %}?sort_by=pop&sort_ord=DESC"
+                                class="list-group-item">
+                                Sort by pop
+                            </a>
+                        </div>
+                    </div>
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        name="update"
+                        value="update">
+                        Save
+                    </button>
+                    Visible <input
+                        name="visible"
+                        type="checkbox"
+                        {% if ds.visible %}
+                        checked
+                        {%endif%}
+                        >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        {% csrf_token %}
+        <br /><br />
+        <table id="word_table" class="table table-striped">
+            <tr>
+                <th><input id="selectall" type="checkbox" checked></th>
+                <th></th>
+                <th>Pop</th>
+                <th style="min-width: 250px;">{{ds.pair.base_language}} (Base)</th>
+                <th style="min-width: 250px;">{{ds.pair.target_language}} (Target)</th>
+                <th>Comments</th>
+            </tr>
+            {% for k in susp %}
+            <tr class="data_item" id="{{k.wp.id}}" title="{{k.reason|join:', '}}">
+                <td>
+                    <input class="data checkbox save" name="checked" value="{{k.wp.id}}" type="checkbox" checked>
+                </td>
+                <td style="background: #FF3D3D; text-align: center; vertical-align: middle;">
+                    {% if k.wp.from_english %}
+                        {% with basic.urls.static|add:"images/flags/uk.png" as path %}
+                        {% thumbnail path "20x20" crop="center" as im %}
+                        <span>
+                            <img
+                                src="{{ im.url }}"
+                                width="{{ im.width }}"
+                                height="{{ im.height }}"
+                                class="img-circle"
+                                alt="" />
+                        </span>
+                        {% endthumbnail %}
+                        {% endwith %}
+                    {% endif %}
+                </td>
+                <td class="pop">
+                    {{ k.wp.pop }}
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        class="data form-control base"
+                        name="{{k.wp.id}}_base"
+                        value="{{k.wp.base}}"
+                    >
+                    <div style="text-align: center;">{{k.wp.base_en}}</div>
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        class="data form-control target"
+                        name="{{k.wp.id}}_target"
+                        value="{{k.wp.target}}"
+                    >
+                    <div style="text-align: center;">{{k.wp.target_en}}</div>
+                </td>
+                <td title="{{k.wp.english}}">
+                    <div>{{k.wp.english}}</div>
+                    <div style="font-weight: bold;">{{k.wp.comments}}</div>
+                </td>
+            </tr>
+            {% endfor %}
+
+{% for k in clean %}
+    <tr class="data_item" id="{{k.wp.id}}">
+            <td>
+                <input class="data checkbox save" name="checked" value="{{k.wp.id}}" type="checkbox" checked>
+            </td>
+            <td style="background: #83C63F; text-align: center; vertical-align: middle;">
+            {% if k.wp.from_english %}
+                {% with basic.urls.static|add:"images/flags/uk.png" as path %}
+                    {% thumbnail path "20x20" crop="center" as im %}
+                    <span>
+                        <img
+                            src="{{ im.url }}"
+                            width="{{ im.width }}"
+                            height="{{ im.height }}"
+                            class="img-circle"
+                            alt="" />
+                    </span>
+                    {% endthumbnail %}
+                {% endwith %}
+            {% endif %}
+        </td>
+        <td class="pop">
+            {{ k.wp.pop }}
+        </td>
+        <td>
+            <input
+                type="text"
+                class="data form-control base"
+                name="{{k.wp.id}}_base"
+                value="{{k.wp.base}}"
+            >
+            <div style="text-align: center;">{{k.wp.base_en}}</div>
+        </td>
+        <td>
+            <input
+                type="text"
+                class="data form-control target"
+                name="{{k.wp.id}}_target"
+                value="{{k.wp.target}}"
+            >
+            <div style="text-align: center;">{{k.wp.target_en}}</div>
+        </td>
+        <td title="{{k.wp.english}}">
+            <div>{{k.wp.english}}</div>
+            <div style="font-weight: bold;">{{k.wp.comments}}</div>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+<button type="submit" class="btn btn-primary" name="update" value="update">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

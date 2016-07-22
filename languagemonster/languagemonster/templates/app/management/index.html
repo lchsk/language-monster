@@ -1,0 +1,73 @@
+{% extends "app/content.html" %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid">
+                <div class="row" style="text-align: left; padding: 0 40px 20px 40px;">
+                    <h2>Management</h2>
+                    <div class="col-md-6">
+                        <div class="list-group">
+                            <a
+                                href="{% url 'management:set_list' %}"
+                                class="list-group-item"
+                                role="button">
+                                <b>Sets</b>
+                            </a>
+                            <a
+                                href="{% url 'management:sets' %}"
+                                class="list-group-item"
+                                role="button">
+                                Add new set
+                            </a>
+                            <a
+                                href="{% url 'management:view_simple_datasets' %}"
+                                class="list-group-item"
+                                role="button">
+                                Simple datasets
+                            </a>
+                            <a
+                                href="{% url 'management:view_simple_dataset' '' %}"
+                                class="list-group-item"
+                                role="button">
+                                New simple dataset
+                            </a>
+                            <a
+                                href="{% url 'management:view_import_set' %}"
+                                class="list-group-item"
+                                role="button">
+                                Import set
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="list-group">
+                            <a
+                                href="{% url 'management:status' %}"
+                                class="list-group-item"
+                                role="button">
+                                <b>Status</b>
+                            </a>
+                            <a
+                                href="{% url 'management:clean' %}"
+                                class="list-group-item"
+                                role="button">
+                                Clean
+                            </a>
+                            <a
+                                href="{% url 'management:view_dangling_word_pairs' %}"
+                                class="list-group-item"
+                                role="button">
+                                Dangling word pairs
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

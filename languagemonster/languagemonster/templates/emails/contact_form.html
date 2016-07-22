@@ -1,0 +1,11 @@
+{% extends "emails/base_email.html" %}
+
+{% block content %}
+
+<h1>Message from {{NAME}} ({{EMAIL}})</h1>
+
+<p>From: {{NAME}}</p>
+<p>Email: {{EMAIL}}</p>
+<p>Text: {{TEXT}}</p>
+
+{% endblock content %}

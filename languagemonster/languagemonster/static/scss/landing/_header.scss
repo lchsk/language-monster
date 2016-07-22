@@ -1,0 +1,49 @@
+/*
+ * Header
+ */
+
+.text-section h1{
+    text-transform: uppercase;
+    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 3em;
+    font-weight: 700;
+}
+
+.masthead-brand {
+    margin: 0;
+}
+.outside-logo{
+    margin-top: 15px;
+}
+
+.masthead-nav{
+    margin-top: 35px;
+}
+
+@media (min-width: 768px){
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
+}
+
+@media (max-width: 768px) {
+  header{
+    margin-top: 10%;
+  }
+  #navbar-unlogged{
+    background-color: black;
+  }
+}
+
+.navbar-toggle{
+  border: 1px solid black;
+  background-color: #ffffff;
+  color: #ffffff;
+}
+
+#tabs-home{
+
+}

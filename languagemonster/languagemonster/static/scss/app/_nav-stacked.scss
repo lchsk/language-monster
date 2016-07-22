@@ -1,0 +1,183 @@
+/* Content Box stacked nav */
+
+.content-box .nav-stacked li a{
+  background-color: transparent;
+  color: $color-text;
+  font-weight: 700;
+  border-width: 0;
+}
+
+.content-box .nav-stacked li.active a{
+  color: $color-white;
+}
+
+.content-box .nav-stacked li a:hover{
+  color: $color-red;
+}
+
+.content-box .nav-stacked li a:focus,
+.content-box .nav-stacked li a:active{
+  color: $color-white;
+}
+
+.content-box .nav-stacked li a:hover,
+.content-box .nav-stacked li a:focus,
+.content-box .nav-stacked li a:active{
+  background-color: transparent;
+  border-width: 0;
+}
+
+.content-box .nav-stacked li{
+  background-color: $color-white;
+  border-width: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+/*.content-box .nav-stacked li:hover{
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}*/
+
+.content-box .nav-stacked li.active {
+  position: relative;
+  background-color: $color-red;
+  -webkit-border-radius: 3pt;
+  -moz-border-radius: 3pt;
+  border-radius: 3pt;
+}
+
+.content-box .nav-stacked li.active a:hover {
+    color: $color-white;
+}
+
+.content-box .nav-stacked li.active:after {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  /*border-color: rgba(136, 183, 213, 0);*/
+  border-right-color: $color-red;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+
+
+
+/* Study Page stacked nav */
+
+#study .nav-stacked li a{
+  background-color: transparent;
+  color: $color-text;
+  font-weight: 700;
+  border-width: 0;
+  text-align: left;
+}
+
+#study .nav-stacked li a .target{
+  color: $color-light-grey;
+  font-weight: 100;
+  font-style: italic;
+}
+
+/*#study .nav-stacked li.active a{
+  color: $color-red;
+}*/
+
+#study .nav-stacked li a:hover{
+  /*color: $color-red;*/
+
+}
+
+#study .nav-stacked li a:focus,
+#study .nav-stacked li a:active{
+  /*color: $color-white;*/
+}
+
+#study .nav-stacked li a:hover,
+#study .nav-stacked li a:focus,
+#study .nav-stacked li a:active{
+  background-color: transparent;
+  border-width: 0;
+  background-color: $color-vlight-grey;
+}
+
+#study .nav-stacked li{
+  background-color: $color-white;
+  border-width: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
+#study .nav-stacked li .badge{
+  background-color: $color-vlight-grey;
+  color: $color-light-grey;
+}
+
+/*#study .nav-stacked li.active {
+  position: relative;
+  background-color: $color-red;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}*/
+
+/*#study .nav-stacked li.active:after {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-right-color: $color-red;
+  border-width: 10px;
+  margin-top: -10px;
+}*/
+
+/* Study Dataset list - Tabs */
+
+#study ul.nav-tabs li a{
+  color: $color-text;
+}
+
+
+
+#study .nav-tabs > li.active > a,
+#study .nav-tabs > li.active > a:hover,
+#study .nav-tabs > li.active > a:focus {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}
+
+#study ul.nav-tabs > li > a:hover{
+  background-color: $color-white;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+/*  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid white;*/
+}
+
+
+/*#study ul.nav-tabs li,*/
+/*#study ul.nav-tabs li:hover,
+#study ul.nav-tabs li:active,
+#study ul.nav-tabs li:focus{
+  background-color: white;
+}*/
+
+#study ul.nav-tabs li.active a{
+  font-weight: 700;
+}

@@ -1,0 +1,36 @@
+{% load thumbnail %}
+{% load partition %}
+{% load i18n %}
+
+<div class="modal fade modal-fix" id="modal-tut-space" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content modal-round">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="color: #000000;" id="modal-login-header">{% trans "Space Game" %}</h4>
+      </div>
+      <div class="modal-body" style="text-align: left;">
+          <p style="text-align: justify;"><strong>{% trans "Control a space ship and collect the translation of the word you see at the top of the screen" %}</strong></p>
+
+          <br />
+          <h4>{% trans "Controls" %}</h4>
+
+          <table class="table table-striped table-condensed">
+              <tr>
+                  <td><img src="{{STATIC_URL}}images/games/up2.png" /></td>
+                  <td>{% trans "Accelerate" %}</td>
+              </tr>
+              <tr>
+                  <td><img src="{{STATIC_URL}}images/games/down2.png" /></td>
+                  <td>{% trans "Slow down" %}</td>
+              </tr>
+              <tr>
+                  <td><img src="{{STATIC_URL}}images/games/left2.png" /> <img src="{{STATIC_URL}}images/games/right2.png" /></td>
+                  <td>{% trans "Turn left / right" %}</td>
+              </tr>
+          </table>
+          <p><i>{% trans "This page can be shown anytime by clicking on the icon in the top left corner of the game screen" %}</i></p>
+      </div>
+    </div>
+  </div>
+</div>

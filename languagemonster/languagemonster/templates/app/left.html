@@ -1,0 +1,88 @@
+{% load thumbnail %}
+{% load i18n %}
+
+<div>
+    <div style="background-color: #22262E; height: 60px; padding: 6px 6px 6px 24px;">
+        <div class="fluid-container">
+            <div class="row" style="padding-right: 15px;">
+                    <a title="Language Monster" href="{% url 'index' %}"><img src="{{STATIC_URL}}images/website/logo90.png" /></a>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-unlogged">
+                <span class="sr-only">{% trans "Toggle navigation" %}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <section class="beta">
+
+              </section>
+                </div>
+            </div>
+        </div>
+
+    <div class="collapse navbar-collapse" id="navbar-unlogged">
+        <ul class="nav navbar-nav navbar-right">
+            <li><a title="{% trans 'Profile' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>
+            <li class="divider"></li>
+            <li><a title="{% trans 'Log Out' %}" href="{% url 'core:logout' %}"><span class="glyphicon glyphicon-off"></span> {% trans "Log Out" %}</a></li>
+        </ul>
+    </div>
+
+    <div id="app-left-column">
+        <div class="fluid-container">
+            <div class="row">
+                {% if user.uri %}
+                    <a title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}">
+                {% elif user.id %}
+                    <a title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}">
+                {% endif %}
+                        {% if user.avatar %}
+                        {% with basic.urls.avatar|add:user.avatar as path %}
+                            {% thumbnail path "60x60" crop="center" as im %}
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{user.public_name}}" />
+                            {% endthumbnail %}
+                        {% endwith %}
+                        {% endif %}
+                    </a>
+            </div>
+            <div class="row hello-screen">{% trans "Hello" %}<br />{{user.public_name}}</div>
+            <div class="row">
+              <div class="main-menu">
+                    {% if basic.studying|length > 0 %}
+                        <br />
+                        <h4>{% trans "YOUR LANGUAGES" %}</h4>
+
+                        {% for pro, lang_pair in basic.studying %}
+                        {% if lang_pair.base_language.acronym == basic.user_lang.language.acronym %}
+                            <div style="padding-left: 18px;">
+    <a href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" style="padding: 0;">
+        <div
+          style="width: 20px; height: 20px; display: inline-block; margin-right: 4px;"
+		  class="{{lang_pair.target_language.flag_filename}}_20px img-circle pull-left"
+		  alt="{{lang_pair.target_language.original_name}}">
+        </div>{% trans lang_pair.target_language.english_name %}
+    </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+                    <br />
+                    <div style="text-align: center;">
+                        <a title="{% trans 'Add language' %}" href="{% url 'vocabulary:add_language' %}" class="btn btn-submit"><span class="glyphicon glyphicon-plus-sign"></span>{% trans "Add language" %}</a>
+                    </div>
+
+                    <br />
+                    <h4>LANGUAGE MONSTER</h4>
+
+                    <a class="common" title="{% trans 'Dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "Dashboard" %}</a><br />
+                    {% if user.uri %}
+                        <a class="common" title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "Profile" %}</a><br />
+                    {% elif user.id %}
+                        <a class="common" title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}"><span class="glyphicon glyphicon-user"></span>{% trans "Profile" %}</a><br />
+                    {% endif %}
+                    <a class="common" title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "Settings" %}</a><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

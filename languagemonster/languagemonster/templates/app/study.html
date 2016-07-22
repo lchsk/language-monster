@@ -1,0 +1,111 @@
+{% extends "app/content.html" %}
+
+{% load partition %}
+{% load i18n %}
+
+{% block main %}
+
+{% for msg in messages %}
+  <div class="alert alert-{{msg.tags}} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{msg}}</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="study" class="content-box img-rounded light-border">
+            <div class="container-fluid" style="padding: 0 40px 40px 40px;">
+                <div class="row" style="text-align: left;">
+                        <ol class="breadcrumb">
+                            <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}">{% trans "Dashboard" %}</a></li>
+                            <li><a title="{% trans 'Languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "Languages" %}</a></li>
+                            <li class="active">{% trans pair.target_language.english_name %} ({{ pair.target_language.original_name }})</li>
+                        </ol>
+                </div>
+                <div class="row" style="text-align: left;">
+                    <h2 class="margin-crumbs">
+                            <div class="{{pair.target_language.flag_filename}}_24px img-circle flag-border" style="width: 24px; height: 24px; display: inline-block;"></div>
+                            <div style="display: inline-block;">
+                        {% trans pair.target_language.english_name %}
+                         ({{ pair.target_language.original_name }})
+                            </div>
+                    </h2>
+                </div>
+    <div role="tabpanel">
+      <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a id="btn-popular" href="#popular" aria-controls="popular" role="tab" data-toggle="tab">{% trans "Most popular" %}</a></li>
+          <li role="presentation"><a id="btn-basic" href="#basic" aria-controls="basic" role="tab" data-toggle="tab">{% trans "Basic" %}</a></li>
+          <li role="presentation"><a id="btn-all" href="#all" aria-controls="all" role="tab" data-toggle="tab">{% trans "All data sets" %}</a></li>
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="all">
+            <div class="row">
+            {% with datasets_s=datasets|dictsort:"name_base" %}
+            {% for d in datasets_s|columns:3 %}
+                <div class="col-md-4">
+                    <ul class="nav nav-pills nav-stacked">
+                        {% for i in d %}
+                            <li role="presentation">
+                                <a href="{% url 'vocabulary:play' pair.target_language.slug i.slug %}" class="play">
+                                {% if i.icon %}
+                                    <span class="ds-icon {{ i.icon }}"></span>
+                                {% endif %}
+                                {% if i in user_data_sets %}
+                                {% else %}
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'Number of words' %}" class="badge">{{ i.word_count }}</span></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            {% endwith %}
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane active" id="popular">
+            <div class="row">
+            {% with datasets_s=datasets|dictsortreversed:"learners"|slice:":9" %}
+            {% for d in datasets_s|columns:3 %}
+                <div class="col-md-4">
+                    <ul class="nav nav-pills nav-stacked">
+                        {% for i in d %}
+                            <li role="presentation">
+                                <a href="{% url 'vocabulary:play' pair.target_language.slug i.slug %}" class="play">
+                                {% if i.icon %}
+                                    <span class="ds-icon {{ i.icon }}"></span>
+                                {% endif %}
+                                {% if i in user_data_sets %}
+                                {% else %}
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'Number of words' %}" class="badge">{{ i.word_count }}</span></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            {% endwith %}
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="basic">
+            <div class="row">
+            {% with datasets_s=basic_datasets|dictsortreversed:"date_added"|slice:":9" %}
+            {% for d in datasets_s|columns:3 %}
+                <div class="col-md-4">
+                    <ul class="nav nav-pills nav-stacked">
+                        {% for i in d %}
+                            <li role="presentation">
+                                <a href="{% url 'vocabulary:play' pair.target_language.slug i.slug %}" class="play">
+                                {% if i.icon %}
+                                    <span class="ds-icon {{ i.icon }}"></span>
+                                {% endif %}
+                                {% if i in user_data_sets %}
+                                {% else %}
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'Number of words' %}" class="badge">{{ i.word_count }}</span></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            {% endwith %}
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+        </div>
+            </div>
+{% endblock %}

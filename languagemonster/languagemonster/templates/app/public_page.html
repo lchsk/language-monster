@@ -1,0 +1,92 @@
+{% extends "app/content.html" %}
+{% load thumbnail %}
+{% load i18n %}
+
+{% block main %}
+
+{% for msg in messages %}
+  <div class="alert alert-{{msg.tags}} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{msg}}</div>
+{% endfor %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="content-box img-rounded light-border" style="background-color: #ffffff;">
+            <div class="container-fluid" style="padding: 0 40px 20px 40px;">
+
+                <div class="row">
+                    <div class="col-md-3 col-xs-6" style="width: 180px; padding-top: 20px;">
+                        {% if u.avatar %}
+                        {% with basic.urls.avatar|add:u.avatar as path %}
+                            {% thumbnail path "140x140" crop="center" as im %}
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle img-responsive pull-center" alt="{{username}}" />
+                            {% endthumbnail %}
+                        {% endwith %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-5" style="text-align: left;">
+                        <h2>{{ username }}</h2>
+
+                        {% if knows %}
+                        <div class="well well-sm"><b>{% trans "Knows" %}</b>&nbsp;
+                        {% for s in knows %}
+                                <div class="{{s.flag_filename}}_20px img-circle" style="display: inline-block; vertical-align: middle;" title="{{ s.original_name }}"></div>
+                          {{ s.original_name }}&nbsp;
+                        {% endfor %}</div>
+                        {% endif %}
+
+                        {% if studies %}
+                        <div class="well well-sm"><b>{% trans "Studies" %}</b>&nbsp;
+                        {% for s in studies %}
+                                <div class="{{s.flag_filename}}_20px img-circle" style="display: inline-block; vertical-align: middle;" title="{{ s.original_name }}"></div>
+                          {{ s.original_name }}&nbsp;
+                        {% endfor %}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4" style="text-align: left; padding-top: 20px;">
+                        <h4>{% trans "About" %}</h4>
+
+                        <div class="form-horizontal">
+                            {% if u.location %}
+                                <div class="form-group form-group-about">
+                                    <label for="location" class="col-sm-4 control-label">{% trans "Location" %}</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">{{ u.location }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if u.country %}
+                                <div class="form-group form-group-about">
+                                    <label for="country" class="col-sm-4 control-label">{% trans "Country" %}</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static"><img src="{{ country.flag }}" alt="{% trans country.name %}" /> {% trans country.name %}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if u.www %}
+                                <div class="form-group form-group-about">
+                                    <label for="labelWWW" class="col-sm-4 control-label">{% trans "WWW" %}</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">{{ u.www|urlize }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if u.about %}
+                                <div class="form-group form-group-about">
+                                    <label for="about" class="col-sm-4 control-label">{% trans "About Me" %}</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-static">{{ u.about|urlize }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,69 @@
+{% extends "app/base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+{% load partition %}
+
+{% block content %}
+<div>
+    <div>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header"></div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav main-left">
+                <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span> {% trans "Dashboard" %}</a></li>
+                <li><a title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-user"></span> {% trans "Settings" %}</a></li>
+                <li><a title="{% trans 'Add language' %}" href="{% url 'vocabulary:add_language' %}"><span class="glyphicon glyphicon-plus-sign"></span> {% trans "Add language" %}</a></li>
+              </ul>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a data-toggle="modal" data-target="#modal-change" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    {% if basic.user_lang %}
+                    <img
+                        class="{{basic.user_lang.flag_filename}}_30px flag-border img-circle"
+                        style="width: 30px; height: 30px; display: inline-block;" />
+                    {{ basic.user_lang.original_name }}
+                    <span class="caret"></span>
+                    {% endif %}
+                  </a>
+                </li>
+
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    {% if user.avatar %}
+                    {% with basic.urls.avatar|add:user.avatar as path %}
+                      {% thumbnail path "30x30" crop="center" as im %}
+                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{user.public_name}}" />
+                      {% endthumbnail %}
+                    {% endwith %}
+                    {% endif %}
+                    {{user.public_name}}<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    {% if user.uri %}
+                        <li><a title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>
+                    {% elif user.id %}
+                        <li><a title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>
+                    {% endif %}
+                    <li><a title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span> {% trans "Settings" %}</a></li>
+
+                    <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Statistics</a></li> -->
+                    <li class="divider"></li>
+                    <li><a href="{% url 'core:logout' %}"><span class="glyphicon glyphicon-off"></span> {% trans "Log Out" %}</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+    </div>
+
+    <div>
+      <div class="container-fluid">
+        {% block main %}
+        {% endblock %}
+      </div>
+    </div>
+</div>
+{% endblock %}

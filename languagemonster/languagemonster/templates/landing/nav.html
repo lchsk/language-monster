@@ -1,0 +1,42 @@
+{% load thumbnail %}
+{% load partition %}
+{% load i18n %}
+
+<nav class="navbar navbar-default navbar-fixed-top navbar-transparent" id="navbar-index">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-unlogged">
+                <span class="sr-only">{% trans "Toggle navigation" %}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-unlogged">
+            <ul class="nav navbar-nav navbar-right">
+                {#% if page == 'info' %#}
+                    <li class="page-scroll">
+                        <a href="{% url 'index' %}">{% trans "Home" %}</a>
+                    </li>
+                {#% endif %#}
+                <li class="page-scroll">
+                    <a id="login" href="#" data-toggle="modal" data-target="#modal-login">{% trans "Login" %}</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="#" data-toggle="modal" data-target="#modal-signup">{% trans "Sign Up" %}</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="#what-it-is" data-scroll>{% trans "What it is?" %}</a>
+                </li>
+                <li class="page-scroll">
+                  <a href="#" data-toggle="modal" data-target="#modal-change">
+                            <div title="{{language.original_name}}" style="vertical-align: middle; display: inline-block;" class="{{language.flag_filename}}_20px img-circle">
+                            </div>
+                    {{ language.original_name }}
+                    <span class="caret"></span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

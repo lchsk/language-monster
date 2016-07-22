@@ -1,0 +1,75 @@
+/* Menu Item, on hover */
+.navbar-default .navbar-nav > li > a:hover, 
+.navbar-default .navbar-nav > li > a:focus {
+  color: #000;
+  /*background-color: $test-dark;*/
+}
+
+/* Active Item*/
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #000;
+  background-color: transparent;
+}
+
+/* Overall */
+.navbar-default {
+  height: 60px;
+  background-color: $color-white;
+  border-width: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  font-family: $font-base;
+  /*padding-top: 4px;*/
+}
+
+/* Dropdown Item */
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #000;
+  text-decoration: none;
+  /*background-color: $test;*/
+}
+
+/* Dropdown Menu Item when showing dropdown list */
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  color: #000;
+  /*background-color: $test-dark;*/
+}
+
+/* ? */
+.nav > li > a:hover,
+.nav > li > a:focus {
+  text-decoration: none;
+  background-color: red;
+}
+
+/* Brand */
+.navbar-default .navbar-brand {
+  color: #ffffff;
+}
+
+/* Brand hover*/
+.navbar-default .navbar-brand:hover, 
+.navbar-default .navbar-brand:focus {
+  color: #000;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* Menu Item colour*/
+.navbar-default .navbar-nav > li > a {
+  color: #000;
+}
+
+.navbar-default .main-left  > li {
+  height: 60px;
+  padding-top: 4px;
+}
+
+.navbar-default .main-left  > li:hover{
+  background-color: $color-vlight-grey;
+}

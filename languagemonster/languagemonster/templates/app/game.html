@@ -1,0 +1,88 @@
+{% extends "app/content.html" %}
+{% load i18n %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="study" class="content-box img-rounded light-border">
+            <div class="container-fluid" style="padding: 0 40px 40px 40px;">
+                <!-- <div class="row" style="text-align: left;"> -->
+                    <div class="row" style="text-align: left;">
+                        <ol class="breadcrumb">
+                            <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}">{% trans "Dashboard" %}</a></li>
+                            <li><a title="{% trans 'Languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "Languages" %}</a></li>
+                            <li><a href="{% url 'vocabulary:study' pair.target_language.slug %}">{% trans pair.target_language.english_name %} ({{ pair.target_language.original_name }})</a></li>
+                            <li class="active">{{ dataset.name_base }} ({{dataset.name_target}})</li>
+                        </ol>
+                    </div>
+                    <div class="row" style="text-align: left;">
+                        <h2 class="margin-crumbs">
+                                <div class="{{pair.target_language.flag_filename}}_24px img-circle flag-border" style="width: 24px; height: 24px; display: inline-block;"></div>
+                                <div style="display: inline-block;">
+                            {% trans "Learning data set" %}: {{ dataset.name_base }} ({{dataset.name_target}})
+                                </div>
+                        </h2>
+                    </div>
+                <!-- </div> -->
+                <div id="alert-browser-size" class="alert alert-warning" role="alert">
+                    {% trans "Hey! It looks like your browser size is too small to play. Minimum size is <strong>800 x 600" %}</strong>
+                </div>
+                <div id="alert-no-games" class="alert alert-warning" role="alert">
+                    {% trans "Hey! You have not selected any games! Go to your settings page and choose the ones you want to play!" %}</strong>
+                </div>
+                {% csrf_token %}
+                <script type="text/javascript">
+                    {% if game %}
+                        play = true;
+                    {% else %}
+                        play = false;
+                    {% endif %}
+
+                    {% if canvas_only %}
+                        canvas_only = true;
+                    {% else %}
+                        canvas_only = false;
+                    {% endif %}
+
+                    games = [];
+
+                    {% for k, v in games.items %}
+                        {% if v.available %}
+                            games.push("{{k}}");
+                        {% endif %}
+                    {% endfor %}
+
+                    if (games.length == 0)
+                    {
+                        play = false;
+                        document.getElementById('alert-no-games').style.display = 'block';
+                    }
+
+                    games_played = [];
+
+                    {% for g in games_played %}
+                        games_played.push("{{g}}");
+                    {% endfor %}
+
+                    data = {{ data|safe }};
+                    translations = {{ translations|safe }};
+                </script>
+                <div id="game"></div>
+                <p><a href="#" data-toggle="modal" data-target="#modal-report-error">{% trans "Found an error? Tell us!" %}</a></p>
+</div>
+    </div>
+        </div>
+            </div>
+                </div>
+
+{% include "app/game_tuts/space.html" %}
+{% include "app/game_tuts/simple.html" %}
+{% include "app/game_tuts/plane.html" %}
+{% include "app/game_tuts/runner.html" %}
+{% include "app/game_tuts/shooter.html" %}
+
+{% include "forms/form-report-error.html" %}
+
+
+{% endblock %}
