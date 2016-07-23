@@ -34,7 +34,7 @@
                         />
                     <br />
                     <label for="name_base">
-                        Name in {{ds.pair.base_language}} (Base)
+                        Name in Base Language
                     </label>
                     <input
                         class="data form-control"
@@ -45,7 +45,7 @@
                     />
                     <br />
                     <label for="name_target">
-                        Name in {{ds.pair.target_language}} (Target)
+                        Name in Target Language
                     </label>
                     <input
                         class="data form-control"
@@ -77,7 +77,7 @@
                     <table class="table table-condensed">
                         <tr>
                             <td>Pair</td>
-                            <td>{{ds.pair}}</td>
+                            <td>{{ds.lang_pair}}</td>
                         </tr>
                         <tr>
                             <td>Words</td>
@@ -182,8 +182,8 @@
                 <th><input id="selectall" type="checkbox" checked></th>
                 <th></th>
                 <th>Pop</th>
-                <th style="min-width: 250px;">{{ds.pair.base_language}} (Base)</th>
-                <th style="min-width: 250px;">{{ds.pair.target_language}} (Target)</th>
+                <th style="min-width: 250px;">Base</th>
+                <th style="min-width: 250px;">Target</th>
                 <th>Comments</th>
             </tr>
             {% for k in susp %}

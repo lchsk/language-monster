@@ -291,10 +291,6 @@ def edit_set(request, p_id):
 
     c['ds'] = DataSet.objects.filter(
         id=p_id
-    ).select_related(
-        'pair',
-        'pair__base_language',
-        'pair__target_language',
     ).first()
 
     if c['ds']:
@@ -337,10 +333,10 @@ def edit_set(request, p_id):
         susp_zero_cnt = len([ i for i in susp if i['wp'].pop == 0 ])
 
         c['stats'] = dict(
-            clean = clean_cnt,
-            susp = susp_cnt,
-            susp_zero = susp_zero_cnt,
-            clean_zero = clean_zero_cnt,
+            clean=clean_cnt,
+            susp=susp_cnt,
+            susp_zero=susp_zero_cnt,
+            clean_zero=clean_zero_cnt,
             all = clean_cnt + susp_cnt
         )
 
