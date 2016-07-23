@@ -15,6 +15,11 @@ from core.models import *
 from utility.interface import *
 from security import *
 
+from core.language_pair import (
+    LANGUAGE_PAIRS_FLAT,
+    LANGUAGE_PAIRS,
+)
+
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
@@ -248,28 +253,13 @@ def set_list(request):
 
     show_sets_option = request.GET.get('show_sets', 0)
     language_pair = request.GET.get('language_pair')
-    pair_obj = None
 
     if language_pair:
-        pair_obj = LanguagePair.objects.filter(
-            id=language_pair
-        ).select_related(
-            'base_language',
-            'target_language'
-        ).first()
         sets = DataSet.objects.filter(
-            pair=pair_obj
-        ).select_related(
-            'pair',
-            'pair__base_language',
-            'pair__target_language',
+            lang_pair=language_pair
         ).order_by('-date_added')
     else:
-        sets = DataSet.objects.all().select_related(
-            'pair',
-            'pair__base_language',
-            'pair__target_language',
-        ).order_by('-date_added')
+        sets = DataSet.objects.all().order_by('-date_added')
 
     if int(show_sets_option) == 1:
         # Basic sets only
@@ -278,11 +268,6 @@ def set_list(request):
         # Full sets only
         sets = filter(lambda x: not x.simple_dataset, sets)
 
-    language_pairs = LanguagePair.objects.all().select_related(
-        'base_language',
-        'target_language',
-    )
-
     c['show_sets'] = [
         (0, 'All kinds'),
         (1, 'Basic sets only'),
@@ -290,9 +275,9 @@ def set_list(request):
     ]
     c['show_sets_option'] = int(show_sets_option)
 
-    c['language_pair'] = pair_obj
+    c['language_pair'] = language_pair
     c['sets'] = sets
-    c['pairs'] = language_pairs
+    c['pairs'] = sorted(LANGUAGE_PAIRS_FLAT)
 
     return render(request, 'app/management/set_list.html', c)
 

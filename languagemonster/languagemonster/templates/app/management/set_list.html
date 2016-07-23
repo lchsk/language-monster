@@ -20,7 +20,7 @@
                                 <select class="form-control" name="language_pair">
                                     <option value=""></option>
                                     {% for pair in pairs %}
-                                        <option value="{{pair.id}}"
+                                        <option value="{{pair}}"
                                         {% if language_pair == pair %}
                                         selected
                                         {% endif %}
@@ -78,7 +78,7 @@
                             {% else %}
                                 <tr>
                             {% endif %}
-                                <td>{{s.pair}}</td>
+                                <td>{{s.lang_pair}}</td>
                                 <td><a href="{% url 'management:edit_set' s.id %}"><b>{{s.name_en}}</b></a></td>
                                 <td>{{s.name_base}}</td>
                                 <td>{{s.name_target}}</td>
