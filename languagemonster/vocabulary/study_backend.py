@@ -412,7 +412,7 @@ def do_save_results(
     if c == 0:
         p = Progression.objects.filter(
             user=user,
-            pair=dataset.pair
+            lang_pair=dataset.lang_pair
         ).first()
 
         # Number of datasets user is learning up
