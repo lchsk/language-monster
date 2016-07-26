@@ -157,3 +157,10 @@ LANGUAGE_PAIRS_FLAT = {}
 for lang_dict in LANGUAGE_PAIRS.values():
     for symbol, data in lang_dict.iteritems():
         LANGUAGE_PAIRS_FLAT[symbol] = data
+
+def get_language_pair(base, target):
+    for _, lang_pair in LANGUAGE_PAIRS[base].iteritems():
+        if lang_pair.target_language.acronym == target:
+            return lang_pair
+
+    return None

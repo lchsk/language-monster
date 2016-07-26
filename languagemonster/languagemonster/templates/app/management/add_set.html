@@ -21,9 +21,7 @@
                             <br /><br />
                             Path: {{path}}<br />
                             Set with this English name exists: {{exists}}<br />
-                            Base: {{base}}<br />
-                            Pair {{lp}}<br />
-                            Target: {{target}}<br />
+                            Pair {{pair}}<br />
                             English name: {{name_en}}<br />
                             Words: {{words}}<br />
                         </div>
@@ -91,16 +89,16 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Base</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{base}}</p>
-                                        <input type="text" value="{{base.acronym}}" name="base" class="hidden" />
+                                        <p class="form-control-static">{{pair.base_language.acronym}}</p>
+                                        <input type="text" value="{{pair.base_language.acronym}}" name="base" class="hidden" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Target</label>
                                     <div class="col-sm-10">
-                                        <p class="form-control-static">{{target}}</p>
-                                        <input type="text" value="{{target.acronym}}" name="target" class="hidden" />
+                                        <p class="form-control-static">{{pair.target_language.acronym}}</p>
+                                        <input type="text" value="{{pair.target_language.acronym}}" name="target" class="hidden" />
                                     </div>
                                 </div>
 
@@ -123,7 +121,7 @@
 
                             <table class="table table-striped">
                             <tr>
-                                <th>Base ({{base}})</th><th>Target ({{target}})</th></tr>
+                                <th>Base ({{pair.base_language.acronym}})</th><th>Target ({{pair.target_language.acronym}})</th></tr>
                             {% for i in wordlist %}
                                     <td><input type="text" class="data form-control" value="{{i.b}}" disabled>
                             </td>

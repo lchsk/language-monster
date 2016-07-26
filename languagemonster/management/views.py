@@ -18,6 +18,7 @@ from security import *
 from core.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS,
+    get_language_pair,
 )
 
 logger = logging.getLogger(__name__)
@@ -118,37 +119,37 @@ def add_set(request, path):
 
                 w.append(pair)
 
-        base = Language.objects.filter(acronym=metadata['base']).first()
-        target = Language.objects.filter(acronym=metadata['target']).first()
+        lang_pair = get_language_pair(
+            metadata['base'],
+            metadata['target']
+        )
 
-        lp = LanguagePair.objects.filter(base_language=base, target_language=target).first()
+        ds = DataSet.objects.filter(
+            lang_pair=lang_pair.symbol,
+            name_en=metadata['name_en']
+        ).first()
 
-        if lp:
-            ds = DataSet.objects.filter(pair=lp, name_en=metadata['name_en']).first()
+        if ds:
+            exists = True
 
-            if ds:
-                exists = True
-
-        if not base:
-            correct = False
-            error_msg = 'Base is NULL'
-        if not target:
-            correct = False
-            error_msg = 'Target is NULL'
+        # if not base:
+        #     correct = False
+        #     error_msg = 'Base is NULL'
+        # if not target:
+        #     correct = False
+        #     error_msg = 'Target is NULL'
         if not metadata['name_en']:
             correct = False
             error_msg = 'name_en is missing'
-        if not lp:
-            correct = False
-            error_msg = 'Language Pair does not exist'
+        # if not lp:
+        #     correct = False
+        #     error_msg = 'Language Pair does not exist'
 
         c['path'] = path
         c['exists'] = exists
         c['correct'] = correct
         c['error_msg'] = error_msg
-        c['base'] = base
-        c['pair'] = lp
-        c['target'] = target
+        c['pair'] = lang_pair
         c['name_en'] = metadata['name_en']
         c['pos'] = metadata.get('pos')
         c['from_exported_file'] = metadata.get('from_exported_file', False)
@@ -181,32 +182,20 @@ def save_set_meta(request, path):
     pos = request.POST['pos']
     from_exported_file = request.POST.get('from_exported_file', False)
 
-    base = Language.objects.filter(acronym=base_acronym).first()
-    target = Language.objects.filter(acronym=target_acronym).first()
+    lang_pair = get_language_pair(base_acronym, target_acronym)
 
-    pair = LanguagePair.objects.filter(
-        base_language=base,
-        target_language=target
-    ).first()
-
-    print 'base', base
-    print 'target', target
-    print 'pair', pair
-    print 'words', str(words)
-    print 'name_en', name_en
-
-    if base and target and pair and words > 0 and name_en:
+    if lang_pair and words > 0 and name_en:
         # Add new object
         ds = DataSet(
             icon=icon,
             name_base=name_base,
             name_en=name_en,
             name_target=name_target,
-            pair=pair,
+            lang_pair=lang_pair.symbol,
             visible=False,
             word_count=words,
-            pos = pos,
-            from_exported_file = from_exported_file,
+            pos=pos,
+            from_exported_file=from_exported_file,
             simple_dataset=False
         )
         ds.save()
@@ -221,19 +210,18 @@ def save_set_meta(request, path):
                 p = _parse_line(line)
 
                 wp = WordPair(
-                    # data_set=ds,
                     base=p['b'],
                     target=p['t'],
                     index=i,
-                    english = p['en'],
-                    comments = p['c'],
-                    english_invalid = p['english_invalid'],
-                    base_en = p['base_en'],
-                    target_en = p['target_en'],
-                    from_english = p['from_english'],
-                    verified = p['verified'],
-                    pos = pos,
-                    pop = p['pop']
+                    english=p['en'],
+                    comments=p['c'],
+                    english_invalid=p['english_invalid'],
+                    base_en=p['base_en'],
+                    target_en=p['target_en'],
+                    from_english=p['from_english'],
+                    verified=p['verified'],
+                    pos=pos,
+                    pop=p['pop']
                 )
                 wp.save()
 
@@ -607,12 +595,10 @@ def save_edit_form(request, dataset_id):
 def sets(request):
     c = get_context(request)
 
-    import pprint
     files = []
-
     sets = {}
-
     base_dir = os.path.join(settings.BASE_DIR, '../data/output/')
+
     for root, dirnames, filenames in os.walk(base_dir):
         if root and filenames:
             for file in filenames:
@@ -627,21 +613,12 @@ def sets(request):
         for i, element in enumerate(sp):
 
             if i == length - 1:
-                # current.append(element)
                 current[element] = f
-            # elif i == length - 2:
-            #     if element not in current:
-            #         current[element] = []
-            #     current = current[element]
             else:
                 if element not in current:
                     current[element] = {}
                 current = current[element]
 
-    # pp = pprint.PrettyPrinter(indent=4)
-
-    # pp.pprint(current)
-    # pp.pprint(sets)
     c['sets'] = sets
 
     return render(request, "app/management/sets.html", c)
