@@ -17,7 +17,7 @@ from core.impl.user import *
 from vocabulary.study_backend import *
 from django.conf import settings
 
-from core import mail
+from core.impl import mail
 from django.core.urlresolvers import reverse
 from utility.interface import *
 

@@ -21,7 +21,7 @@ from core.models import (
     MonsterUserGame,
     MonsterUser,
 )
-import core.mail as mail
+import core.impl.mail as mail
 
 from utility.interface import (
     landing_language,

@@ -9,7 +9,7 @@ from django.conf import settings
 import core.views as views
 from api.helper.api_call import *
 from utility.interface import create_hash
-import core.mail as mail
+import core.impl.mail as mail
 from django.core.urlresolvers import reverse
 from core.impl.user import update_public_name
 
