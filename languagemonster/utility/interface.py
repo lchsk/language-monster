@@ -19,9 +19,9 @@ from core.models import (
 )
 
 from utility.url import get_urls
-from core.base_language import BASE_LANGUAGES
-from core.language_pair import LANGUAGE_PAIRS_FLAT
-from core.language import LANGUAGES
+from core.data.base_language import BASE_LANGUAGES
+from core.data.language_pair import LANGUAGE_PAIRS_FLAT
+from core.data.language import LANGUAGES
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WWW_HANDLER)

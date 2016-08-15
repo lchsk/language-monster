@@ -41,8 +41,8 @@ from utility.interface import (
 )
 from core.impl.user import process_games_list
 
-from core.base_language import BASE_LANGUAGES
-from core.language_pair import (
+from core.data.base_language import BASE_LANGUAGES
+from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS,
 )

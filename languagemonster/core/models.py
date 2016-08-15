@@ -3,12 +3,12 @@ from django.utils.text import slugify
 from django.db import models
 from django.contrib.auth import models as contrib_models
 
-from core.language_pair import (
+from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS_FLAT_ALL,
 )
 
-from core.base_language import BASE_LANGUAGES
+from core.data.base_language import BASE_LANGUAGES
 
 class Language(models.Model):
 

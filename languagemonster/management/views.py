@@ -15,7 +15,7 @@ from core.models import *
 from utility.interface import *
 from security import *
 
-from core.language_pair import (
+from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS,
     get_language_pair,

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import namedtuple
-from core.language import LANGUAGES
+from core.data.language import LANGUAGES
 
 BaseLanguage = namedtuple('BaseLanguage', [
     'flag_filename',
