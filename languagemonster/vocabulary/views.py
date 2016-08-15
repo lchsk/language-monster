@@ -21,7 +21,7 @@ from core.models import (
 
 from utility.url import redirect_to_previous_page
 from utility.security import create_game_session_hash
-from vocabulary.study_backend import (
+from vocabulary.impl.study import (
     get_user_games,
     get_games_played,
     # get_language_pair,

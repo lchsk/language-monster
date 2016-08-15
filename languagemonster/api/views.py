@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from serializers import *
 from utility.api_utils import validate
 from utility.interface import *
-from vocabulary.study_backend import *
+from vocabulary.impl.study import *
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)

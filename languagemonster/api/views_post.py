@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from models import *
 from core.models import *
 from core.impl.user import *
-from vocabulary.study_backend import *
+from vocabulary.impl.study import *
 from django.conf import settings
 from django.core.urlresolvers import reverse
 

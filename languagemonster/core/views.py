@@ -30,7 +30,7 @@ from utility.interface import (
     create_hash,
     redirect_unauth,
 )
-from vocabulary.study_backend import get_user_games
+from vocabulary.impl.study import get_user_games
 from core.impl.user import (
     register,
     authenticate_user,
