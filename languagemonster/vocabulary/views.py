@@ -39,7 +39,7 @@ from utility.interface import (
     get_base_lang,
     get_progression_from_lang_pair,
 )
-from core.user_backend import process_games_list
+from core.impl.user import process_games_list
 
 from core.base_language import BASE_LANGUAGES
 from core.language_pair import (

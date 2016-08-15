@@ -7,7 +7,7 @@ import views_put
 from django.core.urlresolvers import reverse
 from api.helper.api_call import *
 from core.models import *
-from core.user_backend import *
+from core.impl.user import *
 from models import *
 from rest_framework import status
 from rest_framework.decorators import api_view

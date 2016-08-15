@@ -31,7 +31,12 @@ from utility.interface import (
     redirect_unauth,
 )
 from vocabulary.study_backend import get_user_games
-import user_backend
+from core.impl.user import (
+    register,
+    authenticate_user,
+    update_public_name,
+    process_games_list,
+)
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger)
@@ -52,7 +57,7 @@ def register(request):
     email = request.POST['email']
     base = landing_language(request)
 
-    valid, error, error_str = user_backend.register(
+    valid, error, error_str = register(
         email,
         password1,
         password2,
@@ -73,7 +78,7 @@ def register(request):
                 )
 
             if settings.LOGIN_AFTER_REGISTRATION:
-                user = user_backend.authenticate_user(
+                user = authenticate_user(
                     email=email,
                     password=password1
                 )
@@ -136,7 +141,7 @@ def login_user(request):
     identifier = request.POST['identifier']
     password  = request.POST['password']
 
-    muser = user_backend.authenticate_user(
+    muser = authenticate_user(
         email=identifier,
         password=password
     )
@@ -205,7 +210,7 @@ def settings_page(request, ctx):
         return HttpResponseRedirect(reverse('index'))
 
     ctx['countries'] = countries
-    ctx['games'] = user_backend.process_games_list(
+    ctx['games'] = process_games_list(
         ctx['user'],
         settings.GAMES,
         get_user_games(ctx['user'])
@@ -295,7 +300,7 @@ def update_profile(request, ctx):
     if ' ' in ctx['user'].uri:
         ctx['user'].uri = ctx['user'].uri.replace(' ', '')
 
-    user_backend.update_public_name(ctx['user'])
+    update_public_name(ctx['user'])
 
     try:
         if not d['uri'] or len(d['uri']) == 0:
@@ -410,7 +415,7 @@ def confirm_email(request, p_secure_hash, ctx):
 
     ctx['user'].user.email = ctx['user'].new_email
     ctx['user'].user.save()
-    user_backend.update_public_name(ctx['user'])
+    update_public_name(ctx['user'])
 
     ctx['user'].secure_hash = ''
     ctx['user'].new_email = ''

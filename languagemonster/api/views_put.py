@@ -11,7 +11,7 @@ from api.helper.api_call import *
 from utility.interface import create_hash
 import core.mail as mail
 from django.core.urlresolvers import reverse
-from core.user_backend import update_public_name
+from core.impl.user import update_public_name
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)
