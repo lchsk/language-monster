@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, url
 import views
-import simple_dataset
-import views_clean
-import action_clean
+import management.impl.simple_dataset as simple_dataset
+import management.impl.views_clean as views_clean
+import management.impl.action_clean as action_clean
 
 # urlpatterns = patterns('',
 urlpatterns = [

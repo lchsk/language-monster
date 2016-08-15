@@ -13,7 +13,7 @@ from django.conf import settings
 
 from core.models import *
 from utility.interface import *
-from security import *
+from management.impl.security import *
 
 from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
