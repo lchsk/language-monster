@@ -35,10 +35,9 @@ def get_user(request):
 def get_basics(request):
     d = {}
 
-    # base_languages = BaseLanguage.objects.filter(
-    #     visible=True
-    # ).select_related('language')
-
+    d['status'] = dict(
+        debug=settings.DEBUG,
+    )
     d['base_languages'] = BASE_LANGUAGES
     d['urls'] = get_urls(request)
     d['messages'] = messages.get_messages(request)
