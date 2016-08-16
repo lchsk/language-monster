@@ -6,6 +6,7 @@ import os
 from logging.handlers import RotatingFileHandler
 
 ID = 'languagemonster'
+VERSION = '0.1.0'
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
