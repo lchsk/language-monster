@@ -38,6 +38,7 @@ def get_basics(request):
     d['status'] = dict(
         debug=settings.DEBUG,
         version=settings.VERSION,
+        branch=settings.BRANCH,
     )
     d['base_languages'] = BASE_LANGUAGES
     d['urls'] = get_urls(request)
