@@ -31,8 +31,8 @@ from utility.interface import (
     redirect_unauth,
 )
 from vocabulary.impl.study import get_user_games
+from core.impl.user import register as register_user
 from core.impl.user import (
-    register,
     authenticate_user,
     update_public_name,
     process_games_list,
@@ -57,7 +57,7 @@ def register(request):
     email = request.POST['email']
     base = landing_language(request)
 
-    valid, error, error_str = register(
+    valid, error, error_str = register_user(
         email,
         password1,
         password2,
