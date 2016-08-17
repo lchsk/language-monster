@@ -26,12 +26,6 @@ from core.data.language import LANGUAGES
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
 
-def get_user(request):
-    """Returns Monster User"""
-
-    return MonsterUser.objects.filter(user=request.user).first()
-
-
 def get_basics(request):
     d = {}
 
@@ -65,13 +59,6 @@ def get_basics(request):
     if authorized:
         d['user'] = muser
         d['user_lang'] = BASE_LANGUAGES.get(muser.language)
-        # TODO:
-
-        # progressions = Progression.objects.filter(
-        #     user=muser,
-        #     # lang_pair=muser.lang.language.acronym
-        #     # pair__base_language=muser.current_language
-        # )
 
         d['studying'] = [
             (
@@ -184,36 +171,6 @@ def _get_def_lang(request):
 
         if default is not None:
             return default
-
-            # if len(lang) == 2:
-            #     if lang in defaults.keys():
-            #         country = defaults[lang]
-            # 
-            #     if country:
-            #         for b in bases:
-            #             if b.language.acronym == lang and b.country == country:
-            #                 return b
-            #     else:
-            #         for b in bases:
-            #             if b.language.acronym == lang:
-            #                 return b
-            # elif len(lang) == 5:
-            #     separator = ''
-            # 
-            #     if '-' in lang:
-            #         separator = '-'
-            #     elif '_' in lang:
-            #         separator = '_'
-            #     else:
-            #         break
-            # 
-            #     lcode, ccode = lang.split(separator)
-            # 
-            #     for b in bases:
-            #         if b.country == ccode and b.language.acronym == lcode:
-            #             return b
-
-
 
     for b in bases.itervalues():
         acronym = b.language.acronym
@@ -328,8 +285,6 @@ def obfuscate(str, char='*', half=1):
         return '****'
 
     new_str = list(str)
-
-    # print new_str == str, new_str is str
 
     if half == 1:
         start, end = 0, math.ceil(length / 2)
