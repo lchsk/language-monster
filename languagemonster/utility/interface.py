@@ -18,6 +18,8 @@ from core.models import (
     Progression,
 )
 
+from utility.user_language import landing_language
+
 from utility.url import get_urls
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import LANGUAGE_PAIRS_FLAT
@@ -104,125 +106,31 @@ def get_basics(request):
 
     return d
 
+# def find_base_language(locale):
+#     '''locale eg. en_GB. (For social account) TODO: needs SQL optimization'''
 
-def _get_def_lang(request):
-    '''Finds user's default language, based on the browser's settings'''
+#     locale = locale.lower()
 
-    defaults = OrderedDict()
-    defaults['en'] = 'gb'
-    defaults['de'] = 'de'
+#     separator = ''
 
-    bases = BASE_LANGUAGES
-    preferred_lang = OrderedDict()
+#     if '_' in locale:
+#         separator = '_'
+#     elif '-' in locale:
+#         separator = '-'
+#     elif len(locale) == 2:
+#         return BaseLanguage.objects(country='gb').first()
 
-    if 'HTTP_ACCEPT_LANGUAGE' in request.META:
-        langs = request.META.get('HTTP_ACCEPT_LANGUAGE', ['en', ])
-        langs = langs.replace(';', ',').replace('_', '-').lower()
+#     if separator:
+#         lang, country = locale.split(separator)
 
-        if ',' not in langs:
-            langs = langs + ','
+#         b = BaseLanguage.objects(country=country).first()
 
-        country = ''
-
-        for lang in langs.split(','):
-            if lang and '=' not in lang:
-                if '-' in lang:
-                    code, country = lang.split('-')
-
-                    if code and code not in preferred_lang:
-                        preferred_lang[code] = []
-
-                    preferred_lang[code].append(country)
-                else:
-                    if lang not in preferred_lang:
-                        preferred_lang[lang] = []
-
-        for def_lang, def_country in defaults.iteritems():
-            if def_lang not in preferred_lang:
-                preferred_lang[def_lang] = []
-            preferred_lang[def_lang].append(def_country)
-
-        # Take the first one
-        lang, countries = next(preferred_lang.iteritems())
-
-        if not lang:
-            lang = 'en'
-
-        default = None
-
-        if not countries:
-            countries.append(lang)
-
-        for country in countries:
-            for base in bases.itervalues():
-                acronym = base.language.acronym
-
-                if (
-                    acronym == lang and
-                    base.country == country
-                ):
-                    return base
-
-                if (
-                    lang == acronym and
-                    defaults.get(acronym) == base.country
-                ):
-                    default = base
-
-        if default is not None:
-            return default
-
-    for b in bases.itervalues():
-        acronym = b.language.acronym
-
-        if (
-            acronym in defaults.keys() and
-            b.country == defaults[acronym]
-        ):
-            return b
-
-    return False
-
-
-def landing_language(request):
-
-    if (
-        'monster_language' in request.COOKIES and
-        request.COOKIES['monster_language'] in BASE_LANGUAGES
-    ):
-        return BASE_LANGUAGES[
-            request.COOKIES['monster_language']
-        ]
-    else:
-        return _get_def_lang(request)
-
-
-def find_base_language(locale):
-    '''locale eg. en_GB. (For social account) TODO: needs SQL optimization'''
-
-    locale = locale.lower()
-
-    separator = ''
-
-    if '_' in locale:
-        separator = '_'
-    elif '-' in locale:
-        separator = '-'
-    elif len(locale) == 2:
-        return BaseLanguage.objects(country='gb').first()
-
-    if separator:
-        lang, country = locale.split(separator)
-
-        b = BaseLanguage.objects(country=country).first()
-
-        if b:
-            return b
-        else:
-            return BaseLanguage.objects(country='gb').first()
-    else:
-        return False
-
+#         if b:
+#             return b
+#         else:
+#             return BaseLanguage.objects(country='gb').first()
+#     else:
+#         return False
 
 def get_context(request):
 

@@ -23,8 +23,8 @@ from core.models import (
 )
 import core.impl.mail as mail
 
+from utility.user_language import landing_language
 from utility.interface import (
-    landing_language,
     get_context,
     context,
     create_hash,
