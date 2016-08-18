@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-from core.views import index, info
+from core.views import index, info, IndexView
 from django.conf.urls.static import static
 import userprofile.views as userprofile
 
@@ -15,7 +15,7 @@ urlpatterns = [
     # url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', index, name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
     url(r'^info/([a-z_]*?)$', info, name='info'),
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^monster/', include('core.urls', namespace='core')),

@@ -20,11 +20,11 @@
               <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                   <a data-toggle="modal" data-target="#modal-change" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    {% if basic.user_lang %}
+                    {% if context.user.language %}
                     <img
-                        class="{{basic.user_lang.flag_filename}}_30px flag-border img-circle"
+                        class="{{context.user.language.flag_filename}}_30px flag-border img-circle"
                         style="width: 30px; height: 30px; display: inline-block;" />
-                    {{ basic.user_lang.original_name }}
+                    {{ context.user.language.original_name }}
                     <span class="caret"></span>
                     {% endif %}
                   </a>
@@ -32,14 +32,14 @@
 
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    {% if user.avatar %}
-                    {% with basic.urls.avatar|add:user.avatar as path %}
+                    {% if context.user.avatar %}
+                    {% with context.urls.avatar|add:context.user.avatar as path %}
                       {% thumbnail path "30x30" crop="center" as im %}
                           <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{user.public_name}}" />
                       {% endthumbnail %}
                     {% endwith %}
                     {% endif %}
-                    {{user.public_name}}<span class="caret"></span></a>
+                    {{context.user.public_name}}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     {% if user.uri %}
                         <li><a title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>

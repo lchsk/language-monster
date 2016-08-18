@@ -30,29 +30,30 @@
     <div id="app-left-column">
         <div class="fluid-container">
             <div class="row">
-                {% if user.uri %}
+                {% if context.user.uri %}
                     <a title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}">
-                {% elif user.id %}
+                {% elif context.user.id %}
                     <a title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}">
                 {% endif %}
-                        {% if user.avatar %}
-                        {% with basic.urls.avatar|add:user.avatar as path %}
+                        {% if context.user.avatar %}
+                        {% with context.urls.avatar|add:context.user.avatar as path %}
                             {% thumbnail path "60x60" crop="center" as im %}
-                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{user.public_name}}" />
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{context.user.public_name}}" />
                             {% endthumbnail %}
                         {% endwith %}
                         {% endif %}
                     </a>
             </div>
-            <div class="row hello-screen">{% trans "Hello" %}<br />{{user.public_name}}</div>
+            <div class="row hello-screen">{% trans "Hello" %}<br />{{context.user.public_name}}</div>
             <div class="row">
               <div class="main-menu">
-                    {% if basic.studying|length > 0 %}
+                    {% if context.user.studying|length > 0 %}
                         <br />
                         <h4>{% trans "YOUR LANGUAGES" %}</h4>
 
-                        {% for pro, lang_pair in basic.studying %}
-                        {% if lang_pair.base_language.acronym == basic.user_lang.language.acronym %}
+                        {% for pro, lang_pair in context.user.studying %}
+
+                        {% if lang_pair.base_language.acronym == context.language.language.acronym %}
                             <div style="padding-left: 18px;">
     <a href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" style="padding: 0;">
         <div

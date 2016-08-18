@@ -178,14 +178,35 @@ def logout_user(request):
 
     return HttpResponseRedirect(reverse('index'))
 
-def index(request):
-    '''
-        View
-    '''
+from django.views.generic.base import TemplateView
 
+class ViewWithContext(TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super(ViewWithContext, self).get_context_data(**kwargs)
+
+        self._context = get_context(self.request)
+        context['context'] = self._context
+
+        return context
+
+class IndexView(ViewWithContext):
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+
+        if self._context.is_authorised:
+            if len(self._context.user.studying) > 0:
+                self.template_name = 'app/dashboard.html'
+        else:
+            self.template_name = 'landing/base.html'
+
+        return context
+
+def index(request):
     ctx = get_context(request)
 
-    if ctx['user']:
+    context = {}
+
+    if ctx.is_authorised:
         progression = ctx['basic']['studying']
         
         ctx['progression'] = progression

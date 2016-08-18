@@ -18,8 +18,9 @@ from core.models import (
 )
 
 from utility.user_language import landing_language
-
+from utility.context import Context
 from utility.url import get_urls
+
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 from core.data.language import LANGUAGES
@@ -28,12 +29,13 @@ logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
 
 def get_context(request):
+    context = {}
+    # context['basic'] = _get_status(request)
+    # context['user'] = context['basic']['user']
 
-    d = {}
-    d['basic'] = _get_status(request)
-    d['user'] = d['basic']['user']
+    # context['context'] = Context(request)
 
-    return d
+    return Context(request)
 
 
 def context(func):
