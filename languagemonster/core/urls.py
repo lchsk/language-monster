@@ -6,26 +6,76 @@ urlpatterns = [
     url(r'^login/$', views.login_user, name='login'),
     url(r'^logout/$', views.logout_user, name='logout'),
     url(r'^settings/$', views.SettingsView.as_view(), name='settings'),
-    url(r'^update-profile/$', views.DoSaveProfile.as_view(), name='update_profile'),
-    url(r'^update-password/$', views.update_password, name='update_password'),
-    url(r'^update-email/$', views.update_email, name='update_email'),
-    url(r'^update-games/$', views.DoSaveUserGames.as_view(), name='update_profile_games'),
-    url(r'^recover-password/$', views.recover_password, name='recover_password'),
-    url(r'^send-email/$', views.send_email, name='send_email'),
-    url(r'^upload-image/$', views.DoSaveAvatar.as_view(), name='upload_image'),
-
-    url(r'^change-language/([a-z_]+)$', views.change_language, name='change_language'),
+    url(
+        r'^update-profile/$',
+        views.DoSaveProfile.as_view(),
+        name='update_profile',
+    ),
+    url(
+        r'^update-password/$',
+        views.DoSaveUserPassword.as_view(),
+        name='update_password',
+    ),
+    url(
+        r'^update-email/$',
+        views.DoSaveUserEmail.as_view(),
+        name='update_email',
+    ),
+    url(
+        r'^update-games/$',
+        views.DoSaveUserGames.as_view(),
+        name='update_profile_games',
+    ),
+    url(
+        r'^recover-password/$',
+        views.recover_password,
+        name='recover_password',
+    ),
+    url(
+        r'^send-email/$',
+        views.send_email,
+        name='send_email',
+    ),
+    url(
+        r'^upload-image/$',
+        views.DoSaveAvatar.as_view(),
+        name='upload_image',
+    ),
+    url(
+        r'^change-language/([a-z_]+)$',
+        views.change_language,
+        name='change_language',
+    ),
 
     # email change confirmation
-    url(r'^confirm-email/([a-f0-9]+)$', views.confirm_email, name='confirm_email'),
+    url(
+        r'^confirm-email/([a-f0-9]+)$',
+        views.confirm_email,
+        name='confirm_email',
+    ),
 
     # confirm registration
-    url(r'^confirm-registration/([a-f0-9]+)$', views.confirm_registration, name='confirm_registration'),
-
+    url(
+        r'^confirm-registration/([a-f0-9]+)$',
+        views.confirm_registration,
+        name='confirm_registration',
+    ),
 
     # new password generation
-    url(r'^generate-password/([a-f0-9]+)$', views.generate_password, name='generate_password'),
-    url(r'^confirm-new-password/([a-f0-9]+)$', views.confirm_new_password, name='confirm_new_password'),
+    url(
+        r'^generate-password/([a-f0-9]+)$',
+        views.generate_password,
+        name='generate_password',
+    ),
+    url(
+        r'^confirm-new-password/([a-f0-9]+)$',
+        views.confirm_new_password,
+        name='confirm_new_password',
+    ),
 
-    url(r'^page/([a-z-]+)$', views.static_page, name='static_page'),
+    url(
+        r'^page/([a-z-]+)$',
+        views.static_page,
+        name='static_page',
+    ),
 ]

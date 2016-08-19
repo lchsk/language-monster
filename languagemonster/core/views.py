@@ -232,40 +232,6 @@ class SettingsView(AuthContextView):
 
         return context
 
-# @context
-# @redirect_unauth
-# def settings_page(request, ctx):
-#     if ctx['user'] is None:
-#         return HttpResponseRedirect(reverse('index'))
-
-#     ctx['countries'] = countries
-#     ctx['games'] = process_games_list(
-#         ctx['user'],
-#         settings.GAMES,
-#         get_user_games(ctx['user'])
-#     )
-#     ctx['gender'] = { 'M' : _('male'), 'F' : _('female'), 'O' : _('other')}
-#     ctx['ruser'] = ctx['user'].user
-
-#     return render(request, 'app/profile.html', ctx)
-
-
-# def update_games(res, monster_user):
-#     # TODO: make it load all game data at once
-#     for game, game_settings in res.iteritems():
-#         a = MonsterUserGame.objects.filter(
-#             monster_user=monster_user,
-#             game=game
-#         ).first()
-
-#         if not a:
-#             a = MonsterUserGame(
-#                 monster_user=monster_user,
-#                 game=game,
-#             )
-#         a.banned = not game_settings['available']
-#         a.save()
-
 class DoSaveProfile(AuthContextView):
     def post(self, request, *args, **kwargs):
         self.get_context_data()
@@ -324,165 +290,78 @@ class DoSaveUserGames(AuthContextView):
 
         return self.redirect('core:settings')
 
+class DoSaveUserPassword(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
 
-# @context
-# @redirect_unauth
-# def update_profile_games(request, ctx):
-#     '''
-#         View (updating list of games to play)
-#     '''
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
 
-#     games = settings.GAMES
-#     res = {}
+        valid = validate_password(request, password1, password2, messages)
 
-#     for k, v in games.iteritems():
-#         res[k] = {}
-#         res[k]['available'] = False
-
-#         if k in request.POST and request.POST[k]:
-#             res[k]['available'] = True
-
-#     try:
-#         update_games(res, ctx['user'])
-
-#         logger.info("Games settings were updated for %s", str(ctx['user']))
-#         messages.add_message(
-#             request,
-#             messages.SUCCESS,
-#             _('Your profile was successfully updated')
-#         )
-
-#     except Exception, e:
-#         logger.critical(
-#             "Error whilst updating user games settings (%s)",
-#             str(ctx['user'])
-#         )
-#         logger.critical(str(e))
-#         messages.add_message(
-#             request,
-#             messages.WARNING,
-#             _('Unknown error. Sorry, please try again later')
-#         )
-
-#     return HttpResponseRedirect(reverse('core:settings'))
-
-
-# @context
-# @redirect_unauth
-# def update_profile(request, ctx):
-#     """Save profile"""
-
-#     # TODO: user forms
-#     d = request.POST.dict()
-#     ctx['user'].user.first_name = d['first_name']
-#     ctx['user'].user.last_name = d['last_name']
-
-#     ctx['user'].gender = d['gender']
-#     ctx['user'].country = d['country']
-#     ctx['user'].www = d['www']
-#     ctx['user'].location = d['location']
-#     ctx['user'].about = d['about']
-#     ctx['user'].uri = d['uri']
-
-#     if ' ' in ctx['user'].uri:
-#         ctx['user'].uri = ctx['user'].uri.replace(' ', '')
-
-#     update_public_name(ctx['user'])
-
-#     try:
-#         if not d['uri'] or len(d['uri']) == 0:
-#             raise Exception()
-
-#         ctx['user'].user.save()
-#         ctx['user'].save()
-#         logger.debug("Settings updated for %s", str(ctx['user']))
-#         messages.add_message(
-#             request,
-#             messages.SUCCESS,
-#             _('Your profile was successfully updated')
-#         )
-
-#     except Exception as e:
-#         uri_exists = MonsterUser.objects.filter(uri=d['uri']).first()
-
-#         if uri_exists:
-#             logger.warning("Value must be unique, %s", str(ctx['user']))
-#             logger.warning(str(e))
-#             messages.add_message(
-#                 request,
-#                 messages.WARNING,
-#                 _('Value you have used must be unique!')
-#             )
-#         else:
-#             logger.critical(
-#                 "%s profile could not be updated: validation error",
-#                 str(request.user)
-#             )
-#             logger.critical(str(e))
-#             messages.add_message(
-#                 request,
-#                 messages.WARNING,
-#                 _('Your profile could not be updated. Check if values are correct and not too long.')
-#             )
-
-#     return HttpResponseRedirect(reverse('core:settings'))
-
-
-@context
-@redirect_unauth
-def update_email(request, ctx):
-    '''
-        View
-    '''
-
-    new_email = request.POST['email']
-
-    if new_email:
-        ctx['user'].new_email = new_email
-
-        secure_hash = create_hash(ctx['user'])
-        ctx['user'].secure_hash = secure_hash
-        ctx['user'].save()
-
-        try:
-            host = request.get_host()
-            url = reverse('core:confirm_email', args=[secure_hash])
-
-            mail.send_template_email(
-                request=request,
-                recipient=new_email,
-                template='email_change',
-                ctx={
-                    'PUBLIC_NAME': ctx['user'].public_name,
-                    'URL': 'http://' + host + url
-                }
-            )
-
+        if valid:
+            self._context.user.change_password(password1)
+            logger.info("Password changed for %s", self._context.user)
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                _('Confirmation email was sent. Please check your inbox (or possibly spam box).')
+                _("Your password was successfully changed.")
             )
-        except Exception, e:
-            logger.critical(
-                "Error when changing email for %s",
-                str(ctx['user'])
-            )
-            logger.critical(str(e))
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _('Sorry, sending confirmation email failed. Please try again later.')
-            )
-    else:
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('You need to type in your new email address.')
-        )
 
-    return HttpResponseRedirect(reverse('core:settings'))
+        return self.redirect('core:settings')
 
+class DoSaveUserEmail(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        new_email = request.POST['email']
+
+        if new_email:
+            ctx['user'].new_email = new_email
+
+            secure_hash = create_hash(ctx['user'])
+            ctx['user'].secure_hash = secure_hash
+            ctx['user'].save()
+
+            try:
+                host = request.get_host()
+                url = reverse('core:confirm_email', args=[secure_hash])
+
+                mail.send_template_email(
+                    request=request,
+                    recipient=new_email,
+                    template='email_change',
+                    ctx={
+                        'PUBLIC_NAME': ctx['user'].public_name,
+                        'URL': 'http://' + host + url
+                    }
+                )
+
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    _('Confirmation email was sent. Please check your inbox (or possibly spam box).')
+                )
+            except Exception, e:
+                logger.critical(
+                    "Error when changing email for %s",
+                    str(ctx['user'])
+                )
+                logger.critical(str(e))
+                messages.add_message(
+                    request,
+                    messages.WARNING,
+                    _('Sorry, sending confirmation email failed. Please try again later.')
+                )
+            else:
+                messages.add_message(
+                    request,
+                    messages.WARNING,
+                    _('You need to type in your new email address.')
+                )
+
+
+        return self.redirect('core:settings')
 
 @context
 @redirect_unauth
@@ -539,27 +418,6 @@ def validate_password(request, password1, password2, messages):
         valid = False
 
     return valid
-
-
-@context
-@redirect_unauth
-def update_password(request, ctx):
-    password1 = request.POST['password1']
-    password2 = request.POST['password2']
-
-    valid = validate_password(request, password1, password2, messages)
-
-    if valid:
-        ctx['user'].user.set_password(password1)
-        ctx['user'].user.save()
-        logger.info("Password changed for %s", str(ctx['user']))
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _("Your password was successfully changed.")
-        )
-
-    return HttpResponseRedirect(reverse('core:settings'))
 
 
 def info(request, param=None, additional={}):
