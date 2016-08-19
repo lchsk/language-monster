@@ -112,67 +112,6 @@ class DoRegister(ContextView):
 
         return self.redirect('index')
 
-def register(request):
-
-    if request.POST['username']:
-        logger.critical("No username")
-        return HttpResponseRedirect(reverse('info', args=['']))
-
-    password1 = request.POST['password1']
-    password2 = request.POST['password2']
-    email = request.POST['email']
-    base = landing_language(request)
-
-    valid, error, error_str = register_user(
-        email,
-        password1,
-        password2,
-        settings.REGISTRATION_CONFIRMATION,
-        base
-    )
-
-    if valid:
-        try:
-            if settings.SEND_EMAIL_AFTER_REGISTRATION:
-                mail.send_template_email(
-                    request=request,
-                    recipient=email,
-                    template='welcome',
-                    ctx={
-                        'PUBLIC_NAME': email,
-                    }
-                )
-
-            if settings.LOGIN_AFTER_REGISTRATION:
-                user = authenticate_user(
-                    email=email,
-                    password=password1
-                )
-                if user and user.user.is_active:
-                    user.user.backend = 'django.contrib.auth.backends.ModelBackend'
-                    login(request, user.user)
-                    return HttpResponseRedirect(reverse('index'))
-            else:
-                messages.add_message(
-                    request,
-                    messages.SUCCESS,
-                    _('You are registered. Please login.')
-                )
-
-        except Exception, e:
-            logger.critical("Exception in registration")
-            logger.critical(str(e))
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _('Sorry, sending confirmation email failed. Please try again later.')
-            )
-    else:
-        logger.warning("Registration data invalid")
-        messages.add_message(request, messages.WARNING, (error_str))
-
-    return HttpResponseRedirect(reverse('info', args=['']))
-
 class DoLogin(ContextView):
     def post(self, request, *args, **kwargs):
         identifier = request.POST['identifier']
