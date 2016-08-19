@@ -1,4 +1,6 @@
 from collections import namedtuple
+from uuid import uuid4
+import os
 
 from django.conf import settings
 from django.contrib import messages
@@ -13,6 +15,7 @@ from core.models import (
     MonsterUser,
     BaseLanguage,
     Progression,
+    MonsterUserGame,
 )
 
 Status = namedtuple('Status', [
@@ -38,6 +41,96 @@ class MonsterUserAuth(object):
             x[1].base_language.acronym == self._language.language.acronym,
             studying
         )
+
+    def update(self,
+        first_name,
+        last_name,
+        gender,
+        country,
+        www,
+        location,
+        about,
+        uri,
+    ):
+        self._monster_user.user.first_name = first_name
+        self._monster_user.user.last_name = last_name
+        self._monster_user.gender = gender
+        self._monster_user.country = country
+        self._monster_user.www = www
+        self._monster_user.location = location
+        self._monster_user.about = about
+        # self._monster_user.uri = uri.replace(' ', '')
+
+    def save(self):
+        self._monster_user.user.save()
+        self._monster_user.save()
+
+    def update_games(self, res):
+        for game, game_settings in res.iteritems():
+            a = MonsterUserGame.objects.filter(
+                monster_user=self._monster_user,
+                game=game
+            ).first()
+
+            if not a:
+                a = MonsterUserGame(
+                    monster_user=self._monster_user,
+                    game=game,
+                )
+                a.banned = not game_settings['available']
+                a.save()
+
+    def save_avatar(self, obj, content_type):
+        if content_type == 'jpeg':
+            content_type = 'jpg'
+
+        new_name = uuid4().hex + '.' + content_type
+
+        path = settings.AVATARS_URL_FULL + new_name
+        path = os.path.normpath(path)
+
+        with open(path, 'wb+') as destination:
+            for chunk in obj.chunks():
+                destination.write(chunk)
+
+        self._monster_user.avatar = new_name
+        self._monster_user.save()
+
+    @property
+    def email(self):
+        return self._monster_user.user.email
+
+    @property
+    def about(self):
+        return self._monster_user.about
+
+    @property
+    def www(self):
+        return self._monster_user.www
+
+    @property
+    def country(self):
+        return self._monster_user.country
+
+    @property
+    def location(self):
+        return self._monster_user.location
+
+    @property
+    def gender(self):
+        return self._monster_user.gender
+
+    @property
+    def first_name(self):
+        return self._monster_user.user.first_name
+
+    @property
+    def last_name(self):
+        return self._monster_user.user.last_name
+
+    @property
+    def raw(self):
+        return self._monster_user
 
     @property
     def uri(self):

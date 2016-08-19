@@ -120,8 +120,8 @@ def update_public_name(monster_user):
         monster_user.user.public_name = monster_user.user.email
 
 
-def process_games_list(monster_user, games, user_games):
-    ''' Mark games not selected by the user'''
+def process_games_list(games, user_games):
+    """Mark games not selected by the user."""
 
     banned_games = [
         user_game['game']

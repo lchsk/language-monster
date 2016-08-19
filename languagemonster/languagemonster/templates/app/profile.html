@@ -25,14 +25,14 @@
                               <div class="form-group">
                                 <label for="first_name" class="col-sm-2 control-label">{% trans "First Name" %}</label>
                                 <div class="col-sm-5">
-                                  <input name="first_name" type="text" class="form-control" id="first_name" value="{{ruser.first_name }}">
+                                  <input name="first_name" type="text" class="form-control" id="first_name" value="{{context.user.first_name }}">
                                 </div>
                               </div>
 
                               <div class="form-group">
                                 <label for="last_name" class="col-sm-2 control-label">{% trans "Last Name" %}</label>
                                 <div class="col-sm-5">
-                                  <input name="last_name" type="text" class="form-control" id="last_name" value="{{ruser.last_name}}">
+                                  <input name="last_name" type="text" class="form-control" id="last_name" value="{{context.user.last_name}}">
                                 </div>
                               </div>
 
@@ -42,7 +42,7 @@
                                     <select class="form-control" name="gender">
                                         <option value="">{% trans "Select gender" %}</option>
                                         {% for k, v in gender.items %}
-                                            {% if k == user.gender %}
+                                            {% if k == context.user.gender %}
                                                 <option selected="selected" value="{{ k }}">{{ v }}</option>
                                             {% else %}
                                                 <option value="{{ k }}">{{ v }}</option>
@@ -55,7 +55,7 @@
                               <div class="form-group">
                                 <label for="location" class="col-sm-2 control-label">{% trans "Location" %}</label>
                                 <div class="col-sm-5">
-                                  <input name="location" type="text" class="form-control" id="location" value="{% firstof user.location %}">
+                                  <input name="location" type="text" class="form-control" id="location" value="{% firstof context.user.location %}">
                                 </div>
                               </div>
 
@@ -65,7 +65,7 @@
                                     <select class="form-control" name="country">
                                         <option value="">{% trans "Select your country" %}</option>
                                         {% for k, v in countries %}
-                                            {% if k == user.country %}
+                                            {% if k == context.user.country %}
                                                 <option selected="selected" value="{{ k }}">{{ v }}</option>
                                             {% else %}
                                                 <option value="{{ k }}">{{ v }}</option>
@@ -78,14 +78,14 @@
                               <div class="form-group">
                                 <label for="www" class="col-sm-2 control-label">{% trans "Website" %}</label>
                                 <div class="col-sm-5">
-                                  <input name="www" type="text" class="form-control" id="www" value="{% firstof user.www %}">
+                                  <input name="www" type="text" class="form-control" id="www" value="{% firstof context.user.www %}">
                                 </div>
                               </div>
 
                               <div class="form-group">
                                 <label for="about" class="col-sm-2 control-label">{% trans "About Me" %}</label>
                                 <div class="col-sm-5">
-                                    <textarea name="about" class="form-control" rows="3">{% firstof user.about %}</textarea>
+                                    <textarea name="about" class="form-control" rows="3">{% firstof context.user.about %}</textarea>
                                   <!-- <input name="about" type="text" class="form-control" id="about" value="{% firstof user.about %}"> -->
                                 </div>
                               </div>
@@ -93,7 +93,7 @@
                               <div class="form-group">
                                 <label for="uri" class="col-sm-2 control-label">{% trans "Profile Page Address" %}</label>
                                 <div class="col-sm-5">
-                                  <input name="uri" type="text" class="form-control" id="uri" value="{% firstof user.uri %}">
+                                  <input name="uri" type="text" class="form-control" id="uri" value="{% firstof context.user.uri %}">
                                 </div>
                               </div>
 
@@ -111,7 +111,7 @@
                               <div class="form-group">
                                 <label class="col-sm-2 control-label">{% trans "Current email" %}</label>
                                 <div class="col-sm-5">
-                                  <p class="form-control-static"><strong>{{ ruser.email }}</strong></p>
+                                  <p class="form-control-static"><strong>{{ context.user.email }}</strong></p>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -159,8 +159,8 @@
                               <div class="form-group">
                                 <div class="col-sm-12">
                                     {% load thumbnail %}
-                                    {% if user.avatar %}
-                                      {% with basic.urls.avatar|add:user.avatar as path %}
+                                    {% if context.user.avatar %}
+                                      {% with context.urls.avatar|add:context.user.avatar as path %}
                                         {% thumbnail path "140x140" crop="center" as im %}
                                           <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" />
                                         {% endthumbnail %}
@@ -197,7 +197,7 @@
         {% for k, v in games.items %}
       <div class="col-sm-6 col-md-4">
         <div class="thumbnail">
-            {% with basic.urls.static|add:"images/marketing/games/"|add:v.image as path %}
+            {% with context.urls.static|add:"images/marketing/games/"|add:v.image as path %}
                 {% thumbnail path "220x220" as im %}
                 <img src="{{ im.url }}" class="img-rounded" />
             {% endthumbnail %}
@@ -237,9 +237,7 @@
                         <ul class="nav nav-tabs nav-stacked" role="tablist">
                           <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab">{% trans "Details" %}</a></li>
                           <li role="presentation"><a href="#email" aria-controls="email" role="tab" data-toggle="tab">{% trans "Email" %}</a></li>
-                          {% if not user.social_account %}
                           <li role="presentation"><a href="#password" aria-controls="password" role="tab" data-toggle="tab">{% trans "Password" %}</a></li>
-                          {% endif %}
                           <li role="presentation"><a href="#avatar" aria-controls="avatar" role="tab" data-toggle="tab">{% trans "Avatar" %}</a></li>
                           <li role="presentation"><a href="#games" aria-controls="games" role="tab" data-toggle="tab">{% trans "Games" %}</a></li>
                         </ul>

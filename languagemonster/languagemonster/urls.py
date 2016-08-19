@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-from core.views import index, info, IndexView
+from core.views import info, IndexView
 from django.conf.urls.static import static
 import userprofile.views as userprofile
 

@@ -23,6 +23,10 @@ from core.models import (
 )
 import core.impl.mail as mail
 
+from utility.views import (
+    ContextView,
+    AuthContextView,
+)
 from utility.user_language import landing_language
 from utility.interface import (
     get_context,
@@ -178,18 +182,7 @@ def logout_user(request):
 
     return HttpResponseRedirect(reverse('index'))
 
-from django.views.generic.base import TemplateView
-
-class ViewWithContext(TemplateView):
-    def get_context_data(self, **kwargs):
-        context = super(ViewWithContext, self).get_context_data(**kwargs)
-
-        self._context = get_context(self.request)
-        context['context'] = self._context
-
-        return context
-
-class IndexView(ViewWithContext):
+class IndexView(ContextView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
 
@@ -201,165 +194,238 @@ class IndexView(ViewWithContext):
 
         return context
 
-def index(request):
-    ctx = get_context(request)
+# def index(request):
+#     ctx = get_context(request)
 
-    context = {}
+#     context = {}
 
-    if ctx.is_authorised:
-        progression = ctx['basic']['studying']
+#     if ctx.is_authorised:
+#         progression = ctx['basic']['studying']
         
-        ctx['progression'] = progression
+#         ctx['progression'] = progression
 
-        if len(progression) > 0:
-            return render(request, 'app/dashboard.html', ctx)
-        else:
-            return HttpResponseRedirect(reverse('vocabulary:add_language'))
-    else:
-        ctx['language'] = landing_language(request)
-        return render(request, 'landing/base.html', ctx)
-
-
-@context
-@redirect_unauth
-def settings_page(request, ctx):
-    '''
-        View
-    '''
-
-    if ctx['user'] is None:
-        return HttpResponseRedirect(reverse('index'))
-
-    ctx['countries'] = countries
-    ctx['games'] = process_games_list(
-        ctx['user'],
-        settings.GAMES,
-        get_user_games(ctx['user'])
-    )
-    ctx['gender'] = { 'M' : _('male'), 'F' : _('female'), 'O' : _('other')}
-    ctx['ruser'] = ctx['user'].user
-
-    return render(request, 'app/profile.html', ctx)
+#         if len(progression) > 0:
+#             return render(request, 'app/dashboard.html', ctx)
+#         else:
+#             return HttpResponseRedirect(reverse('vocabulary:add_language'))
+#     else:
+#         ctx['language'] = landing_language(request)
+#         return render(request, 'landing/base.html', ctx)
 
 
-def update_games(res, monster_user):
-    # TODO: make it load all game data at once
-    for game, game_settings in res.iteritems():
-        a = MonsterUserGame.objects.filter(
-            monster_user=monster_user,
-            game=game
-        ).first()
+class SettingsView(AuthContextView):
+    template_name = 'app/profile.html'
 
-        if not a:
-            a = MonsterUserGame(
-                monster_user=monster_user,
-                game=game,
-            )
-        a.banned = not game_settings['available']
-        a.save()
+    def get_context_data(self, **kwargs):
+        context = super(SettingsView, self).get_context_data(**kwargs)
+
+        context['countries'] = countries
+        context['games'] = process_games_list(
+            settings.GAMES,
+            get_user_games(self._context.user.raw)
+        )
+        context['gender'] = {
+            'M' : _('male'),
+            'F' : _('female'),
+            'O' : _('other'),
+        }
+
+        return context
+
+# @context
+# @redirect_unauth
+# def settings_page(request, ctx):
+#     if ctx['user'] is None:
+#         return HttpResponseRedirect(reverse('index'))
+
+#     ctx['countries'] = countries
+#     ctx['games'] = process_games_list(
+#         ctx['user'],
+#         settings.GAMES,
+#         get_user_games(ctx['user'])
+#     )
+#     ctx['gender'] = { 'M' : _('male'), 'F' : _('female'), 'O' : _('other')}
+#     ctx['ruser'] = ctx['user'].user
+
+#     return render(request, 'app/profile.html', ctx)
 
 
-@context
-@redirect_unauth
-def update_profile_games(request, ctx):
-    '''
-        View (updating list of games to play)
-    '''
+# def update_games(res, monster_user):
+#     # TODO: make it load all game data at once
+#     for game, game_settings in res.iteritems():
+#         a = MonsterUserGame.objects.filter(
+#             monster_user=monster_user,
+#             game=game
+#         ).first()
 
-    games = settings.GAMES
-    res = {}
+#         if not a:
+#             a = MonsterUserGame(
+#                 monster_user=monster_user,
+#                 game=game,
+#             )
+#         a.banned = not game_settings['available']
+#         a.save()
 
-    for k, v in games.iteritems():
-        res[k] = {}
-        res[k]['available'] = False
+class DoSaveProfile(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
 
-        if k in request.POST and request.POST[k]:
-            res[k]['available'] = True
+        d = self.request.POST.dict()
 
-    try:
-        update_games(res, ctx['user'])
+        self._context.user.update(
+            first_name=d['first_name'],
+            last_name=d['last_name'],
+            gender=d['gender'],
+            country=d['country'],
+            www=d['www'],
+            location=d['location'],
+            about=d['about'],
+            uri=d['uri'],
+        )
 
-        logger.info("Games settings were updated for %s", str(ctx['user']))
+        self._context.user.save()
+
+        logger.debug("Settings updated for %s", self._context.user)
+
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            _('Your profile was successfully updated')
+        )
+
+        return self.redirect('core:settings')
+
+class DoSaveUserGames(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        games = settings.GAMES
+        res = {}
+
+        for k, v in games.iteritems():
+            res[k] = {}
+            res[k]['available'] = False
+
+            if k in request.POST and request.POST[k]:
+                res[k]['available'] = True
+
+        self._context.user.update_games(res)
+
+        logger.info(
+            "Games settings were updated for %s",
+            self._context.user
+        )
+
         messages.add_message(
             request,
             messages.SUCCESS,
             _('Your profile was successfully updated')
         )
 
-    except Exception, e:
-        logger.critical(
-            "Error whilst updating user games settings (%s)",
-            str(ctx['user'])
-        )
-        logger.critical(str(e))
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Unknown error. Sorry, please try again later')
-        )
-
-    return HttpResponseRedirect(reverse('core:settings'))
+        return self.redirect('core:settings')
 
 
-@context
-@redirect_unauth
-def update_profile(request, ctx):
-    """Save profile"""
+# @context
+# @redirect_unauth
+# def update_profile_games(request, ctx):
+#     '''
+#         View (updating list of games to play)
+#     '''
 
-    # TODO: user forms
-    d = request.POST.dict()
-    ctx['user'].user.first_name = d['first_name']
-    ctx['user'].user.last_name = d['last_name']
+#     games = settings.GAMES
+#     res = {}
 
-    ctx['user'].gender = d['gender']
-    ctx['user'].country = d['country']
-    ctx['user'].www = d['www']
-    ctx['user'].location = d['location']
-    ctx['user'].about = d['about']
-    ctx['user'].uri = d['uri']
+#     for k, v in games.iteritems():
+#         res[k] = {}
+#         res[k]['available'] = False
 
-    if ' ' in ctx['user'].uri:
-        ctx['user'].uri = ctx['user'].uri.replace(' ', '')
+#         if k in request.POST and request.POST[k]:
+#             res[k]['available'] = True
 
-    update_public_name(ctx['user'])
+#     try:
+#         update_games(res, ctx['user'])
 
-    try:
-        if not d['uri'] or len(d['uri']) == 0:
-            raise Exception()
+#         logger.info("Games settings were updated for %s", str(ctx['user']))
+#         messages.add_message(
+#             request,
+#             messages.SUCCESS,
+#             _('Your profile was successfully updated')
+#         )
 
-        ctx['user'].user.save()
-        ctx['user'].save()
-        logger.debug("Settings updated for %s", str(ctx['user']))
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _('Your profile was successfully updated')
-        )
+#     except Exception, e:
+#         logger.critical(
+#             "Error whilst updating user games settings (%s)",
+#             str(ctx['user'])
+#         )
+#         logger.critical(str(e))
+#         messages.add_message(
+#             request,
+#             messages.WARNING,
+#             _('Unknown error. Sorry, please try again later')
+#         )
 
-    except Exception as e:
-        uri_exists = MonsterUser.objects.filter(uri=d['uri']).first()
+#     return HttpResponseRedirect(reverse('core:settings'))
 
-        if uri_exists:
-            logger.warning("Value must be unique, %s", str(ctx['user']))
-            logger.warning(str(e))
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _('Value you have used must be unique!')
-            )
-        else:
-            logger.critical(
-                "%s profile could not be updated: validation error",
-                str(request.user)
-            )
-            logger.critical(str(e))
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _('Your profile could not be updated. Check if values are correct and not too long.')
-            )
 
-    return HttpResponseRedirect(reverse('core:settings'))
+# @context
+# @redirect_unauth
+# def update_profile(request, ctx):
+#     """Save profile"""
+
+#     # TODO: user forms
+#     d = request.POST.dict()
+#     ctx['user'].user.first_name = d['first_name']
+#     ctx['user'].user.last_name = d['last_name']
+
+#     ctx['user'].gender = d['gender']
+#     ctx['user'].country = d['country']
+#     ctx['user'].www = d['www']
+#     ctx['user'].location = d['location']
+#     ctx['user'].about = d['about']
+#     ctx['user'].uri = d['uri']
+
+#     if ' ' in ctx['user'].uri:
+#         ctx['user'].uri = ctx['user'].uri.replace(' ', '')
+
+#     update_public_name(ctx['user'])
+
+#     try:
+#         if not d['uri'] or len(d['uri']) == 0:
+#             raise Exception()
+
+#         ctx['user'].user.save()
+#         ctx['user'].save()
+#         logger.debug("Settings updated for %s", str(ctx['user']))
+#         messages.add_message(
+#             request,
+#             messages.SUCCESS,
+#             _('Your profile was successfully updated')
+#         )
+
+#     except Exception as e:
+#         uri_exists = MonsterUser.objects.filter(uri=d['uri']).first()
+
+#         if uri_exists:
+#             logger.warning("Value must be unique, %s", str(ctx['user']))
+#             logger.warning(str(e))
+#             messages.add_message(
+#                 request,
+#                 messages.WARNING,
+#                 _('Value you have used must be unique!')
+#             )
+#         else:
+#             logger.critical(
+#                 "%s profile could not be updated: validation error",
+#                 str(request.user)
+#             )
+#             logger.critical(str(e))
+#             messages.add_message(
+#                 request,
+#                 messages.WARNING,
+#                 _('Your profile could not be updated. Check if values are correct and not too long.')
+#             )
+
+#     return HttpResponseRedirect(reverse('core:settings'))
 
 
 @context
@@ -682,85 +748,67 @@ def send_email(request):
         )
         return HttpResponseRedirect(reverse('index'))
 
+class DoSaveAvatar(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
 
-@context
-@redirect_unauth
-def upload_image(request, ctx):
-    if request.method == 'POST':
         f = request.FILES['file']
         content_type = f.content_type.split('/')[1]
 
         if content_type not in ('png', 'jpeg', 'jpg'):
             logger.warning(
                 "%s tried to upload wrong file format: %s",
-                str(ctx['user']),
-                str(content_type)
+                self._context.user,
+                content_type,
             )
             messages.add_message(
                 request,
                 messages.WARNING,
                 _('Only png and jpg files are accepted, sorry.')
             )
-            return HttpResponseRedirect(reverse('core:settings'))
+
+            return self.redirect('core:settings')
 
         if f._size > 500000:
             logger.warning(
                 "%s tried to upload file to big: %s",
-                str(ctx['user']),
-                str(f._size)
+                self._context.user,
+                f._size,
             )
             messages.add_message(
                 request,
                 messages.WARNING,
                 _('File is too large. Maximum size is 0.5 MB.')
             )
-            return HttpResponseRedirect(reverse('core:settings'))
+
+            return self.redirect('core:settings')
 
         if f:
-            if content_type == 'jpeg':
-                content_type = 'jpg'
-            filename = save_uploaded_file(f, content_type)
-
-            ctx['user'].avatar = filename
-            ctx['user'].save()
+            self._context.user.save_avatar(f, content_type)
 
             logger.info(
                 "File %s uploaded for %s",
-                str(filename),
-                str(ctx['user'])
+                self._context.user.avatar,
+                self._context.user,
             )
             messages.add_message(
                 request,
                 messages.SUCCESS,
                 _('File was successfully uploaded.')
             )
-            return HttpResponseRedirect(reverse('core:settings'))
+
+            return self.redirect('core:settings')
         else:
             logger.warning(
                 "Error when uploading a file for %s",
-                str(ctx['user'])
+                self._context.user
             )
             messages.add_message(
                 request,
                 messages.WARNING,
                 _('Unknown error when uploading a file. Please try again later.')
             )
-            return HttpResponseRedirect(reverse('core:settings'))
-
-
-def save_uploaded_file(f, ext):
-
-    new_name = create_hash(None) + '.' + ext
-
-    path = settings.AVATARS_URL_FULL + new_name
-    path = os.path.normpath(path)
-
-    with open(path, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-
-    return new_name
-
+            return self.redirect('core:settings')
 
 def change_language(request, p_base_language):
     ctx = get_context(request)
