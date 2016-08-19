@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-from core.views import info, IndexView
+from core.views import IndexView, InfoView
 from django.conf.urls.static import static
 import userprofile.views as userprofile
 
@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', IndexView.as_view(), name='index'),
-    url(r'^info/([a-z_]*?)$', info, name='info'),
+    url(r'^info/([a-z_]*?)$', InfoView.as_view(), name='info'),
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^monster/', include('core.urls', namespace='core')),
     url(r'^languages/', include('vocabulary.urls', namespace='vocabulary')),

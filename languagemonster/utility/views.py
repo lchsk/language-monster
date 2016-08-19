@@ -13,8 +13,8 @@ class ContextView(TemplateView):
 
         return context
 
-    def redirect(self, name):
-        return HttpResponseRedirect(reverse(name))
+    def redirect(self, name, args=None, kwargs=None):
+        return HttpResponseRedirect(reverse(name, args=args, kwargs=kwargs))
 
 class AuthContextView(ContextView):
     def get_context_data(self, **kwargs):

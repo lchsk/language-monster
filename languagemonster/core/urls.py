@@ -2,10 +2,26 @@ from django.conf.urls import url
 from core import views
 
 urlpatterns = [
-    url(r'^register/$', views.register, name='register'),
-    url(r'^login/$', views.login_user, name='login'),
-    url(r'^logout/$', views.logout_user, name='logout'),
-    url(r'^settings/$', views.SettingsView.as_view(), name='settings'),
+    url(
+        r'^register/$',
+        views.DoRegister.as_view(),
+        name='register',
+    ),
+    url(
+        r'^login/$',
+        views.DoLogin.as_view(),
+        name='login',
+    ),
+    url(
+        r'^logout/$',
+        views.DoLogout.as_view(),
+        name='logout',
+    ),
+    url(
+        r'^settings/$',
+        views.SettingsView.as_view(),
+        name='settings',
+    ),
     url(
         r'^update-profile/$',
         views.DoSaveProfile.as_view(),
@@ -53,14 +69,6 @@ urlpatterns = [
         views.confirm_email,
         name='confirm_email',
     ),
-
-    # confirm registration
-    url(
-        r'^confirm-registration/([a-f0-9]+)$',
-        views.confirm_registration,
-        name='confirm_registration',
-    ),
-
     # new password generation
     url(
         r'^generate-password/([a-f0-9]+)$',

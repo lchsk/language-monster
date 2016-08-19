@@ -45,12 +45,74 @@ from core.impl.user import (
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger)
 
-def register(request):
-    '''
-        View
-    '''
+class DoRegister(ContextView):
+    def post(self, request, *args, **kwargs):
+        if request.POST['monster_username']:
+            logger.critical("No username")
+            return self.redirect('info', args=[''])
 
-    # Antispam
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        email = request.POST['email']
+        base = landing_language(request)
+
+        valid, error, error_str = register_user(
+            email,
+            password1,
+            password2,
+            settings.REGISTRATION_CONFIRMATION,
+            base
+        )
+
+        if valid:
+            try:
+                if settings.SEND_EMAIL_AFTER_REGISTRATION:
+                    mail.send_template_email(
+                        request=request,
+                        recipient=email,
+                        template='welcome',
+                        ctx={
+                            'PUBLIC_NAME': email,
+                        }
+                    )
+
+                if settings.LOGIN_AFTER_REGISTRATION:
+                    user = authenticate_user(
+                        email=email,
+                        password=password1
+                    )
+
+                    if user and user.user.is_active:
+                        user.user.backend = \
+                            'django.contrib.auth.backends.ModelBackend'
+                        login(request, user.user)
+                        return self.redirect('index')
+                else:
+                    messages.add_message(
+                        request,
+                        messages.SUCCESS,
+                        _('You are registered. Please login.')
+                    )
+            except Exception, e:
+                logger.critical("Exception in registration")
+                logger.critical(str(e))
+                messages.add_message(
+                    request,
+                    messages.WARNING,
+                    _(
+                        'Sorry, sending confirmation email failed.'
+                        ' Please try again later.'
+                    )
+                )
+        else:
+            logger.warning("Registration data invalid")
+            messages.add_message(request, messages.WARNING, (error_str))
+
+            return self.redirect('info', args=[''])
+
+        return self.redirect('index')
+
+def register(request):
 
     if request.POST['username']:
         logger.critical("No username")
@@ -111,107 +173,68 @@ def register(request):
 
     return HttpResponseRedirect(reverse('info', args=['']))
 
+class DoLogin(ContextView):
+    def post(self, request, *args, **kwargs):
+        identifier = request.POST['identifier']
+        password = request.POST['password']
 
-def confirm_registration(request, p_secure_hash):
-    #e TODO: This needs to be fixed if it's going to be used
-    user = MonsterUser.objects(secure_hash=p_secure_hash).first()
-
-    if not user or len(user) > 1:
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Confirmation procedure failed. Please try again.')
+        monster_user = authenticate_user(
+            email=identifier,
+            password=password
         )
-        return HttpResponseRedirect(reverse('info', args=['']))
 
-    # user = user[0]
-    if user:
-        user.is_active = True
-        user.secure_hash = ''
-        user.save()
-
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _('Your account was successfully confirmed. You can now login!')
-        )
-        return HttpResponseRedirect(reverse('info', args=['']))
-
-
-def login_user(request):
-    '''
-    View
-    '''
-    identifier = request.POST['identifier']
-    password  = request.POST['password']
-
-    muser = authenticate_user(
-        email=identifier,
-        password=password
-    )
-
-    if muser:
-        if muser.user.is_active:
-            muser.user.backend = 'django.contrib.auth.backends.ModelBackend'
-            login(request, muser.user)
-            logger.debug('User %s successfully logged in', identifier)
-            return HttpResponseRedirect(reverse('index'))
+        if monster_user:
+            if monster_user.user.is_active:
+                monster_user.user.backend = \
+                    'django.contrib.auth.backends.ModelBackend'
+                login(request, monster_user.user)
+                logger.debug('User %s successfully logged in', identifier)
+                return self.redirect('index')
+            else:
+                logger.info('User %s is inactive, cant log in', identifier)
+                messages.add_message(
+                    request,
+                    messages.WARNING,
+                    _(
+                        'This user is listed as inactive. Make sure you '
+                        'confirmed your registration by clicking on a link '
+                        'in an email you have received. In case of problems, '
+                        'please contact us. Sorry for inconvenience.'
+                    )
+                )
+                return self.redirect('info', args=[''])
         else:
-            logger.info('User %s is inactive, cant log in', identifier)
+            logger.info("Login data for %s are invalid", identifier)
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('This user is listed as inactive. Make sure you confirmed your registration by clicking on a link in an email you have received. In case of problems, please contact us. Sorry for inconvenience.')
+                _('You must provide correct email/username and password.')
             )
-            return HttpResponseRedirect(reverse('info', args=['']))
-    else:
-        logger.info("Login data for %s are invalid", identifier)
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('You must provide correct email/username and password.')
-        )
-        return HttpResponseRedirect(reverse('info', args=['']))
+            return self.redirect('info', args=[''])
 
-
-def logout_user(request):
-    '''
-        View
-    '''
-    logout(request)
-
-    return HttpResponseRedirect(reverse('index'))
+class DoLogout(AuthContextView):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return self.redirect('index')
 
 class IndexView(ContextView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
 
         if self._context.is_authorised:
-            if len(self._context.user.studying) > 0:
-                self.template_name = 'app/dashboard.html'
+            self.template_name = 'app/dashboard.html'
         else:
             self.template_name = 'landing/base.html'
 
         return context
 
-# def index(request):
-#     ctx = get_context(request)
+    def get(self, request, *args, **kwargs):
+        resp = super(IndexView, self).get(request, *args, **kwargs)
 
-#     context = {}
+        if len(self._context.user.studying) == 0:
+            return self.redirect('vocabulary:add_language')
 
-#     if ctx.is_authorised:
-#         progression = ctx['basic']['studying']
-        
-#         ctx['progression'] = progression
-
-#         if len(progression) > 0:
-#             return render(request, 'app/dashboard.html', ctx)
-#         else:
-#             return HttpResponseRedirect(reverse('vocabulary:add_language'))
-#     else:
-#         ctx['language'] = landing_language(request)
-#         return render(request, 'landing/base.html', ctx)
-
+        return resp
 
 class SettingsView(AuthContextView):
     template_name = 'app/profile.html'
@@ -415,18 +438,31 @@ def validate_password(request, password1, password2, messages):
 
     return valid
 
+class InfoView(ContextView):
+    template_name = 'landing/base.html'
 
-def info(request, param=None, additional={}):
-    ''' View for unlogged user only '''
+    def get_context_data(self, **kwargs):
+        context = super(InfoView, self).get_context_data(**kwargs)
 
-    ctx = get_context(request)
-    ctx['language'] = landing_language(request)
-    ctx['page'] = 'info'
-    ctx['param'] =  param
-    ctx['additional'] = additional
-    ctx['messages'] = messages.get_messages(request)
+        context['language'] = landing_language(self.request)
+        context['page'] = 'info'
+        context['param'] =  kwargs.get('param')
+        context['additional'] = kwargs.get('additional')
+        context['messages'] = messages.get_messages(self.request)
 
-    return render(request, 'landing/base.html', ctx)
+        return context
+
+# def info(request, param=None, additional={}):
+#     ''' View for unlogged user only '''
+
+#     ctx = get_context(request)
+#     ctx['language'] = landing_language(request)
+#     ctx['page'] = 'info'
+#     ctx['param'] =  param
+#     ctx['additional'] = additional
+#     ctx['messages'] = messages.get_messages(request)
+
+#     return render(request, 'landing/base.html', ctx)
 
 
 def recover_password(request):
