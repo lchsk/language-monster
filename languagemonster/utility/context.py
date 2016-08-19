@@ -69,6 +69,15 @@ class MonsterUserAuth(object):
         self._monster_user.user.set_password(password)
         self._monster_user.user.save()
 
+    def change_email(self, email):
+        secure_hash = uuid4().hex
+
+        self._monster_user.new_email = email
+        self._monster_user.secure_hash = secure_hash
+        self._monster_user.save()
+
+        return secure_hash
+
     def update_games(self, res):
         for game, game_settings in res.iteritems():
             a = MonsterUserGame.objects.filter(

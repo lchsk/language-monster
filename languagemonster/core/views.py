@@ -317,11 +317,7 @@ class DoSaveUserEmail(AuthContextView):
         new_email = request.POST['email']
 
         if new_email:
-            ctx['user'].new_email = new_email
-
-            secure_hash = create_hash(ctx['user'])
-            ctx['user'].secure_hash = secure_hash
-            ctx['user'].save()
+            secure_hash = self._context.user.change_email(new_email)
 
             try:
                 host = request.get_host()
@@ -332,7 +328,7 @@ class DoSaveUserEmail(AuthContextView):
                     recipient=new_email,
                     template='email_change',
                     ctx={
-                        'PUBLIC_NAME': ctx['user'].public_name,
+                        'PUBLIC_NAME': self._context.user.public_name,
                         'URL': 'http://' + host + url
                     }
                 )
@@ -345,7 +341,7 @@ class DoSaveUserEmail(AuthContextView):
             except Exception, e:
                 logger.critical(
                     "Error when changing email for %s",
-                    str(ctx['user'])
+                    self._context.user
                 )
                 logger.critical(str(e))
                 messages.add_message(
