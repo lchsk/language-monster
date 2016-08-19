@@ -1,9 +1,16 @@
 from django.conf.urls import url
-import views
+from vocabulary import views
 
 urlpatterns = [
-    url(r'^$', views.add_language),
-    url(r'^learn/?$', views.add_language, name='add_language'),
+    url(
+        r'^$',
+        views.AddLanguageView.as_view(),
+    ),
+    url(
+        r'^learn/?$',
+        views.AddLanguageView.as_view(),
+        name='add_language',
+    ),
     url(r'^learn/(\w+)/?$', views.save_language, name='save_language'),
     url(r'^study/(\w+)/?$', views.study, name='study'),
 

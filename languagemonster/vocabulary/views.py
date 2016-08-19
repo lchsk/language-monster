@@ -41,41 +41,42 @@ from utility.interface import (
 )
 from core.impl.user import process_games_list
 
+from utility.views import AuthContextView
+
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS,
 )
 
-# @login_required
-@context
-@redirect_unauth
-def add_language(request, ctx):
+class AddLanguageView(AuthContextView):
+    template_name = 'app/add_language.html'
 
-    target_languages = []
-    progressions = ctx['basic']['studying']
+    def get_context_data(self, **kwargs):
+        context = super(AddLanguageView, self).get_context_data(**kwargs)
 
-    user_lang_acronym = ctx['basic']['user_lang'].language.acronym
+        target_languages = []
+        user_lang_acronym = self._context.user.language.language.acronym
 
-    for symbol, pair in LANGUAGE_PAIRS[user_lang_acronym].iteritems():
-        if pair.visible:
-            already_added = False
+        for symbol, pair in LANGUAGE_PAIRS[user_lang_acronym].iteritems():
+            if pair.visible:
+                already_added = False
 
-            for pro, lang_pair in progressions:
-                if pro.lang_pair == symbol:
-                    already_added = True
-                    break
+                for pro, lang_pair in self._context.user.studying:
+                    if pro.lang_pair == symbol:
+                        already_added = True
+                        break
 
-            target_languages.append(
-                dict(
-                    lang=pair.target_language,
-                    learning=already_added
+                target_languages.append(
+                    dict(
+                        lang=pair.target_language,
+                        learning=already_added
+                    )
                 )
-            )
 
-    ctx['languages'] = target_languages
+        context['languages'] = target_languages
 
-    return render(request, 'app/add_language.html', ctx)
+        return context
 
 
 @context
