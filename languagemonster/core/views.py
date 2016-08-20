@@ -29,6 +29,7 @@ from utility.views import (
     AuthContextView,
 )
 from utility.user_language import landing_language
+from utility.security import validate_password
 from utility.interface import (
     get_context,
     context,
@@ -322,6 +323,7 @@ class DoSaveUserEmail(AuthContextView):
 
         return self.redirect('core:settings')
 
+# TODO: Needs to be rewritten (email change confirmation)
 @context
 @redirect_unauth
 def confirm_email(request, p_secure_hash, ctx):
@@ -354,29 +356,6 @@ def confirm_email(request, p_secure_hash, ctx):
     )
     return HttpResponseRedirect(reverse('core:settings'))
 
-
-def validate_password(request, password1, password2, messages):
-    # TODO: send context as argument
-    # c = get_context(request)
-    valid = True
-
-    if len(password1) < 8:
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _("New password must be at least 8 characters long.")
-        )
-        valid = False
-
-    if password1 != password2:
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _("Passwords don't match.")
-        )
-        valid = False
-
-    return valid
 
 class InfoView(ContextView):
     template_name = 'landing/base.html'
