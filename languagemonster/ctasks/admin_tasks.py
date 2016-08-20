@@ -9,7 +9,7 @@ from core.models import (
     MonsterUser,
 )
 
-import core.mail as mail
+import core.impl.mail as mail
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)

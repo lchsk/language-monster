@@ -44,7 +44,7 @@ urlpatterns = [
     ),
     url(
         r'^recover-password/$',
-        views.recover_password,
+        views.DoRecoverPassword.as_view(),
         name='recover_password',
     ),
     url(

@@ -3,6 +3,7 @@
 import logging
 import datetime
 import os.path
+from uuid import uuid4
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
@@ -170,7 +171,7 @@ class IndexView(ContextView):
     def get(self, request, *args, **kwargs):
         resp = super(IndexView, self).get(request, *args, **kwargs)
 
-        if len(self._context.user.studying) == 0:
+        if self._context.is_authorised and not self._context.user.studying:
             return self.redirect('vocabulary:add_language')
 
         return resp
@@ -383,10 +384,15 @@ class InfoView(ContextView):
     def get_context_data(self, **kwargs):
         context = super(InfoView, self).get_context_data(**kwargs)
 
+        if len(self.args) == 1:
+            args = self.args[0]
+        else:
+            args = self.args
+
         context['language'] = landing_language(self.request)
         context['page'] = 'info'
-        context['param'] =  kwargs.get('param')
-        context['additional'] = kwargs.get('additional')
+        context['param'] =  args
+        context['additional'] = self.kwargs
         context['messages'] = messages.get_messages(self.request)
 
         return context
@@ -403,68 +409,73 @@ class InfoView(ContextView):
 
 #     return render(request, 'landing/base.html', ctx)
 
+class DoRecoverPassword(ContextView):
+    def post(self, request, *args, **kwargs):
+        identifier = request.POST['identifier']
 
-def recover_password(request):
-    """Unauthorized only"""
+        if not identifier:
+            logger.warning("Email is not correct: %s", identifier)
+            messages.add_message(
+                request,
+                messages.WARNING, _('Email is not correct.')
+            )
+            return self.redirect('info', args=[''])
 
-    identifier = request.POST['identifier']
+        monster_user = MonsterUser.objects.filter(
+            user__email=identifier
+        ).first()
 
-    if not identifier:
-        logger.warning("Email is not correct: %s", str(identifier))
-        messages.add_message(
-            request,
-            messages.WARNING, _('Email is not correct.')
-        )
-        return HttpResponseRedirect(reverse('info', args=['']))
+        if not monster_user:
+            logger.warning("Email has not been found: %s", identifier)
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Email has not been found.')
+            )
+            return self.redirect('info', args=[''])
 
-    u = MonsterUser.objects.filter(
-        user__email=identifier
-    ).first()
+        secure_hash = uuid4().hex
+        monster_user.secure_hash = secure_hash
+        monster_user.save()
 
-    if not u:
-        logger.warning("Email has not been found: %s", str(u))
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Email has not been found.')
-        )
-        return HttpResponseRedirect(reverse('info', args=['']))
+        try:
+            host = request.get_host()
+            url = reverse('core:generate_password', args=[secure_hash])
 
-    secure_hash = create_hash(u)
-    u.secure_hash = secure_hash
-    u.save()
+            mail.send_template_email(
+                request=request,
+                recipient=monster_user.user.email,
+                template='password_recovery',
+                ctx={
+                    'PUBLIC_NAME': monster_user.public_name,
+                    'URL': 'http://' + host + url
+                }
+            )
 
-    try:
-        host = request.get_host()
-        url = reverse('core:generate_password', args=[secure_hash])
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                _(
+                    'Email was sent. Please check your inbox '
+                    '(or possibly spam box).'
+                )
+            )
+            logger.info("Email sent for password recovery: %s", identifier)
+        except Exception, e:
+            logger.critical("Error when sending email for password recovery")
+            logger.critical(str(e))
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _(
+                    'Sorry, sending confirmation email failed. '
+                    ' Please try again later.'
+                )
+            )
 
-        mail.send_template_email(
-            request=request,
-            recipient=u.user.email,
-            template='password_recovery',
-            ctx={
-                'PUBLIC_NAME': u.public_name,
-                'URL': 'http://' + host + url
-            }
-        )
+        return self.redirect('info', args=[''])
 
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _('Email was sent. Please check your inbox (or possibly spam box).')
-        )
-        logger.info("Email sent for password recovery: %s", str(u))
-    except Exception, e:
-        logger.critical("Error when sending email for password recovery")
-        logger.critical(str(e))
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Sorry, sending confirmation email failed. Please try again later.')
-        )
-
-    return HttpResponseRedirect(reverse('info', args=['']))
-
+        return resp
 
 def generate_password(request, p_secure_hash):
     """TODO: check what is that"""

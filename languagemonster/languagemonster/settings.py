@@ -336,8 +336,8 @@ ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
 # USE_L10N = True
 # USE_TZ = True
 
-EMAIL_USE_TLS = bool(os.getenv('LM_EMAIL_USE_TLS'))
-EMAIL_USE_SSL = bool(os.getenv('LM_EMAIL_USE_SSL'))
+EMAIL_USE_TLS = bool(int(os.getenv('LM_EMAIL_USE_TLS')))
+EMAIL_USE_SSL = bool(int(os.getenv('LM_EMAIL_USE_SSL')))
 EMAIL_HOST = os.getenv('LM_EMAIL_HOST')
 EMAIL_PORT = int(os.getenv('LM_EMAIL_PORT'))
 EMAIL_HOST_USER = os.getenv('LM_EMAIL_HOST_USER')
