@@ -16,6 +16,9 @@ class ContextView(TemplateView):
     def redirect(self, name, args=None, kwargs=None):
         return HttpResponseRedirect(reverse(name, args=args, kwargs=kwargs))
 
+    def redirect_url(self, url):
+        return HttpResponseRedirect(url)
+
 class AuthContextView(ContextView):
     def get_context_data(self, **kwargs):
         context = super(AuthContextView, self).get_context_data(**kwargs)
@@ -26,3 +29,7 @@ class AuthContextView(ContextView):
             return HttpResponseRedirect(reverse('index'))
 
         return super(AuthContextView, self).dispatch(request, *args, **kwargs)
+
+class NoTemplateMixin(object):
+    def get_template_names(self):
+        return []

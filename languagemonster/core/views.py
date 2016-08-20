@@ -27,6 +27,7 @@ import core.impl.mail as mail
 from utility.views import (
     ContextView,
     AuthContextView,
+    NoTemplateMixin,
 )
 from utility.user_language import landing_language
 from utility.security import validate_password
@@ -376,10 +377,10 @@ class InfoView(ContextView):
 
         return context
 
+# TODO: Needs to stay until emai change/password recovery is rewritten
 def info(request, param=None, additional={}):
     ''' View for unlogged user only '''
 
-    # ctx = get_context(request)
     ctx = {}
     ctx['language'] = landing_language(request)
     ctx['page'] = 'info'
@@ -457,6 +458,7 @@ class DoRecoverPassword(ContextView):
 
         return resp
 
+# TODO Needs to stay until password recovery/email change is rewritten
 def generate_password(request, p_secure_hash):
     user = MonsterUser.objects.filter(secure_hash=p_secure_hash).first()
 
@@ -475,7 +477,7 @@ def generate_password(request, p_secure_hash):
 
     return info(request, 'generate_password', {'secure_hash': secure_hash})
 
-
+# TODO Needs to stay until password recovery/email change is rewritten
 def confirm_new_password(request, p_secure_hash):
     """Confirm password change (during password recovery)"""
 
@@ -515,6 +517,7 @@ def confirm_new_password(request, p_secure_hash):
     return HttpResponseRedirect(reverse('info', args=['']))
 
 
+# TODO: Change to CBV
 def send_email(request):
     ''' This sends email (eg. from contact form on the landing page)'''
 
@@ -629,49 +632,56 @@ class DoSaveAvatar(AuthContextView):
             )
             return self.redirect('core:settings')
 
-def change_language(request, p_base_language):
-    ctx = get_context(request)
 
-    if 'HTTP_REFERER' in request.META:
-        url = request.META['HTTP_REFERER']
-    else:
-        url = reverse('index')
-
-    if ctx['user']:
-        base_language = None
-
-        for symbol, lang in ctx['basic']['base_languages'].iteritems():
-            if symbol == p_base_language:
-                base_language = lang
-                break
-
-        if base_language is None:
-            return HttpResponseRedirect(url)
-
-        ctx['user'].language = p_base_language
-        logger.info(
-            "Changing language for %s (%s)",
-            str(ctx['user']),
-            str(p_base_language)
-        )
-        ctx['user'].save()
-    else:
-        date1 = datetime.datetime.now()
-        end_date = date1 + datetime.timedelta(days=30)
-
-        response = HttpResponseRedirect(url)
-        response.set_cookie(
-            'monster_language',
-            p_base_language,
-            expires=end_date
-        )
-        logger.info(
-            "Chaning language (cookie)"
+class DoChangeInterfaceLanguage(NoTemplateMixin, ContextView):
+    def get(self, request, *args, **kwargs):
+        resp = super(DoChangeInterfaceLanguage, self).get(
+            request,
+            *args,
+            **kwargs
         )
 
-        return response
+        if 'HTTP_REFERER' in request.META:
+            url = request.META['HTTP_REFERER']
+        else:
+            url = reverse('index')
 
-    return HttpResponseRedirect(url)
+        if self._context.is_authorised:
+            base_language = None
+
+            for symbol, lang in self._context.base_languages.iteritems():
+                if symbol == self.args[0]:
+                    base_language = lang
+                    break
+
+            if base_language is None:
+                return self.redirect_url(url)
+
+            self._context.user.change_language(self.args[0])
+
+            logger.info(
+                "Changing language for %s (%s)",
+                self._context.user,
+                self.args[0]
+            )
+
+            return self.redirect_url(url)
+        else:
+            date1 = datetime.datetime.now()
+            end_date = date1 + datetime.timedelta(days=30)
+
+            response = HttpResponseRedirect(url)
+            response.set_cookie(
+                'monster_language',
+                self.args[0],
+                expires=end_date
+            )
+            logger.info(
+                "Changing language (cookie)"
+            )
+
+            return response
+
 
 def error_page(request, error_code):
     ctx = get_context(request)

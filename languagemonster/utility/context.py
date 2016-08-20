@@ -69,6 +69,10 @@ class MonsterUserAuth(object):
         self._monster_user.user.set_password(password)
         self._monster_user.user.save()
 
+    def change_language(self, language):
+        self._monster_user.language = language
+        self._monster_user.save()
+
     def change_email(self, email):
         secure_hash = uuid4().hex
 

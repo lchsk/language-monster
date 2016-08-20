@@ -49,6 +49,7 @@ urlpatterns = [
     ),
     url(
         r'^send-email/$',
+        # views.DoSaveContactEmail.as_view(),
         views.send_email,
         name='send_email',
     ),
@@ -59,7 +60,7 @@ urlpatterns = [
     ),
     url(
         r'^change-language/([a-z_]+)$',
-        views.change_language,
+        views.DoChangeInterfaceLanguage.as_view(),
         name='change_language',
     ),
 
