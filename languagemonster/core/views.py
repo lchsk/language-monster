@@ -397,17 +397,18 @@ class InfoView(ContextView):
 
         return context
 
-# def info(request, param=None, additional={}):
-#     ''' View for unlogged user only '''
+def info(request, param=None, additional={}):
+    ''' View for unlogged user only '''
 
-#     ctx = get_context(request)
-#     ctx['language'] = landing_language(request)
-#     ctx['page'] = 'info'
-#     ctx['param'] =  param
-#     ctx['additional'] = additional
-#     ctx['messages'] = messages.get_messages(request)
+    # ctx = get_context(request)
+    ctx = {}
+    ctx['language'] = landing_language(request)
+    ctx['page'] = 'info'
+    ctx['param'] =  param
+    ctx['additional'] = additional
+    ctx['messages'] = messages.get_messages(request)
 
-#     return render(request, 'landing/base.html', ctx)
+    return render(request, 'landing/base.html', ctx)
 
 class DoRecoverPassword(ContextView):
     def post(self, request, *args, **kwargs):
@@ -478,8 +479,6 @@ class DoRecoverPassword(ContextView):
         return resp
 
 def generate_password(request, p_secure_hash):
-    """TODO: check what is that"""
-
     user = MonsterUser.objects.filter(secure_hash=p_secure_hash).first()
 
     if not user:
@@ -491,7 +490,7 @@ def generate_password(request, p_secure_hash):
         )
         return HttpResponseRedirect(reverse('info', args=['']))
 
-    secure_hash = create_hash(user)
+    secure_hash = uuid4().hex
     user.secure_hash = secure_hash
     user.save()
 
@@ -499,6 +498,7 @@ def generate_password(request, p_secure_hash):
 
 
 def confirm_new_password(request, p_secure_hash):
+    """Confirm password change (during password recovery)"""
 
     email = request.POST['email']
     password1 = request.POST['password1']
@@ -518,7 +518,7 @@ def confirm_new_password(request, p_secure_hash):
         )
         return HttpResponseRedirect(reverse('info', args=['']))
 
-    user.secure_hash = ''
+    user.secure_hash = None
     user.save()
 
     valid = validate_password(request, password1, password2, messages)

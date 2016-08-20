@@ -149,7 +149,7 @@ class MonsterUser(models.Model):
 
     public_name = models.CharField(max_length=30)
     new_email = models.CharField(max_length=50)
-    secure_hash = models.CharField(max_length=250, unique=True)
+    secure_hash = models.CharField(max_length=250, unique=True, null=True)
     api_login_hash = models.CharField(max_length=250, unique=True)
     avatar = models.CharField(max_length=250)
 
