@@ -22,7 +22,10 @@ urlpatterns = [
         name='study',
     ),
 
-    # language slug, dataset slug (can contain -)
-    url(r'^study/(\w+)/([\w-]+)/?$', views.play, name='play'),
+    url(
+        r'^study/(?P<language_slug>(\w+))/(?P<dataset_slug>([\w-]+))/?$',
+        views.PlayView.as_view(),
+        name='play',
+    ),
     url(r'^error/?$', views.report_error, name='report_error'),
 ]

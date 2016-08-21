@@ -155,71 +155,67 @@ class StudyView(AuthContextView):
         else:
             raise Http404
 
+class PlayView(AuthContextView):
+    template_name = 'app/game.html'
 
-# @login_required
-@context
-@redirect_unauth
-def play(request, target_slug, dataset_slug, ctx):
-    """Game screen"""
+    def get_context_data(self, **kwargs):
+        context = super(PlayView, self).get_context_data(**kwargs)
 
-    # base_slug = c['user'].current_language.slug
+        language_slug = kwargs['language_slug']
+        dataset_slug = kwargs['dataset_slug']
 
-    pair = None
-    symbol = None
-    user_lang_acronym = ctx['basic']['user_lang'].language.acronym
+        pair = None
+        symbol = None
+        user_lang_acronym = self._context.language.language.acronym
 
-    for lang_symbol, lang_pair in LANGUAGE_PAIRS_FLAT.iteritems():
-        if (
-            lang_pair.target_language.slug == target_slug and
-            lang_pair.base_language.acronym == user_lang_acronym
-        ):
-            pair = lang_pair
-            symbol = lang_symbol
-            break
+        for lang_symbol, lang_pair in LANGUAGE_PAIRS_FLAT.iteritems():
+            if (
+                lang_pair.target_language.slug == language_slug and
+                lang_pair.base_language.acronym == user_lang_acronym
+            ):
+                pair = lang_pair
+                symbol = lang_symbol
+                break
 
-    d = get_single_dataset(
-        symbol,
-        dataset_slug
-    )
+        dataset = get_single_dataset(
+            symbol,
+            dataset_slug
+        )
 
-    if not d:
-        return HttpResponseRedirect(reverse('index'))
+        if not dataset:
+            return Http404
 
-    game_session_id = create_game_session_hash(
-        ctx['user'],
-        d
-    )
+        game_session_id = create_game_session_hash(
+            self._context.user.raw,
+            dataset
+        )
 
-    ctx['game'] = True
-    ctx['dataset'] = d
-    ctx['pair'] = pair
+        context['game'] = True
+        context['dataset'] = dataset
+        context['pair'] = pair
+        context['data'] = {
+            'dataset_id': str(dataset.id),
+            'email': str(self._context.user.email),
+            'game_session_id': game_session_id
+        }
 
-    ctx['data'] = {
-        'dataset_id': str(d.id),
-        'email': str(ctx['user'].user.email),
-        'game_session_id': game_session_id
-    }
+        user_games = get_user_games(self._context.user.raw)
 
-    user_games = get_user_games(ctx['user'])
+        context['translations'] = get_game_translations()
 
-    ctx['translations'] = get_game_translations()
-    ctx['games'] = process_games_list(
-        monster_user=ctx['user'],
-        games=settings.GAMES,
-        user_games=user_games
-    )
-    ctx['games_played']  = [
-        user_game['game']
-        for user_game in user_games
-        if user_game['played']
-    ]
-    # c['games_played'] = get_games_played(monster_user=c['user'])
-    ctx['canvas_only'] = settings.GAMES_USE_CANVAS_ONLY
+        context['games'] = process_games_list(
+            games=settings.GAMES,
+            user_games=user_games
+        )
+        context['games_played']  = [
+            user_game['game']
+            for user_game in user_games
+            if user_game['played']
+        ]
 
-    if ctx:
-        return render(request, 'app/game.html', ctx)
+        context['canvas_only'] = settings.GAMES_USE_CANVAS_ONLY
 
-    return redirect_to_previous_page(request)
+        return context
 
 
 # TODO: only accept localhost
