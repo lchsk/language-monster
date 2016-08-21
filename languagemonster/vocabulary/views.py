@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib import messages
+from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
 # from models import *
@@ -119,52 +120,40 @@ class DoSaveLanguage(NoTemplateMixin, AuthContextView):
         else:
             return redirect_to_previous_page(request)
 
+class StudyView(AuthContextView):
+    template_name = 'app/study.html'
 
-# @login_required
-@context
-@redirect_unauth
-def study(request, slug, ctx):
-    progressions = ctx['basic']['studying']
+    def get_context_data(self, **kwargs):
+        context = super(StudyView, self).get_context_data(**kwargs)
 
-    pair_symbol = None
-    pair_obj = None
+        progressions = self._context.user.studying
+        slug = kwargs['slug']
 
-    from core.language_pair import LANGUAGE_PAIRS_FLAT
+        pair_symbol = None
+        pair_obj = None
 
-    for symbol, lang_pair in LANGUAGE_PAIRS_FLAT.iteritems():
-        if lang_pair.target_language.slug == slug and lang_pair.base_language.acronym == ctx['basic']['user_lang'].language.acronym:
-            pair_symbol = symbol
-            pair_obj = lang_pair
-            break
+        for symbol, lang_pair in LANGUAGE_PAIRS_FLAT.iteritems():
+            if (
+                lang_pair.target_language.slug == slug and
+                lang_pair.base_language.acronym == self._context.user.language.language.acronym
+            ):
+                pair_symbol = symbol
+                pair_obj = lang_pair
+                break
 
-    # for p, lang_pair in progressions:
-    #     if (
+        if pair_symbol is not None:
+            ds = get_datasets(pair_symbol)
+            basic_ds = [d for d in ds if d.simple_dataset]
+            user_data_sets = get_user_data_sets(self._context.user.raw)
 
-    #         lang_pair.target_language.slug == slug
-    #     ):
-    #         pair = lang_pair
-    #         break
+            context['pair'] = pair_obj
+            context['datasets'] = ds
+            context['basic_datasets'] = basic_ds
+            context['user_data_sets'] = user_data_sets
 
-    # pair = get_language_pair(c['user'].current_language, slug)
-
-    # already_added = Progression.objects.filter(
-    #     user=c['user'],
-    #     pair=pair
-    # ).first()
-
-    if pair_symbol is not None:
-        ds = get_datasets(pair_symbol)
-        basic_ds = [d for d in ds if d.simple_dataset]
-        user_data_sets = get_user_data_sets(ctx['user'])
-
-        ctx['pair'] = pair_obj
-        ctx['datasets'] = ds
-        ctx['basic_datasets'] = basic_ds
-        ctx['user_data_sets'] = user_data_sets
-
-        return render(request, 'app/study.html', ctx)
-
-    return HttpResponseRedirect(reverse('index'))
+            return context
+        else:
+            raise Http404
 
 
 # @login_required
