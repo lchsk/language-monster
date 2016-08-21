@@ -11,7 +11,11 @@ urlpatterns = [
         views.AddLanguageView.as_view(),
         name='add_language',
     ),
-    url(r'^learn/(\w+)/?$', views.save_language, name='save_language'),
+    url(
+        r'^learn/(?P<slug>(\w+))/?$',
+        views.DoSaveLanguage.as_view(),
+        name='save_language',
+    ),
     url(r'^study/(\w+)/?$', views.study, name='study'),
 
     # language slug, dataset slug (can contain -)

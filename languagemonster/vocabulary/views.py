@@ -41,7 +41,10 @@ from utility.interface import (
 )
 from core.impl.user import process_games_list
 
-from utility.views import AuthContextView
+from utility.views import (
+    NoTemplateMixin,
+    AuthContextView,
+)
 
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import (
@@ -78,41 +81,43 @@ class AddLanguageView(AuthContextView):
 
         return context
 
-
-@context
-@redirect_unauth
-def save_language(request, slug, ctx):
-
-    base_slug = ctx['basic']['user_lang'].language.slug
-
-    lang_pair = get_lang_pair_from_slugs(
-        base_slug=base_slug,
-        target_slug=slug
-    )
-
-    progression_exists = get_progression_from_lang_pair(
-        ctx['basic']['studying'],
-        lang_pair
-    )
-
-    if not progression_exists:
-        p = Progression(
-            user=ctx['user'],
-            lang_pair=lang_pair.symbol
-        )
-        p.save()
-
-        messages.add_message(
+class DoSaveLanguage(NoTemplateMixin, AuthContextView):
+    def get(self, request, *args, **kwargs):
+        resp = super(DoSaveLanguage, self).get(
             request,
-            messages.SUCCESS,
-            _('You are now learning a new language! Congratulations!')
+            *args,
+            **kwargs
         )
 
-        return HttpResponseRedirect(
-            reverse('vocabulary:study', args=[slug])
+        base_slug = self._context.user.language.language.slug
+        slug = self.kwargs['slug']
+
+        lang_pair = get_lang_pair_from_slugs(
+            base_slug=base_slug,
+            target_slug=slug,
         )
-    else:
-        return redirect_to_previous_page(request)
+
+        progression_exists = get_progression_from_lang_pair(
+            self._context.user.studying,
+            lang_pair
+        )
+
+        if not progression_exists:
+            p = Progression(
+                user=self._context.user.raw,
+                lang_pair=lang_pair.symbol
+            )
+            p.save()
+
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                _('You are now learning a new language! Congratulations!')
+            )
+
+            return self.redirect('vocabulary:study', args=[slug])
+        else:
+            return redirect_to_previous_page(request)
 
 
 # @login_required
