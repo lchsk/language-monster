@@ -15,7 +15,6 @@ class Language(models.Model):
     # Name of the language in English
     english_name = models.CharField(
         max_length=25,
-        # null=True,
         unique=True
     )
 
@@ -23,32 +22,27 @@ class Language(models.Model):
     original_name = models.CharField(
         max_length=25,
         unique=True
-        # null=True
     )
 
     # Two-letter acronym of the language, eg. en, pl, es, de
     acronym = models.CharField(
         max_length=5,
         unique=True,
-        # null=True
     )
 
     slug = models.CharField(
         max_length=20,
         unique=True,
-        # null=True
     )
 
     # /static/images/countries/
     image_filename = models.CharField(
         max_length=30,
-        # null=True
     )
 
     # /static/images/flags/
     flag_filename = models.CharField(
         max_length=10,
-        # null=True
     )
 
     class Meta:
@@ -121,11 +115,6 @@ class BaseLanguage(models.Model):
         related_name='language',
         db_index=True,
     )
-    # language = models.OneToOneField(
-    #     Language,
-    #     db_index=True,
-    #     unique=False
-    # )
 
     visible = models.BooleanField(default=True)
 
@@ -164,26 +153,6 @@ class MonsterUser(models.Model):
             for symbol, lang in BASE_LANGUAGES.items()
         ])
     )
-    
-    # Base language of the current user: used for interface,
-    # as well as base for learning. Can be changed by the user at any time.
-    # current_language = models.ForeignKey(
-    #     Language,
-    #     on_delete=models.CASCADE,
-    #     related_name='monster_user_current_language',
-    #     db_index=True,
-    #     null=True,
-    # )
-
-    # Helps with differentiating between US/UK English etc.
-
-    # base_language = models.ForeignKey(
-    #     BaseLanguage,
-    #     on_delete=models.CASCADE,
-    #     related_name='monster_user_base_language',
-    #     # TODO: that should be removed at some point
-    #     null=True,
-    # )
 
     # Number of data sets user is learning (in all languages)
     datasets = models.IntegerField(default=0)
@@ -222,13 +191,6 @@ class MonsterUser(models.Model):
     # 'About me' message
     about = models.CharField(default='', max_length=500)
 
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['email'], 'unique': True, 'sparse': True, 'types': False },
-    #         {'fields': ['uri'], 'unique': True, 'sparse': True, 'types': False },
-    #     ],
-    # }
-
     class Meta:
         verbose_name = 'MonsterUser'
         verbose_name_plural = 'Monster Users'
@@ -248,8 +210,6 @@ class MonsterUserGame(models.Model):
 
     played = models.BooleanField(default=False)
     banned = models.BooleanField(default=False)
-    # TODO: choices
-    # status = models.CharField(default='', max_length=1)
 
     class Meta:
         verbose_name = 'MonsterUserGame'
@@ -263,10 +223,6 @@ class MonsterUserGame(models.Model):
 
 
 class DataSet(models.Model):
-
-    # Filename of the file with vocabulary data
-    # filename = StringField(required=False, max_length=50, help_text='Dataset filename')
-
     # Name of the dataset eg. Animals, Countries
     name_en = models.CharField(
         max_length=50,
@@ -302,6 +258,7 @@ class DataSet(models.Model):
     )
 
     visible = models.BooleanField(default=False)
+
     from_exported_file = models.BooleanField(
         default=False,
         help_text='Data set was generated from an exported file'
@@ -313,13 +270,6 @@ class DataSet(models.Model):
     )
 
     pos = models.CharField(max_length=20, help_text='Part of Speech')
-
-    # pair = ReferenceField(LanguagePair, help_text='Base and target language')
-    # pair = models.ForeignKey(
-    #     LanguagePair,
-    #     related_name='dataset_pair',
-    #     db_index=True
-    # )
 
     lang_pair = models.CharField(
         max_length=5,
@@ -335,9 +285,6 @@ class DataSet(models.Model):
         ])
     )
 
-    # List of tags that describe this dataset
-    # tags = ListField(StringField(max_length=30), help_text='List of tags')
-
     learners = models.IntegerField(
         default=0,
         help_text='Number of people learning this dataset'
@@ -351,13 +298,6 @@ class DataSet(models.Model):
 
     # true if this set was created by reversing already existing set
     reversed_set = models.BooleanField(default=False)
-
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['slug'] },
-    #         {'fields': ['pair'] },
-    #     ],
-    # }
 
     class Meta:
         unique_together = ('slug', 'lang_pair')
@@ -397,15 +337,6 @@ class DataSetProgress(models.Model):
     def __unicode__(self):
         return u'{0}: {1}'.format(self.user, self.data_set)
 
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['data_set'] },
-    #         {'fields': ['user'] },
-    #         {'fields': ['data_set', 'user'] },
-    #     ],
-    # }
-
-
 class WordPair(models.Model):
 
     # Word in Base Language
@@ -432,27 +363,9 @@ class WordPair(models.Model):
     from_english = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
 
-    ################################################
-    # That will have to be deleted at some point
-    ################################################
-    # data_set = ReferenceField(DataSet)
-    # data_set = models.ForeignKey(
-    #     DataSet,
-    #     null=True,
-    #     related_name='word_pair_data_set'
-    # )
-
     index = models.IntegerField(default=0)
 
     pop = models.IntegerField(default=0, help_text='Popularity')
-
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['base'] },
-    #         {'fields': ['target'] },
-    #         {'fields': ['base', 'target'] },
-    #     ],
-    # }
 
     class Meta:
         verbose_name = 'WordPair'
@@ -468,7 +381,7 @@ class WordPair(models.Model):
 class Progression(models.Model):
     '''
     Holds information about the progress a particular user has made
-    for a particular Language.
+    in a particular Language.
     '''
 
     user = models.ForeignKey(
@@ -476,13 +389,6 @@ class Progression(models.Model):
         related_name='progression_monster_user',
         db_index=True
     )
-
-    # pair = models.ForeignKey(
-    #     LanguagePair,
-    #     related_name='progression_pair',
-    #     db_index=True,
-    #     null=True,
-    # )
 
     lang_pair = models.CharField(
         max_length=5,
@@ -507,7 +413,7 @@ class Progression(models.Model):
     # [points]
     strength = models.IntegerField(default=0)
 
-    # Indicated whether strengh is up or dowolnego
+    # Indicated whether strengh is up or down
     # 1 - up, 0 - no change, -1 - down
     trend = models.IntegerField(default=0)
 
@@ -530,15 +436,6 @@ class Progression(models.Model):
             lang_pair=self.lang_pair
         )
 
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['pair'] },
-    #         {'fields': ['user'] },
-    #         {'fields': ['pair', 'user'] },
-    #     ],
-    # }
-
-
 class UserWordPair(models.Model):
 
     word_pair = models.ForeignKey(
@@ -558,13 +455,6 @@ class UserWordPair(models.Model):
         unique_together = ('word_pair', 'user')
         verbose_name = 'UserWordPair'
         verbose_name_plural = 'User Word Pairs'
-
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['word_pair'] },
-    #         {'fields': ['user'] },
-    #     ],
-    # }
 
     def __unicode__(self):
         return u'{word_pair}: {user}'.format(
@@ -590,17 +480,8 @@ class UserResult(models.Model):
     game = models.CharField(max_length=30)
 
     class Meta:
-        # unique_together = ('data_set', 'user')
         verbose_name = 'UserResult'
         verbose_name_plural = 'User Results'
-
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['data_set'] },
-    #         {'fields': ['user'] },
-    #     ],
-    # }
-
 
 class ErrorReport(models.Model):
     '''Reports people send'''
@@ -675,13 +556,6 @@ class MobileDevice(models.Model):
         verbose_name = 'MobileDevice'
         verbose_name_plural = 'Mobile Devices'
 
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['user'] },
-    #     ],
-    # }
-
-
 class SimpleDataset(models.Model):
     """
         A dataset used to generate simple (shortened) datasets from full ones
@@ -717,15 +591,6 @@ class DS2WP(models.Model):
         unique_together = ('ds', 'wp')
         verbose_name = 'DS2WP'
         verbose_name_plural = 'DataSet to WordPair'
-
-    # meta = {
-    #     'indexes': [
-    #         {'fields': ['ds'] },
-    #         {'fields': ['wp'] },
-    #         {'fields': ['ds', 'wp'] },
-    #     ],
-    # }
-
 
 class OpenGameSession(models.Model):
     """
