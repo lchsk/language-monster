@@ -84,18 +84,19 @@ class MonsterUserAuth(object):
 
     def update_games(self, res):
         for game, game_settings in res.iteritems():
-            a = MonsterUserGame.objects.filter(
+            user_game = MonsterUserGame.objects.filter(
                 monster_user=self._monster_user,
                 game=game
             ).first()
 
-            if not a:
-                a = MonsterUserGame(
+            if not user_game:
+                user_game = MonsterUserGame(
                     monster_user=self._monster_user,
                     game=game,
                 )
-                a.banned = not game_settings['available']
-                a.save()
+
+            user_game.banned = not game_settings['available']
+            user_game.save()
 
     def save_avatar(self, obj, content_type):
         if content_type == 'jpeg':
