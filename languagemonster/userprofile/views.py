@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django_countries.fields import Country
+from django.http import Http404
 
-from core.views import get_context, handler404
+from core.views import get_context
 from core.models import (
     MonsterUser,
     Progression,
@@ -60,6 +61,6 @@ def public_page(request, identifier):
 
         c['u'] = u
     else:
-        return handler404(request)
+        raise Http404
 
     return render(request, 'app/public_page.html', c)

@@ -682,31 +682,34 @@ class DoChangeInterfaceLanguage(NoTemplateMixin, ContextView):
 
             return response
 
+class ErrorPage(ContextView):
+    template_name = 'landing/error.html'
+    error = None
 
-def error_page(request, error_code):
-    ctx = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(ErrorPage, self).get_context_data(**kwargs)
 
-    if ctx['user']:
-        path = 'app/error_page.html'
-        ctx['error_code'] = error_code
-    else:
-        path = 'landing/error_page.html'
-        ctx['language'] = landing_language(
-            request
+        context['error'] = self.error
+        context['home'] = reverse('index')
+
+        if self._context.is_authorised:
+            auth = self._context.user
+        else:
+            auth = '<unlogged>'
+
+        logger.error(
+            '{error} error encountered, '
+            'method: {method}, path: {path}, path_info: {path_info}, '
+            'auth: {auth}'.format(
+                error=self.error,
+                method=self.request.method,
+                path=self.request.path,
+                path_info=self.request.path_info,
+                auth=auth,
+            )
         )
-        ctx['error_code'] = error_code
 
-    return render(request, path, ctx)
-
-
-def handler404(request):
-    return error_page(request, 404)
-
-def handler400(request):
-    return error_page(request, 400)
-
-def handler500(request):
-    return error_page(request, 500)
+        return context
 
 def static_page(request, page):
     '''

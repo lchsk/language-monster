@@ -1,0 +1,42 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    {% include "landing/head.html" %}
+<body>
+
+<div class="site-wrapper">
+  <div class="site-wrapper-inner">
+    <div class="cover-container" style="margin-top: 0; padding-top: 0;">
+      <div class="masthead clearfix">
+      </div>
+      <header>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div id="intro-header">
+                {% if error == 404 %}
+                    {% trans "Page you're looking for doesn't exist" %}
+                {% else %}
+                    {% trans "Oops, that didn't go as expected" %}
+                {% endif %}
+                <span id="typed-header"></span>
+              </div>
+              <div id="intro-text">
+                <div>
+                  {% if error != 404 %}
+                    {% trans "We'll fix it as soon as possible" %}
+                  {% endif %}
+                </div>
+                <div><a href="{{home}}" class="btn btn-submit">{% trans "Home" %}</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </div>
+</div>
+</body>
+</html>
