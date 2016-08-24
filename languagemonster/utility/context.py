@@ -4,6 +4,7 @@ import os
 
 from django.conf import settings
 from django.contrib import messages
+from django.utils import translation
 
 from utility.url import get_urls
 from utility.user_language import landing_language
@@ -230,8 +231,10 @@ class Context(object):
 
         if self._is_authorised:
             self._monster_user = MonsterUserAuth(monster_user)
+            translation.activate(self._monster_user.language.language.acronym)
         else:
             self._landing_language = landing_language(self._request)
+            translation.activate(self._landing_language.language.acronym)
 
     def _build_common(self):
         self._status = Status(

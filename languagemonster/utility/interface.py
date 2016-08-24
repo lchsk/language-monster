@@ -29,14 +29,7 @@ logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
 
 def get_context(request):
-    context = {}
-    # context['basic'] = _get_status(request)
-    # context['user'] = context['basic']['user']
-
-    # context['context'] = Context(request)
-
     return Context(request)
-
 
 def context(func):
     @wraps(func)
