@@ -514,59 +514,65 @@ def confirm_new_password(request, p_secure_hash):
 
     return HttpResponseRedirect(reverse('info', args=['']))
 
+class DoSaveContactEmail(ContextView):
+    """Contact Form
 
-# TODO: Change to CBV
-def send_email(request):
-    ''' This sends email (eg. from contact form on the landing page)'''
+        Can be sent from authorised and unauthorised view.
+    """
 
-    # Antispam
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
 
-    if request.POST['username']:
-        return HttpResponseRedirect(reverse('info', args=['']))
+        if request.POST['username']:
+            return self.redirect('info', args=[''])
 
-    name = request.POST['name']
-    email = request.POST['email']
-    text = request.POST['text']
+        name = request.POST['name']
+        email = request.POST['email']
+        text = request.POST['text']
+        text = text[:2048]
 
-    if name and email and text and len(name) > 1 and len(text) > 1:
+        if name and email and text:
+            mail.send_template_email(
+                request=self.request,
+                recipient=settings.EMAIL_FROM,
+                template='contact_form',
+                ctx=dict(
+                    NAME=name,
+                    EMAIL=email,
+                    TEXT=text
+                )
+            )
 
-        mail.send_template_email(
-            request=request,
-            recipient=settings.EMAIL_FROM,
-            template='contact_form',
-            ctx={
-                'NAME': name,
-                'EMAIL': email,
-                'TEXT': text
-            }
-        )
+            logger.info(
+                "Contact email sent from %s, %s, %s", name, email, text
+            )
 
-        logger.info(
-            "Contact email sent from %s, %s, %s",
-            str(name),
-            str(email),
-            str(text)
-        )
-        messages.add_message(
-            request,
-            messages.SUCCESS,
-            _('Thank you for contacting us. We will do our best to respond shortly!')
-        )
-        return HttpResponseRedirect(reverse('index'))
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                _(
+                    'Thank you for contacting us. We will do our best '
+                    'to respond shortly!'
+                )
+            )
 
-    else:
-        logger.info(
-            "Invalid values for contact email: %s, %s, %s",
-            str(name),
-            str(email),
-            str(text)
-        )
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Email was not sent. Please make sure that all fields have valid values.')
-        )
-        return HttpResponseRedirect(reverse('index'))
+            return self.redirect('index')
+        else:
+            logger.info(
+                "Invalid values for contact email: %s, %s, %s",
+                name, email, text
+            )
+
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _(
+                    'Email was not sent. Please make sure that all fields '
+                    ' have valid values.'
+                )
+            )
+
+            return self.redirect('index')
 
 class DoSaveAvatar(AuthContextView):
     def post(self, request, *args, **kwargs):

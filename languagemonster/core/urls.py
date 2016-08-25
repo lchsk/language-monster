@@ -49,8 +49,7 @@ urlpatterns = [
     ),
     url(
         r'^send-email/$',
-        # views.DoSaveContactEmail.as_view(),
-        views.send_email,
+        views.DoSaveContactEmail.as_view(),
         name='send_email',
     ),
     url(
