@@ -482,29 +482,6 @@ class UserResult(models.Model):
         verbose_name = 'UserResult'
         verbose_name_plural = 'User Results'
 
-class ErrorReport(models.Model):
-    '''Reports people send'''
-
-    user = models.ForeignKey(
-        MonsterUser,
-        related_name='error_report_user',
-        null=True
-    )
-    date = models.DateTimeField(
-        auto_now_add=True
-    )
-    text = models.CharField(max_length=256)
-    data_set = models.ForeignKey(
-        DataSet,
-        related_name='error_report_data_set',
-        null=True
-    )
-
-    class Meta:
-        verbose_name = 'ErrorReport'
-        verbose_name_plural = 'Error Reports'
-
-
 class MobileDevice(models.Model):
     """
         All devices registered with the API

@@ -11,13 +11,11 @@ from django.contrib import messages
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
-# from models import *
 from core.models import (
     LanguagePair,
     Progression,
     Language,
     DataSet,
-    ErrorReport,
 )
 
 from utility.url import redirect_to_previous_page
@@ -25,13 +23,12 @@ from utility.security import create_game_session_hash
 from vocabulary.impl.study import (
     get_user_games,
     get_games_played,
-    # get_language_pair,
     get_datasets,
     get_user_data_sets,
     get_single_dataset,
     get_game_translations,
 )
-# from core.views import get_context
+
 from utility.interface import (
     get_context,
     context,
@@ -216,28 +213,3 @@ class PlayView(AuthContextView):
         context['canvas_only'] = settings.GAMES_USE_CANVAS_ONLY
 
         return context
-
-
-# TODO: only accept localhost
-# @login_required
-@context
-@redirect_unauth
-def report_error(request, ctx):
-    d = request.POST.get('json')
-
-    if d:
-        data = json.loads(d)
-
-        username = data.get('username', None)
-        dataset_id = data.get('dataset_id', None)
-        text = data.get('text', None)
-
-        if not username and dataset_id and text:
-            report = ErrorReport(
-                user=ctx['user'],
-                text=text,
-                data_set=DataSet.objects.filter(id=dataset_id).first()
-            )
-            report.save()
-
-    return HttpResponseRedirect(reverse('index'))

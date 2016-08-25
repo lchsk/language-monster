@@ -69,7 +69,6 @@
                     translations = {{ translations|safe }};
                 </script>
                 <div id="game"></div>
-                <p><a href="#" data-toggle="modal" data-target="#modal-report-error">{% trans "Found an error? Tell us!" %}</a></p>
 </div>
     </div>
         </div>
@@ -81,8 +80,5 @@
 {% include "app/game_tuts/plane.html" %}
 {% include "app/game_tuts/runner.html" %}
 {% include "app/game_tuts/shooter.html" %}
-
-{% include "forms/form-report-error.html" %}
-
 
 {% endblock %}
