@@ -182,7 +182,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'api',
     'vocabulary',
-    # 'social.apps.django_app.me',
     'ctasks',
     'userprofile',
     'django_countries',
@@ -203,7 +202,6 @@ MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'core.user_backend.SocialAuthExceptionMiddleware',
 )
 
 if CACHE:
@@ -307,19 +305,6 @@ if CACHE:
     }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-
-SOCIAL_AUTH_PIPELINE = (
-    'social.pipeline.social_auth.social_details',
-    'social.pipeline.social_auth.social_uid',
-    'social.pipeline.social_auth.auth_allowed',
-    'social.pipeline.social_auth.social_user',
-    'social.pipeline.user.get_username',
-    'social.pipeline.user.create_user',
-    'core.user_backend.set_user_params',
-    'social.pipeline.social_auth.associate_user',
-    'social.pipeline.social_auth.load_extra_data',
-    'social.pipeline.user.user_details'
-)
 
 USE_I18N = True
 LANGUAGE_CODE = 'en'
