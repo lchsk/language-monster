@@ -3,16 +3,13 @@ import os
 import copy
 import logging
 import random
+import uuid
 
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import models as contrib_models
 
 from core.models import MonsterUser
-from utility.interface import (
-    create_hash,
-    get_uuid_str,
-)
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
@@ -41,7 +38,7 @@ def authenticate_user(
 
     if muser.user.check_password(password):
         if new_hash:
-            muser.api_login_hash = create_hash(muser)
+            muser.api_login_hash = uuid.uuid4().hex
             muser.save()
 
         logger.warning(
@@ -117,7 +114,7 @@ def update_public_name(monster_user):
     elif monster_user.user.first_name:
         monster_user.public_name = monster_user.user.first_name
     else:
-        monster_user.user.public_name = monster_user.user.email
+        monster_user.public_name = monster_user.user.email
 
 
 def process_games_list(games, user_games):
@@ -174,10 +171,10 @@ def register(email, password1, password2, confirm, base_language):
         mu = MonsterUser(user=u)
         u.is_active = not confirm
 
-        secure_hash = create_hash(mu)
+        secure_hash = uuid.uuid4().hex
         mu.secure_hash = secure_hash
 
-        api_login_hash = create_hash(mu)
+        api_login_hash = uuid.uuid4().hex
         mu.api_login_hash = api_login_hash
 
         if email in settings.SUPERADMIN_EMAIL:
@@ -188,7 +185,7 @@ def register(email, password1, password2, confirm, base_language):
         mu.language = base_language.symbol
 
         mu.avatar = get_default_avatar(mu.country)
-        mu.uri = get_uuid_str()
+        mu.uri = uuid.uuid4().hex
 
         update_public_name(mu)
         u.save()

@@ -214,8 +214,6 @@ class DoSaveProfile(AuthContextView):
             uri=d['uri'],
         )
 
-        self._context.user.save()
-
         logger.debug("Settings updated for %s", self._context.user)
 
         messages.add_message(

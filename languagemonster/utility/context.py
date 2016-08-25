@@ -8,6 +8,8 @@ from django.utils import translation
 
 from utility.url import get_urls
 from utility.user_language import landing_language
+from core.impl.user import update_public_name
+
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 from core.data.language import LANGUAGES
@@ -62,7 +64,7 @@ class MonsterUserAuth(object):
         self._monster_user.about = about
         # self._monster_user.uri = uri.replace(' ', '')
 
-    def save(self):
+        update_public_name(self._monster_user)
         self._monster_user.user.save()
         self._monster_user.save()
 
