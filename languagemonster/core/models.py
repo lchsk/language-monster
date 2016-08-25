@@ -166,8 +166,6 @@ class MonsterUser(models.Model):
 
     birthday = models.DateTimeField(null=True)
 
-    social_account = models.BooleanField(default=False)
-
     gender = models.CharField(
         max_length=2,
         null=True,
