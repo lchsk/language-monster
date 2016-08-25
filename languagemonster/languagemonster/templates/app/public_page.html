@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-3 col-xs-6" style="width: 180px; padding-top: 20px;">
                         {% if u.avatar %}
-                        {% with basic.urls.avatar|add:u.avatar as path %}
+                        {% with context.urls.avatar|add:u.avatar as path %}
                             {% thumbnail path "140x140" crop="center" as im %}
                                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle img-responsive pull-center" alt="{{username}}" />
                             {% endthumbnail %}

@@ -22,7 +22,11 @@ urlpatterns = [
     url(r'^monster/', include('core.urls', namespace='core')),
     url(r'^languages/', include('vocabulary.urls', namespace='vocabulary')),
 
-    url(r'^profile/(.*?)$', userprofile.public_page, name='public_page'),
+    url(
+        r'^profile/(?P<identifier>.+?)/?$',
+        userprofile.UserPage.as_view(),
+        name='public_page',
+    ),
     url(r'^manage/', include('management.urls', namespace='management')),
 ]
 

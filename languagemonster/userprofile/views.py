@@ -9,58 +9,48 @@ from core.models import (
     Progression,
 )
 
+from core.data.language_pair import LANGUAGE_PAIRS_FLAT
+
+from utility.views import AuthContextView
 from utility.interface import obfuscate
 
+class UserPage(AuthContextView):
+    template_name = 'app/public_page.html'
 
-@login_required
-def public_page(request, identifier):
-    '''
-        User's public page view.
-    '''
+    def get_context_data(self, **kwargs):
+        context = super(UserPage, self).get_context_data(**kwargs)
 
-    c = get_context(request)
+        user = MonsterUser.objects.filter(
+            uri=self.kwargs['identifier']
+        ).select_related('user')
 
-    if c['user'].uri == identifier:
-        u = c['user']
+        if len(user) != 1:
+            raise Http404
 
-        progressions = c['basic']['studying']
-    else:
-        u = MonsterUser.objects.filter(
-            uri=identifier
-        ).select_related('user').first()
+        user = user.first()
 
-        progressions = Progression.objects.filter(
-            user=u
-        )
+        progressions = Progression.objects.filter(user=user)
 
-    if u:
-        if u.public_name == u.user.email:
-            # Bad...
-            login, host = u.user.email.split('@')
+        if user.public_name == user.user.email:
+            login, host = user.user.email.split('@')
 
-            c['username'] = obfuscate(login, '*', half=2)
+            username = obfuscate(login, '*', half=2)
         else:
-            # OK
-            c['username'] = u.public_name
+            username = user.public_name
 
-        country = Country(u.country)
-
-        c['country'] = country if country else None
+        country = Country(user.country)
 
         knows, studies = set(), set()
 
-        for p, pair in progressions:
+        for pair in progressions:
+            pair = LANGUAGE_PAIRS_FLAT[pair.lang_pair]
             knows.add(pair.base_language)
             studies.add(pair.target_language)
 
-        c['knows'] = knows
-        c['studies'] = studies
+        context['country'] = country if country else None
+        context['username'] = username
+        context['knows'] = knows
+        context['studies'] = studies
+        context['u'] = user
 
-        # TODO:
-        # c['age'] = calculate_age (u['birthday'])
-
-        c['u'] = u
-    else:
-        raise Http404
-
-    return render(request, 'app/public_page.html', c)
+        return context

@@ -161,7 +161,8 @@ class MonsterUser(models.Model):
     uri = models.CharField(
         max_length=150,
         db_index=True,
-        unique=True
+        unique=True,
+        null=False,
     )
 
     birthday = models.DateTimeField(null=True)

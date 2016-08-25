@@ -30,11 +30,7 @@
     <div id="app-left-column">
         <div class="fluid-container">
             <div class="row">
-                {% if context.user.uri %}
-                    <a title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}">
-                {% elif context.user.id %}
-                    <a title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}">
-                {% endif %}
+              <a title="{% trans 'Profile' %}" href="{% url 'public_page' context.user.uri %}">
                         {% if context.user.avatar %}
                         {% with context.urls.avatar|add:context.user.avatar as path %}
                             {% thumbnail path "60x60" crop="center" as im %}
@@ -76,11 +72,7 @@
                     <h4>LANGUAGE MONSTER</h4>
 
                     <a class="common" title="{% trans 'Dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "Dashboard" %}</a><br />
-                    {% if user.uri %}
-                        <a class="common" title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "Profile" %}</a><br />
-                    {% elif user.id %}
-                        <a class="common" title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}"><span class="glyphicon glyphicon-user"></span>{% trans "Profile" %}</a><br />
-                    {% endif %}
+                    <a class="common" title="{% trans 'Profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "Profile" %}</a><br />
                     <a class="common" title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "Settings" %}</a><br />
                 </div>
             </div>
