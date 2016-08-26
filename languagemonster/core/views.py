@@ -15,6 +15,7 @@ from django.contrib.auth import (
     logout,
 )
 from django.conf import settings
+from django.http import Http404
 
 from django_countries import countries
 
@@ -277,116 +278,78 @@ class DoSaveUserEmail(AuthContextView):
     def post(self, request, *args, **kwargs):
         self.get_context_data()
 
-        new_email = request.POST['email']
+        new_email = request.POST['email'].lower()
 
-        if new_email:
-            secure_hash = self._context.user.change_email(new_email)
+        if not new_email:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('You need to type in your new email address.')
+            )
 
-            try:
-                host = request.get_host()
-                url = reverse('core:confirm_email', args=[secure_hash])
+            return self.redirect('core:settings')
 
-                mail.send_template_email(
-                    request=request,
-                    recipient=new_email,
-                    template='email_change',
-                    ctx={
-                        'PUBLIC_NAME': self._context.user.public_name,
-                        'URL': 'http://' + host + url
-                    }
-                )
+        already_exists = MonsterUser.objects.filter(
+            user__email=new_email
+        ).first()
 
-                messages.add_message(
-                    request,
-                    messages.SUCCESS,
-                    _('Confirmation email was sent. Please check your inbox (or possibly spam box).')
-                )
-            except Exception, e:
-                logger.critical(
-                    "Error when changing email for %s",
-                    self._context.user
-                )
-                logger.critical(str(e))
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    _('Sorry, sending confirmation email failed. Please try again later.')
-                )
-            else:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    _('You need to type in your new email address.')
-                )
+        if already_exists:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Email already in use'),
+            )
 
+            return self.redirect('core:settings')
+
+        secure_hash = self._context.user.change_email(new_email)
+
+        host = request.get_host()
+        url = reverse('core:confirm_email', args=[secure_hash])
+
+        mail.send_template_email(
+            request=request,
+            recipient=new_email,
+            template='email_change',
+            ctx=dict(
+                PUBLIC_NAME=self._context.user.public_name,
+                URL='http://' + host + url,
+            )
+        )
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _(
+                'Confirmation email was sent. Please check your '
+                'inbox (or possibly spam box).'
+            )
+        )
 
         return self.redirect('core:settings')
 
-# TODO: Needs to be rewritten (email change confirmation)
-@context
-@redirect_unauth
-def confirm_email(request, p_secure_hash, ctx):
-
-    if ctx['user'].secure_hash != p_secure_hash:
-        logger.warning(
-            "User %s probably does not exist",
-            str(ctx['user'])
-        )
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Confirmation procedure failed. Please try again.')
-        )
-        return HttpResponseRedirect(reverse('core:settings'))
-
-    ctx['user'].user.email = ctx['user'].new_email
-    ctx['user'].user.save()
-    update_public_name(ctx['user'])
-
-    ctx['user'].secure_hash = ''
-    ctx['user'].new_email = ''
-    ctx['user'].save()
-
-    logger.info("User %s successfully confirmed email", str(ctx['user']))
-    messages.add_message(
-        request,
-        messages.SUCCESS,
-        _('Your email address was verified successfully.')
-    )
-    return HttpResponseRedirect(reverse('core:settings'))
-
-
-class InfoView(ContextView):
-    template_name = 'landing/base.html'
+class SpecialPageView(ContextView):
+    template_name = 'landing/special_page.html'
 
     def get_context_data(self, **kwargs):
-        context = super(InfoView, self).get_context_data(**kwargs)
+        context = super(SpecialPageView, self).get_context_data(**kwargs)
 
-        if len(self.args) == 1:
-            args = self.args[0]
-        else:
-            args = self.args
+        page = self.kwargs.get('page', 'success')
 
+        if page not in (
+            'forgot_password',
+            'generate_password',
+            'success',
+            'failure',
+        ):
+            raise Http404
+
+        context['home'] = reverse('index')
         context['language'] = landing_language(self.request)
-        context['page'] = 'info'
-        context['param'] =  args
-        context['additional'] = self.kwargs
+        context['page'] = page
         context['messages'] = messages.get_messages(self.request)
 
         return context
-
-# TODO: Needs to stay until emai change/password recovery is rewritten
-def info(request, param=None, additional={}):
-    ''' View for unlogged user only '''
-
-    ctx = {}
-    ctx['language'] = landing_language(request)
-    ctx['page'] = 'info'
-    ctx['param'] =  param
-    ctx['additional'] = additional
-    ctx['messages'] = messages.get_messages(request)
-
-    return render(request, 'landing/base.html', ctx)
 
 class DoRecoverPassword(ContextView):
     def post(self, request, *args, **kwargs):
@@ -417,102 +380,123 @@ class DoRecoverPassword(ContextView):
         monster_user.secure_hash = secure_hash
         monster_user.save()
 
-        try:
-            host = request.get_host()
-            url = reverse('core:generate_password', args=[secure_hash])
+        host = request.get_host()
+        url = reverse('core:generate_password', args=[secure_hash])
 
-            mail.send_template_email(
-                request=request,
-                recipient=monster_user.user.email,
-                template='password_recovery',
-                ctx={
-                    'PUBLIC_NAME': monster_user.public_name,
-                    'URL': 'http://' + host + url
-                }
+        mail.send_template_email(
+            request=request,
+            recipient=monster_user.user.email,
+            template='password_recovery',
+            ctx=dict(
+                PUBLIC_NAME=monster_user.public_name,
+                URL='http://' + host + url
             )
+        )
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _(
+                'Email was sent. Please check your inbox '
+                '(or possibly spam box).'
+            )
+        )
+
+        logger.info("Email sent for password recovery: %s", identifier)
+
+        return self.redirect('info', kwargs=dict(page='success'))
+
+class PickNewPasswordView(SpecialPageView):
+    def get_context_data(self, **kwargs):
+        context = super(PickNewPasswordView, self).get_context_data(**kwargs)
+
+        context['page'] = 'generate_password'
+        context['secret'] = kwargs['secret']
+
+        return context
+
+class DoConfirmNewPassword(ContextView):
+    def post(self, request, *args, **kwargs):
+        email = request.POST['email']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        monster_user = MonsterUser.objects.filter(
+            secure_hash=kwargs['secret'],
+            user__email=email
+        )
+
+        if len(monster_user) != 1:
+            logger.warning('User not found %s', email)
+
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Email not found.')
+            )
+
+            raise Http404
+
+        monster_user = monster_user.first()
+
+        valid = validate_password(request, password1, password2, messages)
+
+        if valid:
+            monster_user.secure_hash = None
+            monster_user.save()
+
+            monster_user.user.set_password(password1)
+            monster_user.user.save()
+
+            logger.info("Password confirmed: %s", monster_user)
 
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                _(
-                    'Email was sent. Please check your inbox '
-                    '(or possibly spam box).'
-                )
+                _('Your password was successfully changed. You can now login.')
             )
-            logger.info("Email sent for password recovery: %s", identifier)
-        except Exception, e:
-            logger.critical("Error when sending email for password recovery")
-            logger.critical(str(e))
+
+            return self.redirect('info', kwargs=dict(page='success'))
+        else:
             messages.add_message(
                 request,
                 messages.WARNING,
-                _(
-                    'Sorry, sending confirmation email failed. '
-                    ' Please try again later.'
-                )
+                _('Values you have entered are incorrect.')
             )
 
-        return self.redirect('info', args=[''])
+            return self.redirect('info', kwargs=dict(page='failure'))
 
-        return resp
+class DoConfirmNewEmail(AuthContextView):
+    def get(self, request, *args, **kwargs):
+        self.get_context_data()
 
-# TODO Needs to stay until password recovery/email change is rewritten
-def generate_password(request, p_secure_hash):
-    user = MonsterUser.objects.filter(secure_hash=p_secure_hash).first()
+        if self._context.user.secure_hash != kwargs['secret']:
+            logger.warning(
+                'Invalid secret hash when chaning email for %s',
+                self._context.user
+            )
 
-    if not user:
-        logger.warning("Reloaded page during password generation")
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Reloading page during password change is forbidden for security reasons. In order to change your password you have to start again, sorry.')
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Confirmation procedure failed. Please try again.')
+            )
+            return self.redirect('core:settings')
+
+        self._context.user.save_new_email()
+
+        logger.info(
+            'User %s successfully confirmed email',
+            self._context.user,
         )
-        return HttpResponseRedirect(reverse('info', args=['']))
 
-    secure_hash = uuid4().hex
-    user.secure_hash = secure_hash
-    user.save()
-
-    return info(request, 'generate_password', {'secure_hash': secure_hash})
-
-# TODO Needs to stay until password recovery/email change is rewritten
-def confirm_new_password(request, p_secure_hash):
-    """Confirm password change (during password recovery)"""
-
-    email = request.POST['email']
-    password1 = request.POST['password1']
-    password2 = request.POST['password2']
-
-    user = MonsterUser.objects.filter(
-        secure_hash=p_secure_hash,
-        user__email=email
-    ).first()
-
-    if not user:
-        logger.warning("Invalid email: %s", str(user))
-        messages.add_message(
-            request,
-            messages.WARNING,
-            _('Email you have entered is either incorrect or you have reloaded the webpage. Reloading page during password change is forbidden for security reasons. In order to change your password you have to start again, sorry.')
-        )
-        return HttpResponseRedirect(reverse('info', args=['']))
-
-    user.secure_hash = None
-    user.save()
-
-    valid = validate_password(request, password1, password2, messages)
-
-    if valid:
-        user.user.set_password(password1)
-        user.user.save()
-        logger.info("Password confirmed: %s", str(user))
         messages.add_message(
             request,
             messages.SUCCESS,
-            _("Your password was successfully changed. You can now login.")
+            _('Your email address was verified successfully.')
         )
 
-    return HttpResponseRedirect(reverse('info', args=['']))
+        return self.redirect('info', kwargs=dict(page='success'))
 
 class DoSaveContactEmail(ContextView):
     """Contact Form
@@ -702,7 +686,7 @@ class ErrorPage(ContextView):
             auth = '<unlogged>'
 
         logger.error(
-            '{error} error encountered, '
+                '{error} error encountered, '
             'method: {method}, path: {path}, path_info: {path_info}, '
             'auth: {auth}'.format(
                 error=self.error,
@@ -714,22 +698,3 @@ class ErrorPage(ContextView):
         )
 
         return context
-
-def static_page(request, page):
-    '''
-        View (static page)
-    '''
-
-    ctx = get_context(request)
-
-    if ctx['user']:
-        path = 'app/static.html'
-        ctx['page'] = page
-    else:
-        path = 'landing/static.html'
-        ctx['language'] = landing_language(
-            request
-        )
-        ctx['page'] = page
-
-    return render(request, path, ctx)

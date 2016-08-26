@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings
 from core.views import (
     IndexView,
-    InfoView,
+    SpecialPageView,
     ErrorPage,
 )
 from django.conf.urls.static import static
@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^$', IndexView.as_view(), name='index'),
-    url(r'^info/([a-z_]*?)$', InfoView.as_view(), name='info'),
+    url(r'^page/(?P<page>[a-z_]*?)$', SpecialPageView.as_view(), name='info'),
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^monster/', include('core.urls', namespace='core')),
     url(r'^languages/', include('vocabulary.urls', namespace='vocabulary')),

@@ -85,6 +85,16 @@ class MonsterUserAuth(object):
 
         return secure_hash
 
+    def save_new_email(self):
+        self._monster_user.user.email = self._monster_user.new_email
+        self._monster_user.user.save()
+
+        self._monster_user.secure_hash = None
+        self._monster_user.new_email = None
+        update_public_name(self._monster_user)
+
+        self._monster_user.save()
+
     def update_games(self, res):
         for game, game_settings in res.iteritems():
             user_game = MonsterUserGame.objects.filter(
@@ -176,6 +186,10 @@ class MonsterUserAuth(object):
     @property
     def language(self):
         return self._language
+
+    @property
+    def secure_hash(self):
+        return self._monster_user.secure_hash
 
 class Context(object):
     def __init__(self, request):

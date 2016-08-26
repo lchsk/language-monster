@@ -65,25 +65,19 @@ urlpatterns = [
 
     # email change confirmation
     url(
-        r'^confirm-email/([a-f0-9]+)$',
-        views.confirm_email,
+        r'^confirm-email/(?P<secret>[a-f0-9]+)/?$',
+        views.DoConfirmNewEmail.as_view(),
         name='confirm_email',
     ),
     # new password generation
     url(
-        r'^generate-password/([a-f0-9]+)$',
-        views.generate_password,
+        r'^generate-password/(?P<secret>[a-f0-9]+)/?$',
+        views.PickNewPasswordView.as_view(),
         name='generate_password',
     ),
     url(
-        r'^confirm-new-password/([a-f0-9]+)$',
-        views.confirm_new_password,
+        r'^confirm-new-password/(?P<secret>[a-f0-9]+)/?$',
+        views.DoConfirmNewPassword.as_view(),
         name='confirm_new_password',
-    ),
-
-    url(
-        r'^page/([a-z-]+)$',
-        views.static_page,
-        name='static_page',
     ),
 ]
