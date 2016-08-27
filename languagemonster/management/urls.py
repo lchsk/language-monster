@@ -68,7 +68,11 @@ urlpatterns = [
 
     # url(r'^export_words/(.*)$', views.export_words, name='export_words'),
 
-    url(r'^copy_and_reverse/(.*)$', views.copy_and_reverse, name='copy_and_reverse'),
+    url(
+        r'^copy_and_reverse/(?P<dataset_id>\d+)$',
+        views.DoCopyAndReverse.as_view(),
+        name='copy_and_reverse',
+    ),
 
     # Simple data set management
     url(r'^view_simple_dataset/(.*)$', simple_dataset.view_simple_dataset, name='view_simple_dataset'),

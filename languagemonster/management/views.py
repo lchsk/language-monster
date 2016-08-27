@@ -589,78 +589,77 @@ class StatusView(SuperUserContextView):
 
         return context
 
-@require_superuser
-def copy_and_reverse(request, dataset_id):
-    """
-    Create another set but inverse base <-> target in word pairs
-    """
+class DoCopyAndReverse(SuperUserContextView):
+    def get(self, *args, **kwargs):
+        ds = DataSet.objects.filter(pk=self.kwargs['dataset_id']).first()
 
-    ds = DataSet.objects.filter(pk=dataset_id).first()
+        if not ds:
+            raise Http404
 
-    if not ds:
-        raise Exception("Data set does not exist")
+        base, target = ds.pair.symbol.split('_')
 
-    pair = ds.pair
+        new_pair = '{}_{}'.format(target, base)
 
-    new_pair = LanguagePair.objects.filter(
-        base_language=pair.target_language,
-        target_language=pair.base_language
-    ).first()
+        new_ds = DataSet(
+            icon=ds.icon,
+            name_base=ds.name_target,
+            name_en=ds.name_en,
+            name_target=ds.name_base,
+            lang_pair=new_pair,
+            visible=False,
+            word_count=ds.word_count,
+            pos=ds.pos,
+            from_exported_file=ds.from_exported_file,
+            simple_dataset=False
+        )
 
-    if not new_pair:
-        raise Exception("Reverse for {0} does not exist!".format(str(pair)))
+        new_ds.reversed_set = True
+        new_ds.save()
 
-    new_ds = DataSet(
-        icon=ds.icon,
-        name_base=ds.name_target,
-        name_en=ds.name_en,
-        name_target=ds.name_base,
-        pair=new_pair,
-        visible=False,
-        word_count=ds.word_count,
-        pos = ds.pos,
-        from_exported_file = ds.from_exported_file,
-        simple_dataset=False
-    )
-    new_ds.reversed_set = True
-    new_ds.save()
+        wp_links = DS2WP.objects.filter(ds=ds)
 
-    wp_links = DS2WP.objects.filter(ds=ds)
+        for link in wp_links:
+            wp_ = link.wp
 
-    for link in wp_links:
-        wp_ = link.wp
-
-        exists = WordPair.objects.filter(base=wp_.target, target=wp_.base).first()
-
-        if exists:
-            new_link = DS2WP(
-                wp=exists,
-                ds=new_ds
-            )
-            new_link.save()
-        else:
-            new_wp = WordPair(
+            exists = WordPair.objects.filter(
                 base=wp_.target,
                 target=wp_.base,
-                base_en=wp_.target_en,
-                target_en=wp_.base_en,
-                english=wp_.english,
-                comments=wp_.comments,
-                pos=wp_.pos,
-                english_invalid=wp_.english_invalid,
-                from_english=wp_.from_english,
-                verified=wp_.verified,
-                index=wp_.index,
-                pop=wp_.pop
-            )
-            new_wp.save()
-            new_link = DS2WP(
-                wp=new_wp,
-                ds=new_ds
-            )
-            new_link.save()
+            ).first()
 
-    return redirect(reverse('management:index'))
+            if exists:
+                new_link = DS2WP(
+                    wp=exists,
+                    ds=new_ds
+                )
+                new_link.save()
+            else:
+                new_wp = WordPair(
+                    base=wp_.target,
+                    target=wp_.base,
+                    base_en=wp_.target_en,
+                    target_en=wp_.base_en,
+                    english=wp_.english,
+                    comments=wp_.comments,
+                    pos=wp_.pos,
+                    english_invalid=wp_.english_invalid,
+                    from_english=wp_.from_english,
+                    verified=wp_.verified,
+                    index=wp_.index,
+                    pop=wp_.pop
+                )
+
+                new_wp.save()
+
+                new_link = DS2WP(
+                    wp=new_wp,
+                    ds=new_ds
+                )
+                new_link.save()
+
+        return self.redirect_with_success(
+            'management:index',
+            'Data set copied and reversed',
+        )
 
 class ImportSetView(SuperUserContextView):
     template_name = 'app/management/import.html'
