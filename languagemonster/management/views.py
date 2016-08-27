@@ -106,81 +106,75 @@ def _parse_line(line):
 
     return pair
 
-@require_superuser
-def add_set(request, path):
-    """
-        show form for adding a new set
-    """
+class AddNewSetView(SuperUserContextView):
+    template_name = 'app/management/add_set.html'
 
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(AddNewSetView, self).get_context_data(**kwargs)
 
-    if os.path.exists(path):
-        f = open(path)
+        path = self.kwargs['path']
 
-        metadata = {}
-        correct = True
-        error_msg = ''
-        exists = False
-        words = 0
+        if os.path.exists(path):
+            f = open(path)
 
-        w = []
+            metadata = {}
+            correct = True
+            error_msg = ''
+            exists = False
+            words = 0
 
-        for line in f:
-            if line.startswith('#'):
-                if '=' in line[1:]:
-                    info = line[1:].strip().split('=')
+            w = []
 
-                    if len(info) == 2:
-                        metadata[info[0]] = info[1]
-            elif '||' in line:
-                words += 1
+            for line in f:
+                if line.startswith('#'):
+                    if '=' in line[1:]:
+                        info = line[1:].strip().split('=')
 
-                pair = _parse_line(line)
+                        if len(info) == 2:
+                            metadata[info[0]] = info[1]
+                elif '||' in line:
+                    words += 1
 
-                w.append(pair)
+                    pair = _parse_line(line)
 
-        lang_pair = get_language_pair(
-            metadata['base'],
-            metadata['target']
-        )
+                    w.append(pair)
 
-        ds = DataSet.objects.filter(
-            lang_pair=lang_pair.symbol,
-            name_en=metadata['name_en']
-        ).first()
+            lang_pair = get_language_pair(
+                metadata['base'],
+                metadata['target']
+            )
 
-        if ds:
-            exists = True
+            ds = DataSet.objects.filter(
+                lang_pair=lang_pair.symbol,
+                name_en=metadata['name_en']
+            ).first()
 
-        # if not base:
-        #     correct = False
-        #     error_msg = 'Base is NULL'
-        # if not target:
-        #     correct = False
-        #     error_msg = 'Target is NULL'
-        if not metadata['name_en']:
-            correct = False
-            error_msg = 'name_en is missing'
-        # if not lp:
-        #     correct = False
-        #     error_msg = 'Language Pair does not exist'
+            if ds:
+                exists = True
 
-        c['path'] = path
-        c['exists'] = exists
-        c['correct'] = correct
-        c['error_msg'] = error_msg
-        c['pair'] = lang_pair
-        c['name_en'] = metadata['name_en']
-        c['pos'] = metadata.get('pos')
-        c['from_exported_file'] = metadata.get('from_exported_file', False)
-        c['words'] = words
-        c['wordlist'] = w
+            if not metadata['name_en']:
+                correct = False
+                error_msg = 'name_en is missing'
 
-        f.close()
+            context['path'] = path
+            context['exists'] = exists
+            context['correct'] = correct
+            context['error_msg'] = error_msg
+            context['pair'] = lang_pair
+            context['name_en'] = metadata['name_en']
+            context['pos'] = metadata.get('pos')
+            context['from_exported_file'] = metadata.get(
+                'from_exported_file',
+                False
+            )
+            context['words'] = words
+            context['wordlist'] = w
 
-        return render(request, "app/management/add_set.html", c)
-    else:
-        return render(request, 'app/404.html', c)
+            f.close()
+        else:
+            raise Http404
+
+        return context
 
 @require_superuser
 def save_set_meta(request, path):
