@@ -362,55 +362,6 @@ class EditSetView(SuperUserContextView):
 
         return context
 
-# @require_superuser
-# def update_set(request, dataset_id):
-#     ids = request.POST.getlist('checked')
-
-#     name_en = request.POST.get('name_en', 'name_en')
-#     name_base = request.POST.get('name_base', 'name_base')
-#     name_target = request.POST.get('name_target', 'name_target')
-#     icon = request.POST.get('icon', '')
-#     visible = request.POST.get('visible') is not None
-
-#     ds = DataSet.objects.filter(id=dataset_id).first()
-#     # pairs = WordPair.objects(data_set=ds)
-#     wp_tmp = DS2WP.objects.filter(ds=ds)
-#     pairs = [i.wp for i in wp_tmp]
-
-#     word_count = 0
-
-#     for p in pairs:
-#         if str(p.id) in ids:
-#             # Update
-#             _id = str(p.id)
-#             key_base = '{0}_base'.format(p.id)
-#             key_target = '{0}_target'.format(p.id)
-
-#             if key_base in request.POST \
-#             and key_target in request.POST:
-#                 p.base = request.POST[key_base]
-#                 p.target = request.POST[key_target]
-#                 p.save()
-
-#                 word_count += 1
-
-#         elif str(p.id) not in ids:
-#             # DO NOT delete a word pair. Instead: unlink word pair from
-#             # a data set
-#             to_be_removed = DS2WP.objects.filter(wp=p, ds=ds).first()
-#             to_be_removed.delete()
-
-#     if ds:
-#         ds.word_count = word_count
-#         ds.name_en = name_en
-#         ds.name_base = name_base
-#         ds.name_target = name_target
-#         ds.visible = visible
-#         ds.icon = icon
-#         ds.save()
-
-#     return redirect(reverse('management:edit_set', args=[dataset_id]))
-
 @require_superuser
 def import_diff(request, dataset_id):
 
@@ -505,46 +456,6 @@ def save_diff(request, dataset_id):
 
     return redirect(reverse('management:index'))
 
-# @require_superuser
-# def import_words(request, dataset_id):
-
-#     c = get_context(request)
-
-#     c['dataset_id'] = dataset_id
-#     return render(request, "app/management/import.html", c)
-
-# @require_superuser
-# def get_words_from_request(request, dataset_id):
-#     ids = request.POST.getlist('checked')
-
-#     ds = DataSet.objects.filter(
-#         id=dataset_id
-#     ).first()
-#     wp_tmp = DS2WP.objects.filter(
-#         ds=ds
-#     ).select_related(
-#         'wp'
-#     )
-#     pairs = [i.wp for i in wp_tmp]
-
-#     to_export = []
-
-#     for p in pairs:
-#         if str(p.id) in ids:
-#             _id = str(p.id)
-#             key_base = '{0}_base'.format(p.id)
-#             key_target = '{0}_target'.format(p.id)
-
-#             if key_base in request.POST and key_target in request.POST:
-#                 item = {}
-
-#                 item['ebase'] = request.POST[key_base]
-#                 item['etarget'] = request.POST[key_target]
-
-#                 to_export.append(item)
-
-#     return to_export
-
 class SetActionDispatch(SuperUserContextView):
     template_name = 'app/management/export.html'
 
@@ -572,23 +483,6 @@ class SetActionDispatch(SuperUserContextView):
             self.template_name = 'app/management/import.html'
 
         return render(self.request, self.template_name, ctx)
-
-@require_superuser
-def save_edit_form(request, dataset_id):
-    if 'update' in request.POST \
-    and request.POST['update'] == 'update':
-        return update_set(request, dataset_id)
-    elif 'export' in request.POST \
-    and request.POST['export'] == 'export':
-        return export_words(request, dataset_id)
-    elif 'export_set' in request.POST \
-    and request.POST['export_set'] == 'export_set':
-        return export_set(request, dataset_id)
-    elif 'import' in request.POST \
-    and request.POST['import'] == 'import':
-        return import_words(request, dataset_id)
-
-    return redirect(reverse('management:index'))
 
 class AddNewSetFromFileView(SuperUserContextView):
     template_name = 'app/management/add_new_set_from_file.html'
