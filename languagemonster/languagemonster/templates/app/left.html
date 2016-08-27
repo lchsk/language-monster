@@ -41,6 +41,10 @@
                     </a>
             </div>
             <div class="row hello-screen">{% trans "Hello" %}<br />{{context.user.public_name}}</div>
+            {% if context.user.is_superuser%}
+            <div>Superuser</div>
+            {% endif %}
+
             <div class="row">
               <div class="main-menu">
                     {% if context.user.studying|length > 0 %}

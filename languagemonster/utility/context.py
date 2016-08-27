@@ -191,6 +191,10 @@ class MonsterUserAuth(object):
     def secure_hash(self):
         return self._monster_user.secure_hash
 
+    @property
+    def is_superuser(self):
+        return self._monster_user.user.is_superuser
+
 class Context(object):
     def __init__(self, request):
         self._request = request
