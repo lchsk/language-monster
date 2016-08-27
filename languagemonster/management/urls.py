@@ -1,8 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
+
 import views
 import management.impl.simple_dataset as simple_dataset
-import management.impl.views_clean as views_clean
-import management.impl.action_clean as action_clean
 
 urlpatterns = [
     url(
@@ -87,12 +86,12 @@ urlpatterns = [
     # Cleaning tasks
     url(
         r'^view_dangling_word_pairs/?$',
-        views_clean.view_dangling_word_pairs,
-        name='view_dangling_word_pairs'
+        views.DanglingWordPairsView.as_view(),
+        name='view_dangling_word_pairs',
     ),
     url(
         r'^remove_dangling_words/?$',
-        action_clean.remove_dangling_words,
-        name='remove_dangling_words'
+        views.DoRemoveDanglingWords.as_view(),
+        name='remove_dangling_words',
     ),
 ]

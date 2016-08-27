@@ -906,3 +906,37 @@ def do_import_set(request):
         return render(request, "app/management/import.html", c)
 
     return redirect(reverse('management:index'))
+
+class DanglingWordPairsView(SuperUserContextView):
+    template_name = 'app/management/view_dangling_word_pairs.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DanglingWordPairsView, self).get_context_data(**kwargs)
+
+        all_words = WordPair.objects.all()
+        all_links = DS2WP.objects.all()
+
+        correct_words = {link.wp_id for link in all_links}
+
+        dangling = []
+
+        for w in all_words:
+            if w.id not in correct_words:
+                dangling.append(w)
+
+        context['dangling'] = dangling
+        context['count'] = len(all_words)
+
+        return context
+
+class DoRemoveDanglingWords(SuperUserContextView):
+    def post(self, *args, **kwargs):
+        ids = self.request.POST.getlist('remove')
+
+        for pk in ids:
+            wp = WordPair.objects.filter(pk=pk).first()
+
+            if wp:
+                wp.delete()
+
+        return self.redirect_with_success('management:index', 'Removed')
