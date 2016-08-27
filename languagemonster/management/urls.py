@@ -68,8 +68,6 @@ urlpatterns = [
 
     # url(r'^export_words/(.*)$', views.export_words, name='export_words'),
 
-    url(r'^clean/$', views.clean, name='clean'),
-
     url(r'^copy_and_reverse/(.*)$', views.copy_and_reverse, name='copy_and_reverse'),
 
     # Simple data set management
