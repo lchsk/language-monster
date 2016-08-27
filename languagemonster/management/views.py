@@ -38,6 +38,8 @@ from management.impl.set_action import (
     update_set,
 )
 
+from management.impl.util import parse_line
+
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
@@ -176,78 +178,87 @@ class AddNewSetView(SuperUserContextView):
 
         return context
 
-@require_superuser
-def save_set_meta(request, path):
-    """
-        adds shit to the database
-    """
+class DoSaveNewSet(SuperUserContextView):
+    template_name = 'app/management/index.html'
 
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(DoSaveNewSet, self).get_context_data(**kwargs)
 
-    f = open(path)
+        return context
 
-    words = int(request.POST['words'])
-    icon = request.POST['icon']
-    name_en = request.POST['name_en']
-    name_base = request.POST['name_base']
-    name_target = request.POST['name_target']
-    base_acronym = request.POST['base']
-    target_acronym = request.POST['target']
-    pos = request.POST['pos']
-    from_exported_file = request.POST.get('from_exported_file', False)
+    def post(self, *args, **kwargs):
+        path = self.kwargs['path']
+        request = self.request
 
-    lang_pair = get_language_pair(base_acronym, target_acronym)
+        f = open(path)
 
-    if lang_pair and words > 0 and name_en:
-        # Add new object
-        ds = DataSet(
-            icon=icon,
-            name_base=name_base,
-            name_en=name_en,
-            name_target=name_target,
-            lang_pair=lang_pair.symbol,
-            visible=False,
-            word_count=words,
-            pos=pos,
-            from_exported_file=from_exported_file,
-            simple_dataset=False
+        words = int(request.POST['words'])
+        icon = request.POST['icon']
+        name_en = request.POST['name_en']
+        name_base = request.POST['name_base']
+        name_target = request.POST['name_target']
+        base_acronym = request.POST['base']
+        target_acronym = request.POST['target']
+        pos = request.POST['pos']
+        from_exported_file = request.POST.get('from_exported_file', False)
+
+        lang_pair = get_language_pair(base_acronym, target_acronym)
+
+        if lang_pair and words > 0 and name_en:
+            # Add new object
+            ds = DataSet(
+                icon=icon,
+                name_base=name_base,
+                name_en=name_en,
+                name_target=name_target,
+                lang_pair=lang_pair.symbol,
+                visible=False,
+                word_count=words,
+                pos=pos,
+                from_exported_file=from_exported_file,
+                simple_dataset=False
+            )
+            ds.save()
+
+            # Warning!
+            # Adding actual word pairs into DB
+
+            for i, line in enumerate(f):
+                if line[0] != '#' and '||' in line:
+
+                    p = parse_line(line)
+
+                    wp = WordPair(
+                        base=p['b'],
+                        target=p['t'],
+                        index=i,
+                        english=p['en'],
+                        comments=p['c'],
+                        english_invalid=p['english_invalid'],
+                        base_en=p['base_en'],
+                        target_en=p['target_en'],
+                        from_english=p['from_english'],
+                        verified=p['verified'],
+                        pos=pos,
+                        pop=p['pop']
+                    )
+                    wp.save()
+
+                    link = DS2WP(
+                        wp=wp,
+                        ds=ds
+                    )
+                    link.save()
+
+        f.close()
+
+        messages.add_message(
+            request,
+            messages.WARNING,
+            'New set added',
         )
-        ds.save()
 
-        # Warning!
-        # Adding actual word pairs into DB
-
-        for i, line in enumerate(f):
-            if line[0] != '#' and '||' in line:
-
-                # b, t = line.split('||')
-                p = _parse_line(line)
-
-                wp = WordPair(
-                    base=p['b'],
-                    target=p['t'],
-                    index=i,
-                    english=p['en'],
-                    comments=p['c'],
-                    english_invalid=p['english_invalid'],
-                    base_en=p['base_en'],
-                    target_en=p['target_en'],
-                    from_english=p['from_english'],
-                    verified=p['verified'],
-                    pos=pos,
-                    pop=p['pop']
-                )
-                wp.save()
-
-                link = DS2WP(
-                    wp=wp,
-                    ds=ds
-                )
-                link.save()
-
-    f.close()
-
-    return redirect(reverse('management:index'))
+        return self.redirect('management:index')
 
 class SetsView(SuperUserContextView):
     template_name = 'app/management/sets.html'

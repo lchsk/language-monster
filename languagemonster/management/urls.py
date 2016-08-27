@@ -26,6 +26,11 @@ urlpatterns = [
         name='add_set',
     ),
     url(
+        r'^save_set_meta/(?P<path>[\w\/\.\-_]+)$',
+        views.DoSaveNewSet.as_view(),
+        name='save_set_meta',
+    ),
+    url(
         r'^sets/$',
         views.SetsView.as_view(),
         name='sets',
@@ -51,8 +56,6 @@ urlpatterns = [
         views.DoImportSet.as_view(),
         name='do_import_set',
     ),
-
-    url(r'^save_set_meta/(.*)$', views.save_set_meta, name='save_set_meta'),
     url(r'^save_diff/(.*)$', views.save_diff, name='save_diff'),
 
     url(r'^duplicates/(.*)$', views.duplicates, name='duplicates'),
