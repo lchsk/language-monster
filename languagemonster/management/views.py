@@ -254,7 +254,7 @@ class DoSaveNewSet(SuperUserContextView):
 
         messages.add_message(
             request,
-            messages.WARNING,
+            messages.SUCCESS,
             'New set added',
         )
 
@@ -617,48 +617,61 @@ def clean(request):
 
     return redirect(reverse('management:index'))
 
-@require_superuser
-def duplicates(request, dataset_id):
-    '''Looks for duplicates (words)'''
+class DuplicatesView(SuperUserContextView):
+    template_name = 'app/management/duplicates.html'
 
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(DuplicatesView, self).get_context_data(**kwargs)
 
-    ds = DataSet.objects.filter(id=dataset_id).first()
-    # pairs = WordPair.objects(data_set=ds)
-    wp_tmp = DS2WP.objects.filter(ds=ds)
-    pairs = [i.wp for i in wp_tmp]
+        ds = DataSet.objects.filter(pk=kwargs['dataset_id']).first()
+        wp_tmp = DS2WP.objects.filter(ds=ds)
+        pairs = [i.wp for i in wp_tmp]
 
-    suspected = []
+        suspected = []
 
-    for i in pairs:
-        for j in pairs:
-            if i is not j:
-                ratio_base = SequenceMatcher(None, i.base, j.base).ratio()
-                ratio_target = SequenceMatcher(None, i.target, j.target).ratio()
+        for i in pairs:
+            for j in pairs:
+                if i is not j:
+                    ratio_base = SequenceMatcher(
+                        None,
+                        i.base,
+                    j.base).ratio()
+                    ratio_target = SequenceMatcher(
+                        None,
+                        i.target,
+                        j.target
+                    ).ratio()
 
-                ratio = ratio_base + ratio_target
+                    ratio = ratio_base + ratio_target
 
-                if ratio >= 1.1 or ratio_base >= 0.7 or ratio_target >= 0.7:
-                    item = dict(
-                        base1 = i.base,
-                        base2 = j.base,
-                        target1 = i.target,
-                        target2 = j.target,
-                        ratio_base = ratio_base,
-                        ratio_target = ratio_target,
-                        ratio = ratio
-                    )
+                    if ratio >= 1.1 or ratio_base >= 0.7 or ratio_target >= 0.7:
+                        item = dict(
+                            base1=i.base,
+                            base2=j.base,
+                            target1=i.target,
+                            target2=j.target,
+                            ratio_base=ratio_base,
+                            ratio_target=ratio_target,
+                            ratio=ratio
+                        )
 
-                    suspected.append(item)
+                        suspected.append(item)
 
-    suspected = { x['ratio']: x for x in suspected}.values()
+        suspected = {
+            x['ratio']:
+            x for x in suspected
+        }.values()
 
-    suspected = sorted(suspected, key=lambda x: x['ratio'], reverse=True)
+        suspected = sorted(
+            suspected,
+            key=lambda x: x['ratio'],
+            reverse=True
+        )
 
-    c['suspected'] = suspected
-    c['ds'] = ds
+        context['suspected'] = suspected
+        context['ds'] = ds
 
-    return render(request, "app/management/duplicates.html", c)
+        return context
 
 class StatusView(SuperUserContextView):
     template_name = 'app/management/status.html'

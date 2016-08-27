@@ -58,7 +58,11 @@ urlpatterns = [
     ),
     url(r'^save_diff/(.*)$', views.save_diff, name='save_diff'),
 
-    url(r'^duplicates/(.*)$', views.duplicates, name='duplicates'),
+    url(
+        r'^duplicates/(?P<dataset_id>\d+)$',
+        views.DuplicatesView.as_view(),
+        name='duplicates',
+    ),
 
     url(r'^import_diff/(.*)$', views.import_diff, name='import_diff'),
 
