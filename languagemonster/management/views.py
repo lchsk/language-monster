@@ -21,13 +21,24 @@ from core.data.language_pair import (
     get_language_pair,
 )
 
+from utility.views import (
+    ContextView,
+    AuthContextView,
+    SuperUserContextView,
+    NoTemplateMixin,
+)
+
+
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
-@require_superuser
-def index(request):
-    c = get_context(request)
-    return render(request, "app/management/index.html", c)
+class IndexView(SuperUserContextView):
+    template_name = 'app/management/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+
+        return context
 
 def _parse_line(line):
     """

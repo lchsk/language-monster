@@ -30,6 +30,24 @@ class AuthContextView(ContextView):
 
         return super(AuthContextView, self).dispatch(request, *args, **kwargs)
 
+class SuperUserContextView(ContextView):
+    def get_context_data(self, **kwargs):
+        context = super(SuperUserContextView, self).get_context_data(**kwargs)
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if not all((
+            request.user.is_authenticated(),
+            request.user.is_superuser,
+        )):
+            return HttpResponseRedirect(reverse('index'))
+
+        return super(SuperUserContextView, self).dispatch(
+            request,
+            *args,
+            **kwargs
+        )
+
 class NoTemplateMixin(object):
     def get_template_names(self):
         return []

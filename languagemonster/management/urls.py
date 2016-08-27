@@ -4,9 +4,13 @@ import management.impl.simple_dataset as simple_dataset
 import management.impl.views_clean as views_clean
 import management.impl.action_clean as action_clean
 
-# urlpatterns = patterns('',
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(
+        r'^$',
+        # views.index,
+        views.IndexView.as_view(),
+        name='index',
+    ),
     url(r'^status/$', views.status, name='status'),
     url(r'^sets/$', views.sets, name='sets'),
     url(r'^add_set/(.*)$', views.add_set, name='add_set'),
@@ -48,6 +52,4 @@ urlpatterns = [
         action_clean.remove_dangling_words,
         name='remove_dangling_words'
     ),
-
-# )
 ]
