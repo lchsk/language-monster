@@ -7,11 +7,14 @@ import management.impl.action_clean as action_clean
 urlpatterns = [
     url(
         r'^$',
-        # views.index,
         views.IndexView.as_view(),
         name='index',
     ),
-    url(r'^status/$', views.status, name='status'),
+    url(
+        r'^status/$',
+        views.StatusView.as_view(),
+        name='status',
+    ),
     url(r'^sets/$', views.sets, name='sets'),
     url(r'^add_set/(.*)$', views.add_set, name='add_set'),
     url(r'^save_set_meta/(.*)$', views.save_set_meta, name='save_set_meta'),

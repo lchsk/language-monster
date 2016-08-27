@@ -217,6 +217,10 @@ class Context(object):
         return self._base_languages
 
     @property
+    def status(self):
+        return self._status
+
+    @property
     def language(self):
         if self._is_authorised:
             return self._monster_user.language

@@ -15,6 +15,8 @@ from core.models import *
 from utility.interface import *
 from management.impl.security import *
 
+from management.impl.stats import get_status_data
+
 from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS,
@@ -770,6 +772,18 @@ def duplicates(request, dataset_id):
     c['ds'] = ds
 
     return render(request, "app/management/duplicates.html", c)
+
+class StatusView(SuperUserContextView):
+    template_name = 'app/management/status.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StatusView, self).get_context_data(**kwargs)
+
+        context['data'] = get_status_data()
+
+        print context['data']
+
+        return context
 
 @require_superuser
 def status(request):
