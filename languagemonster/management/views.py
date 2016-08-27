@@ -248,39 +248,39 @@ def save_set_meta(request, path):
 
     return redirect(reverse('management:index'))
 
-@require_superuser
-def set_list(request):
-    c = get_context(request)
+class SetsView(SuperUserContextView):
+    template_name = 'app/management/sets.html'
 
-    show_sets_option = request.GET.get('show_sets', 0)
-    language_pair = request.GET.get('language_pair')
+    def get_context_data(self, **kwargs):
+        context = super(SetsView, self).get_context_data(**kwargs)
 
-    if language_pair:
-        sets = DataSet.objects.filter(
-            lang_pair=language_pair
-        ).order_by('-date_added')
-    else:
-        sets = DataSet.objects.all().order_by('-date_added')
+        show_sets_option = self.request.GET.get('show_sets', 0)
+        language_pair = self.request.GET.get('language_pair')
 
-    if int(show_sets_option) == 1:
-        # Basic sets only
-        sets = filter(lambda x: x.simple_dataset, sets)
-    elif int(show_sets_option) == 2:
-        # Full sets only
-        sets = filter(lambda x: not x.simple_dataset, sets)
+        if language_pair:
+            sets = DataSet.objects.filter(
+                lang_pair=language_pair
+            ).order_by('-date_added')
+        else:
+            sets = DataSet.objects.all().order_by('-date_added')
 
-    c['show_sets'] = [
-        (0, 'All kinds'),
-        (1, 'Basic sets only'),
-        (2, 'Full sets only')
-    ]
-    c['show_sets_option'] = int(show_sets_option)
+        if int(show_sets_option) == 1:
+            sets = filter(lambda x: x.simple_dataset, sets)
+        elif int(show_sets_option) == 2:
+            sets = filter(lambda x: not x.simple_dataset, sets)
 
-    c['language_pair'] = language_pair
-    c['sets'] = sets
-    c['pairs'] = sorted(LANGUAGE_PAIRS_FLAT)
+        context['show_sets'] = [
+            (0, 'All kinds'),
+            (1, 'Basic sets only'),
+            (2, 'Full sets only'),
+        ]
+        context['show_sets_option'] = int(show_sets_option)
 
-    return render(request, 'app/management/set_list.html', c)
+        context['language_pair'] = language_pair
+        context['sets'] = sets
+        context['pairs'] = sorted(LANGUAGE_PAIRS_FLAT)
+
+        return context
 
 @require_superuser
 def edit_set(request, p_id):

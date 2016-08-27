@@ -20,13 +20,18 @@ urlpatterns = [
         views.AddNewSetFromFileView.as_view(),
         name='add_new_set_from_file',
     ),
+    url(
+        r'^sets/$',
+        views.SetsView.as_view(),
+        name='sets',
+    ),
     url(r'^add_set/(.*)$', views.add_set, name='add_set'),
     url(r'^save_set_meta/(.*)$', views.save_set_meta, name='save_set_meta'),
     url(r'^save_diff/(.*)$', views.save_diff, name='save_diff'),
 
     url(r'^duplicates/(.*)$', views.duplicates, name='duplicates'),
 
-    url(r'^set_list/$', views.set_list, name='set_list'),
+
     url(r'^edit_set/(.*)$', views.edit_set, name='edit_set'),
     url(r'^import_diff/(.*)$', views.import_diff, name='import_diff'),
     url(r'^view_import_set/?$', views.view_import_set, name='view_import_set'),
