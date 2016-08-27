@@ -6,6 +6,7 @@ import json
 import datetime
 from difflib import SequenceMatcher
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect
@@ -737,17 +738,138 @@ def copy_and_reverse(request, dataset_id):
 
     return redirect(reverse('management:index'))
 
-@require_superuser
-def view_import_set(request):
-    """
-        Shows ui to enter (full json: words + metadata)
-        previously exported data set
-    """
+class ImportSetView(SuperUserContextView):
+    template_name = 'app/management/import.html'
 
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(ImportSetView, self).get_context_data(**kwargs)
 
-    c['dataset_id'] = None
-    return render(request, "app/management/import.html", c)
+        context['dataset_id'] = None
+
+        return context
+
+class DoImportSet(SuperUserContextView):
+    template_name = 'app/management/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DoImportSet, self).get_context_data(**kwargs)
+
+        return context
+
+    def post(self, *args, **kwargs):
+        request = self.request
+
+        error = None
+        remote_data = None
+
+        try:
+            remote_data = json.loads(request.POST['data'])
+            words = remote_data['words']
+            metadata = remote_data['metadata']
+        except:
+            error = 'JSON invalid'
+
+        if not error:
+            set_exists = DataSet.objects.filter(
+                name_en=metadata['name_en']
+            ).first()
+
+            pair = metadata['pair']
+
+            base = Language.objects.filter(acronym=pair['base']).first()
+            target = Language.objects.filter(acronym=pair['target']).first()
+
+            language_pair = LanguagePair.objects.filter(
+                base_language=base,
+                target_language=target
+            ).first()
+
+            if set_exists:
+                error = 'Data set ({0}) already exists'.format(
+                    metadata['name_en']
+                )
+            elif not language_pair:
+                error = 'Language Pair does not exist ({0} -> {0})'.format(
+                    pair['base'],
+                    pair['target']
+                )
+            else:
+                # Validation passed: actually adding data
+
+                imported_ds = DataSet(
+                    from_exported_file=metadata['from_exported_file'],
+                    icon=metadata['icon'],
+                    learners=metadata['learners'],
+                    name_base=metadata['name_base'],
+                    name_en=metadata['name_en'],
+                    name_target=metadata['name_target'],
+                    pair=language_pair,
+                    pos=metadata['pos'],
+                    reversed_set=metadata['reversed_set'],
+                    simple_dataset=metadata['simple_dataset'],
+                    slug=metadata['slug'],
+                    visible=False,
+                    word_count=metadata['word_count'],
+                )
+
+                imported_ds.save()
+
+                datasets = DataSet.objects.filter(pair=language_pair).all()
+
+                # Checking if word already exists in the DB
+
+                for wp in words:
+                    wp_obj = None
+
+                    for ds in datasets:
+                        links = DS2WP.objects.filter(
+                            ds=ds
+                        )
+
+                        for link in links:
+                            if all((
+                                link.wp.base == wp['ebase'],
+                                link.wp.target == wp['etarget']
+                            )):
+                                wp_obj = link.wp
+                                break
+
+                        if wp_obj:
+                            break
+
+                    if not wp_obj:
+                        # Word doesn't exist in the DB, we need to add it
+                        logger.info('adding word %s' % str(wp_obj))
+                        wp_obj = WordPair(
+                            base=wp['ebase'],
+                            target=wp['etarget'],
+                            pair=language_pair
+                        )
+                        wp_obj.save()
+
+                    # Add new link
+                    if wp_obj:
+                        logger.info('adding link %s' % str(wp_obj))
+                        new_link = DS2WP(
+                            ds=imported_ds,
+                            wp=wp_obj
+                        )
+                        new_link.save()
+
+        if error:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                error,
+            )
+        else:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                'Success',
+            )
+
+        return self.redirect('management:index')
 
 @require_superuser
 def do_import_set(request):
