@@ -603,38 +603,38 @@ def save_edit_form(request, dataset_id):
 
     return redirect(reverse('management:index'))
 
+class AddNewSetFromFileView(SuperUserContextView):
+    template_name = 'app/management/add_new_set_from_file.html'
 
-@require_superuser
-def sets(request):
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(AddNewSetFromFileView, self).get_context_data(**kwargs)
 
-    files = []
-    sets = {}
-    base_dir = os.path.join(settings.BASE_DIR, '../data/output/')
+        files = []
+        sets = {}
+        base_dir = os.path.join(settings.BASE_DIR, '../data/output/')
 
-    for root, dirnames, filenames in os.walk(base_dir):
-        if root and filenames:
-            for file in filenames:
-                if os.path.exists(os.path.join(root, file)):
-                    files.append(os.path.join(root, file))
+        for root, dirnames, filenames in os.walk(base_dir):
+            if root and filenames:
+                for file in filenames:
+                    if os.path.exists(os.path.join(root, file)):
+                        files.append(os.path.join(root, file))
 
-    for f in files:
-        sp = f.replace(base_dir, '').split('/')
-        current = sets
-        length = len(sp)
+        for f in files:
+            sp = f.replace(base_dir, '').split('/')
+            current = sets
+            length = len(sp)
 
-        for i, element in enumerate(sp):
+            for i, element in enumerate(sp):
+                if i == length - 1:
+                    current[element] = f
+                else:
+                    if element not in current:
+                        current[element] = {}
+                    current = current[element]
 
-            if i == length - 1:
-                current[element] = f
-            else:
-                if element not in current:
-                    current[element] = {}
-                current = current[element]
+        context['sets'] = sets
 
-    c['sets'] = sets
-
-    return render(request, "app/management/sets.html", c)
+        return context
 
 @require_superuser
 def clean(request):

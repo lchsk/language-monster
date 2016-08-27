@@ -8,7 +8,7 @@
             <div class="container-fluid" style="padding: 0 40px 0 40px;">
 
                 <div class="row" style="text-align: left;">
-                    <h2 style="display: inline-block;">Sets</h2>{% include "app/management/handy_menu.html" %}
+                    <h2 style="display: inline-block;">Add new set from file</h2>{% include "app/management/handy_menu.html" %}
 
                     <h4>List of set files</h4>
                     <table class="table table-striped">
@@ -18,17 +18,11 @@
                                     {% for k2, v2 in v1.items %}
                                         <tr><td>{{k2}}</td><td>
                                             <ul>
-                                            <!-- <table class="table table-striped table-condensed"> -->
                                                 {% for filename, path in v2.items %}
-                                                    <!-- <tr> -->
-                                                        <!-- <td> -->
                                                         <li>
                                                             <a href="{% url 'management:add_set' path %}">{{filename}}</a>
                                                         </li>
-                                                        <!-- </td> -->
-                                                    <!-- </tr> -->
                                                 {% endfor %}
-                                                <!-- </table> -->
                                             </ul>
                                         </td></tr>
                                     {% endfor %}

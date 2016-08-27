@@ -15,7 +15,11 @@ urlpatterns = [
         views.StatusView.as_view(),
         name='status',
     ),
-    url(r'^sets/$', views.sets, name='sets'),
+    url(
+        r'^add-new-set-from-file/$',
+        views.AddNewSetFromFileView.as_view(),
+        name='add_new_set_from_file',
+    ),
     url(r'^add_set/(.*)$', views.add_set, name='add_set'),
     url(r'^save_set_meta/(.*)$', views.save_set_meta, name='save_set_meta'),
     url(r'^save_diff/(.*)$', views.save_diff, name='save_diff'),
