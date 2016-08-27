@@ -25,6 +25,11 @@ urlpatterns = [
         views.SetsView.as_view(),
         name='sets',
     ),
+    url(
+        r'^edit-set/(?P<dataset_id>\d+)$',
+        views.EditSetView.as_view(),
+        name='edit_set',
+    ),
     url(r'^add_set/(.*)$', views.add_set, name='add_set'),
     url(r'^save_set_meta/(.*)$', views.save_set_meta, name='save_set_meta'),
     url(r'^save_diff/(.*)$', views.save_diff, name='save_diff'),
@@ -32,7 +37,7 @@ urlpatterns = [
     url(r'^duplicates/(.*)$', views.duplicates, name='duplicates'),
 
 
-    url(r'^edit_set/(.*)$', views.edit_set, name='edit_set'),
+
     url(r'^import_diff/(.*)$', views.import_diff, name='import_diff'),
     url(r'^view_import_set/?$', views.view_import_set, name='view_import_set'),
     url(r'^do_import_set/?$', views.do_import_set, name='do_import_set'),

@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.http import Http404
 
 from core.models import *
 from utility.interface import *
@@ -282,68 +283,79 @@ class SetsView(SuperUserContextView):
 
         return context
 
-@require_superuser
-def edit_set(request, p_id):
-    """
-        shows form for editing a data set (with words etc.)
-    """
+class EditSetView(SuperUserContextView):
+    template_name = 'app/management/edit_set.html'
 
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(EditSetView, self).get_context_data(**kwargs)
 
-    c['ds'] = DataSet.objects.filter(
-        id=p_id
-    ).first()
+        dataset = DataSet.objects.filter(
+            pk=kwargs['dataset_id']
+        ).first()
 
-    if c['ds']:
-        sort_by = request.GET.get('sort_by', 'base')
-        sort_ord = request.GET.get('sort_ord', 'DESC')
-        reverse = sort_ord == 'DESC'
+        if dataset:
+            sort_by = self.request.GET.get('sort_by', 'base')
+            sort_ord = self.request.GET.get('sort_ord', 'DESC')
+            reverse = sort_ord == 'DESC'
 
-        wp_tmp = DS2WP.objects.filter(
-            ds=c['ds']
-        ).select_related(
-            'wp'
-        )
-        all_words = [i.wp for i in wp_tmp]
+            wp_tmp = DS2WP.objects.filter(ds=dataset).select_related('wp')
+            all_words = [i.wp for i in wp_tmp]
 
-        for i in all_words:
-            i.comments = re.sub(r'{base=(.*?)}', '', i.comments)
-            i.comments = re.sub(r'{target=(.*?)}', '', i.comments)
+            for i in all_words:
+                i.comments = re.sub(r'{base=(.*?)}', '', i.comments)
+                i.comments = re.sub(r'{target=(.*?)}', '', i.comments)
 
-        # different format here
-        words = mark_suspicious_words(c['ds'], all_words)
+            # different format here
+            words = mark_suspicious_words(dataset, all_words)
 
-        # susp_count = len([x for x in susp if x['susp']])
+            susp = [ i for i in words if i['susp'] ]
+            clean = [ i for i in words if not i['susp'] ]
 
-        susp = [ i for i in words if i['susp'] ]
-        clean = [ i for i in words if not i['susp'] ]
+            if sort_by == 'baselen':
+                susp = sorted(
+                    susp,
+                    key=lambda s: len(s['wp'].base),
+                    reverse=reverse
+                )
+                clean = sorted(
+                    clean,
+                    key=lambda s: len(s['wp'].base),
+                    reverse=reverse
+                )
+            else:
+                susp = sorted(
+                    susp,
+                    key=lambda s: s['wp'].pop,
+                    reverse=reverse
+                )
+                clean = sorted(
+                    clean,
+                    key=lambda s: s['wp'].pop,
+                    reverse=reverse
+                )
 
-        if sort_by == 'baselen':
-            susp = sorted(susp, key = lambda s: len(s['wp'].base), reverse=reverse)
-            clean = sorted(clean, key = lambda s: len(s['wp'].base), reverse=reverse)
+            context['clean'] = clean
+            context['susp'] = susp
+
+            clean_cnt = len(clean)
+            susp_cnt = len(susp)
+            clean_zero_cnt = len([i for i in clean if i['wp'].pop == 0])
+            susp_zero_cnt = len([i for i in susp if i['wp'].pop == 0])
+
+            context['stats'] = dict(
+                clean=clean_cnt,
+                susp=susp_cnt,
+                susp_zero=susp_zero_cnt,
+                clean_zero=clean_zero_cnt,
+                all = clean_cnt + susp_cnt
+            )
+
+            context['words'] = words
+            context['ds'] = dataset
         else:
-            susp = sorted(susp, key = lambda s: s['wp'].pop, reverse=reverse)
-            clean = sorted(clean, key = lambda s: s['wp'].pop, reverse=reverse)
-            # pass
-        c['clean'] = clean
-        c['susp'] = susp
+            raise Http404
 
-        clean_cnt = len(clean)
-        susp_cnt = len(susp)
-        clean_zero_cnt = len([ i for i in clean if i['wp'].pop == 0 ])
-        susp_zero_cnt = len([ i for i in susp if i['wp'].pop == 0 ])
-
-        c['stats'] = dict(
-            clean=clean_cnt,
-            susp=susp_cnt,
-            susp_zero=susp_zero_cnt,
-            clean_zero=clean_zero_cnt,
-            all = clean_cnt + susp_cnt
-        )
-
-        c['words'] = words
-
-    return render(request, 'app/management/edit_set.html', c)
+        return context
 
 @require_superuser
 def update_set(request, dataset_id):
