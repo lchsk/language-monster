@@ -30,6 +30,12 @@ urlpatterns = [
         views.EditSetView.as_view(),
         name='edit_set',
     ),
+    url(
+        r'^export-words/(?P<dataset_id>\d+)$',
+        views.SetActionDispatch.as_view(),
+        name='save_edit_form',
+    ),
+
     url(r'^add_set/(.*)$', views.add_set, name='add_set'),
     url(r'^save_set_meta/(.*)$', views.save_set_meta, name='save_set_meta'),
     url(r'^save_diff/(.*)$', views.save_diff, name='save_diff'),
@@ -43,7 +49,7 @@ urlpatterns = [
     url(r'^do_import_set/?$', views.do_import_set, name='do_import_set'),
 
     # url(r'^export_words/(.*)$', views.export_words, name='export_words'),
-    url(r'^save_edit_form/(.*)$', views.save_edit_form, name='save_edit_form'),
+
     url(r'^clean/$', views.clean, name='clean'),
 
     url(r'^copy_and_reverse/(.*)$', views.copy_and_reverse, name='copy_and_reverse'),

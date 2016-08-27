@@ -31,6 +31,11 @@ from utility.views import (
     NoTemplateMixin,
 )
 
+from management.impl.set_action import (
+    export_words,
+    export_set,
+    update_set,
+)
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
@@ -357,54 +362,54 @@ class EditSetView(SuperUserContextView):
 
         return context
 
-@require_superuser
-def update_set(request, dataset_id):
-    ids = request.POST.getlist('checked')
+# @require_superuser
+# def update_set(request, dataset_id):
+#     ids = request.POST.getlist('checked')
 
-    name_en = request.POST.get('name_en', 'name_en')
-    name_base = request.POST.get('name_base', 'name_base')
-    name_target = request.POST.get('name_target', 'name_target')
-    icon = request.POST.get('icon', '')
-    visible = request.POST.get('visible') is not None
+#     name_en = request.POST.get('name_en', 'name_en')
+#     name_base = request.POST.get('name_base', 'name_base')
+#     name_target = request.POST.get('name_target', 'name_target')
+#     icon = request.POST.get('icon', '')
+#     visible = request.POST.get('visible') is not None
 
-    ds = DataSet.objects.filter(id=dataset_id).first()
-    # pairs = WordPair.objects(data_set=ds)
-    wp_tmp = DS2WP.objects.filter(ds=ds)
-    pairs = [i.wp for i in wp_tmp]
+#     ds = DataSet.objects.filter(id=dataset_id).first()
+#     # pairs = WordPair.objects(data_set=ds)
+#     wp_tmp = DS2WP.objects.filter(ds=ds)
+#     pairs = [i.wp for i in wp_tmp]
 
-    word_count = 0
+#     word_count = 0
 
-    for p in pairs:
-        if str(p.id) in ids:
-            # Update
-            _id = str(p.id)
-            key_base = '{0}_base'.format(p.id)
-            key_target = '{0}_target'.format(p.id)
+#     for p in pairs:
+#         if str(p.id) in ids:
+#             # Update
+#             _id = str(p.id)
+#             key_base = '{0}_base'.format(p.id)
+#             key_target = '{0}_target'.format(p.id)
 
-            if key_base in request.POST \
-            and key_target in request.POST:
-                p.base = request.POST[key_base]
-                p.target = request.POST[key_target]
-                p.save()
+#             if key_base in request.POST \
+#             and key_target in request.POST:
+#                 p.base = request.POST[key_base]
+#                 p.target = request.POST[key_target]
+#                 p.save()
 
-                word_count += 1
+#                 word_count += 1
 
-        elif str(p.id) not in ids:
-            # DO NOT delete a word pair. Instead: unlink word pair from
-            # a data set
-            to_be_removed = DS2WP.objects.filter(wp=p, ds=ds).first()
-            to_be_removed.delete()
+#         elif str(p.id) not in ids:
+#             # DO NOT delete a word pair. Instead: unlink word pair from
+#             # a data set
+#             to_be_removed = DS2WP.objects.filter(wp=p, ds=ds).first()
+#             to_be_removed.delete()
 
-    if ds:
-        ds.word_count = word_count
-        ds.name_en = name_en
-        ds.name_base = name_base
-        ds.name_target = name_target
-        ds.visible = visible
-        ds.icon = icon
-        ds.save()
+#     if ds:
+#         ds.word_count = word_count
+#         ds.name_en = name_en
+#         ds.name_base = name_base
+#         ds.name_target = name_target
+#         ds.visible = visible
+#         ds.icon = icon
+#         ds.save()
 
-    return redirect(reverse('management:edit_set', args=[dataset_id]))
+#     return redirect(reverse('management:edit_set', args=[dataset_id]))
 
 @require_superuser
 def import_diff(request, dataset_id):
@@ -500,103 +505,73 @@ def save_diff(request, dataset_id):
 
     return redirect(reverse('management:index'))
 
-@require_superuser
-def import_words(request, dataset_id):
+# @require_superuser
+# def import_words(request, dataset_id):
 
-    c = get_context(request)
+#     c = get_context(request)
 
-    c['dataset_id'] = dataset_id
-    return render(request, "app/management/import.html", c)
+#     c['dataset_id'] = dataset_id
+#     return render(request, "app/management/import.html", c)
 
-@require_superuser
-def get_words_from_request(request, dataset_id):
-    ids = request.POST.getlist('checked')
+# @require_superuser
+# def get_words_from_request(request, dataset_id):
+#     ids = request.POST.getlist('checked')
 
-    ds = DataSet.objects.filter(
-        id=dataset_id
-    ).first()
-    wp_tmp = DS2WP.objects.filter(
-        ds=ds
-    ).select_related(
-        'wp'
-    )
-    pairs = [i.wp for i in wp_tmp]
+#     ds = DataSet.objects.filter(
+#         id=dataset_id
+#     ).first()
+#     wp_tmp = DS2WP.objects.filter(
+#         ds=ds
+#     ).select_related(
+#         'wp'
+#     )
+#     pairs = [i.wp for i in wp_tmp]
 
-    to_export = []
+#     to_export = []
 
-    for p in pairs:
-        if str(p.id) in ids:
-            _id = str(p.id)
-            key_base = '{0}_base'.format(p.id)
-            key_target = '{0}_target'.format(p.id)
+#     for p in pairs:
+#         if str(p.id) in ids:
+#             _id = str(p.id)
+#             key_base = '{0}_base'.format(p.id)
+#             key_target = '{0}_target'.format(p.id)
 
-            if key_base in request.POST and key_target in request.POST:
-                item = {}
+#             if key_base in request.POST and key_target in request.POST:
+#                 item = {}
 
-                item['ebase'] = request.POST[key_base]
-                item['etarget'] = request.POST[key_target]
+#                 item['ebase'] = request.POST[key_base]
+#                 item['etarget'] = request.POST[key_target]
 
-                to_export.append(item)
+#                 to_export.append(item)
 
-    return to_export
+#     return to_export
 
-@require_superuser
-def export_words(request, dataset_id):
-    """
-        Export just words from a data set
-    """
+class SetActionDispatch(SuperUserContextView):
+    template_name = 'app/management/export.html'
 
-    c = get_context(request)
+    def get_context_data(self, **kwargs):
+        context = super(SetActionDispatch, self).get_context_data(**kwargs)
 
-    exported_values = get_words_from_request(request, dataset_id)
+        return context
 
-    c['count'] = len(exported_values)
-    c['data'] = json.dumps(exported_values)
+    def post(self, *args, **kwargs):
+        ctx = self.get_context_data()
 
-    return render(request, "app/management/export.html", c)
+        request = self.request
+        dataset_id = kwargs['dataset_id']
 
-@require_superuser
-def export_set(request, dataset_id):
-    """
-        Export words and data set metadata
-    """
+        if request.POST.get('update') == 'update':
+            update_set(request, dataset_id)
+            return self.redirect('management:index')
+        elif request.POST.get('export') == 'export':
+            self.template_name = 'app/management/export.html'
+            export_words(request, dataset_id, ctx)
+        elif request.POST.get('export_set') == 'export_set':
+            self.template_name = 'app/management/export.html'
+            export_set(request, dataset_id, ctx)
+        elif request.POST.get('import') == 'import':
+            self.template_name = 'app/management/import.html'
 
-    c = get_context(request)
-
-    exported_values = get_words_from_request(request, dataset_id)
-    ds = DataSet.objects.filter(pk=dataset_id).first()
-
-    if ds:
-        metadata = dict(
-            from_exported_file=True,
-            icon=ds.icon,
-            learners=ds.learners,
-            name_base=ds.name_base,
-            name_en=ds.name_en,
-            name_target=ds.name_target,
-            pair=dict(
-                base=ds.pair.base_language.acronym,
-                target=ds.pair.target_language.acronym,
-            ),
-            pos=ds.pos,
-            reversed_set=ds.reversed_set,
-            simple_dataset=ds.simple_dataset,
-            slug=ds.slug,
-            visible=ds.visible,
-            word_count=ds.word_count,
-        )
-
-        data = dict(
-            words=exported_values,
-            metadata=metadata,
-        )
-
-        c['count'] = len(exported_values)
-        c['data'] = json.dumps(data)
-
-        return render(request, "app/management/export.html", c)
-
-    return redirect(reverse('management:index'))
+        return render(self.request, self.template_name, ctx)
 
 @require_superuser
 def save_edit_form(request, dataset_id):
