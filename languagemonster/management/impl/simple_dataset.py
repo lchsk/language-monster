@@ -170,24 +170,3 @@ def view_copy_words_to(request, target_dataset_id):
 
         return render(request, "app/management/form_copy_words_to.html", c)
     return redirect(reverse('management:index'))
-
-@login_required
-@staff_member_required
-def do_copy_words(request, target_dataset_id):
-    c = get_context(request)
-
-    target_ds = DataSet.objects.filter(id=target_dataset_id).first()
-
-    ids = request.POST.getlist('copy')
-
-    for pk in ids:
-        wp = WordPair.objects.filter(id=pk).first()
-
-        if wp:
-            new_link = DS2WP(
-                ds=target_ds,
-                wp=wp
-            )
-            new_link.save()
-
-    return redirect(reverse('management:index'))

@@ -80,7 +80,7 @@ urlpatterns = [
     url(r'^simple_dataset_from/(.*)$', simple_dataset.simple_dataset_from, name='simple_dataset_from'),
     url(r'^generate_simple_dataset/(.*)$', simple_dataset.generate_simple_dataset, name='generate_simple_dataset'),
 
-    url(r'^do_copy_words/(.*)$', simple_dataset.do_copy_words, name='do_copy_words'),
+
 
     # Cleaning tasks
     url(
@@ -104,5 +104,10 @@ urlpatterns = [
         r'^view_copy_words_to/(?P<dataset_id>\d+)$',
         views.CopyWordsToView.as_view(),
         name='view_copy_words_to',
+    ),
+    url(
+        r'^do_copy_words/(?P<dataset_id>\d+)$',
+        views.DoCopyWords.as_view(),
+        name='do_copy_words',
     ),
 ]

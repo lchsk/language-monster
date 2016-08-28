@@ -952,3 +952,31 @@ class CopyWordsToView(SuperUserContextView):
         context = self.get_context_data()
 
         return render(self.request, self.template_name, context)
+
+class DoCopyWords(SuperUserContextView):
+    template_name = 'app/management/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DoCopyWords, self).get_context_data(**kwargs)
+
+        return context
+
+    def post(self, *args, **kwargs):
+        target_dataset_id = self.kwargs['dataset_id']
+        request = self.request
+
+        target_ds = DataSet.objects.filter(id=target_dataset_id).first()
+
+        ids = request.POST.getlist('copy')
+
+        for pk in ids:
+            wp = WordPair.objects.filter(pk=pk).first()
+
+            if wp:
+                new_link = DS2WP(
+                    ds=target_ds,
+                    wp=wp
+                )
+                new_link.save()
+
+        return self.redirect_with_success('management:index', 'Words copied')
