@@ -170,34 +170,49 @@ class DoSaveNewSet(SuperUserContextView):
             )
             ds.save()
 
-            # Warning!
-            # Adding actual word pairs into DB
+            all_words = DS2WP.objects.filter(
+                ds__lang_pair=lang_pair.symbol
+            ).select_related('wp', 'ds')
 
             for i, line in enumerate(f):
                 if line[0] != '#' and '||' in line:
-
+                    current_word_pair = None
                     p = parse_line(line)
 
-                    wp = WordPair(
-                        base=p['b'],
-                        target=p['t'],
-                        index=i,
-                        english=p['en'],
-                        comments=p['c'],
-                        english_invalid=p['english_invalid'],
-                        base_en=p['base_en'],
-                        target_en=p['target_en'],
-                        from_english=p['from_english'],
-                        verified=p['verified'],
-                        pos=pos,
-                        pop=p['pop']
-                    )
-                    wp.save()
+                    for word in all_words:
+                        if all((
+                            p['b'] == word.wp.base,
+                            p['t'] == word.wp.target,
+                            p['en'] == word.wp.english,
+                        )):
+                            current_word_pair = word.wp
+                            break
+
+                    if current_word_pair:
+                        wp = current_word_pair
+                    else:
+                        wp = WordPair(
+                            base=p['b'],
+                            target=p['t'],
+                            index=i,
+                            english=p['en'],
+                            comments=p['c'],
+                            english_invalid=p['english_invalid'],
+                            base_en=p['base_en'],
+                            target_en=p['target_en'],
+                            from_english=p['from_english'],
+                            verified=p['verified'],
+                            pos=pos,
+                            pop=p['pop'],
+                        )
+
+                        wp.save()
 
                     link = DS2WP(
                         wp=wp,
-                        ds=ds
+                        ds=ds,
                     )
+
                     link.save()
 
         f.close()

@@ -43,4 +43,7 @@ def parse_line(line):
         pop=pop
     )
 
+    for key, value in pair.iteritems():
+        pair[key] = value.decode('utf-8') if type(value) == str else value
+
     return pair
