@@ -86,7 +86,11 @@ urlpatterns = [
         views.SingleSimpleDatasetView.as_view(),
         name='view_simple_dataset',
     ),
-    url(r'^update_simple_dataset/(.*)?$', simple_dataset.update_simple_dataset, name='update_simple_dataset'),
+    url(
+        r'^update_simple_dataset/(?P<id>\d+)?$',
+        views.DoSaveSimpleDataset.as_view(),
+        name='update_simple_dataset',
+    ),
 
     url(r'^simple_dataset_from/(.*)$', simple_dataset.simple_dataset_from, name='simple_dataset_from'),
     url(r'^generate_simple_dataset/(.*)$', simple_dataset.generate_simple_dataset, name='generate_simple_dataset'),

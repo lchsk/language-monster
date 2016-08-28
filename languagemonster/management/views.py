@@ -1020,3 +1020,29 @@ class SingleSimpleDatasetView(SuperUserContextView):
         context['simple_dataset_id'] = simple_dataset_id
 
         return context
+
+class DoSaveSimpleDataset(SuperUserContextView):
+    def post(self, *args, **kwargs):
+        request = self.request
+        simple_dataset_id = self.kwargs['id']
+
+        name = request.POST['title']
+        data = request.POST['data']
+
+        d = SimpleDataset.objects.filter(pk=simple_dataset_id).first()
+
+        if d:
+            d.name = name
+            d.data = data
+        else:
+            d = SimpleDataset(
+                name=name,
+                data=data,
+            )
+
+        d.save()
+
+        return self.redirect_with_success(
+            'management:view_simple_datasets',
+            'Simple dataset saved',
+        )

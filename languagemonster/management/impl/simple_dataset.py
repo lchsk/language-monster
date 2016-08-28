@@ -16,33 +16,6 @@ settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
 @login_required
 @staff_member_required
-def update_simple_dataset(request, simple_dataset_id=None):
-
-    c = get_context(request)
-
-    name = request.POST['title']
-    data = request.POST['data']
-
-    if simple_dataset_id:
-        d = SimpleDataset.objects.filter(id=simple_dataset_id).first()
-    else:
-        d = None
-
-    if d:
-        d.name = name
-        d.data = data
-    else:
-        d = SimpleDataset(
-            name = name,
-            data = data
-        )
-
-    d.save()
-
-    return redirect(reverse('management:view_simple_datasets'))
-
-@login_required
-@staff_member_required
 def simple_dataset_from(request, dataset_id):
     c = get_context(request)
 
