@@ -82,7 +82,7 @@ urlpatterns = [
     ),
 
     url(
-        r'^view_simple_dataset/(?P<id>\d+)$',
+        r'^view_simple_dataset/(?P<id>\d*)$',
         views.SingleSimpleDatasetView.as_view(),
         name='view_simple_dataset',
     ),

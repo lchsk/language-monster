@@ -1008,15 +1008,21 @@ class SingleSimpleDatasetView(SuperUserContextView):
 
     def get_context_data(self, **kwargs):
         context = super(SingleSimpleDatasetView, self).get_context_data(**kwargs)
-        simple_dataset_id = self.kwargs['id']
+        simple_dataset_id = self.kwargs.get('id')
 
-        d = SimpleDataset.objects.filter(pk=simple_dataset_id).first()
+        if not simple_dataset_id:
+            # Creating new simple dataset
+            name, data = '', ''
+        else:
+            d = SimpleDataset.objects.filter(pk=simple_dataset_id).first()
 
-        if not d:
-            raise Http404
+            if not d:
+                raise Http404
 
-        context['name'] = d.name
-        context['data'] = d.data
+            name, data = d.name, d.data
+
+        context['name'] = name
+        context['data'] = data
         context['simple_dataset_id'] = simple_dataset_id
 
         return context
