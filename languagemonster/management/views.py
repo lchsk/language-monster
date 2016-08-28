@@ -883,3 +883,21 @@ class DoRemoveDanglingWords(SuperUserContextView):
                 wp.delete()
 
         return self.redirect_with_success('management:index', 'Removed')
+
+class CopyWordsFromView(SuperUserContextView):
+    template_name = 'app/management/form_copy_words_from.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CopyWordsFromView, self).get_context_data(**kwargs)
+
+        dataset_id = self.kwargs['dataset_id']
+
+        ds = DataSet.objects.filter(pk=dataset_id).first()
+        datasets = DataSet.objects.all()
+
+        if ds:
+            context['dataset_id'] = dataset_id
+            context['ds'] = ds
+            context['datasets'] = datasets
+
+        return context

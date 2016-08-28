@@ -79,7 +79,7 @@ urlpatterns = [
     url(r'^view_simple_datasets/$', simple_dataset.view_simple_datasets, name='view_simple_datasets'),
     url(r'^simple_dataset_from/(.*)$', simple_dataset.simple_dataset_from, name='simple_dataset_from'),
     url(r'^generate_simple_dataset/(.*)$', simple_dataset.generate_simple_dataset, name='generate_simple_dataset'),
-    url(r'^view_copy_words_from/(.*)$', simple_dataset.view_copy_words_from, name='view_copy_words_from'),
+
     url(r'^view_copy_words_to/(.*)$', simple_dataset.view_copy_words_to, name='view_copy_words_to'),
     url(r'^do_copy_words/(.*)$', simple_dataset.do_copy_words, name='do_copy_words'),
 
@@ -93,5 +93,11 @@ urlpatterns = [
         r'^remove_dangling_words/?$',
         views.DoRemoveDanglingWords.as_view(),
         name='remove_dangling_words',
+    ),
+
+    url(
+        r'^view_copy_words_from/(?P<dataset_id>\d+)$',
+        views.CopyWordsFromView.as_view(),
+        name='view_copy_words_from',
     ),
 ]

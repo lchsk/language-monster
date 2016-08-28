@@ -2,14 +2,18 @@
 
 from collections import namedtuple
 
-Language = namedtuple('Language', [
+class Language(namedtuple('Language', [
     'english_name',
     'original_name',
     'acronym',
     'slug',
     'image_filename',
     'flag_filename',
-])
+])):
+    __slots__ = ()
+
+    def __unicode__(self):
+        return u'{}'.format(self.english_name)
 
 pl = Language(
     english_name="Polish",

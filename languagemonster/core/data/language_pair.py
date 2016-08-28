@@ -3,12 +3,16 @@
 from collections import namedtuple
 from core.data.language import LANGUAGES
 
-LanguagePair = namedtuple('LanguagePair', [
+class LanguagePair(namedtuple('LanguagePair', [
     'base_language',
     'target_language',
     'visible',
     'symbol',
-])
+])):
+    __slots__ = ()
+
+    def __unicode__(self):
+        return u'{} -> {}'.format(self.base_language, self.target_language)
 
 # Same language as base and target
 

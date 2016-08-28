@@ -133,21 +133,6 @@ def generate_simple_dataset(request, dataset_id):
 
 @login_required
 @staff_member_required
-def view_copy_words_from(request, dataset_id):
-    c = get_context(request)
-
-    ds = DataSet.objects.filter(pk=dataset_id).first()
-    datasets = DataSet.objects.all()
-
-    if ds:
-        c['dataset_id'] = dataset_id
-        c['ds'] = ds
-        c['datasets'] = datasets
-
-        return render(request, "app/management/form_copy_words_from.html", c)
-
-@login_required
-@staff_member_required
 def view_copy_words_to(request, target_dataset_id):
     c = get_context(request)
 
