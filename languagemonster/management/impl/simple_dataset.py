@@ -13,24 +13,6 @@ from core.models import *
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
-@login_required
-@staff_member_required
-def view_simple_dataset(request, simple_dataset_id):
-
-    c = get_context(request)
-
-    if simple_dataset_id:
-        d = SimpleDataset.objects.filter(id=simple_dataset_id).first()
-        c['name'] = d.name
-        c['data'] = d.data
-        c['simple_dataset_id'] = simple_dataset_id
-    else:
-        c['name'] = ''
-        c['data'] = ''
-        c['simple_dataset_id'] = ''
-
-    return render(request, "app/management/simple_dataset.html", c)
-
 
 @login_required
 @staff_member_required
