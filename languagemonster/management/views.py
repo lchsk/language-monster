@@ -1,36 +1,43 @@
 # -*- coding: utf-8 -*-
+"""Management views"""
+
 import logging
 import os
 import re
 import json
-import datetime
 from difflib import SequenceMatcher
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
+from django.shortcuts import (
+    render,
+    redirect,
+)
 from django.conf import settings
 from django.http import Http404
 
-from core.models import *
-from utility.interface import *
-from management.impl.security import *
+from core.models import (
+    DataSet,
+    SimpleDataset,
+    WordPair,
+    DS2WP,
+)
+from utility.interface import (
+    get_context,
+)
+from management.impl.security import (
+    mark_suspicious_words,
+    require_superuser,
+)
 
 from management.impl.stats import get_status_data
 
 from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
-    LANGUAGE_PAIRS,
     get_language_pair,
 )
 
-from utility.views import (
-    ContextView,
-    AuthContextView,
-    SuperUserContextView,
-    NoTemplateMixin,
-)
+from utility.views import SuperUserContextView
 
 from management.impl.set_action import (
     export_words,
@@ -280,8 +287,8 @@ class EditSetView(SuperUserContextView):
             # different format here
             words = mark_suspicious_words(dataset, all_words)
 
-            susp = [ i for i in words if i['susp'] ]
-            clean = [ i for i in words if not i['susp'] ]
+            susp = [i for i in words if i['susp']]
+            clean = [i for i in words if not i['susp']]
 
             if sort_by == 'baselen':
                 susp = sorted(
@@ -319,7 +326,7 @@ class EditSetView(SuperUserContextView):
                 susp=susp_cnt,
                 susp_zero=susp_zero_cnt,
                 clean_zero=clean_zero_cnt,
-                all = clean_cnt + susp_cnt
+                all=clean_cnt + susp_cnt,
             )
 
             context['words'] = words
@@ -368,11 +375,11 @@ def import_diff(request, dataset_id):
         for local in local_data:
             if remote['ebase'] == local['lbase']:
                 item = dict(
-                    id = local['id'],
-                    ebase = remote['ebase'],
-                    etarget = remote['etarget'],
-                    lbase = local['lbase'],
-                    ltarget = local['ltarget'],
+                    id=local['id'],
+                    ebase=remote['ebase'],
+                    etarget=remote['etarget'],
+                    lbase=local['lbase'],
+                    ltarget=local['ltarget'],
                 )
 
                 if item['etarget'] == item['ltarget']:
@@ -502,11 +509,12 @@ class DuplicatesView(SuperUserContextView):
                     ratio_base = SequenceMatcher(
                         None,
                         i.base,
-                    j.base).ratio()
+                        j.base,
+                    ).ratio()
                     ratio_target = SequenceMatcher(
                         None,
                         i.target,
-                        j.target
+                        j.target,
                     ).ratio()
 
                     ratio = ratio_base + ratio_target
@@ -519,7 +527,7 @@ class DuplicatesView(SuperUserContextView):
                             target2=j.target,
                             ratio_base=ratio_base,
                             ratio_target=ratio_target,
-                            ratio=ratio
+                            ratio=ratio,
                         )
 
                         suspected.append(item)
@@ -632,6 +640,7 @@ class ImportSetView(SuperUserContextView):
 
         return context
 
+# TODO: to fix?
 class DoImportSet(SuperUserContextView):
     template_name = 'app/management/index.html'
 
@@ -673,7 +682,7 @@ class DoImportSet(SuperUserContextView):
                     metadata['name_en']
                 )
             elif not language_pair:
-                error = 'Language Pair does not exist ({0} -> {0})'.format(
+                error = 'Language Pair does not exist ({} -> {})'.format(
                     pair['base'],
                     pair['target']
                 )
@@ -706,9 +715,7 @@ class DoImportSet(SuperUserContextView):
                     wp_obj = None
 
                     for ds in datasets:
-                        links = DS2WP.objects.filter(
-                            ds=ds
-                        )
+                        links = DS2WP.objects.filter(ds=ds)
 
                         for link in links:
                             if all((
@@ -755,6 +762,7 @@ class DoImportSet(SuperUserContextView):
 
         return self.redirect('management:index')
 
+# TODO: To be removed?
 @require_superuser
 def do_import_set(request):
     """
