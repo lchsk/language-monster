@@ -980,3 +980,25 @@ class DoCopyWords(SuperUserContextView):
                 new_link.save()
 
         return self.redirect_with_success('management:index', 'Words copied')
+
+class SimpleDatasetsView(SuperUserContextView):
+    template_name = 'app/management/simple_datasets_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SimpleDatasetsView, self).get_context_data(**kwargs)
+
+        ds = SimpleDataset.objects.all()
+
+        sets = []
+
+        for d in ds:
+            sets.append(dict(
+                id=d.id,
+                name=d.name,
+                date=d.date,
+                lines=len(d.data.split()),
+            ))
+
+        context['sets'] = sets
+
+        return context

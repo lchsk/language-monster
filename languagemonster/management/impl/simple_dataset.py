@@ -31,26 +31,6 @@ def view_simple_dataset(request, simple_dataset_id):
 
     return render(request, "app/management/simple_dataset.html", c)
 
-@login_required
-@staff_member_required
-def view_simple_datasets(request):
-    c = get_context(request)
-
-    ds = SimpleDataset.objects.all()
-
-    sets = []
-
-    for d in ds:
-        sets.append(dict(
-            id=d.id,
-            name=d.name,
-            date=d.date,
-            lines=len(d.data.split()),
-        ))
-
-    c['sets'] = sets
-
-    return render(request, "app/management/simple_datasets_list.html", c)
 
 @login_required
 @staff_member_required

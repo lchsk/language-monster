@@ -74,9 +74,16 @@ urlpatterns = [
     ),
 
     # Simple data set management
+
+    url(
+        r'^view_simple_datasets/$',
+        views.SimpleDatasetsView.as_view(),
+        name='view_simple_datasets',
+    ),
+
     url(r'^view_simple_dataset/(.*)$', simple_dataset.view_simple_dataset, name='view_simple_dataset'),
     url(r'^update_simple_dataset/(.*)?$', simple_dataset.update_simple_dataset, name='update_simple_dataset'),
-    url(r'^view_simple_datasets/$', simple_dataset.view_simple_datasets, name='view_simple_datasets'),
+
     url(r'^simple_dataset_from/(.*)$', simple_dataset.simple_dataset_from, name='simple_dataset_from'),
     url(r'^generate_simple_dataset/(.*)$', simple_dataset.generate_simple_dataset, name='generate_simple_dataset'),
 
