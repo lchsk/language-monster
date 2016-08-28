@@ -94,6 +94,9 @@ class DoSaveLanguage(NoTemplateMixin, AuthContextView):
             target_slug=slug,
         )
 
+        if not lang_pair:
+            raise Http404
+
         progression_exists = get_progression_from_lang_pair(
             self._context.user.studying,
             lang_pair
