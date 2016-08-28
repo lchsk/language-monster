@@ -575,31 +575,3 @@ class DS2WP(models.Model):
         unique_together = ('ds', 'wp')
         verbose_name = 'DS2WP'
         verbose_name_plural = 'DataSet to WordPair'
-
-class OpenGameSession(models.Model):
-    """
-    """
-
-    date = models.DateTimeField(auto_now_add=True)
-    game_session_id = models.CharField(
-        max_length=128,
-        db_index=True,
-        unique=True
-    )
-    game_token = models.CharField(
-        max_length=128,
-        unique=True
-    )
-    user = models.ForeignKey(
-        MonsterUser,
-        related_name='open_game_session_user'
-    )
-    dataset = models.ForeignKey(
-        DataSet,
-        related_name='open_game_session_dataset',
-        db_index=True
-    )
-
-    class Meta:
-        verbose_name = 'OpenGameSession'
-        verbose_name_plural = 'Open Game Sessions'

@@ -375,7 +375,6 @@ MONSTER.Common.sendResults = function(obj)
     // dataset_id: 5521b4ec6e8ee52109857793
     console.log('wysyalnie wynikow');
     console.log({
-        game_session_id: obj.game.data.game_session_id,
         dataset_id: obj.game.data.dataset_id,
         email: obj.game.data.email,
         mark: obj.game.pct,
@@ -390,7 +389,6 @@ MONSTER.Common.sendResults = function(obj)
         contentType: "application/json",
         data: JSON.stringify(
         {
-            game_session_id: obj.game.data.game_session_id,
             dataset_id: obj.game.data.dataset_id,
             email: obj.game.data.email,
             mark: obj.game.pct,

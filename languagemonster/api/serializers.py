@@ -188,11 +188,6 @@ class ResultsSubmitRequest(serializers.Serializer):
         )
     )
 
-
-class ResultsWithGameSessionSubmitRequest(ResultsSubmitRequest):
-    game_session_id = serializers.CharField(max_length=80, allow_null=False)
-
-
 class DataSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = DataSet

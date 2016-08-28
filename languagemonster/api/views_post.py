@@ -79,7 +79,7 @@ def save_results_js(request, *args, **kwargs):
 
     return _save_results(
         request,
-        ResultsWithGameSessionSubmitRequest,
+        ResultsSubmitRequest,
         *args,
         **kwargs
     )

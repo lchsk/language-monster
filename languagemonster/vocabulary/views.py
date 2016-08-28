@@ -19,7 +19,6 @@ from core.models import (
 )
 
 from utility.url import redirect_to_previous_page
-from utility.security import create_game_session_hash
 from vocabulary.impl.study import (
     get_user_games,
     get_games_played,
@@ -182,19 +181,13 @@ class PlayView(AuthContextView):
         if not dataset:
             return Http404
 
-        game_session_id = create_game_session_hash(
-            self._context.user.raw,
-            dataset
-        )
-
         context['game'] = True
         context['dataset'] = dataset
         context['pair'] = pair
-        context['data'] = {
-            'dataset_id': str(dataset.id),
-            'email': str(self._context.user.email),
-            'game_session_id': game_session_id
-        }
+        context['data'] = dict(
+            dataset_id=str(dataset.id),
+            email=str(self._context.user.email),
+        )
 
         user_games = get_user_games(self._context.user.raw)
 

@@ -15,7 +15,6 @@ from .models import (
     MobileDevice,
     SimpleDataset,
     DS2WP,
-    OpenGameSession,
 )
 
 tables = (
@@ -33,7 +32,6 @@ tables = (
     MobileDevice,
     SimpleDataset,
     DS2WP,
-    OpenGameSession,
 )
 
 for table in tables:
