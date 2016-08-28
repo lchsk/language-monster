@@ -893,7 +893,10 @@ class CopyWordsFromView(SuperUserContextView):
         dataset_id = self.kwargs['dataset_id']
 
         ds = DataSet.objects.filter(pk=dataset_id).first()
-        datasets = DataSet.objects.all()
+        datasets = sorted(
+            DataSet.objects.filter(lang_pair=ds.lang_pair),
+            key=lambda x: x.name_en,
+        )
 
         if ds:
             context['dataset_id'] = dataset_id
@@ -901,3 +904,51 @@ class CopyWordsFromView(SuperUserContextView):
             context['datasets'] = datasets
 
         return context
+
+class CopyWordsToView(SuperUserContextView):
+    template_name = 'app/management/form_copy_words_to.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CopyWordsToView, self).get_context_data(**kwargs)
+
+        target_dataset_id = self.kwargs['dataset_id']
+        request = self.request
+
+        target_ds = DataSet.objects.filter(id=target_dataset_id).first()
+        source_dataset_id = request.POST['source_dataset_id']
+        source_ds = DataSet.objects.filter(id=source_dataset_id).first()
+
+        if source_ds and target_ds and source_ds.pair == target_ds.pair:
+            words_source_tmp = DS2WP.objects.filter(ds=source_ds)
+            words_target_tmp = DS2WP.objects.filter(ds=target_ds)
+
+            words_source = [x.wp for x in words_source_tmp]
+            words_target = [x.wp for x in words_target_tmp]
+
+            # present on both sets
+            words_both = set()
+            words_source_only = set()
+            words_target_only = set()
+
+            for ws in words_source:
+                if ws in words_target:
+                    words_both.add(ws)
+                else:
+                    words_source_only.add(ws)
+
+            for wt in words_target:
+                if wt not in words_source:
+                    words_target_only.add(wt)
+
+            context['source_ds'] = source_ds
+            context['target_ds'] = target_ds
+            context['words_both'] = words_both
+            context['words_source_only'] = words_source_only
+            context['words_target_only'] = words_target_only
+
+        return context
+
+    def post(self, *args, **kwargs):
+        context = self.get_context_data()
+
+        return render(self.request, self.template_name, context)

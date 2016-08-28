@@ -17,7 +17,9 @@
                     <div>
                         <select class="form-control" name="source_dataset_id">
                         {% for i in datasets %}
-                            <option value="{{i.id}}">{{i.name_en}} ({{i.pair}})</option>
+                        <option value="{{i.id}}">
+                          {{i.name_base}} / {{i.name_target}} / {{i.name_en}}  ({{i.lang_pair}})
+                        </option>
                         {% endfor %}
                         </select>
                     </div>

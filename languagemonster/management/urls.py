@@ -80,7 +80,6 @@ urlpatterns = [
     url(r'^simple_dataset_from/(.*)$', simple_dataset.simple_dataset_from, name='simple_dataset_from'),
     url(r'^generate_simple_dataset/(.*)$', simple_dataset.generate_simple_dataset, name='generate_simple_dataset'),
 
-    url(r'^view_copy_words_to/(.*)$', simple_dataset.view_copy_words_to, name='view_copy_words_to'),
     url(r'^do_copy_words/(.*)$', simple_dataset.do_copy_words, name='do_copy_words'),
 
     # Cleaning tasks
@@ -95,9 +94,15 @@ urlpatterns = [
         name='remove_dangling_words',
     ),
 
+    # Words copying
     url(
         r'^view_copy_words_from/(?P<dataset_id>\d+)$',
         views.CopyWordsFromView.as_view(),
         name='view_copy_words_from',
+    ),
+    url(
+        r'^view_copy_words_to/(?P<dataset_id>\d+)$',
+        views.CopyWordsToView.as_view(),
+        name='view_copy_words_to',
     ),
 ]
