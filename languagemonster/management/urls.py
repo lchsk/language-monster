@@ -1,7 +1,6 @@
 from django.conf.urls import url
 
 import views
-import management.impl.simple_dataset as simple_dataset
 
 urlpatterns = [
     url(
