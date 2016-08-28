@@ -58,9 +58,9 @@ def get_language_pair(base_language, target_slug):
 
 def get_datasets(language_pair):
     return DataSet.objects.filter(
-        # pair=language_pair,
         lang_pair=language_pair,
-        visible=True
+        visible=True,
+        status='A',
     ).order_by('-learners')
 
 
@@ -86,7 +86,8 @@ def get_single_dataset(lang_pair_symbol, dataset_slug):
 
     return DataSet.objects.filter(
         slug=dataset_slug,
-        lang_pair=lang_pair_symbol
+        lang_pair=lang_pair_symbol,
+        status='A',
         # pair__base_language=base_language,
         # pair__target_language__slug=target_slug
     ).first()

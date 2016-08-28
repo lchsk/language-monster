@@ -214,10 +214,11 @@ class SetsView(SuperUserContextView):
 
         if language_pair:
             sets = DataSet.objects.filter(
-                lang_pair=language_pair
+                lang_pair=language_pair,
+                status='A',
             ).order_by('-date_added')
         else:
-            sets = DataSet.objects.all().order_by('-date_added')
+            sets = DataSet.objects.filter(status='A').order_by('-date_added')
 
         if int(show_sets_option) == 1:
             sets = filter(lambda x: x.simple_dataset, sets)
@@ -236,6 +237,23 @@ class SetsView(SuperUserContextView):
         context['pairs'] = sorted(LANGUAGE_PAIRS_FLAT)
 
         return context
+
+class DoRemoveDataset(SuperUserContextView):
+    def get(self, *args, **kwargs):
+        dataset_id = self.kwargs['dataset_id']
+
+        dataset = DataSet.objects.filter(pk=dataset_id).first()
+
+        if not dataset:
+            raise Http404
+
+        dataset.status = 'X'
+        dataset.save()
+
+        return self.redirect_with_success(
+            'management:sets',
+            'Data set removed',
+        )
 
 class EditSetView(SuperUserContextView):
     template_name = 'app/management/edit_set.html'

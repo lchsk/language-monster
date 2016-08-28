@@ -270,6 +270,14 @@ class DataSet(models.Model):
 
     pos = models.CharField(max_length=20, help_text='Part of Speech')
 
+    status = models.CharField(
+        max_length=1,
+        null=False,
+        default='A',
+        help_text='Status of data set',
+        choices=[('A', 'Active'), ('X', 'Deleted')],
+    )
+
     lang_pair = models.CharField(
         max_length=5,
         null=False,
