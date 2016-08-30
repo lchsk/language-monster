@@ -4,6 +4,7 @@ import httplib
 import json
 import uuid
 import random
+import inspect
 
 from django.conf import settings
 from core.models import (
@@ -18,6 +19,24 @@ from core.models import (
 from django.contrib.auth import models as contrib_models
 
 from api.helper.calls import *
+
+def assert_subclasses(classes, class_, predicate):
+    """Ensure that all classes are of required class_.
+
+        classes([(string name, class)]): A list of tuples (name, class)
+
+        class_(class): Required class
+
+        predicate(function): Function to select items from classes based
+            on the name. Must return either True of False.
+    """
+
+    for name, cbv in classes:
+        if inspect.isclass(cbv) and predicate(name):
+            assert issubclass(cbv, class_)
+
+
+###########
 
 MONSTER_EMAIL = 'monster@language-monster.com'
 TEST_EMAIL = MONSTER_EMAIL

@@ -279,9 +279,9 @@ DATABASES = {
 if 'test' in sys.argv:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.getenv('LM_DB_NAME'),
-            'PORT': '',
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            # 'NAME': os.getenv('LM_DB_NAME'),
+            # 'PORT': '',
         },
     }
 
@@ -309,11 +309,11 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 USE_I18N = True
 LANGUAGE_CODE = 'en'
 TIME_ZONE = 'UTC'
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=api, vocabulary, ctasks',
-]
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+# NOSE_ARGS = [
+    # '--with-coverage',
+    # '--cover-package=api, vocabulary, ctasks',
+# ]
 
 ROSETTA_MESSAGES_PER_PAGE = 100
 ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
