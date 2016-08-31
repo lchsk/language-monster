@@ -1,3 +1,8 @@
+from datetime import (
+    datetime,
+    timedelta,
+)
+
 from mock import (
     Mock,
     MagicMock,
@@ -10,188 +15,124 @@ from ctasks.game_tasks import (
     compute_strength,
 )
 
+from utility import mock_objects as mo
+
+streak_tests = [
+    dict(
+        ret=[],
+        results=[0, 0, 0],
+    ),
+    dict(
+        ret=[
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=50,
+                date=datetime.today(),
+            ),
+        ],
+        results=[1, 50, 1],
+    ),
+    dict(
+        ret=[
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=60,
+                date=datetime.today()
+            ),
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=40,
+                date=datetime.today() - timedelta(days=1)
+            ),
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=80,
+                date=datetime.today() - timedelta(days=2)
+            ),
+        ],
+        results=[3, 60, 3],
+    ),
+    dict(
+        ret=[
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=60,
+                date=datetime.today() - timedelta(days=3)
+            ),
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=80,
+                date=datetime.today() - timedelta(days=4)
+            ),
+        ],
+        results=[0, 70, 2],
+    ),
+    dict(
+        ret=[
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=10,
+                date=datetime.today()
+            ),
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=60,
+                date=datetime.today() - timedelta(days=3)
+            ),
+            Mock(
+                user=mo.USER_1,
+                data_set=mo.DATASET_1,
+                mark=80,
+                date=datetime.today() - timedelta(days=4)
+            ),
+        ],
+        results=[1, 50, 3],
+    )
+]
+
 @patch('core.models.UserWordPair.objects.filter')
 @patch('core.models.DS2WP.objects.filter')
 def test_count_words_user_learned(mock_ds2wp, mock_userwordpair):
-    user = Mock()
-
-    lang1 = Mock()
-    lang2 = Mock()
-
-    lp = Mock(
-        base_language=lang1,
-        target_language=lang2,
-    )
-
-    progression1 = Mock(
-        user=user,
-        pair=lp,
-    )
-
-    cnt = count_user_words(user, progression1)
+    cnt = count_user_words(mo.USER_1, mo.PROGRESSION_1)
 
     assert cnt == 0
 
-    wp1 = Mock(base='dog', target='pies')
-    wp2 = Mock(base='cat', target='kot')
-    wp3 = Mock(base='lion', target='lew')
-    wp4 = Mock(base='pear', target='gruszka')
-
-    words = [wp1, wp2, wp3]
-
-    ds = Mock(pair=lp)
-
-    link1 = Mock(ds=ds, wp=wp1)
-    link2 = Mock(ds=ds, wp=wp2)
-    link3 = Mock(ds=ds, wp=wp3)
-    link4 = Mock(ds=ds, wp=wp4)
-
     mock_userwordpair.return_value = [
-        Mock(user=user, word_pair=wp1, learned=True),
-        Mock(user=user, word_pair=wp2, learned=True),
+        Mock(user=mo.USER_1, word_pair=mo.WP_10, learned=True),
+        Mock(user=mo.USER_1, word_pair=mo.WP_11, learned=True),
     ]
 
-    mock_userwordpair.assert_called_with(learned=True, user=user)
+    mock_userwordpair.assert_called_once_with(learned=True, user=mo.USER_1)
 
-    mock_ds2wp.return_value = [link1, link2, link3, link4]
+    mock_ds2wp.return_value = mo.LINKS_1
 
-    cnt = count_user_words(user, progression1)
+    cnt = count_user_words(mo.USER_1, mo.PROGRESSION_1)
 
     assert cnt == 2
 
 @patch('core.models.UserResult.objects.filter')
 def test_compute_user_streak(mock_userresult):
-    user = Mock()
+    for test in streak_tests:
+        mock_userresult.return_value = MagicMock()
+        mock_userresult.return_value.order_by.return_value = test['ret']
 
-    lang1 = Mock()
-    lang2 = Mock()
+        streak, avg, cnt = update_streak(mo.USER_1, mo.PROGRESSION_1)
 
-    lp = Mock(
-        base_language=lang1,
-        target_language=lang2,
-    )
+        mock_userresult.assert_called_with(user=mo.USER_1)
 
-    progression1 = Mock(
-        user=user,
-        pair=lp,
-    )
+        exp_streak, exp_avg, exp_cnt = test['results']
 
-    # First case - no results
-
-    mock_userresult.return_value = MagicMock()
-    mock_userresult.return_value.order_by.return_value = []
-
-    streak, avg, cnt = update_streak(user, progression1)
-
-    mock_userresult.assert_called_with(user=user)
-
-    assert cnt == 0
-    assert streak == 0
-    assert avg == 0
-
-
-    # Second case - a single result
-    from datetime import datetime, timedelta
-
-    mock_userresult.return_value = MagicMock()
-    mock_userresult.return_value.order_by.return_value = [
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=50,
-            date=datetime.today()
-        )
-    ]
-
-    streak, avg, cnt = update_streak(user, progression1)
-
-    assert cnt == 1
-    assert streak == 1
-    assert avg == 50
-
-    # # Third case - several cases
-
-    mock_userresult.return_value = MagicMock()
-    mock_userresult.return_value.order_by.return_value = [
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=60,
-            date=datetime.today()
-        ),
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=40,
-            date=datetime.today() - timedelta(days=1)
-        ),
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=80,
-            date=datetime.today() - timedelta(days=2)
-        )
-    ]
-
-    streak, avg, cnt = update_streak(user, progression1)
-
-    assert cnt == 3
-    assert streak == 3
-    assert avg == 60
-
-    # 4th case - several cases
-
-    mock_userresult.return_value = MagicMock()
-    mock_userresult.return_value.order_by.return_value = [
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=60,
-            date=datetime.today() - timedelta(days=3)
-        ),
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=80,
-            date=datetime.today() - timedelta(days=4)
-        ),
-    ]
-
-    streak, avg, cnt = update_streak(user, progression1)
-
-    assert cnt == 2
-    assert streak == 0
-    assert avg == 70
-
-    # 5th case - several cases
-
-    mock_userresult.return_value = MagicMock()
-    mock_userresult.return_value.order_by.return_value = [
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=10,
-            date=datetime.today()
-        ),
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=60,
-            date=datetime.today() - timedelta(days=3)
-        ),
-        Mock(
-            user=user,
-            data_set=Mock(pair=lp),
-            mark=80,
-            date=datetime.today() - timedelta(days=4)
-        ),
-    ]
-
-    streak, avg, cnt = update_streak(user, progression1)
-
-    assert cnt == 3
-    assert streak == 1
-    assert avg == 50
+        assert streak == exp_streak
+        assert avg == exp_avg
+        assert cnt == exp_cnt
 
 def test_compute_strength():
     trend, new_strength = compute_strength(

@@ -48,7 +48,6 @@ def count_user_words(user, progression):
         )
     ]
 
-
     for uw in user_words:
         if uw in all_words:
             count += 1
@@ -60,20 +59,13 @@ def count_user_words(user, progression):
         count
     )
 
-    # import pdb
-    # pdb.set_trace()
-
-    # for w in all_words:
-    #     if w.wp in user_words:
-    #         count += 1
-
     progression.words = count
     progression.save()
 
     return count
 
 
-def update_streak(user, language):
+def update_streak(user, progression):
     '''
         Updates user streak (number of straight days with a level finished)
         and average.
@@ -86,7 +78,7 @@ def update_streak(user, language):
     date_tmp = date.today()
 
     for r in results:
-        if r and language and r.data_set.pair == language.pair:
+        if r and progression and r.data_set.pair == progression.pair:
             marks += r.mark
             results_count += 1
 
@@ -98,17 +90,16 @@ def update_streak(user, language):
                 streak += 1
                 date_tmp -= timedelta(days=1)
 
-    language.streak = streak
+    progression.streak = streak
 
-    # print language, marks, results_count
     if results_count > 0:
-        language.average = int(round(marks / float(results_count)))
+        progression.average = int(round(marks / float(results_count)))
     else:
-        language.average = 0
+        progression.average = 0
 
-    language.save()
+    progression.save()
 
-    return streak, language.average, results_count
+    return streak, progression.average, results_count
 
 
 def compute_strength(current_strength, words, streak, average, levels):
@@ -135,6 +126,7 @@ def update_user_stats(email, dataset_id):
 
     d = DataSet.objects.filter(id=int(dataset_id)).first()
     u = MonsterUser.objects.filter(user__email=email).first()
+
     if not d:
         logger.critical('Dataset %s not found', dataset_id)
 
@@ -145,12 +137,6 @@ def update_user_stats(email, dataset_id):
         user=u,
         pair=d.pair
     ).first()
-    # language = None
-    # 
-    # for ul in user_langs:
-    #     if d and ul.pair == d.pair:
-    #         language = ul
-    #         break
 
     if u and d and language:
         words = count_user_words(u, language)
