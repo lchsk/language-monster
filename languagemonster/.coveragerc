@@ -1,0 +1,7 @@
+[run]
+
+[report]
+
+omit = */migrations/*
+
+show_missing = True
