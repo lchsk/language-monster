@@ -19,7 +19,7 @@
                             <div class="row header" style="text-align: left;">
                             <div class="col-md-8">
                                 <h2>
-                                <a style="padding-top: 0; margin-top: 0;" title="{% trans 'Learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}">
+                                <a style="padding-top: 0; margin-top: 0;" title="{% trans 'learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}">
                                 {% trans lang_pair.target_language.english_name %}</a><span>{{ lang_pair.target_language.original_name }}</span></h2>
                             </div>
                             <div class="col-md-4" style="text-align: right; padding-top: 20px;">
@@ -33,15 +33,15 @@
                             <div class="row" style="position: relative;">
                                 <div class="col-md-12 col-xs-12">
                                     <div class="row stats">
-                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-education"></span> {% trans "Words" %}</div>
+                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-education"></span> {% trans "words" %}</div>
                                         <div class="col-md-6 col-xs-6 value">{{ p.words }}</div>
                                     </div>
                                     <div class="row stats">
-                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-stats"></span> {% trans "Streak" %}</div>
+                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-stats"></span> {% trans "streak" %}</div>
                                         <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.streak %} {{value}} day(s){% endblocktrans %}</div>
                                     </div>
                                     <div class="row stats">
-                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-scale"></span> {% trans "Average" %}</div>
+                                        <div class="col-md-6 col-xs-6 definition"><span class="glyphicon glyphicon-scale"></span> {% trans "average" %}</div>
                                         <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.average %} {{value}} %{% endblocktrans %}</div>
                                     </div>
                                     <div class="row stats">
@@ -59,7 +59,7 @@
                                         <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.strength %} {{value}} pts{% endblocktrans %}</div>
                                     </div>
                                     <div class="row">
-                                            <a title="{% trans 'Learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" class="learn btn btn-submit">{% trans "Learn" %} <span class="glyphicon glyphicon-play"></span></a>
+                                            <a title="{% trans 'learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" class="learn btn btn-submit">{% trans "learn" %} <span class="glyphicon glyphicon-play"></span></a>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-xs-4">

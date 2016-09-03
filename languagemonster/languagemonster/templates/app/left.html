@@ -7,7 +7,7 @@
             <div class="row" style="padding-right: 15px;">
                     <a title="Language Monster" href="{% url 'index' %}"><img src="{{STATIC_URL}}images/website/logo90.png" /></a>
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-unlogged">
-                <span class="sr-only">{% trans "Toggle navigation" %}</span>
+                <span class="sr-only">{% trans "toggle_nav" %}</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -21,16 +21,16 @@
 
     <div class="collapse navbar-collapse" id="navbar-unlogged">
         <ul class="nav navbar-nav navbar-right">
-            <li><a title="{% trans 'Profile' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>
+            <li><a title="{% trans 'profile' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-user"></span> {% trans "profile" %}</a></li>
             <li class="divider"></li>
-            <li><a title="{% trans 'Log Out' %}" href="{% url 'core:logout' %}"><span class="glyphicon glyphicon-off"></span> {% trans "Log Out" %}</a></li>
+            <li><a title="{% trans 'log_out' %}" href="{% url 'core:logout' %}"><span class="glyphicon glyphicon-off"></span> {% trans "log_out" %}</a></li>
         </ul>
     </div>
 
     <div id="app-left-column">
         <div class="fluid-container">
             <div class="row">
-              <a title="{% trans 'Profile' %}" href="{% url 'public_page' context.user.uri %}">
+              <a title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}">
                         {% if context.user.avatar %}
                         {% with context.urls.avatar|add:context.user.avatar as path %}
                             {% thumbnail path "60x60" crop="center" as im %}
@@ -40,7 +40,7 @@
                         {% endif %}
                     </a>
             </div>
-            <div class="row hello-screen">{% trans "Hello" %}<br />{{context.user.public_name}}</div>
+            <div class="row hello-screen">{% trans "hello" %}<br />{{context.user.public_name}}</div>
             {% if context.user.is_superuser%}
             <div>Superuser</div>
             {% endif %}
@@ -49,7 +49,7 @@
               <div class="main-menu">
                     {% if context.user.studying|length > 0 %}
                         <br />
-                        <h4>{% trans "YOUR LANGUAGES" %}</h4>
+                        <h4>{% trans "header_your_languages" %}</h4>
 
                         {% for pro, lang_pair in context.user.studying %}
 
@@ -69,15 +69,15 @@
 
                     <br />
                     <div style="text-align: center;">
-                        <a title="{% trans 'Add language' %}" href="{% url 'vocabulary:add_language' %}" class="btn btn-submit"><span class="glyphicon glyphicon-plus-sign"></span>{% trans "Add language" %}</a>
+                        <a title="{% trans 'add_language' %}" href="{% url 'vocabulary:add_language' %}" class="btn btn-submit"><span class="glyphicon glyphicon-plus-sign"></span>{% trans "add_language" %}</a>
                     </div>
 
                     <br />
                     <h4>LANGUAGE MONSTER</h4>
 
-                    <a class="common" title="{% trans 'Dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "Dashboard" %}</a><br />
-                    <a class="common" title="{% trans 'Profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "Profile" %}</a><br />
-                    <a class="common" title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "Settings" %}</a><br />
+                    <a class="common" title="{% trans 'ashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "dashboard" %}</a><br />
+                    <a class="common" title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "profile" %}</a><br />
+                    <a class="common" title="{% trans 'pettings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "settings" %}</a><br />
                 </div>
             </div>
         </div>

@@ -46,9 +46,9 @@ class SettingsView(AuthContextView):
             get_user_games(self._context.user.raw)
         )
         context['gender'] = dict(
-            M=_('male'),
-            F=_('female'),
-            O=_('other'),
+            M=_('gender_male'),
+            F=_('gender_female'),
+            O=_('gender_other'),
         )
 
         return context
@@ -75,7 +75,7 @@ class DoSaveProfile(AuthContextView):
         messages.add_message(
             self.request,
             messages.SUCCESS,
-            _('Your profile was successfully updated')
+            _('msg_profile_updated')
         )
 
         return self.redirect('core:settings')
@@ -104,7 +104,7 @@ class DoSaveUserGames(AuthContextView):
         messages.add_message(
             request,
             messages.SUCCESS,
-            _('Your profile was successfully updated')
+            _('msg_profile_updated')
         )
 
         return self.redirect('core:settings')
@@ -126,7 +126,7 @@ class DoSaveUserPassword(AuthContextView):
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                _("Your password was successfully changed.")
+                _("msg_profile_updated")
             )
 
         return self.redirect('core:settings')
@@ -147,7 +147,7 @@ class DoSaveAvatar(AuthContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Only png and jpg files are accepted, sorry.')
+                _('msg_only_png_jpg')
             )
 
             return self.redirect('core:settings')
@@ -161,7 +161,7 @@ class DoSaveAvatar(AuthContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('File is too large. Maximum size is 0.5 MB.')
+                _('msg_file_too_large_0_5_mb')
             )
 
             return self.redirect('core:settings')
@@ -177,7 +177,7 @@ class DoSaveAvatar(AuthContextView):
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                _('File was successfully uploaded.')
+                _('msg_file_uploaded')
             )
 
             return self.redirect('core:settings')
@@ -189,7 +189,7 @@ class DoSaveAvatar(AuthContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Unknown error when uploading a file. Please try again later.')
+                _('msg_unknown_error')
             )
             return self.redirect('core:settings')
 
@@ -203,7 +203,7 @@ class DoSaveUserEmail(AuthContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('You need to type in your new email address.')
+                _('msg_type_new_email')
             )
 
             return self.redirect('core:settings')
@@ -216,7 +216,7 @@ class DoSaveUserEmail(AuthContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Email already in use'),
+                _('msg_email_already_in_use'),
             )
 
             return self.redirect('core:settings')
@@ -239,10 +239,7 @@ class DoSaveUserEmail(AuthContextView):
         messages.add_message(
             request,
             messages.SUCCESS,
-            _(
-                'Confirmation email was sent. Please check your '
-                'inbox (or possibly spam box).'
-            )
+            _('msg_email_sent'),
         )
 
         return self.redirect('core:settings')
@@ -260,7 +257,7 @@ class DoConfirmNewEmail(AuthContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Confirmation procedure failed. Please try again.')
+                _('msg_confirmation_failed')
             )
             return self.redirect('core:settings')
 
@@ -274,7 +271,7 @@ class DoConfirmNewEmail(AuthContextView):
         messages.add_message(
             request,
             messages.SUCCESS,
-            _('Your email address was verified successfully.')
+            _('msg_email_verified')
         )
 
         return self.redirect('info', kwargs=dict(page='success'))
@@ -285,9 +282,10 @@ class DoRecoverPassword(ContextView):
 
         if not identifier:
             logger.warning("Email is not correct: %s", identifier)
+
             messages.add_message(
                 request,
-                messages.WARNING, _('Email is not correct.')
+                messages.WARNING, _('msg_invalid_email')
             )
             return self.redirect('info', args=[''])
 
@@ -297,10 +295,11 @@ class DoRecoverPassword(ContextView):
 
         if not monster_user:
             logger.warning("Email has not been found: %s", identifier)
+
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Email has not been found.')
+                _('msg_email_not_found')
             )
             return self.redirect('info', args=[''])
 
@@ -324,10 +323,7 @@ class DoRecoverPassword(ContextView):
         messages.add_message(
             request,
             messages.SUCCESS,
-            _(
-                'Email was sent. Please check your inbox '
-                '(or possibly spam box).'
-            )
+            _('msg_email_sent'),
         )
 
         logger.info("Email sent for password recovery: %s", identifier)
@@ -360,7 +356,7 @@ class DoConfirmNewPassword(ContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Email not found.')
+                _('msg_email_not_found'),
             )
 
             raise Http404
@@ -381,7 +377,7 @@ class DoConfirmNewPassword(ContextView):
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                _('Your password was successfully changed. You can now login.')
+                _('msg_password_changed'),
             )
 
             return self.redirect('info', kwargs=dict(page='success'))
@@ -389,7 +385,7 @@ class DoConfirmNewPassword(ContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('Values you have entered are incorrect.')
+                _('msg_invalid_values'),
             )
 
             return self.redirect('info', kwargs=dict(page='failure'))

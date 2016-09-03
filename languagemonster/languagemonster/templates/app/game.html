@@ -10,8 +10,8 @@
                 <!-- <div class="row" style="text-align: left;"> -->
                     <div class="row" style="text-align: left;">
                         <ol class="breadcrumb">
-                            <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}">{% trans "Dashboard" %}</a></li>
-                            <li><a title="{% trans 'Languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "Languages" %}</a></li>
+                            <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "dashboard" %}</a></li>
+                            <li><a title="{% trans 'languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "languages" %}</a></li>
                             <li><a href="{% url 'vocabulary:study' pair.target_language.slug %}">{% trans pair.target_language.english_name %} ({{ pair.target_language.original_name }})</a></li>
                             <li class="active">{{ dataset.name_base }} ({{dataset.name_target}})</li>
                         </ol>
@@ -20,16 +20,16 @@
                         <h2 class="margin-crumbs">
                                 <div class="{{pair.target_language.flag_filename}}_24px img-circle flag-border" style="width: 24px; height: 24px; display: inline-block;"></div>
                                 <div style="display: inline-block;">
-                            {% trans "Learning data set" %}: {{ dataset.name_base }} ({{dataset.name_target}})
+                            {% trans "learning_data_set" %}: {{ dataset.name_base }} ({{dataset.name_target}})
                                 </div>
                         </h2>
                     </div>
                 <!-- </div> -->
                 <div id="alert-browser-size" class="alert alert-warning" role="alert">
-                    {% trans "Hey! It looks like your browser size is too small to play. Minimum size is <strong>800 x 600" %}</strong>
+                    {% trans "msg_browser_window_too_small" %}</strong>
                 </div>
                 <div id="alert-no-games" class="alert alert-warning" role="alert">
-                    {% trans "Hey! You have not selected any games! Go to your settings page and choose the ones you want to play!" %}</strong>
+                    {% trans "msg_no_games_selected" %}</strong>
                 </div>
                 {% csrf_token %}
                 <script type="text/javascript">

@@ -12,9 +12,9 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav main-left">
-                <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span> {% trans "Dashboard" %}</a></li>
-                <li><a title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-user"></span> {% trans "Settings" %}</a></li>
-                <li><a title="{% trans 'Add language' %}" href="{% url 'vocabulary:add_language' %}"><span class="glyphicon glyphicon-plus-sign"></span> {% trans "Add language" %}</a></li>
+                <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span> {% trans "dashboard" %}</a></li>
+                <li><a title="{% trans 'settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-user"></span> {% trans "settings" %}</a></li>
+                <li><a title="{% trans 'add_language' %}" href="{% url 'vocabulary:add_language' %}"><span class="glyphicon glyphicon-plus-sign"></span> {% trans "add_language" %}</a></li>
               </ul>
 
               <ul class="nav navbar-nav navbar-right">
@@ -42,15 +42,14 @@
                     {{context.user.public_name}}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
                     {% if user.uri %}
-                        <li><a title="{% trans 'Profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>
+                        <li><a title="{% trans 'profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span> {% trans "profile" %}</a></li>
                     {% elif user.id %}
-                        <li><a title="{% trans 'Profile' %}" href="{% url 'public_page' user.id %}"><span class="glyphicon glyphicon-user"></span> {% trans "Profile" %}</a></li>
+                        <li><a title="{% trans 'profile' %}" href="{% url 'public_page' user.id %}"><span class="glyphicon glyphicon-user"></span> {% trans "profile" %}</a></li>
                     {% endif %}
-                    <li><a title="{% trans 'Settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span> {% trans "Settings" %}</a></li>
+                    <li><a title="{% trans 'settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span> {% trans "settings" %}</a></li>
 
-                    <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Statistics</a></li> -->
                     <li class="divider"></li>
-                    <li><a href="{% url 'core:logout' %}"><span class="glyphicon glyphicon-off"></span> {% trans "Log Out" %}</a></li>
+                    <li><a href="{% url 'core:logout' %}"><span class="glyphicon glyphicon-off"></span> {% trans "log_out" %}</a></li>
                   </ul>
                 </li>
               </ul>

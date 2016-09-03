@@ -112,7 +112,7 @@ class DoSaveLanguage(NoTemplateMixin, AuthContextView):
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                _('You are now learning a new language! Congratulations!')
+                _('msg_new_lang_added')
             )
 
             return self.redirect('vocabulary:study', args=[slug])

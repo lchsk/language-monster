@@ -53,6 +53,7 @@ class DoRegister(ContextView):
     def post(self, request, *args, **kwargs):
         if request.POST['monster_username']:
             logger.critical("No username")
+
             return self.redirect('info', args=[''])
 
         password1 = request.POST['password1']
@@ -95,21 +96,20 @@ class DoRegister(ContextView):
                     messages.add_message(
                         request,
                         messages.SUCCESS,
-                        _('You are registered. Please login.')
+                        _('msg_user_registered')
                     )
             except Exception, e:
                 logger.critical("Exception in registration")
                 logger.critical(str(e))
+
                 messages.add_message(
                     request,
                     messages.WARNING,
-                    _(
-                        'Sorry, sending confirmation email failed.'
-                        ' Please try again later.'
-                    )
+                    _('msg_email_failed'),
                 )
         else:
             logger.warning("Registration data invalid")
+
             messages.add_message(request, messages.WARNING, (error_str))
 
             return self.redirect('info', args=[''])
@@ -131,33 +131,33 @@ class DoLogin(ContextView):
                 monster_user.user.backend = \
                     'django.contrib.auth.backends.ModelBackend'
                 login(request, monster_user.user)
+
                 logger.debug('User %s successfully logged in', identifier)
+
                 return self.redirect('index')
             else:
                 logger.info('User %s is inactive, cant log in', identifier)
+
                 messages.add_message(
                     request,
                     messages.WARNING,
-                    _(
-                        'This user is listed as inactive. Make sure you '
-                        'confirmed your registration by clicking on a link '
-                        'in an email you have received. In case of problems, '
-                        'please contact us. Sorry for inconvenience.'
-                    )
+                    _('msg_user_inactive'),
                 )
                 return self.redirect('info', args=[''])
         else:
             logger.info("Login data for %s are invalid", identifier)
+
             messages.add_message(
                 request,
                 messages.WARNING,
-                _('You must provide correct email/username and password.')
+                _('msg_invalid_email_password'),
             )
             return self.redirect('info', args=[''])
 
 class DoLogout(AuthContextView):
     def get(self, request, *args, **kwargs):
         logout(request)
+
         return self.redirect('index')
 
 class IndexView(ContextView):
@@ -239,10 +239,7 @@ class DoSaveContactEmail(ContextView):
             messages.add_message(
                 self.request,
                 messages.SUCCESS,
-                _(
-                    'Thank you for contacting us. We will do our best '
-                    'to respond shortly!'
-                )
+                _('msg_contact_recv'),
             )
 
             return self.redirect('index')
@@ -255,15 +252,10 @@ class DoSaveContactEmail(ContextView):
             messages.add_message(
                 request,
                 messages.WARNING,
-                _(
-                    'Email was not sent. Please make sure that all fields '
-                    ' have valid values.'
-                )
+                _('msg_email_failed'),
             )
 
             return self.redirect('index')
-
-
 
 class DoChangeInterfaceLanguage(NoTemplateMixin, ContextView):
     def get(self, request, *args, **kwargs):
@@ -308,6 +300,7 @@ class DoChangeInterfaceLanguage(NoTemplateMixin, ContextView):
                 self.args[0],
                 expires=end_date
             )
+
             logger.info(
                 "Changing language (cookie)"
             )

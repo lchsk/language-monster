@@ -69,12 +69,12 @@ def is_registration_valid(p_user):
     # password must be of the same length
     if p_user['password1'] != p_user['password2']:
         error = 'passwords_not_equal'
-        error_str = _('Passwords are not equal.')
+        error_str = _('msg_passwords_not_equal')
 
     # length of the password must be >= 8
     if len(p_user['password1']) < 8:
         error = 'password_too_short'
-        error_str = _('Password must be at least 8 characters long.')
+        error_str = _('msg_password_too_short')
 
     # TODO: Add email validation
     # email address validation
@@ -87,15 +87,13 @@ def is_registration_valid(p_user):
     # more strict: "^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
     if not re.match(r"[^@]+@[^@]+\.[^@]+", p_user['email']):
         error = 'email_invalid'
-        error_str = _('That email address is not valid.')
+        error_str = _('msg_invalid_email')
 
     # check if email address is unique
     email = contrib_models.User.objects.filter(email=p_user['email'])
     if len(email) > 0:
         error = 'email_not_unique'
-        error_str = _(
-            'That email was already used on this website. Pick a new one.'
-        )
+        error_str = _('msg_email_already_in_use')
 
     if error is None:
         return (True, '', '')

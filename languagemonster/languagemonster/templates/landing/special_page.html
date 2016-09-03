@@ -26,20 +26,20 @@
               {% elif page == 'success' %}
               <div id="intro-header" style="color: #333333;">
                 <span id="typed-header">
-                  {% trans "Success" %}
+                  {% trans "header_success" %}
                 </span>
               </div>
               {% elif page == 'failure' %}
               <div id="intro-header" style="color: #333333;">
                 <span id="typed-header">
-                  {% trans "Failure" %}
+                  {% trans "header_failure" %}
                 </span>
               </div>
               {% endif %}
 
               {% if page == 'success' or page == 'failure' %}
               <div id="intro-text" style="color: #555;">
-                  {% trans "Go back to the" %} <a href="{{home}}" class="btn btn-submit">{% trans "Home page" %}</a>
+                  {% trans "link_go_back_to" %} <a href="{{home}}" class="btn btn-submit">{% trans "link_home_page" %}</a>
               </div>
               {% endif %}
             </div>

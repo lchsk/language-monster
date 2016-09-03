@@ -6,29 +6,29 @@
     <div class="modal-content modal-round">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" style="color: #000000;" id="modal-login-header">{% trans "Contact" %}</h4>
+        <h4 class="modal-title" style="color: #000000;" id="modal-login-header">{% trans "contact" %}</h4>
       </div>
       <div class="modal-body">
         <form action="{% url 'core:send_email' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-          <input type="text" class="form-control" id="contact-name" name="name" placeholder="{% trans 'Enter your name' %}">
+          <input type="text" class="form-control" id="contact-name" name="name" placeholder="{% trans 'ph_your_name' %}">
         </div>
 
         <div class="form-group">
-          <input type="email" class="form-control" id="contact-email" name="email" placeholder="{% trans 'Enter your email' %}">
+          <input type="email" class="form-control" id="contact-email" name="email" placeholder="{% trans 'ph_your_email' %}">
         </div>
 
         <div class="form-group form-text">
-            <input name="username" type="text" class="form-control" id="contat-username" placeholder="{% trans 'Enter username' %}">
+            <input name="username" type="text" class="form-control" id="contat-username" placeholder="{% trans 'ph_your_username' %}">
         </div>
 
         <div class="form-group">
-          <textarea class="form-control" rows="3" name="text" placeholder="{% trans 'Enter your message' %}"></textarea>
+          <textarea class="form-control" rows="3" name="text" placeholder="{% trans 'ph_your_message' %}"></textarea>
         </div>
 
       </div>
-      <div class="modal-footer"><button type="submit" class="btn btn-default btn-submit">{% trans "Send" %}</button></div>
+      <div class="modal-footer"><button type="submit" class="btn btn-default btn-submit">{% trans "btn_send" %}</button></div>
         </form>
       </div>
     </div>

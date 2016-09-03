@@ -12,15 +12,15 @@ EMAILS = {
 
     'welcome': {
         'filename': 'welcome.html',
-        'subject': _('Welcome to Language Monster')
+        'subject': _('mail_subj_welcome'),
     },
     'email_change': {
         'filename': 'email_change.html',
-        'subject': _('Confirm your email address on Language Monster')
+        'subject': _('mail_subj_confirm_email'),
     },
     'password_recovery': {
         'filename': 'password_recovery.html',
-        'subject': _('Set your new password on Language Monster')
+        'subject': _('mail_subj_new_password'),
     },
 
     # Admin stuff

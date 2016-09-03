@@ -15,8 +15,8 @@
             <div class="container-fluid" style="padding: 0 40px 40px 40px;">
                 <div class="row" style="text-align: left;">
                         <ol class="breadcrumb">
-                            <li><a title="{% trans 'Dashboard' %}" href="{% url 'index' %}">{% trans "Dashboard" %}</a></li>
-                            <li><a title="{% trans 'Languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "Languages" %}</a></li>
+                            <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "dashboard" %}</a></li>
+                            <li><a title="{% trans 'languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "languages" %}</a></li>
                             <li class="active">{% trans pair.target_language.english_name %} ({{ pair.target_language.original_name }})</li>
                         </ol>
                 </div>
@@ -31,9 +31,9 @@
                 </div>
     <div role="tabpanel">
       <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a id="btn-popular" href="#popular" aria-controls="popular" role="tab" data-toggle="tab">{% trans "Most popular" %}</a></li>
-          <li role="presentation"><a id="btn-basic" href="#basic" aria-controls="basic" role="tab" data-toggle="tab">{% trans "Basic" %}</a></li>
-          <li role="presentation"><a id="btn-all" href="#all" aria-controls="all" role="tab" data-toggle="tab">{% trans "All data sets" %}</a></li>
+          <li role="presentation" class="active"><a id="btn-popular" href="#popular" aria-controls="popular" role="tab" data-toggle="tab">{% trans "dataset_most_popular" %}</a></li>
+          <li role="presentation"><a id="btn-basic" href="#basic" aria-controls="basic" role="tab" data-toggle="tab">{% trans "dataset_basic" %}</a></li>
+          <li role="presentation"><a id="btn-all" href="#all" aria-controls="all" role="tab" data-toggle="tab">{% trans "dataset_all" %}</a></li>
       </ul>
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane" id="all">
@@ -50,7 +50,7 @@
                                 {% endif %}
                                 {% if i in user_data_sets %}
                                 {% else %}
-                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'Number of words' %}" class="badge">{{ i.word_count }}</span></a></li>
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'number_of_words %}" class="badge">{{ i.word_count }}</span></a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -72,7 +72,7 @@
                                 {% endif %}
                                 {% if i in user_data_sets %}
                                 {% else %}
-                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'Number of words' %}" class="badge">{{ i.word_count }}</span></a></li>
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'number_of_words' %}" class="badge">{{ i.word_count }}</span></a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -94,7 +94,7 @@
                                 {% endif %}
                                 {% if i in user_data_sets %}
                                 {% else %}
-                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'Number of words' %}" class="badge">{{ i.word_count }}</span></a></li>
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'number_of_words' %}" class="badge">{{ i.word_count }}</span></a></li>
                         {% endfor %}
                     </ul>
                 </div>
