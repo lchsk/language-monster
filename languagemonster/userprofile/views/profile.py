@@ -1,11 +1,20 @@
 import logging
+from uuid import uuid4
 
 from django_countries import countries
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
+from django.core.urlresolvers import reverse
+
+from core.models import (
+    MonsterUser,
+)
+
+from core.impl import mail
 
 from utility.views import (
+    ContextView,
     AuthContextView,
     NoTemplateMixin,
 )
@@ -17,6 +26,8 @@ from core.impl.user import (
     update_public_name,
     process_games_list,
 )
+
+from core.views import SpecialPageView
 
 from vocabulary.impl.study import get_user_games
 
@@ -181,3 +192,153 @@ class DoSaveAvatar(AuthContextView):
                 _('Unknown error when uploading a file. Please try again later.')
             )
             return self.redirect('core:settings')
+
+class DoSaveUserEmail(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        new_email = request.POST['email'].lower()
+
+        if not new_email:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('You need to type in your new email address.')
+            )
+
+            return self.redirect('core:settings')
+
+        already_exists = MonsterUser.objects.filter(
+            user__email=new_email
+        ).first()
+
+        if already_exists:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Email already in use'),
+            )
+
+            return self.redirect('core:settings')
+
+        secure_hash = self._context.user.change_email(new_email)
+
+        host = request.get_host()
+        url = reverse('core:confirm_email', args=[secure_hash])
+
+        mail.send_template_email(
+            request=request,
+            recipient=new_email,
+            template='email_change',
+            ctx=dict(
+                PUBLIC_NAME=self._context.user.public_name,
+                URL='http://' + host + url,
+            )
+        )
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _(
+                'Confirmation email was sent. Please check your '
+                'inbox (or possibly spam box).'
+            )
+        )
+
+        return self.redirect('core:settings')
+
+class DoConfirmNewEmail(AuthContextView):
+    def get(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        if self._context.user.secure_hash != kwargs['secret']:
+            logger.warning(
+                'Invalid secret hash when chaning email for %s',
+                self._context.user
+            )
+
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Confirmation procedure failed. Please try again.')
+            )
+            return self.redirect('core:settings')
+
+        self._context.user.save_new_email()
+
+        logger.info(
+            'User %s successfully confirmed email',
+            self._context.user,
+        )
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _('Your email address was verified successfully.')
+        )
+
+        return self.redirect('info', kwargs=dict(page='success'))
+
+class DoRecoverPassword(ContextView):
+    def post(self, request, *args, **kwargs):
+        identifier = request.POST['identifier']
+
+        if not identifier:
+            logger.warning("Email is not correct: %s", identifier)
+            messages.add_message(
+                request,
+                messages.WARNING, _('Email is not correct.')
+            )
+            return self.redirect('info', args=[''])
+
+        monster_user = MonsterUser.objects.filter(
+            user__email=identifier
+        ).first()
+
+        if not monster_user:
+            logger.warning("Email has not been found: %s", identifier)
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Email has not been found.')
+            )
+            return self.redirect('info', args=[''])
+
+        secure_hash = uuid4().hex
+        monster_user.secure_hash = secure_hash
+        monster_user.save()
+
+        host = request.get_host()
+        url = reverse('core:generate_password', args=[secure_hash])
+
+        mail.send_template_email(
+            request=request,
+            recipient=monster_user.user.email,
+            template='password_recovery',
+            ctx=dict(
+                PUBLIC_NAME=monster_user.public_name,
+                URL='http://' + host + url,
+            )
+        )
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _(
+                'Email was sent. Please check your inbox '
+                '(or possibly spam box).'
+            )
+        )
+
+        logger.info("Email sent for password recovery: %s", identifier)
+
+        return self.redirect('info', kwargs=dict(page='success'))
+
+class PickNewPasswordView(SpecialPageView):
+    def get_context_data(self, **kwargs):
+        context = super(PickNewPasswordView, self).get_context_data(**kwargs)
+
+        context['page'] = 'generate_password'
+        context['secret'] = kwargs['secret']
+
+        return context

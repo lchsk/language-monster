@@ -45,7 +45,7 @@ urlpatterns = [
     ),
     url(
         r'^update-email/$',
-        views.DoSaveUserEmail.as_view(),
+        profile.DoSaveUserEmail.as_view(),
         name='update_email',
     ),
     url(
@@ -55,9 +55,15 @@ urlpatterns = [
     ),
     url(
         r'^recover-password/$',
-        views.DoRecoverPassword.as_view(),
+        profile.DoRecoverPassword.as_view(),
         name='recover_password',
     ),
+    url(
+        r'^generate-password/(?P<secret>[a-f0-9]+)/?$',
+        profile.PickNewPasswordView.as_view(),
+        name='generate_password',
+    ),
+
     url(
         r'^send-email/$',
         views.DoSaveContactEmail.as_view(),
@@ -74,17 +80,10 @@ urlpatterns = [
         name='change_language',
     ),
 
-    # email change confirmation
     url(
         r'^confirm-email/(?P<secret>[a-f0-9]+)/?$',
-        views.DoConfirmNewEmail.as_view(),
+        profile.DoConfirmNewEmail.as_view(),
         name='confirm_email',
-    ),
-    # new password generation
-    url(
-        r'^generate-password/(?P<secret>[a-f0-9]+)/?$',
-        views.PickNewPasswordView.as_view(),
-        name='generate_password',
     ),
     url(
         r'^confirm-new-password/(?P<secret>[a-f0-9]+)/?$',
