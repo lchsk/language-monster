@@ -133,27 +133,27 @@ GAMES_DEFAULT_WORD_SETS_COUNT = 10
 GAMES = {
     'space': {
         'available' : True,
-        'name' : _('Space Game'),
+        'name' : _('game_space_game'),
         'image' : 'space2.png'
     },
     'simple': {
         'available' : True,
-        'name' : _('Four buttons'),
+        'name' : _('game_four_buttons'),
         'image' : 'simple.png'
     },
     'plane': {
         'available' : True,
-        'name' : _('Crazy plane'),
+        'name' : _('game_crazy_plane'),
         'image' : 'plane.png'
     },
     'runner': {
         'available' : True,
-        'name' : _('Bunny runner'),
+        'name' : _('game_bunny_runner'),
         'image' : 'runner.png'
     },
     'shooter': {
         'available' : True,
-        'name' : _('Word sniper'),
+        'name' : _('game_word_sniper'),
         'image' : 'shooter.png'
     }
 }
