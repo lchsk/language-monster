@@ -66,3 +66,32 @@ class DoSaveProfile(AuthContextView):
         )
 
         return self.redirect('core:settings')
+
+class DoSaveUserGames(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        games = settings.GAMES
+        res = {}
+
+        for k, v in games.iteritems():
+            res[k] = {}
+            res[k]['available'] = False
+
+            if k in request.POST and request.POST[k]:
+                res[k]['available'] = True
+
+        self._context.user.update_games(res)
+
+        logger.info(
+            "Games settings were updated for %s",
+            self._context.user
+        )
+
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _('Your profile was successfully updated')
+        )
+
+        return self.redirect('core:settings')

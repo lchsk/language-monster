@@ -50,7 +50,7 @@ urlpatterns = [
     ),
     url(
         r'^update-games/$',
-        views.DoSaveUserGames.as_view(),
+        profile.DoSaveUserGames.as_view(),
         name='update_profile_games',
     ),
     url(
