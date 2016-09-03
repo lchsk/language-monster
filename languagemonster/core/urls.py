@@ -40,7 +40,7 @@ urlpatterns = [
     ),
     url(
         r'^update-password/$',
-        views.DoSaveUserPassword.as_view(),
+        profile.DoSaveUserPassword.as_view(),
         name='update_password',
     ),
     url(

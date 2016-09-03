@@ -10,6 +10,8 @@ from utility.views import (
     NoTemplateMixin,
 )
 
+from utility.security import validate_password
+
 from core.impl.user import (
     authenticate_user,
     update_public_name,
@@ -93,5 +95,27 @@ class DoSaveUserGames(AuthContextView):
             messages.SUCCESS,
             _('Your profile was successfully updated')
         )
+
+        return self.redirect('core:settings')
+
+class DoSaveUserPassword(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        valid = validate_password(request, password1, password2, messages)
+
+        if valid:
+            self._context.user.change_password(password1)
+
+            logger.info("Password changed for %s", self._context.user)
+
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                _("Your password was successfully changed.")
+            )
 
         return self.redirect('core:settings')
