@@ -203,58 +203,6 @@ class SpecialPageView(ContextView):
 
         return context
 
-
-class DoConfirmNewPassword(ContextView):
-    def post(self, request, *args, **kwargs):
-        email = request.POST['email']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-
-        monster_user = MonsterUser.objects.filter(
-            secure_hash=kwargs['secret'],
-            user__email=email
-        )
-
-        if len(monster_user) != 1:
-            logger.warning('User not found %s', email)
-
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _('Email not found.')
-            )
-
-            raise Http404
-
-        monster_user = monster_user.first()
-
-        valid = validate_password(request, password1, password2, messages)
-
-        if valid:
-            monster_user.secure_hash = None
-            monster_user.save()
-
-            monster_user.user.set_password(password1)
-            monster_user.user.save()
-
-            logger.info("Password confirmed: %s", monster_user)
-
-            messages.add_message(
-                request,
-                messages.SUCCESS,
-                _('Your password was successfully changed. You can now login.')
-            )
-
-            return self.redirect('info', kwargs=dict(page='success'))
-        else:
-            messages.add_message(
-                request,
-                messages.WARNING,
-                _('Values you have entered are incorrect.')
-            )
-
-            return self.redirect('info', kwargs=dict(page='failure'))
-
 class DoSaveContactEmail(ContextView):
     """Contact Form
 

@@ -22,6 +22,18 @@ urlpatterns = [
         views.DoLogout.as_view(),
         name='logout',
     ),
+
+    url(
+        r'^send-email/$',
+        views.DoSaveContactEmail.as_view(),
+        name='send_email',
+    ),
+    url(
+        r'^change-language/([a-z_]+)$',
+        views.DoChangeInterfaceLanguage.as_view(),
+        name='change_language',
+    ),
+
     ############################################
     #                                          #
     #                User Profile              #
@@ -63,23 +75,6 @@ urlpatterns = [
         profile.PickNewPasswordView.as_view(),
         name='generate_password',
     ),
-
-    url(
-        r'^send-email/$',
-        views.DoSaveContactEmail.as_view(),
-        name='send_email',
-    ),
-    url(
-        r'^upload-image/$',
-        profile.DoSaveAvatar.as_view(),
-        name='upload_image',
-    ),
-    url(
-        r'^change-language/([a-z_]+)$',
-        views.DoChangeInterfaceLanguage.as_view(),
-        name='change_language',
-    ),
-
     url(
         r'^confirm-email/(?P<secret>[a-f0-9]+)/?$',
         profile.DoConfirmNewEmail.as_view(),
@@ -87,7 +82,12 @@ urlpatterns = [
     ),
     url(
         r'^confirm-new-password/(?P<secret>[a-f0-9]+)/?$',
-        views.DoConfirmNewPassword.as_view(),
+        profile.DoConfirmNewPassword.as_view(),
         name='confirm_new_password',
+    ),
+    url(
+        r'^upload-image/$',
+        profile.DoSaveAvatar.as_view(),
+        name='upload_image',
     ),
 ]
