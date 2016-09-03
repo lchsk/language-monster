@@ -179,25 +179,6 @@ class IndexView(ContextView):
 
         return resp
 
-class SettingsView(AuthContextView):
-    template_name = 'app/profile.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(SettingsView, self).get_context_data(**kwargs)
-
-        context['countries'] = countries
-        context['games'] = process_games_list(
-            settings.GAMES,
-            get_user_games(self._context.user.raw)
-        )
-        context['gender'] = {
-            'M' : _('male'),
-            'F' : _('female'),
-            'O' : _('other'),
-        }
-
-        return context
-
 class DoSaveProfile(AuthContextView):
     def post(self, request, *args, **kwargs):
         self.get_context_data()

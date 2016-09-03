@@ -1,6 +1,11 @@
 from django.conf.urls import url
 from core import views
 
+from userprofile.views import (
+    social,
+    profile,
+)
+
 urlpatterns = [
     url(
         r'^register/$',
@@ -19,7 +24,7 @@ urlpatterns = [
     ),
     url(
         r'^settings/$',
-        views.SettingsView.as_view(),
+        profile.SettingsView.as_view(),
         name='settings',
     ),
     url(

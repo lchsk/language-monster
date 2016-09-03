@@ -7,7 +7,10 @@ from core.views import (
     ErrorPage,
 )
 from django.conf.urls.static import static
-from userprofile.views.social import UserPage
+from userprofile.views import (
+    social,
+    profile,
+)
 
 handler400 = ErrorPage.as_view(error=400)
 handler404 = ErrorPage.as_view(error=404)
@@ -24,7 +27,7 @@ urlpatterns = [
 
     url(
         r'^profile/(?P<identifier>.+?)/?$',
-        UserPage.as_view(),
+        social.UserPage.as_view(),
         name='public_page',
     ),
     url(r'^manage/', include('management.urls', namespace='management')),
