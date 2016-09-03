@@ -15,6 +15,9 @@ env-test:
 send-mail:
 	python manage.py send_queued_mail
 
+translations:
+	python manage.py makemessages -a
+
 lint: \
 	lint-api \
 	lint-core \
