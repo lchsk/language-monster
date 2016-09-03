@@ -119,3 +119,65 @@ class DoSaveUserPassword(AuthContextView):
             )
 
         return self.redirect('core:settings')
+
+class DoSaveAvatar(AuthContextView):
+    def post(self, request, *args, **kwargs):
+        self.get_context_data()
+
+        f = request.FILES['file']
+        content_type = f.content_type.split('/')[1]
+
+        if content_type not in ('png', 'jpeg', 'jpg'):
+            logger.warning(
+                "%s tried to upload wrong file format: %s",
+                self._context.user,
+                content_type,
+            )
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Only png and jpg files are accepted, sorry.')
+            )
+
+            return self.redirect('core:settings')
+
+        if f._size > 500000:
+            logger.warning(
+                "%s tried to upload file to big: %s",
+                self._context.user,
+                f._size,
+            )
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('File is too large. Maximum size is 0.5 MB.')
+            )
+
+            return self.redirect('core:settings')
+
+        if f:
+            self._context.user.save_avatar(f, content_type)
+
+            logger.info(
+                "File %s uploaded for %s",
+                self._context.user.avatar,
+                self._context.user,
+            )
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                _('File was successfully uploaded.')
+            )
+
+            return self.redirect('core:settings')
+        else:
+            logger.warning(
+                "Error when uploading a file for %s",
+                self._context.user
+            )
+            messages.add_message(
+                request,
+                messages.WARNING,
+                _('Unknown error when uploading a file. Please try again later.')
+            )
+            return self.redirect('core:settings')

@@ -65,7 +65,7 @@ urlpatterns = [
     ),
     url(
         r'^upload-image/$',
-        views.DoSaveAvatar.as_view(),
+        profile.DoSaveAvatar.as_view(),
         name='upload_image',
     ),
     url(
