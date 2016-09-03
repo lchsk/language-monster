@@ -41,11 +41,7 @@
                     {% endif %}
                     {{context.user.public_name}}<span class="caret"></span></a>
                   <ul class="dropdown-menu" role="menu">
-                    {% if user.uri %}
-                        <li><a title="{% trans 'profile' %}" href="{% url 'public_page' user.uri %}"><span class="glyphicon glyphicon-user"></span> {% trans "profile" %}</a></li>
-                    {% elif user.id %}
-                        <li><a title="{% trans 'profile' %}" href="{% url 'public_page' user.id %}"><span class="glyphicon glyphicon-user"></span> {% trans "profile" %}</a></li>
-                    {% endif %}
+                        <li><a title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span> {% trans "profile" %}</a></li>
                     <li><a title="{% trans 'settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span> {% trans "settings" %}</a></li>
 
                     <li class="divider"></li>
