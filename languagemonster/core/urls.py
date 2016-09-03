@@ -22,6 +22,12 @@ urlpatterns = [
         views.DoLogout.as_view(),
         name='logout',
     ),
+    ############################################
+    #                                          #
+    #                User Profile              #
+    #                                          #
+    ############################################
+
     url(
         r'^settings/$',
         profile.SettingsView.as_view(),
@@ -29,7 +35,7 @@ urlpatterns = [
     ),
     url(
         r'^update-profile/$',
-        views.DoSaveProfile.as_view(),
+        profile.DoSaveProfile.as_view(),
         name='update_profile',
     ),
     url(

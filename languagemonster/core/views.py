@@ -179,33 +179,6 @@ class IndexView(ContextView):
 
         return resp
 
-class DoSaveProfile(AuthContextView):
-    def post(self, request, *args, **kwargs):
-        self.get_context_data()
-
-        d = self.request.POST.dict()
-
-        self._context.user.update(
-            first_name=d['first_name'],
-            last_name=d['last_name'],
-            gender=d['gender'],
-            country=d['country'],
-            www=d['www'],
-            location=d['location'],
-            about=d['about'],
-            uri=d['uri'],
-        )
-
-        logger.debug("Settings updated for %s", self._context.user)
-
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            _('Your profile was successfully updated')
-        )
-
-        return self.redirect('core:settings')
-
 class DoSaveUserGames(AuthContextView):
     def post(self, request, *args, **kwargs):
         self.get_context_data()
