@@ -1,7 +1,13 @@
-import uuid
+import os
+import hashlib
 
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+
+def get_secure_hash():
+    rand = os.urandom(32).encode('hex')
+
+    return hashlib.sha512(rand).hexdigest()
 
 def validate_password(request, password1, password2, messages):
     valid = True
@@ -10,7 +16,7 @@ def validate_password(request, password1, password2, messages):
         messages.add_message(
             request,
             messages.WARNING,
-            _("New password must be at least 8 characters long.")
+            _('msg_password_min_8_chars'),
         )
         valid = False
 
@@ -18,7 +24,7 @@ def validate_password(request, password1, password2, messages):
         messages.add_message(
             request,
             messages.WARNING,
-            _("Passwords don't match.")
+            _('msg_passwords_dont_match'),
         )
         valid = False
 

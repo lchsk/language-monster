@@ -11,6 +11,8 @@ from django.contrib.auth import models as contrib_models
 
 from core.models import MonsterUser
 
+from utility.security import get_secure_hash
+
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
 
@@ -38,7 +40,7 @@ def authenticate_user(
 
     if muser.user.check_password(password):
         if new_hash:
-            muser.api_login_hash = uuid.uuid4().hex
+            muser.api_login_hash = get_secure_hash()
             muser.save()
 
         logger.warning(

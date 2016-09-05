@@ -85,6 +85,12 @@ class UserProgressionSerializer(serializers.ModelSerializer):
             'words'
         )
 
+class UserLoginResponse(serializers.Serializer):
+    login_hash = serializers.CharField(
+        max_length=128,
+        allow_null=False,
+        required=True,
+    )
 
 class BaseUserSerializer(serializers.ModelSerializer):
     current_language = LanguageSerializer()
@@ -108,8 +114,7 @@ class BaseUserSerializerWithLoginHash(BaseUserSerializer):
         fields = USER_FIELDS + ('api_login_hash',)
 
 
-# TODO: change name (req)
-class UserLoginSerializer(serializers.Serializer):
+class UserLoginRequest(serializers.Serializer):
     email = serializers.CharField(max_length=50)
     password = serializers.CharField(max_length=50)
 

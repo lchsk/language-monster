@@ -79,7 +79,7 @@ urlpatterns = [
     # POST - registration
     # PUT - login
 
-    url(r'^users/?$', views.users, name='users'),
+    url(r'^auth/login/?$', views.UserLogin.as_view(), name='users'),
     # url(r'^register/(?P<key>(.+))/?$', views.user_register),
 
 

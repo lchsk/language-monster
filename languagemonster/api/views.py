@@ -93,6 +93,43 @@ def user_register(request, *args, **kwargs):
 
     return error(RESP_BAD_REQ, str(e.errors))
 
+from django.http import Http404
+# from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from api.views2.base import *
+
+class UserLogin(APIAuthView):
+    def post(self, request):
+        input_data = UserLoginRequest(data=request.data)
+
+        if not input_data.is_valid():
+            logger.warning('Invalid input')
+
+            return self.failure('Invalid input', 400)
+
+        user = authenticate_user(
+            email=input_data['email'].value,
+            password=input_data['password'].value,
+            new_hash=True,
+        )
+
+        if not user:
+            logger.warning('Invalid email or password')
+
+            return self.failure('Invalid email or password', 401)
+
+        logger.info('Login successful: {}'.format(input_data['email']))
+
+        resp = UserLoginResponse(data=dict(login_hash=user.api_login_hash))
+
+        if not resp.is_valid():
+            logger.warning('Internal error')
+
+            return self.failure('Internal error', 500)
+
+        return self.success(resp.data)
 
 @validate('PUT /api/users')
 def user_login(request, *args, **kwargs):
