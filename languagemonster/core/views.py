@@ -143,7 +143,7 @@ class DoLogin(ContextView):
                     messages.WARNING,
                     _('msg_user_inactive'),
                 )
-                return self.redirect('info', args=[''])
+                return self.redirect('info', args=['failure'])
         else:
             logger.info("Login data for %s are invalid", identifier)
 
@@ -152,7 +152,7 @@ class DoLogin(ContextView):
                 messages.WARNING,
                 _('msg_invalid_email_password'),
             )
-            return self.redirect('info', args=[''])
+            return self.redirect('info', args=['failure'])
 
 class DoLogout(AuthContextView):
     def get(self, request, *args, **kwargs):
