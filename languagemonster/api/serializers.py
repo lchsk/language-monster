@@ -6,6 +6,36 @@ from utility.api_utils import (
     fix_url,
 )
 
+############### NEW
+
+class UserLoginRequest(serializers.Serializer):
+    email = serializers.CharField(max_length=50)
+    password = serializers.CharField(max_length=50)
+
+class UserLoginResponse(serializers.Serializer):
+    login_hash = serializers.CharField(
+        max_length=128,
+        allow_null=False,
+        required=True,
+    )
+
+class LanguageSerializer(serializers.Serializer):
+    english_name = serializers.CharField(max_length=30)
+    original_name = serializers.CharField(max_length=30)
+    acronym = serializers.CharField(max_length=2)
+    slug = serializers.CharField(max_length=15)
+    image_filename = serializers.CharField(max_length=20)
+    flag_filename = serializers.CharField(max_length=20)
+
+class BaseLanguageSerializer(serializers.Serializer):
+    flag_filename = serializers.CharField(max_length=2)
+    country = serializers.CharField(max_length=2)
+    symbol = serializers.CharField(max_length=5)
+    original_name = serializers.CharField(max_length=20)
+    language = LanguageSerializer()
+
+############### NEW
+
 USER_FIELDS = (
     'public_name',
     'current_language',
@@ -32,24 +62,8 @@ USER_FIELDS = (
 )
 
 
-class LanguageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Language
-        fields = (
-            'acronym',
-            'english_name',
-            'flag_filename',
-            'image_filename',
-            'original_name'
-        )
 
 
-class BaseLanguageSerializer(serializers.ModelSerializer):
-    language = LanguageSerializer()
-
-    class Meta:
-        model = BaseLanguage
-        fields = ('country', 'flag_filename', 'original_name', 'language')
 
 
 class LanguagePairSerializer(serializers.ModelSerializer):
@@ -85,13 +99,6 @@ class UserProgressionSerializer(serializers.ModelSerializer):
             'words'
         )
 
-class UserLoginResponse(serializers.Serializer):
-    login_hash = serializers.CharField(
-        max_length=128,
-        allow_null=False,
-        required=True,
-    )
-
 class BaseUserSerializer(serializers.ModelSerializer):
     current_language = LanguageSerializer()
     base_language = BaseLanguageSerializer()
@@ -113,10 +120,6 @@ class BaseUserSerializerWithLoginHash(BaseUserSerializer):
         model = MonsterUser
         fields = USER_FIELDS + ('api_login_hash',)
 
-
-class UserLoginRequest(serializers.Serializer):
-    email = serializers.CharField(max_length=50)
-    password = serializers.CharField(max_length=50)
 
 
 class UserDetailsUpdateRequest(serializers.Serializer):

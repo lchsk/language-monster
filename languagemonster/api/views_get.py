@@ -31,6 +31,7 @@ from utility.api_utils import (
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
+from core.data.base_language import BASE_LANGUAGES
 
 @api_view(['GET'])
 def language(request, key, acronym):
@@ -251,6 +252,29 @@ def password(request, email, *args, **kwargs):
         return success({})
 
     return error(RESP_SERV_ERR, "Unexpected error")
+
+
+from django.http import Http404
+# from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from api.views2.base import *
+
+class Languages(APIAuthView):
+    def get(self, request):
+
+        resp = BaseLanguageSerializer(
+            BASE_LANGUAGES.values(),
+            many=True
+        )
+
+        # import pdb
+        # pdb.set_trace()
+
+        # print resp
+
+        return self.success(resp.data)
 
 
 @api_view(['GET'])

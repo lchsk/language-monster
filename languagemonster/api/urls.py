@@ -3,6 +3,8 @@ import views, views_get, views_post, views_admin, views_put
 
 urlpatterns = [
 
+    # GET
+    url(r'^languages/?$', views_get.Languages.as_view(), name='languages'),
     #################
     # POST
     #################
@@ -27,7 +29,7 @@ urlpatterns = [
 
     # Get information about languages
 
-    url(r'^languages/?$', views_get.languages, name='languages'),
+
 
     # Get information about languages to learn
 
