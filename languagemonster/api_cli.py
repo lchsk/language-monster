@@ -2,8 +2,102 @@
 import os
 import sys
 import inspect
+import json
 
 import requests
+
+class Endpoint(object):
+    def __init__(self, name, auth_type, methods, regexp):
+        self._name = name
+        self._auth_type = auth_type
+        self._methods = methods
+        self._regexp = regexp
+
+    @property
+    def auth_type(self):
+        return self._auth_type
+
+    @property
+    def clean_url(self):
+        host = 'http://localhost:' + Command.default_port
+
+        return host + reverse('api:' + self._name)
+
+    def __str__(self):
+        return '{0:20}\t{1:10}\t{2:10}\t{3}'.format(
+            self._name,
+            self._auth_type,
+            ', '.join(self._methods),
+            self._regexp,
+        )
+
+class App(object):
+    def __init__(self, patterns):
+        self._endpoints = {}
+        self._patterns = patterns
+        self._headers = {}
+
+        self._insert_endpoints()
+
+    def run(self):
+        while True:
+            cmd = raw_input(">>> ")
+
+            if cmd in ('endpoints', 'ep'):
+                self.print_endpoints()
+            elif cmd in ('q', 'quit'):
+                break
+            elif cmd.startswith('get'):
+                method, name = cmd.split()
+
+                self._set_headers(name)
+
+                ep = self._endpoints[name]
+
+                print ep
+
+                resp = requests.get(
+                    ep.clean_url,
+                    headers=self._headers,
+                )
+
+                print json.dumps(resp.json(), indent=4)
+            else:
+                self._help()
+
+    def print_endpoints(self):
+        for ep in sorted(self._endpoints.values(), key=lambda x: x._name):
+            print ep
+
+    def _help(self):
+        print 'Help:'
+
+    def _set_headers(self, name):
+        if self._endpoints[name].auth_type == 'key':
+            self._headers = dict(Authorization=API_KEY)
+
+    def _insert_endpoints(self):
+        for pat in self._patterns:
+            auth_type = None
+            methods = []
+
+            cls_ = pat._callback.cls
+            functions = inspect.getmembers(cls_, predicate=inspect.ismethod)
+
+            for name, _ in functions:
+                if name in ('post', 'get', 'put', 'delete'):
+                    methods.append(name.upper())
+
+            if APIAuthView in cls_.__bases__:
+                auth_type = 'key'
+
+            self._endpoints[pat.name] = Endpoint(
+                name=pat.name,
+                auth_type=auth_type,
+                methods=methods,
+                regexp=pat._regex,
+            )
+
 
 if __name__ == "__main__":
     os.environ.setdefault(
@@ -14,30 +108,15 @@ if __name__ == "__main__":
     import django
     django.setup()
 
+    from django.core.urlresolvers import reverse
+    from django.core.management.commands.runserver import Command
+
     from languagemonster.settings import API_KEY
 
     from api.urls import urlpatterns
     from api.views2.base import APIAuthView
 
-    patterns = sorted(urlpatterns, key=lambda x: x.name)
+    app = App(urlpatterns)
+    app.print_endpoints()
 
-    for ep in patterns:
-        auth_type = 'Unknown'
-        methods = []
-
-        cls_ = ep._callback.cls
-        functions = inspect.getmembers(cls_, predicate=inspect.ismethod)
-
-        for name, _ in functions:
-            if name in ('post', 'get', 'put', 'delete'):
-                methods.append(name.upper())
-
-        if APIAuthView in cls_.__bases__:
-            auth_type = 'Key'
-
-        print '{0:20}\t{1:10}\t{2:10}\t{3}'.format(
-            ep.name,
-            auth_type,
-            ', '.join(methods),
-            ep._regex,
-        )
+    app.run()
