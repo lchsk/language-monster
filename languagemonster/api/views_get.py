@@ -138,17 +138,6 @@ def games(request, *args, **kwargs):
     return error(RESP_METHOD_NOT_ALLOWED, "Not allowed")
 
 
-@api_view(['GET'])
-@validate('GET /api/ping')
-def ping(request, *args, **kwargs):
-    """
-        check if API is working
-    """
-
-    if request.method == METHOD_GET:
-        return success({})
-
-    return error(RESP_SERV_ERR, "Unexpected error")
 
 
 @api_view(['GET'])
@@ -263,19 +252,16 @@ from api.views2.base import *
 
 class Languages(APIAuthView):
     def get(self, request):
-
         resp = BaseLanguageSerializer(
             BASE_LANGUAGES.values(),
             many=True
         )
 
-        # import pdb
-        # pdb.set_trace()
-
-        # print resp
-
         return self.success(resp.data)
 
+class Ping(APIAuthView):
+    def get(self, request):
+        return self.success({})
 
 @api_view(['GET'])
 @validate('languages')

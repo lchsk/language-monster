@@ -5,6 +5,9 @@ urlpatterns = [
 
     # GET
     url(r'^languages/?$', views_get.Languages.as_view(), name='languages'),
+
+    url(r'^ping/?$', views_get.Ping.as_view(), name='ping'),
+
     #################
     # POST
     #################
@@ -57,7 +60,7 @@ urlpatterns = [
 
     # Ping
 
-    url(r'^ping/?$', views_get.ping, name='ping'),
+
 
 
     #################
