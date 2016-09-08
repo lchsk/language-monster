@@ -34,6 +34,11 @@ class BaseLanguageSerializer(serializers.Serializer):
     original_name = serializers.CharField(max_length=20)
     language = LanguageSerializer()
 
+class LanguagePairSerializer(serializers.Serializer):
+    base_language = LanguageSerializer()
+    target_language = LanguageSerializer()
+    symbol = serializers.CharField(max_length=5)
+
 ############### NEW
 
 USER_FIELDS = (
@@ -66,13 +71,13 @@ USER_FIELDS = (
 
 
 
-class LanguagePairSerializer(serializers.ModelSerializer):
-    base_language = LanguageSerializer()
-    target_language = LanguageSerializer()
+# class LanguagePairSerializer(serializers.ModelSerializer):
+#     base_language = LanguageSerializer()
+#     target_language = LanguageSerializer()
 
-    class Meta:
-        model = LanguagePair
-        fields = ('base_language', 'learners', 'target_language')
+#     class Meta:
+#         model = LanguagePair
+#         fields = ('base_language', 'learners', 'target_language')
 
 
 class MonsterUserGameSerializer(serializers.ModelSerializer):

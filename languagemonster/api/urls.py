@@ -3,10 +3,25 @@ import views, views_get, views_post, views_admin, views_put
 
 urlpatterns = [
 
-    # GET
-    url(r'^languages/?$', views_get.Languages.as_view(), name='languages'),
+    # GET - general lang info
+    url(
+        r'^languages/?$',
+        views_get.Languages.as_view(),
+        name='languages',
+    ),
 
-    url(r'^ping/?$', views_get.Ping.as_view(), name='ping'),
+    url(
+        r'^ping/?$',
+        views_get.Ping.as_view(),
+        name='ping',
+    ),
+
+    # Get information about languages to learn
+    url(
+        r'^languages/available/?$',
+        views_get.LanguagesToLearn.as_view(),
+        name='available_langs',
+    ),
 
     #################
     # POST
@@ -34,9 +49,6 @@ urlpatterns = [
 
 
 
-    # Get information about languages to learn
-
-    url(r'^languages/pairs/?$', views_get.language_pairs, name='language_pairs'),
 
     # Get user's stats
 

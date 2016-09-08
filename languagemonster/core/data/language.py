@@ -16,66 +16,66 @@ class Language(namedtuple('Language', [
         return u'{}'.format(self.english_name)
 
 pl = Language(
-    english_name="Polish",
+    english_name=u"Polish",
     original_name=u"Polski",
-    acronym="pl",
-    slug="polish",
-    image_filename="poland",
-    flag_filename="pl"
+    acronym=u"pl",
+    slug=u"polish",
+    image_filename=u"poland",
+    flag_filename=u"pl"
 )
 
 pt = Language(
-    english_name="Portuguese",
+    english_name=u"Portuguese",
     original_name=u"Português",
-    acronym="pt",
-    slug="portuguese",
-    image_filename="portugal",
-    flag_filename="pt"
+    acronym=u"pt",
+    slug=u"portuguese",
+    image_filename=u"portugal",
+    flag_filename=u"pt"
 )
 
 fr = Language(
-    english_name="French",
+    english_name=u"French",
     original_name=u"Français",
-    acronym="fr",
-    slug="french",
-    image_filename="france",
-    flag_filename="fr"
+    acronym=u"fr",
+    slug=u"french",
+    image_filename=u"france",
+    flag_filename=u"fr"
 )
 
 es = Language(
-    english_name="Spanish",
+    english_name=u"Spanish",
     original_name=u"Español",
-    acronym="es",
-    slug="spanish",
-    image_filename="spain",
-    flag_filename="es"
+    acronym=u"es",
+    slug=u"spanish",
+    image_filename=u"spain",
+    flag_filename=u"es"
 )
 
 en = Language(
-    english_name="English",
+    english_name=u"English",
     original_name=u"English",
-    acronym="en",
-    slug="english",
-    image_filename="uk",
-    flag_filename="uk"
+    acronym=u"en",
+    slug=u"english",
+    image_filename=u"uk",
+    flag_filename=u"uk"
 )
 
 it = Language(
-    english_name="Italian",
+    english_name=u"Italian",
     original_name=u"Italiano",
-    acronym="it",
-    slug="italian",
-    image_filename="italy",
-    flag_filename="it"
+    acronym=u"it",
+    slug=u"italian",
+    image_filename=u"italy",
+    flag_filename=u"it"
 )
 
 de = Language(
-    english_name="German",
+    english_name=u"German",
     original_name=u"Deutsch",
-    acronym="de",
-    slug="german",
-    image_filename="germany",
-    flag_filename="de"
+    acronym=u"de",
+    slug=u"german",
+    image_filename=u"germany",
+    flag_filename=u"de"
 )
 
 LANGUAGES = dict(

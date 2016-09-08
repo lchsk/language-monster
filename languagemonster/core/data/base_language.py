@@ -16,89 +16,89 @@ BaseLanguage = namedtuple('BaseLanguage', [
 pt_pt = BaseLanguage(
     flag_filename="pt",
     original_name=u"Português",
-    country="pt",
+    country=u"pt",
     language=LANGUAGES['pt'],
-    symbol='pt_pt',
+    symbol=u'pt_pt',
 )
 
 it_it = BaseLanguage(
-    flag_filename="it",
+    flag_filename=u"it",
     original_name=u"Italiano",
-    country="it",
+    country=u"it",
     language=LANGUAGES['it'],
-    symbol='it_it',
+    symbol=u'it_it',
 )
 
 fr_fr = BaseLanguage(
-    flag_filename="fr",
+    flag_filename=u"fr",
     original_name=u"Français",
-    country="fr",
+    country=u"fr",
     language=LANGUAGES['fr'],
-    symbol='fr_fr',
+    symbol=u'fr_fr',
 )
 
 es_es = BaseLanguage(
-    flag_filename="es",
+    flag_filename=u"es",
     original_name=u"Español",
-    country="es",
+    country=u"es",
     language=LANGUAGES['es'],
-    symbol='es_es',
+    symbol=u'es_es',
 )
 
 en_ca = BaseLanguage(
-    flag_filename="ca",
+    flag_filename=u"ca",
     original_name=u"English (CA)",
-    country="ca",
+    country=u"ca",
     language=LANGUAGES['en'],
-    symbol='en_ca',
+    symbol=u'en_ca',
 )
 
 en_au = BaseLanguage(
-    flag_filename="au",
+    flag_filename=u"au",
     original_name=u"English (AU)",
-    country="au",
+    country=u"au",
     language=LANGUAGES['en'],
-    symbol='en_au',
+    symbol=u'en_au',
 )
 
 en_uk = BaseLanguage(
-    flag_filename="uk",
+    flag_filename=u"uk",
     original_name=u"English (UK)",
-    country="gb",
+    country=u"gb",
     language=LANGUAGES['en'],
-    symbol='en_uk',
+    symbol=u'en_uk',
 )
 
 en_us = BaseLanguage(
-    flag_filename="us",
+    flag_filename=u"us",
     original_name=u"English (US)",
-    country="us",
+    country=u"us",
     language=LANGUAGES['en'],
-    symbol='en_us',
+    symbol=u'en_us',
 )
 
 en_nz = BaseLanguage(
-    flag_filename="nz",
+    flag_filename=u"nz",
     original_name=u"English (NZ)",
-    country="nz",
+    country=u"nz",
     language=LANGUAGES['en'],
-    symbol='en_nz',
+    symbol=u'en_nz',
 )
 
 pl_pl = BaseLanguage(
-    flag_filename="pl",
+    flag_filename=u"pl",
     original_name=u"Polski",
-    country="pl",
+    country=u"pl",
     language=LANGUAGES['pl'],
-    symbol='pl_pl',
+    symbol=u'pl_pl',
 )
 
 de_de = BaseLanguage(
-    flag_filename="de",
+    flag_filename=u"de",
     original_name=u"Deutsch",
-    country="de",
+    country=u"de",
     language=LANGUAGES['de'],
-    symbol='de_de',
+    symbol=u'de_de',
 )
 
 BASE_LANGUAGES = dict(

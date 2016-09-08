@@ -20,14 +20,14 @@ en_en = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['en'],
     visible=False,
-    symbol='en_en',
+    symbol=u'en_en',
 )
 
 pl_pl = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['pl'],
     visible=False,
-    symbol='pl_pl',
+    symbol=u'pl_pl',
 )
 
 # Base: Polish
@@ -36,42 +36,42 @@ pl_en = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['en'],
     visible=True,
-    symbol='pl_en',
+    symbol=u'pl_en',
 )
 
 pl_es = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['es'],
     visible=True,
-    symbol='pl_es',
+    symbol=u'pl_es',
 )
 
 pl_fr = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['fr'],
     visible=True,
-    symbol='pl_fr',
+    symbol=u'pl_fr',
 )
 
 pl_de = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['de'],
     visible=True,
-    symbol='pl_de',
+    symbol=u'pl_de',
 )
 
 pl_it = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['it'],
     visible=True,
-    symbol='pl_it',
+    symbol=u'pl_it',
 )
 
 pl_pt = LanguagePair(
     base_language=LANGUAGES['pl'],
     target_language=LANGUAGES['pt'],
     visible=True,
-    symbol='pl_pt',
+    symbol=u'pl_pt',
 )
 
 # Base: English
@@ -80,42 +80,42 @@ en_pl = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['pl'],
     visible=True,
-    symbol='en_pl',
+    symbol=u'en_pl',
 )
 
 en_es = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['es'],
     visible=True,
-    symbol='en_es',
+    symbol=u'en_es',
 )
 
 en_fr = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['fr'],
     visible=True,
-    symbol='en_fr',
+    symbol=u'en_fr',
 )
 
 en_de = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['de'],
     visible=True,
-    symbol='en_de',
+    symbol=u'en_de',
 )
 
 en_it = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['it'],
     visible=True,
-    symbol='en_it',
+    symbol=u'en_it',
 )
 
 en_pt = LanguagePair(
     base_language=LANGUAGES['en'],
     target_language=LANGUAGES['pt'],
     visible=True,
-    symbol='en_pt',
+    symbol=u'en_pt',
 )
 
 LANGUAGE_PAIRS_ALL = dict(

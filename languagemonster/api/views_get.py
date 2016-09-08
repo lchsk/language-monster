@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
 from core.data.base_language import BASE_LANGUAGES
+from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 
 @api_view(['GET'])
 def language(request, key, acronym):
@@ -56,33 +57,6 @@ def language(request, key, acronym):
     #     return Response(j.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-@validate('language_pairs')
-def language_pairs(request, *args, **kwargs):
-    """
-        returns languages users can learn
-    """
-
-    if request.method == METHOD_GET:
-        try:
-            d = LanguagePair.objects.filter(visible=True)
-        except Exception:
-            return error()
-
-        if not d:
-            return error(RESP_NOT_FOUND, "Did not find any languages")
-
-        if CONST['USE_FULL_URLS']:
-            for b in d:
-                fix_url(b.base_language, 'flag_filename', 'FLAG_DIR')
-                fix_url(b.base_language, 'image_filename', 'COUNTRIES_DIR')
-                fix_url(b.target_language, 'flag_filename', 'FLAG_DIR')
-                fix_url(b.target_language, 'image_filename', 'COUNTRIES_DIR')
-
-        j = LanguagePairSerializer(d, many=True)
-        return success(j.data)
-
-    return error()
 
 
 @api_view(['GET'])
@@ -262,6 +236,15 @@ class Languages(APIAuthView):
 class Ping(APIAuthView):
     def get(self, request):
         return self.success({})
+
+class LanguagesToLearn(APIAuthView):
+    def get(self, request):
+        resp = LanguagePairSerializer(
+            LANGUAGE_PAIRS_FLAT.values(),
+            many=True
+        )
+
+        return self.success(resp.data)
 
 @api_view(['GET'])
 @validate('languages')
