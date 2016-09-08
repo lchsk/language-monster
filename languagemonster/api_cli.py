@@ -3,6 +3,7 @@ import os
 import sys
 import inspect
 import json
+import readline
 
 import requests
 
@@ -37,37 +38,56 @@ class App(object):
         self._patterns = patterns
         self._headers = {}
 
+        readline.parse_and_bind('tab: complete')
+
         self._insert_endpoints()
 
     def run(self):
         while True:
             cmd = raw_input(">>> ")
 
+            tokens = cmd.split()
+
             if cmd in ('endpoints', 'ep'):
                 self.print_endpoints()
             elif cmd in ('q', 'quit'):
                 break
-            elif cmd.startswith('get'):
-                method, name = cmd.split()
+            elif tokens[0] in ('get', 'post'):
+                if len(tokens) < 2:
+                    return self._help()
 
-                self._set_headers(name)
-
-                ep = self._endpoints[name]
-
-                print ep
-
-                resp = requests.get(
-                    ep.clean_url,
-                    headers=self._headers,
-                )
-
-                print json.dumps(resp.json(), indent=4)
+                self._run_cmd(*tokens)
             else:
                 self._help()
 
     def print_endpoints(self):
         for ep in sorted(self._endpoints.values(), key=lambda x: x._name):
             print ep
+
+    def _run_cmd(self, cmd, name, params=None):
+        self._set_headers(name)
+
+        if params is not None:
+            params = json.loads(params)
+
+        ep = self._endpoints[name]
+
+        func = getattr(requests, cmd)
+
+        print '%s %s' % (cmd.upper(), ep.clean_url)
+
+        if params is not None:
+            print params
+
+        resp = func(
+            ep.clean_url,
+            headers=self._headers,
+            data=params,
+        )
+
+        print '%s %s' % (resp.status_code, resp.reason)
+
+        print json.dumps(resp.json(), indent=4)
 
     def _help(self):
         print 'Help:'
