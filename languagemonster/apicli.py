@@ -64,11 +64,18 @@ class App(object):
         for ep in sorted(self._endpoints.values(), key=lambda x: x._name):
             print ep
 
-    def _run_cmd(self, cmd, name, params=None):
+    def _run_cmd(self, cmd, name, *args):
         self._set_headers(name)
 
-        if params is not None:
-            params = json.loads(params)
+        params = {}
+
+        for arg in args:
+            key, value = arg.split('=')
+
+            params[key] = value
+
+        # if params:
+            # params = json.loads(params)
 
         ep = self._endpoints[name]
 
@@ -76,8 +83,8 @@ class App(object):
 
         print '%s %s' % (cmd.upper(), ep.clean_url)
 
-        if params is not None:
-            print params
+        if params:
+            print json.dumps(params, indent=4)
 
         resp = func(
             ep.clean_url,
