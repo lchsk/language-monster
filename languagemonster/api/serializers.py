@@ -39,6 +39,21 @@ class LanguagePairSerializer(serializers.Serializer):
     target_language = LanguageSerializer()
     symbol = serializers.CharField(max_length=5)
 
+class DataSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DataSet
+        fields = (
+            'id',
+            'learners',
+            'name_base',
+            'name_en',
+            'name_target',
+            'lang_pair',
+            'word_count',
+            'slug',
+        )
+
+
 ############### NEW
 
 USER_FIELDS = (
@@ -201,20 +216,6 @@ class ResultsSubmitRequest(serializers.Serializer):
         )
     )
 
-class DataSetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DataSet
-        fields = (
-            'id',
-            'date_added',
-            'icon',
-            'learners',
-            'name_base',
-            'name_en',
-            'name_target',
-            'pair',
-            'word_count'
-        )
 
 
 def user_serializer_url(user):

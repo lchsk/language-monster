@@ -114,62 +114,6 @@ def games(request, *args, **kwargs):
 
 
 
-@api_view(['GET'])
-@validate('get_datasets')
-def get_datasets(request, base, target, *args, **kwargs):
-    """
-        returns datasets available for a language pair
-    """
-
-    if request.method == METHOD_GET:
-        try:
-            b = Language.objects.filter(acronym=base).first()
-            t = Language.objects.filter(acronym=target).first()
-
-            if not b or not t:
-                return error(
-                    RESP_NOT_FOUND,
-                    "{0} or {1} was not found".format(base, target)
-                )
-
-            pair = LanguagePair.objects.filter(
-                base_language=b,
-                target_language=t
-            ).first()
-
-            if not pair:
-                return error(
-                    RESP_NOT_FOUND,
-                    "Pair {0} was not found".format(str(pair))
-                )
-
-            ds = DataSet.objects.filter(pair=pair, visible=True)
-
-        except Exception, e:
-            return error(RESP_SERV_ERR, str(e))
-
-        if not ds:
-            return error(RESP_NOT_FOUND, "No data sets were found")
-
-        if CONST['USE_FULL_URLS']:
-            for b in ds:
-                fix_url(b.pair.base_language, 'flag_filename', 'FLAG_DIR')
-                fix_url(
-                    b.pair.base_language,
-                    'image_filename',
-                    'COUNTRIES_DIR'
-                )
-                fix_url(b.pair.target_language, 'flag_filename', 'FLAG_DIR')
-                fix_url(
-                    b.pair.target_language,
-                    'image_filename',
-                    'COUNTRIES_DIR'
-                )
-
-        j = DataSetSerializer(ds, many=True)
-
-        return success(j.data)
-
 
 @api_view(['GET'])
 @validate('GET /api/users/<email>/password')
@@ -245,6 +189,18 @@ class LanguagesToLearn(APIAuthView):
         )
 
         return self.success(resp.data)
+
+class AvailableDatasets(APIAuthView):
+    def get(self, request, lang_pair):
+        datasets = DataSet.objects.filter(
+            lang_pair=lang_pair,
+            visible=True,
+            status='A',
+        )
+
+        resp = DataSetSerializer(datasets, many=True)
+
+        return success(resp.data)
 
 @api_view(['GET'])
 @validate('languages')

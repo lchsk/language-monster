@@ -23,6 +23,17 @@ urlpatterns = [
         name='available_langs',
     ),
 
+    # Get available datasets for a given language pair
+
+    url(
+        # r'^data/(?P<base>(.{2}))/(?P<target>(.{2}))/?$',
+        r'^datasets/(?P<lang_pair>\w{2}_\w{2})/?$',
+        # views_get.get_datasets,
+        views_get.AvailableDatasets.as_view(),
+        name='datasets',
+    ),
+
+
     #################
     # POST
     #################
@@ -56,15 +67,12 @@ urlpatterns = [
 
     # Get new password
 
-    url(r'^users/(?P<email>(.+))/password/?$', views_get.password, name='password'),
+    # url(r'^users/(?P<email>(.+))/password/?$', views_get.password, name='password'),
 
     # GET Get information about available games
 
-    url(r'^games/?$', views_get.games, name='games'),
+    # url(r'^games/?$', views_get.games, name='games'),
 
-    # Get available datasets for a given language pair
-
-    url(r'^data/(?P<base>(.{2}))/(?P<target>(.{2}))/?$', views_get.get_datasets, name='datasets'),
 
     # Get words from a dataset
 

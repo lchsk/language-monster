@@ -13,16 +13,19 @@ class Endpoint(object):
         self._auth_type = auth_type
         self._methods = methods
         self._regexp = regexp
+        self._host = 'http://localhost:' + Command.default_port
 
     @property
     def auth_type(self):
         return self._auth_type
 
-    @property
-    def clean_url(self):
-        host = 'http://localhost:' + Command.default_port
+    def get_url(self, kwargs):
+        try:
+            uri = reverse('api:' + self._name, kwargs=kwargs)
+        except django.core.urlresolvers.NoReverseMatch:
+            uri = reverse('api:' + self._name)
 
-        return host + reverse('api:' + self._name)
+        return self._host + uri
 
     def __str__(self):
         return '{0:20}\t{1:10}\t{2:10}\t{3}'.format(
@@ -74,26 +77,25 @@ class App(object):
 
             params[key] = value
 
-        # if params:
-            # params = json.loads(params)
-
         ep = self._endpoints[name]
 
-        func = getattr(requests, cmd)
+        url = ep.get_url(params)
 
-        print '%s %s' % (cmd.upper(), ep.clean_url)
+        if cmd == 'get':
+            resp = requests.get(url, headers=self._headers)
+        elif cmd == 'post':
+            resp = requests.post(
+                url,
+                headers=self._headers,
+                data=params,
+            )
+
+        print '%s %s' % (cmd.upper(), url)
 
         if params:
             print json.dumps(params, indent=4)
 
-        resp = func(
-            ep.clean_url,
-            headers=self._headers,
-            data=params,
-        )
-
         print '%s %s' % (resp.status_code, resp.reason)
-
         print json.dumps(resp.json(), indent=4)
 
     def _help(self):
