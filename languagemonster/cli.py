@@ -19,11 +19,11 @@ class Endpoint(object):
     def auth_type(self):
         return self._auth_type
 
-    def get_url(self, kwargs):
+    def get_url(self, kwargs, query):
         try:
-            uri = reverse('api:' + self._name, kwargs=kwargs)
+            uri = reverse('api:' + self._name, kwargs=kwargs) + query
         except django.core.urlresolvers.NoReverseMatch:
-            uri = reverse('api:' + self._name)
+            uri = reverse('api:' + self._name) + query
 
         return self._host + uri
 
@@ -40,6 +40,14 @@ class App(object):
         self._endpoints = {}
         self._patterns = patterns
         self._headers = {}
+
+        if os.path.exists('./login'):
+            with open('./login', 'r') as login_f:
+                self._login_hash = login_f.read().strip()
+
+                print 'Read login hash from file'
+        else:
+            self._login_hash = None
 
         readline.parse_and_bind('tab: complete')
 
@@ -71,15 +79,19 @@ class App(object):
         self._set_headers(name)
 
         params = {}
+        query = ''
 
         for arg in args:
-            key, value = arg.split('=')
+            if arg.startswith('?'):
+                query = arg
+            else:
+                key, value = arg.split('=')
 
             params[key] = value
 
         ep = self._endpoints[name]
 
-        url = ep.get_url(params)
+        url = ep.get_url(params, query)
 
         if cmd == 'get':
             resp = requests.get(url, headers=self._headers)
@@ -91,6 +103,7 @@ class App(object):
             )
 
         print '%s %s' % (cmd.upper(), url)
+        print self._headers
 
         if params:
             print json.dumps(params, indent=4)
@@ -98,12 +111,27 @@ class App(object):
         print '%s %s' % (resp.status_code, resp.reason)
         print json.dumps(resp.json(), indent=4)
 
+        # Handle MonsterUser login
+        if self._login_hash is None:
+            self._login_hash = resp.json().get('data', {}).get('login_hash')
+
+            if self._login_hash is not None:
+                with open('./login', 'w') as login_f:
+                    login_f.write(self._login_hash)
+
     def _help(self):
         print 'Help:'
 
     def _set_headers(self, name):
-        if self._endpoints[name].auth_type == 'key':
+        auth_type = self._endpoints[name].auth_type
+
+        if auth_type == 'key':
             self._headers = dict(Authorization=API_KEY)
+        elif auth_type == 'user':
+            if self._login_hash is None:
+                print 'login_hash is not set - you must login first'
+            else:
+                self._headers = dict(Authorization=self._login_hash)
 
     def _insert_endpoints(self):
         for pat in self._patterns:
@@ -119,6 +147,8 @@ class App(object):
 
             if APIAuthView in cls_.__bases__:
                 auth_type = 'key'
+            elif MonsterUserAuthView in cls_.__bases__:
+                auth_type = 'user'
 
             self._endpoints[pat.name] = Endpoint(
                 name=pat.name,
@@ -143,7 +173,7 @@ if __name__ == "__main__":
     from languagemonster.settings import API_KEY
 
     from api.urls import urlpatterns
-    from api.views2.base import APIAuthView
+    from api.views2.base import APIAuthView, MonsterUserAuthView
 
     app = App(urlpatterns)
     app.print_endpoints()

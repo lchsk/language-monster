@@ -40,6 +40,8 @@ class MonsterUserAuth(BaseAPIAuth):
         if len(monster_user) != 1:
             raise AuthenticationFailed('Unauthorised')
 
+        return monster_user.first(), None
+
 class APIAuth(BaseAPIAuth):
     def authenticate(self, request):
         super(APIAuth, self).authenticate(request)
@@ -52,3 +54,7 @@ class APIAuthView(APIView, BaseView):
 
 class MonsterUserAuthView(APIView, BaseView):
     authentication_classes = (MonsterUserAuth,)
+
+    @property
+    def monster_user(self):
+        return self.request.user

@@ -202,6 +202,22 @@ class AvailableDatasets(APIAuthView):
 
         return success(resp.data)
 
+class GetWords(MonsterUserAuthView):
+    def get(self, request, dataset_id):
+        rounds = int(self.request.query_params.get('rounds', 10))
+        sets = int(self.request.query_params.get('sets', 1))
+
+        words = game_data(
+            dataset_id=dataset_id,
+            user=self.monster_user,
+            max_rounds=rounds,
+            to_json=False,
+            include_words_to_repeat=True,
+            number_of_sets=sets,
+        )
+
+        return success(words)
+
 @api_view(['GET'])
 @validate('languages')
 def languages(request, *args, **kwargs):

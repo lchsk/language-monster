@@ -26,13 +26,20 @@ urlpatterns = [
     # Get available datasets for a given language pair
 
     url(
-        # r'^data/(?P<base>(.{2}))/(?P<target>(.{2}))/?$',
         r'^datasets/(?P<lang_pair>\w{2}_\w{2})/?$',
-        # views_get.get_datasets,
         views_get.AvailableDatasets.as_view(),
         name='datasets',
     ),
 
+    # Get words from a dataset
+
+    url(
+        # r'^data/(?P<dataset_id>(.+))/(?P<email>(.+))/?$',
+        r'^words/(?P<dataset_id>(\d+))/?$',
+        # views_get.get_words,
+        views_get.GetWords.as_view(),
+        name='words',
+    ),
 
     #################
     # POST
@@ -74,9 +81,6 @@ urlpatterns = [
     # url(r'^games/?$', views_get.games, name='games'),
 
 
-    # Get words from a dataset
-
-    url(r'^data/(?P<dataset_id>(.+))/(?P<email>(.+))/?$', views_get.get_words, name='data'),
 
     # Ping
 
