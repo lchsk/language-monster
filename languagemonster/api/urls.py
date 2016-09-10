@@ -91,36 +91,7 @@ urlpatterns = [
     # PUT
     #################
 
-    # PUT Set games the user does not want to play
-
-    url(r'^users/games/?$', views_put.set_banned_games, name='banned_games'),
-
-    # Change user's language
-
-    url(r'^users/language/?$', views_put.set_language, name='user_language'),
-
-    # Change user's email
-
-    url(r'^users/email/?$', views_put.change_user_email, name='user_email'),
-
-    # url(r'^games/?$', views.ga),
-
-    # POST - registration
-    # PUT - login
-
     url(r'^auth/login/?$', views.UserLogin.as_view(), name='users'),
-    # url(r'^register/(?P<key>(.+))/?$', views.user_register),
-
-
-
-    # --------------------------------------------------------------
-
-    # User related
-
-    # GET
-
-
-    url(r'^language/(?P<key>(.+))/(?P<acronym>([a-z]{2}))/?$', views_get.language),
 
     # this is left off without a key:
     # potentially dangerous, but it is also called by JS games
@@ -128,17 +99,4 @@ urlpatterns = [
     # It should (probably) be onlly accessed from JS games (check domain)
     url(r'^get-game-data/(?P<dataset_id>.+)/(?P<email>.+)/?$', views.get_game_data, name="get_game_data"),
 
-    # POST
-
-    #TODO: TEST
-
-    # Study related
-    # url(r'^dataset/(?P<base>[a-z]+)/(?P<target>[a-z]+)/(?P<dataset>[a-z]+)/?$', views.get_dataset, name='get_dataset'),
-
-    #################
-    # Update user data (PUT) or return user (GET)
-    # MUST STAY AT THE BOTTOM - #FIXME: fix regexp
-    #################
-
-    url(r'^users/(?P<email>(.+))/?$', views.get_or_update_user, name='get_or_update_user'),
 ]

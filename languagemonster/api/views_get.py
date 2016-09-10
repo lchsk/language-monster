@@ -38,28 +38,6 @@ settings.LOGGER(logger, settings.LOG_API_HANDLER)
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 
-@api_view(['GET'])
-def language(request, key, acronym):
-    pass
-
-    # needed_keys = ['acronym']
-
-    # if not dict_contains_keys(request.data, needed_keys):
-    #     return Response({}, status=status.HTTP_400_BAD_REQUEST)
-    #
-    # if request.method == 'GET':
-    #     try:
-    #         lang = Language.objects(acronym=acronym).first()
-    #     except Exception, e:
-    #         return Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    #
-    #     if not lang:
-    #         return Response({}, status=status.HTTP_404_NOT_FOUND)
-    #
-    #     j = LanguageSerializer(lang)
-    #
-    #     return Response(j.data, status=status.HTTP_200_OK)
-
 
 
 
