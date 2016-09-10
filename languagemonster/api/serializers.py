@@ -53,6 +53,25 @@ class DataSetSerializer(serializers.ModelSerializer):
             'slug',
         )
 
+################################################
+#                                              #
+#                    GetWords
+#                                              #
+################################################
+
+class GetWordsFilters(serializers.Serializer):
+    rounds = serializers.IntegerField(default=10, min_value=1, max_value=30)
+    sets = serializers.IntegerField(default=1, min_value=1, max_value=30)
+
+class GetWordsSingleWordSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+    words = serializers.ListField(
+        child=serializers.CharField(min_length=1)
+    )
+
+class GetWordsSingleSetSerializer(serializers.Serializer):
+    to_ask = serializers.ListField(child=GetWordsSingleWordSerializer())
+
 
 ############### NEW
 

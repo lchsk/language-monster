@@ -6,6 +6,9 @@ from serializers import (
     BaseUserSerializer,
     # MonsterUserGameSerializer,
     DataSetSerializer,
+    GetWordsFilters,
+    # GetWordsResponse,
+    GetWordsSingleSetSerializer,
     language_pair_serializer_url,
     games_serializer_url,
     user_serializer_url,
@@ -15,6 +18,7 @@ from models import *
 from core.models import *
 from core.impl.user import *
 from vocabulary.impl.study import *
+from vocabulary.impl.study import get_game_words
 from django.conf import settings
 
 from core.impl import mail
@@ -204,19 +208,29 @@ class AvailableDatasets(APIAuthView):
 
 class GetWords(MonsterUserAuthView):
     def get(self, request, dataset_id):
-        rounds = int(self.request.query_params.get('rounds', 10))
-        sets = int(self.request.query_params.get('sets', 1))
+        filters = GetWordsFilters(data=self.request.query_params)
 
-        words = game_data(
+        if not filters.is_valid():
+            logger.warning('Invalid filters')
+
+            return self.failure('Invalid input', 400)
+
+        words = get_game_words(
             dataset_id=dataset_id,
-            user=self.monster_user,
-            max_rounds=rounds,
-            to_json=False,
+            monster_user=self.monster_user,
+            rounds=filters.validated_data['rounds'],
             include_words_to_repeat=True,
-            number_of_sets=sets,
+            nsets=filters.validated_data['sets'],
         )
 
-        return success(words)
+        resp = GetWordsSingleSetSerializer(data=words, many=True)
+
+        if not resp.is_valid():
+            logger.warning('Invalid words serialization')
+
+            return self.failure('Invalid words serialization', 500)
+
+        return success(resp.data)
 
 @api_view(['GET'])
 @validate('languages')
@@ -281,43 +295,3 @@ def get_user(request, email, *args, **kwargs):
     except Exception as e:
         logger.critical("Error when returning a user: %s", str(e))
         return error(RESP_BAD_REQ, str(e))
-
-
-@api_view(['GET'])
-@validate('get_words')
-def get_words(request, dataset_id, email, *args, **kwargs):
-    '''
-        returns words from a dataset prepared for a specific user
-
-        /data/<dataset_id>/<email>
-    '''
-
-    if request.method == METHOD_GET:
-
-        u = kwargs['AUTHORIZED_CONTENT']
-
-        if not u:
-            return error(RESP_UNAUTH, "Invalid token")
-
-        if u.user.email != email:
-            return error(RESP_UNAUTH, "Wrong email/token pair")
-
-        d = DataSet.objects.filter(id=dataset_id).first()
-        # TODO: add API call to add new language to learn
-
-        p = Progression(
-            user=u,
-            pair=d.pair
-        )
-        p.save()
-
-        words = game_data(d, u, 10, to_json=False)
-
-        if words:
-            return success(words)
-        else:
-            return error(RESP_NOT_FOUND, "Words not found")
-
-        # return get_game_data(request, dataset_id, u.email)
-
-    return error(RESP_BAD_REQ)

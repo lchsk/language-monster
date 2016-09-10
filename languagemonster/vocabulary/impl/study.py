@@ -18,6 +18,7 @@ from core.models import (
 )
 import ctasks.game_tasks as game_tasks
 
+# REMOVE?
 def get_user_games(monster_user):
     return [
         {
@@ -31,6 +32,7 @@ def get_user_games(monster_user):
     ]
 
 
+# REMOVE?
 def get_games_played(monster_user):
     return [
         monster_user_game.game
@@ -40,10 +42,8 @@ def get_games_played(monster_user):
         )
     ]
 
-
+#"""TODO: check if it can be removed"""
 def get_language_pair(base_language, target_slug):
-    """TODO: check if it can be removed"""
-
     # base_language = Language.objects.filter(slug=base_slug).first()
     target_language = Language.objects.filter(slug=target_slug).first()
 
@@ -56,6 +56,7 @@ def get_language_pair(base_language, target_slug):
         return False
 
 
+# CHECK IF USED
 def get_datasets(language_pair):
     return DataSet.objects.filter(
         lang_pair=language_pair,
@@ -64,10 +65,12 @@ def get_datasets(language_pair):
     ).order_by('-learners')
 
 
+# CHECK IF USED
 def get_user_progress(user):
     return DataSetProgress.objects.filter(user=user)
 
 
+# CHECK IF USED
 def get_user_data_sets(user):
     sets = []
     progress = DataSetProgress.objects.filter(user=user)
@@ -78,255 +81,76 @@ def get_user_data_sets(user):
     return sets
 
 
+# CHECK IF USED
 def get_single_dataset(lang_pair_symbol, dataset_slug):
-
-    # ds = DataSet.objects.filter(
-    #     slug=dataset_slug
-    # ).prefetch_related('pair', 'pair__base_language', 'pair__target_language')
-
     return DataSet.objects.filter(
         slug=dataset_slug,
         lang_pair=lang_pair_symbol,
         status='A',
-        # pair__base_language=base_language,
-        # pair__target_language__slug=target_slug
     ).first()
 
-    # if ds:
-    #     for d in ds:
-    #         if (
-    #             d.pair.base_language == base_language and
-    #             d.pair.target_language.slug == target_slug
-    #         ):
-    #             return d
-    # 
-    # return False
-
-
-def get_dataset_content_db(dataset_id):
-    """
-        Returns all Word Pairs from a data set.
-
-        Args:
-            dataset_id(int): ID of a dataset.
-
-        Returns:
-            [WordPair]
-    """
-
-    word_pairs = DS2WP.objects.filter(ds_id=dataset_id).select_related('wp')
+def get_words_to_repeat(monster_user, words):
+    to_repeat = UserWordPair.objects.filter(
+        user=monster_user,
+        repeat=True,
+    ).select_related('word_pair')
 
     return [
-        wp.wp
-        for wp in word_pairs
+        word_pair
+        for word_pair in to_repeat
+        if word_pair in words
     ]
 
-
-def get_words_to_repeat(user, words):
-    """
-        Returns a list of word pairs a user should repeat.
-
-        Args:
-            user(MonsterUser): A user.
-
-            words([WordPair]): A list of word pairs from a data set.
-
-        Returns:
-            [WordPair]: A list of word pairs to repeat.
-    """
-
-    # TODO: this function into a single query
-
-    user_word_pairs = [
-        user_word_pair.word_pair
-        for user_word_pair in UserWordPair.objects.filter(
-            user=user,
-            repeat=True,
-        )
-    ]
-
-    return [
-        wp
-        for wp in user_word_pairs
-        if wp in words
-    ]
-
-    # return [
-    #     user_word_pair.word_pair
-    #     for user_word_pair in UserWordPair.objects.filter(
-    #         user=user,
-    #         repeat=True
-    #     )
-    # ]
-
-
-def convert_to_string_array(words):
-    """
-        Converts a list of Word Pairs from DB model to a representation
-        suitable for consumption.
-
-        E.g.:
-            Input: [WordPair, WordPair, WordPair]
-            Output: [
-                [cat, gato],
-                [dog, perro],
-                [fish, pez]
-            ]
-
-        Args:
-            words([WordPair]): A list of Word Pairs.
-
-        Returns:
-            [[str, str]]: An array of arrays consisting of two elements.
-    """
-
-    return [
-        [wp.base, wp.target]
-        for wp in words
-    ]
-
-    # arr = []
-    # 
-    # for wp in words:
-    #     arr.append([wp.base, wp.target])
-    # 
-    # return arr
-
-def get_single_game_data_array(words, max_rounds, to_repeat=[]):
-    """
-        Returns a single array with random/repeated words.
-
-        Args:
-            words([WordPair]): A list of Word Pairs.
-
-            max_rounds(int): Maximum number of word pairs in a single array.
-
-            to_repeat([WordPair]): A list of Word Pairs to repeat.
-    """
-
-    to_ask = []
-
-    if to_repeat:
-        to_ask += list(set(to_repeat))
-
-    while len(to_ask) < max_rounds:
-        random_wp = random.choice(words)
-
-        if random_wp not in to_ask:
-            to_ask.append(random_wp)
-
-    random.shuffle(to_ask)
-
-    return convert_to_string_array(to_ask)
-
-# import sys
-# from profiling import profile
-# import logging
-# l = logging.getLogger('django.db.backends')
-# l.setLevel(logging.DEBUG)
-# l.addHandler(logging.StreamHandler())
-
-# @profile(
-# stats=True, stats_buffer=sys.stdout
-# )
-def game_data(
+def get_game_words(
     dataset_id,
-    user,
-    max_rounds,
-    to_json=True,
+    monster_user,
+    rounds=10,
     include_words_to_repeat=True,
-    number_of_sets=1
+    nsets=1,
 ):
-    """
-        Returns either a single array or *number_of_sets* arrays with vocabulary.
-
-        Args:
-            dataset_id(int): ID of dataset to select vocabulary from.
-
-            user(MonsterUser): User for whom words are prepared.
-
-            max_rounds(int): Maximum number of word pairs in a single array.
-
-            to_json(boolean): If true, results will be converted to a JSON.
-
-            include_words_to_repeat(boolean): If true, word pairs that a user
-                got wrong will be included. If *number_of_sets* is greater
-                than 1, words to repeat will only be included in first array.
-
-            number_of_sets(int): Number of arrays to return.
-
-        Returns:
-            (single array):
-                {
-                    "to_ask": [
-                        ["dog", "pies"],
-                        ["cat", "kot"]
-                    ]
-                }
-
-            (two arrays):
-                [
-                    {
-                        "to_ask": [
-                            ["dog", "pies"],
-                            ["cat", "kot"]
-                        ]
-                    },
-                    {
-                        "to_ask": [
-                            ["fish", "ryba"],
-                            ["parrot", "papuga"]
-                        ]
-                    }
-                ]
-    """
-
-    # pair = dataset.pair
-
-    # That is probably not needed
-    # already_added = Progression.objects.filter(
-    #     user=user,
-    #     pair=pair
-    # ).first()
-
-    words = get_dataset_content_db(dataset_id)
-    random.shuffle(words)
+    word_pairs = [
+        wp.wp
+        for wp in DS2WP.objects.filter(
+            ds_id=dataset_id
+        ).select_related('wp')
+    ]
 
     if include_words_to_repeat:
         to_repeat = get_words_to_repeat(
-            user=user,
-            words=words
+            monster_user=monster_user,
+            words=word_pairs,
         )
     else:
         to_repeat = []
 
-    if number_of_sets == 1:
-        data = dict(
-            to_ask=get_single_game_data_array(
-                words=words,
-                max_rounds=max_rounds,
-                to_repeat=to_repeat
-            )
-        )
-    else:
-        data = []
+    returned_words = []
 
-        for i in xrange(number_of_sets):
-            data.append(
+    returned_words.extend(to_repeat)
+
+    items_to_pick = nsets * rounds - len(returned_words)
+
+    for _ in xrange(items_to_pick):
+        returned_words.append(random.choice(word_pairs))
+
+    resp = []
+
+    for nset in xrange(nsets):
+        resp.append(dict(
+            to_ask=[
                 dict(
-                    to_ask=get_single_game_data_array(
-                        words=words,
-                        max_rounds=max_rounds,
-                        to_repeat=to_repeat if i == 0 else []
-                    )
+                    id=word_pair.id,
+                    words=[
+                        word_pair.base,
+                        word_pair.target,
+                    ]
                 )
-            )
+                for word_pair in returned_words[
+                    nset * rounds:nset * rounds + rounds
+                ]
+            ]
+        ))
 
-    if to_json:
-        return json.dumps(data)
-    else:
-        return data
-
+    return resp
 
 def mark_wordpair(d, user, words, options):
 
