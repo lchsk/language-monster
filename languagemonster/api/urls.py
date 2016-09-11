@@ -51,10 +51,6 @@ urlpatterns = [
     # POST
     #################
 
-    # Register new device
-
-    url(r'^devices/?$', views_admin.devices, name='devices'),
-
     # User starts learning a new language
 
     url(r'^users/begin/?$', views_post.add_language, name='learn_language'),
@@ -63,20 +59,13 @@ urlpatterns = [
 
     # Game Session
 
-
-
     #################
     # GET
     #################
 
     # Get information about languages
 
-
-
-
     # Get user's stats
-
-
 
     # Get new password
 
@@ -86,12 +75,7 @@ urlpatterns = [
 
     # url(r'^games/?$', views_get.games, name='games'),
 
-
-
     # Ping
-
-
-
 
     #################
     # PUT

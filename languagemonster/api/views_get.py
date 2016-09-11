@@ -45,7 +45,6 @@ from rest_framework import status
 
 from api.views2.base import *
 
-
 class UserStats(MonsterUserAuthView):
     def get(self, request):
         progression = Progression.objects.filter(user=self.monster_user)
