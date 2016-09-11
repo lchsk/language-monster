@@ -38,36 +38,21 @@ settings.LOGGER(logger, settings.LOG_API_HANDLER)
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 
+from django.http import Http404
+# from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from api.views2.base import *
 
 
+class UserStats(MonsterUserAuthView):
+    def get(self, request):
+        progression = Progression.objects.filter(user=self.monster_user)
 
-@api_view(['GET'])
-@validate('GET /api/users/<email>/stats')
-def user_stats(request, email, *args, **kwargs):
-    """
-        returns user's stats
-    """
+        resp = UserProgressionSerializer(progression, many=True)
 
-    if request.method == METHOD_GET:
-
-        u = kwargs['AUTHORIZED_CONTENT']
-
-        if not u:
-            return error(RESP_UNAUTH, "Invalid token")
-
-        if u.user.email != email:
-            return error(RESP_UNAUTH, "Wrong email/token pair")
-
-        d = Progression.objects.filter(user=u)
-
-        for i in d:
-            language_pair_serializer_url(i.pair)
-
-        j = UserProgressionSerializer(d, many=True)
-
-        return success(j.data)
-
-    return error(RESP_SERV_ERR, "Unexpected error")
+        return self.success(resp.data)
 
 
 @api_view(['GET'])
@@ -143,12 +128,6 @@ def password(request, email, *args, **kwargs):
     return error(RESP_SERV_ERR, "Unexpected error")
 
 
-from django.http import Http404
-# from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-from api.views2.base import *
 
 class Languages(APIAuthView):
     def get(self, request):

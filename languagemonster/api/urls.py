@@ -41,6 +41,12 @@ urlpatterns = [
         name='words',
     ),
 
+    url(
+        r'^users/stats/?$',
+        views_get.UserStats.as_view(),
+        name='user_stats',
+    ),
+
     #################
     # POST
     #################
@@ -57,7 +63,7 @@ urlpatterns = [
 
     # Game Session
 
-    url(r'^users/results/js/?$', views_post.save_results_js, name='results_js'),
+
 
     #################
     # GET
@@ -70,7 +76,7 @@ urlpatterns = [
 
     # Get user's stats
 
-    url(r'^users/(?P<email>(.+))/stats/?$', views_get.user_stats, name='user_stats'),
+
 
     # Get new password
 
@@ -98,5 +104,5 @@ urlpatterns = [
     # TODO: figure out how to protect games and/or add key
     # It should (probably) be onlly accessed from JS games (check domain)
     url(r'^get-game-data/(?P<dataset_id>.+)/(?P<email>.+)/?$', views.get_game_data, name="get_game_data"),
-
+    url(r'^users/results/js/?$', views_post.save_results_js, name='results_js'),
 ]

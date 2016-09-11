@@ -55,7 +55,7 @@ class DataSetSerializer(serializers.ModelSerializer):
 
 ################################################
 #                                              #
-#                    GetWords
+#                    GetWords                  #
 #                                              #
 ################################################
 
@@ -72,6 +72,24 @@ class GetWordsSingleWordSerializer(serializers.Serializer):
 class GetWordsSingleSetSerializer(serializers.Serializer):
     to_ask = serializers.ListField(child=GetWordsSingleWordSerializer())
 
+################################################
+#                                              #
+#                UserProgression               #
+#                                              #
+################################################
+
+class UserProgressionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Progression
+        fields = (
+            'average',
+            'datasets',
+            'lang_pair',
+            'streak',
+            'strength',
+            'trend',
+            'words',
+        )
 
 ############### NEW
 
@@ -120,23 +138,6 @@ class MonsterUserGameSerializer(serializers.ModelSerializer):
         fields = ('game',)
 
 
-class UserProgressionSerializer(serializers.ModelSerializer):
-    pair = LanguagePairSerializer()
-
-    class Meta:
-        model = Progression
-        fields = (
-            'id',
-            'average',
-            'datasets',
-            'date_added',
-            'pair',
-            'streak',
-            'strength',
-            'trend',
-            # 'user',
-            'words'
-        )
 
 class BaseUserSerializer(serializers.ModelSerializer):
     current_language = LanguageSerializer()
