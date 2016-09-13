@@ -15,6 +15,12 @@ from utility.api_utils import validate
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
+from django.http import Http404
+# from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+from api.views2.base import *
 
 def _save_results(request, serializer_cls, *args, **kwargs):
     if request.method == METHOD_POST:
@@ -85,75 +91,34 @@ def save_results_js(request, *args, **kwargs):
     )
 
 
-@api_view(['POST'])
-@validate('POST /api/users/begin')
-def add_language(request, *args, **kwargs):
-    """
-        users starts learning a new language
-    """
 
-    if request.method == METHOD_POST:
+class StartLearningLanguage(MonsterUserAuthView):
+    def post(self, request):
+        input_data = StartLearningLanguageRequest(data=request.data)
 
-        user = kwargs['AUTHORIZED_CONTENT']
+        if not input_data.is_valid():
+            logger.warning('Invalid input')
 
-        if not user:
-            return error(RESP_UNAUTH, "Invalid token")
+            return self.failure('Invalid input', 400)
 
-        b = Language.objects.filter(acronym=request.data['base']).first()
-        t = Language.objects.filter(acronym=request.data['target']).first()
-
-        if not b or not t:
-            return error(RESP_NOT_FOUND, "{0} or {1} does not exist".format(
-                request.data['base']),
-                request.data['target']
-            )
-
-        pair = LanguagePair.objects.filter(
-            base_language=b,
-            target_language=t
-        ).first()
-
-        if not pair:
-            return error(
-                RESP_NOT_FOUND,
-                "{0} does not exist".format(str(pair))
-            )
-
-        already_added = Progression.objects.filter(
-            user=user,
-            pair=pair
-        ).first()
-
-        if already_added is None and pair:
-            pair.learners += 1
-            pair.save()
-
-            p = Progression(
-                user=user,
-                pair=pair
-            )
-            p.save()
-        else:
-            logger.critical(
-                "%s was already added for user %s",
-                pair,
-                user
-            )
-
-        # TODO: find better way to fill MonsterUser with banned/played games
-        user.languages = Progression.objects.filter(
-            user=user
+        progressions = Progression.objects.filter(
+            user=self.monster_user,
+            lang_pair=input_data.validated_data['lang_pair'],
         )
-        user.banned_games = MonsterUserGame.objects.filter(
-            monster_user=user,
-            banned=True
-        )
-        user.games_played = MonsterUserGame.objects.filter(
-            monster_user=user,
-            played=True
-        )
-        ret_json = BaseUserSerializer(user)
 
-        return success(ret_json.data)
+        if len(progressions) != 0:
+            logger.warning('{} already learning {}'.format(
+                self.monster_user,
+                input_data.validated_data['lang_pair'],
+            ))
 
-    return error(RESP_BAD_REQ, "Invalid input data")
+            return self.failure('Already learning', 400)
+
+        progression = Progression(
+            user=self.monster_user,
+            lang_pair=input_data.validated_data['lang_pair'],
+        )
+
+        progression.save()
+
+        return self.success({})

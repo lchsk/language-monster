@@ -91,6 +91,10 @@ class UserProgressionSerializer(serializers.ModelSerializer):
             'words',
         )
 
+class StartLearningLanguageRequest(serializers.Serializer):
+    lang_pair = serializers.CharField(max_length=5, min_length=5)
+
+
 ############### NEW
 
 USER_FIELDS = (

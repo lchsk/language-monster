@@ -53,7 +53,12 @@ urlpatterns = [
 
     # User starts learning a new language
 
-    url(r'^users/begin/?$', views_post.add_language, name='learn_language'),
+    url(
+        r'^users/begin/?$',
+        # views_post.add_language,
+        views_post.StartLearningLanguage.as_view(),
+        name='learn_language',
+    ),
 
     url(r'^users/results/?$', views_post.save_results, name='results'),
 
