@@ -17,6 +17,8 @@ from utility.api_utils import validate
 from utility.interface import *
 from vocabulary.impl.study import *
 
+from core.data.base_language import BASE_LANGUAGES
+
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
@@ -32,66 +34,6 @@ def link_user_device(user, device):
             device.save()
 
 
-@validate('POST /api/users')
-def user_register(request, *args, **kwargs):
-    """
-        method actually doing registration for the API call
-    """
-
-    serializer = UserRegistrationSerializer(data=request.data)
-
-#  and serializer.validate_keys()
-    if serializer.is_valid():
-
-        base_language = BaseLanguage.objects.filter(
-            country=request.data['country']
-        ).first()
-
-        # import pdb
-        # pdb.set_trace()
-
-        result, error_code, error_str = register(
-            serializer['email'].value,
-            serializer['password1'].value,
-            serializer['password2'].value,
-            True,
-            base_language
-        )
-
-        if result:
-            u = MonsterUser.objects.filter(
-                user__email=serializer['email'].value
-            ).first()
-
-            if not u:
-                return error(
-                    RESP_SER_ERR,
-                    "Error writing new user to database"
-                )
-
-            link_user_device(u, kwargs.get('AUTHORIZED_CONTENT', None))
-
-            user_serializer_url(u)
-
-            u.languages = Progression.objects.filter(
-                user=u
-            )
-            u.banned_games = MonsterUserGame.objects.filter(
-                monster_user=u,
-                banned=True
-            )
-            u.games_played = MonsterUserGame.objects.filter(
-                monster_user=u,
-                played=True
-            )
-
-            user_json = BaseUserSerializerWithLoginHash(u)
-
-            return success(user_json.data)
-        else:
-            return error(RESP_BAD_REQ, str(error_code))
-
-    return error(RESP_BAD_REQ, str(e.errors))
 
 from django.http import Http404
 # from rest_framework.views import APIView
@@ -99,6 +41,34 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from api.views2.base import *
+
+class UserRegistration(APIAuthView):
+    def post(self, request):
+        input_data = UserRegistrationRequest(data=request.data)
+
+        if not input_data.is_valid():
+            logger.warning('Invalid input')
+
+            return self.failure('Invalid input', 400)
+
+        base_language = input_data.validated_data['base_language']
+
+        if base_language not in BASE_LANGUAGES:
+            return self.failure('Invalid base language', 400)
+
+        result, error_code, error_str = register(
+            email=input_data.validated_data['email'],
+            password1=input_data.validated_data['password'],
+            password2=input_data.validated_data['password'],
+            confirmation_required=False,
+            base_language=BASE_LANGUAGES[base_language],
+        )
+
+        if result:
+            return self.success({})
+        else:
+            return self.failure(error_code)
+
 
 class UserLogin(APIAuthView):
     def post(self, request):
@@ -131,70 +101,6 @@ class UserLogin(APIAuthView):
 
         return self.success(resp.data)
 
-@validate('PUT /api/users')
-def user_login(request, *args, **kwargs):
-
-    serializer = UserLoginSerializer(data=request.data)
-
-    if serializer.is_valid():
-
-        user = authenticate_user(
-            email=serializer['email'].value,
-            password=serializer['password'].value,
-            new_hash=True
-        )
-
-        if not user:
-            logger.debug(
-                "Invalid credentials for email: %s",
-                serializer['email'].value
-            )
-            return error(RESP_UNAUTH, "Invalid credentials")
-
-        # mu = MonsterUser.objects.filter(user=user).first()
-
-        link_user_device(user, kwargs.get('AUTHORIZED_CONTENT', None))
-
-        user_serializer_url(user)
-
-        # TODO: find better way to fill MonsterUser with banned/played games
-        user.languages = Progression.objects.filter(
-            user=user
-        )
-        user.banned_games = MonsterUserGame.objects.filter(
-            monster_user=user,
-            banned=True
-        )
-        user.games_played = MonsterUserGame.objects.filter(
-            monster_user=user,
-            played=True
-        )
-
-        ret_json = BaseUserSerializerWithLoginHash(user)
-
-        return success(ret_json.data)
-
-    return error(RESP_BAD_REQ, str(serializer.errors))
-
-
-@api_view(['POST', 'PUT'])
-def users(request, *args, **kwargs):
-    """
-        POST - registration
-        PUT - login
-    """
-
-    if request.method == METHOD_POST:
-
-        # registration
-
-        return user_register(request)
-
-    elif request.method == METHOD_PUT:
-
-        # login
-
-        return user_login(request)
 
 
 @api_view(['GET', 'PUT'])

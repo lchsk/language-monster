@@ -95,6 +95,14 @@ class StartLearningLanguageRequest(serializers.Serializer):
     lang_pair = serializers.CharField(max_length=5, min_length=5)
 
 
+class UserRegistrationRequest(serializers.Serializer):
+    email = serializers.CharField(max_length=50)
+    password = serializers.CharField(max_length=50)
+    base_language = serializers.CharField(max_length=5, min_length=5)
+    # country = serializers.CharField(max_length=2, allow_null=True)
+    # language = serializers.CharField(max_length=2, allow_null=True)
+
+
 ############### NEW
 
 USER_FIELDS = (
@@ -212,15 +220,6 @@ class UserDetailsUpdateRequest(serializers.Serializer):
         required=False
     )
 
-
-# TODO: change name (req)
-class UserRegistrationSerializer(serializers.Serializer):
-    # TODO: remove APIRegistrationRequest
-    email = serializers.CharField(max_length=50, allow_null=True)
-    password1 = serializers.CharField(max_length=50, allow_null=True)
-    password2 = serializers.CharField(max_length=50, allow_null=True)
-    country = serializers.CharField(max_length=2, allow_null=True)
-    language = serializers.CharField(max_length=2, allow_null=True)
 
 
 class ResultsSubmitRequest(serializers.Serializer):

@@ -80,13 +80,16 @@ urlpatterns = [
 
     # url(r'^games/?$', views_get.games, name='games'),
 
-    # Ping
-
-    #################
-    # PUT
-    #################
-
-    url(r'^auth/login/?$', views.UserLogin.as_view(), name='users'),
+    url(
+        r'^auth/login/?$',
+        views.UserLogin.as_view(),
+        name='login',
+    ),
+    url(
+        r'^auth/register/?$',
+        views.UserRegistration.as_view(),
+        name='register',
+    ),
 
     # this is left off without a key:
     # potentially dangerous, but it is also called by JS games

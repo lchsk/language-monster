@@ -149,19 +149,23 @@ def get_default_avatar(country):
         ])
 
 
-def register(email, password1, password2, confirm, base_language):
+def register(
+    email,
+    password1,
+    password2,
+    confirmation_required,
+    base_language,
+):
     user = {
         'password1': password1,
         'password2': password2,
-        'email': email
+        'email': email,
     }
 
     valid, error, error_str = is_registration_valid(user)
 
     if valid:
-        logger.info(
-            "User registration data is valid"
-        )
+        logger.info("User registration for %s data is valid", email)
 
         u = contrib_models.User.objects.create_user(
             email=email,
@@ -169,17 +173,13 @@ def register(email, password1, password2, confirm, base_language):
             username=email
         )
         mu = MonsterUser(user=u)
-        u.is_active = not confirm
+        u.is_active = not confirmation_required
 
         secure_hash = uuid.uuid4().hex
         mu.secure_hash = secure_hash
 
         api_login_hash = uuid.uuid4().hex
         mu.api_login_hash = api_login_hash
-
-        if email in settings.SUPERADMIN_EMAIL:
-            u.is_staff = True
-            u.is_superuser = True
 
         mu.country = base_language.country.upper()
         mu.language = base_language.symbol
