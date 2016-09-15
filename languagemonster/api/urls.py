@@ -34,11 +34,15 @@ urlpatterns = [
     # Get words from a dataset
 
     url(
-        # r'^data/(?P<dataset_id>(.+))/(?P<email>(.+))/?$',
-        r'^words/(?P<dataset_id>(\d+))/?$',
-        # views_get.get_words,
+        r'^words/(?P<dataset_id>\d+)/?$',
         views_get.GetWords.as_view(),
         name='words',
+    ),
+
+    url(
+        r'^local/words/(?P<dataset_id>\d+)/(?P<email>.+)/?$',
+        views_get.LocalGetWords.as_view(),
+        name='local_words',
     ),
 
     url(
@@ -98,6 +102,5 @@ urlpatterns = [
     # potentially dangerous, but it is also called by JS games
     # TODO: figure out how to protect games and/or add key
     # It should (probably) be onlly accessed from JS games (check domain)
-    # url(r'^get-game-data/(?P<dataset_id>.+)/(?P<email>.+)/?$', views.get_game_data, name="get_game_data"),
     # url(r'^users/results/js/?$', views_post.save_results_js, name='results_js'),
 ]

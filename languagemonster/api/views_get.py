@@ -188,6 +188,37 @@ class GetWords(MonsterUserAuthView):
 
         return success(resp.data)
 
+class LocalGetWords(LocalAPIAuthView):
+    def get(self, request, dataset_id, email):
+        filters = GetWordsFilters(data=self.request.query_params)
+
+        if not filters.is_valid():
+            logger.warning('Invalid filters')
+
+            return self.failure('Invalid input', 400)
+
+        try:
+            monster_user = MonsterUser.objects.get(user__email=email)
+        except MonsterUser.DoesNotExist:
+            return self.failure('Does not exist', 404)
+
+        words = get_game_words(
+            dataset_id=dataset_id,
+            monster_user=monster_user,
+            rounds=filters.validated_data['rounds'],
+            include_words_to_repeat=True,
+            nsets=filters.validated_data['sets'],
+        )
+
+        resp = GetWordsSingleSetSerializer(data=words, many=True)
+
+        if not resp.is_valid():
+            logger.warning('Invalid words serialization')
+
+            return self.failure('Invalid words serialization', 500)
+
+        return success(resp.data)
+
 @api_view(['GET'])
 @validate('languages')
 def languages(request, *args, **kwargs):

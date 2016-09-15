@@ -105,6 +105,7 @@ def LOGGER(logger, handler = LOG_WWW_HANDLER):
 ######################
 
 ALLOWED_HOSTS = os.getenv('LM_ALLOWED_HOSTS', []).split(',')
+LOCAL_API_HOSTS = ('127.0.0.1',)
 
 REDIS_HOST = os.getenv('LM_REDIS_HOST')
 REDIS_PORT = os.getenv('LM_REDIS_PORT')
