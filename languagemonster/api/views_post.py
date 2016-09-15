@@ -22,75 +22,25 @@ from rest_framework import status
 
 from api.views2.base import *
 
-def _save_results(request, serializer_cls, *args, **kwargs):
-    if request.method == METHOD_POST:
-        serializer = serializer_cls(data=request.data)
+class SaveResults(MonsterUserAuthView):
+    def post(self, request):
+        input_data = SaveResultsRequest(data=request.data)
 
-        if serializer.is_valid():
-            user = MonsterUser.objects.filter(
-                user__email=serializer['email'].value
-            ).first()
-            dataset = DataSet.objects.filter(
-                id=serializer['dataset_id'].value
-            ).first()
+        if not input_data.is_valid():
+            logger.warning('Invalid input')
 
-            if not all((user, dataset)):
-                return error(RESP_NOT_FOUND, "")
+            return self.failure('Invalid input', 400)
 
-            if serializer.validated_data.get('game_session_id'):
-                dataset_id = serializer['game_session_id'].value
-            else:
-                dataset_id = serializer['dataset_id'].value
+        do_save_results(
+            dataset_id=input_data.validated_data['dataset_id'],
+            monster_user=self.monster_user,
+            game=input_data.validated_data['game'],
+            mark=input_data.validated_data['mark'],
+            words_learned=input_data.validated_data['words_learned'],
+            to_repeat=input_data.validated_data['to_repeat'],
+        )
 
-            game = serializer['game'].value
-            mark = serializer['mark'].value
-            words_learned = serializer['words_learned'].value
-            to_repeat = serializer['to_repeat'].value
-
-            do_save_results(
-                dataset_id=serializer['dataset_id'].value,
-                dataset=dataset,
-                email=serializer['email'].value,
-                user=user,
-                game=game,
-                mark=mark,
-                words_learned=words_learned,
-                to_repeat=to_repeat
-            )
-
-            return success({})
-        else:
-            return error(RESP_BAD_REQ, str(serializer.errors))
-
-    return error(RESP_BAD_REQ, "Invalid input data")
-
-
-@api_view(['POST'])
-@validate('POST /api/users/results')
-def save_results(request, *args, **kwargs):
-    """
-        receives single game results
-    """
-
-    return _save_results(
-        request,
-        ResultsSubmitRequest,
-        *args,
-        **kwargs
-    )
-
-
-@api_view(['POST'])
-def save_results_js(request, *args, **kwargs):
-
-    return _save_results(
-        request,
-        ResultsSubmitRequest,
-        *args,
-        **kwargs
-    )
-
-
+        return success({})
 
 class StartLearningLanguage(MonsterUserAuthView):
     def post(self, request):

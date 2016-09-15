@@ -92,16 +92,37 @@ class UserProgressionSerializer(serializers.ModelSerializer):
         )
 
 class StartLearningLanguageRequest(serializers.Serializer):
-    lang_pair = serializers.CharField(max_length=5, min_length=5)
-
+    lang_pair = serializers.CharField(
+        max_length=5,
+        min_length=5,
+        required=True,
+    )
 
 class UserRegistrationRequest(serializers.Serializer):
     email = serializers.CharField(max_length=50)
     password = serializers.CharField(max_length=50)
     base_language = serializers.CharField(max_length=5, min_length=5)
-    # country = serializers.CharField(max_length=2, allow_null=True)
-    # language = serializers.CharField(max_length=2, allow_null=True)
 
+################################################
+#                                              #
+#                 Save Results                 #
+#                                              #
+################################################
+
+class SaveResultsBase(serializers.Serializer):
+    dataset_id = serializers.IntegerField()
+    mark = serializers.IntegerField()
+    game = serializers.CharField(max_length=15)
+    words_learned = serializers.ListField(child=serializers.IntegerField())
+    to_repeat = serializers.ListField(child=serializers.IntegerField())
+
+# Called from a client
+class SaveResultsRequest(SaveResultsBase):
+    pass
+
+# Called from JS
+class SaveResultsJSRequest(SaveResultsBase):
+    email = serializers.CharField(max_length=50)
 
 ############### NEW
 
@@ -222,22 +243,6 @@ class UserDetailsUpdateRequest(serializers.Serializer):
 
 
 
-class ResultsSubmitRequest(serializers.Serializer):
-
-    dataset_id = serializers.IntegerField()
-    email = serializers.CharField(max_length=50, allow_null=False)
-    mark = serializers.IntegerField()
-    game = serializers.CharField(max_length=15, allow_null=False)
-    words_learned = serializers.ListField(
-        child=serializers.ListField(
-            child=serializers.CharField(max_length=100)
-        )
-    )
-    to_repeat = serializers.ListField(
-        child=serializers.ListField(
-            child=serializers.CharField(max_length=100)
-        )
-    )
 
 
 

@@ -152,31 +152,12 @@ def get_game_words(
 
     return resp
 
-def mark_wordpair(d, user, words, options):
-
-    wp_tmp = DS2WP.objects.filter(ds=d)
-    pairs = [i.wp for i in wp_tmp]
-
-    for wp in words:
-        for pair in pairs:
-            if wp[0] == pair.base and wp[1] == pair.target:
-                user_pair = UserWordPair.objects.filter(
-                    user=user,
-                    word_pair=pair
-                ).first()
-
-                if not user_pair:
-                    user_pair = UserWordPair(
-                        user=user,
-                        word_pair=pair
-                    )
-
-                if options:
-                    for k, v in options.iteritems():
-                        setattr(user_pair, k, v)
-
-                user_pair.save()
-
+def mark_wordpair(words, options):
+    for wordpair_id in words:
+        # TODO
+        UserWordPair.objects.filter(word_pair__id=wordpair_id).update(
+            **options
+        )
 
 def get_game_translations():
 
@@ -200,76 +181,89 @@ def get_game_translations():
 
 def do_save_results(
     dataset_id,
-    dataset,
-    email,
-    user,
+    monster_user,
     game,
     mark,
     words_learned,
     to_repeat
 ):
-    """
-        Actually saves results from a game.
-        Called from API and JS API calls.
+    """Save results in database.
+
+    Used by API and JS.
     """
 
     # Check if we need to increment learners variable
     # Don't move this part: it needs to be before saving
     # a UserResult object
 
-    if MonsterUserGame.objects.filter(
-        monster_user=user,
+    dataset = DataSet.objects.filter(id=dataset_id)
+
+    if len(dataset) != 1:
+        raise Exception("NOPE")
+
+    dataset = dataset[0]
+
+    user_games = MonsterUserGame.objects.filter(
+        monster_user=monster_user,
         game=game,
-        played=True
-    ).first() is None:
+        played=True,
+    )
+
+    if not user_games:
         monster_user_game = MonsterUserGame(
-            monster_user=user,
+            monster_user=monster_user,
             game=game,
-            played=True
+            played=True,
         )
+
         monster_user_game.save()
 
-    c = UserResult.objects.filter(
-        user=user,
-        data_set=dataset
+    users_results_cnt = UserResult.objects.filter(
+        user=monster_user,
+        data_set=dataset,
     ).count()
 
-    if c == 0:
-        p = Progression.objects.filter(
-            user=user,
-            lang_pair=dataset.lang_pair
-        ).first()
+    if users_results_cnt == 0:
+        # User has not been learning this dataset so far
 
-        # Number of datasets user is learning up
+        progressions = Progression.objects.filter(
+            user=monster_user,
+            lang_pair=dataset.lang_pair,
+        )
 
-        user.datasets += 1
-        user.save()
+        if len(progressions) != 1:
+            raise Exception("111")
 
-        if p:
-            p.datasets += 1
-            p.save()
+        # Increase number of datasets user is learning
+        monster_user.datasets += 1
+        monster_user.save()
 
-        # Number of learners for the dataset up
+        # Increase number of datasets the user is learning in this language
+        progressions[0].datasets += 1
+        progressions[0].save()
+
+        # Increase number of people learning this dataset
         dataset.learners += 1
         dataset.save()
 
-    # Save UserResult
-
     result = UserResult(
-        user=user,
+        user=monster_user,
         game=game,
         data_set=dataset,
         mark=mark,
     )
+
     result.save()
 
-    # Update WordPairs
-    mark_wordpair(dataset, user, words_learned, {
-        'learned': True,
-        'repeat': False
-    })
-    mark_wordpair(dataset, user, to_repeat, {'learned': False, 'repeat': True})
+    mark_wordpair(words_learned, dict(
+        learned=True,
+        repeat=False,
+    ))
 
-    # Update user's stats
+    mark_wordpair(to_repeat, dict(
+        learned=False,
+        repeat=True,
+    ))
 
-    game_tasks.update_user_stats.delay(email, dataset_id)
+    # Update stats
+    game_tasks.update_user_stats.delay(monster_user.user.email, dataset.id)

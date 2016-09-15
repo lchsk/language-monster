@@ -55,12 +55,15 @@ urlpatterns = [
 
     url(
         r'^users/begin/?$',
-        # views_post.add_language,
         views_post.StartLearningLanguage.as_view(),
         name='learn_language',
     ),
 
-    url(r'^users/results/?$', views_post.save_results, name='results'),
+    url(
+        r'^users/results/?$',
+        views_post.SaveResults.as_view(),
+        name='results',
+    ),
 
     # Game Session
 
@@ -95,6 +98,6 @@ urlpatterns = [
     # potentially dangerous, but it is also called by JS games
     # TODO: figure out how to protect games and/or add key
     # It should (probably) be onlly accessed from JS games (check domain)
-    url(r'^get-game-data/(?P<dataset_id>.+)/(?P<email>.+)/?$', views.get_game_data, name="get_game_data"),
-    url(r'^users/results/js/?$', views_post.save_results_js, name='results_js'),
+    # url(r'^get-game-data/(?P<dataset_id>.+)/(?P<email>.+)/?$', views.get_game_data, name="get_game_data"),
+    # url(r'^users/results/js/?$', views_post.save_results_js, name='results_js'),
 ]

@@ -87,6 +87,10 @@ class App(object):
             else:
                 key, value = arg.split('=')
 
+                # A list
+                if value.startswith('['):
+                    value = value[1:-1].split(',')
+
             params[key] = value
 
         ep = self._endpoints[name]
