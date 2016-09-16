@@ -69,6 +69,12 @@ urlpatterns = [
         name='results',
     ),
 
+    url(
+        r'^local/users/results/?$',
+        views_post.LocalSaveResults.as_view(),
+        name='local_results',
+    ),
+
     # Game Session
 
     #################
@@ -97,10 +103,4 @@ urlpatterns = [
         views.UserRegistration.as_view(),
         name='register',
     ),
-
-    # this is left off without a key:
-    # potentially dangerous, but it is also called by JS games
-    # TODO: figure out how to protect games and/or add key
-    # It should (probably) be onlly accessed from JS games (check domain)
-    # url(r'^users/results/js/?$', views_post.save_results_js, name='results_js'),
 ]
