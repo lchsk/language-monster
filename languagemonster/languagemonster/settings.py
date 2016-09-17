@@ -13,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('LM_SECRET_KEY')
+SECRET_KEY = os.getenv('LM_SECRET_KEY', '123456789')
 API_KEY = os.getenv('LM_API_KEY')
 GAME_SESSION_KEY = os.getenv('LM_GAME_SESSION_KEY')
 
@@ -39,7 +39,7 @@ LOG_FORMATTER = logging.Formatter(
     '%(asctime)s %(levelname)s %(name)s %(funcName)s(%(lineno)d) %(message)s'
 )
 
-LOG_DIR = os.getenv('LM_LOG_DIR')
+LOG_DIR = os.getenv('LM_LOG_DIR', './')
 LOG_WWW_FILE = LOG_DIR + 'www.log'
 LOG_API_FILE = LOG_DIR + 'api.log'
 LOG_WORKERS_FILE = LOG_DIR + 'workers.log'
@@ -104,13 +104,13 @@ def LOGGER(logger, handler = LOG_WWW_HANDLER):
 
 ######################
 
-ALLOWED_HOSTS = os.getenv('LM_ALLOWED_HOSTS', []).split(',')
+ALLOWED_HOSTS = os.getenv('LM_ALLOWED_HOSTS', '').split(',')
 LOCAL_API_HOSTS = ('127.0.0.1',)
 
-REDIS_HOST = os.getenv('LM_REDIS_HOST')
-REDIS_PORT = os.getenv('LM_REDIS_PORT')
+REDIS_HOST = os.getenv('LM_REDIS_HOST', 'localhost')
+REDIS_PORT = os.getenv('LM_REDIS_PORT', '1234')
 
-MONSTER_URL = os.getenv('LM_MONSTER_URL')
+MONSTER_URL = os.getenv('LM_MONSTER_URL', '/')
 
 THUMBNAIL_FORMAT = 'PNG'
 THUMBNAIL_KVSTORE = 'sorl.thumbnail.kvstores.redis_kvstore.KVStore'
@@ -322,10 +322,10 @@ ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
 # USE_L10N = True
 # USE_TZ = True
 
-EMAIL_USE_TLS = bool(int(os.getenv('LM_EMAIL_USE_TLS')))
-EMAIL_USE_SSL = bool(int(os.getenv('LM_EMAIL_USE_SSL')))
+EMAIL_USE_TLS = bool(int(os.getenv('LM_EMAIL_USE_TLS', 1)))
+EMAIL_USE_SSL = bool(int(os.getenv('LM_EMAIL_USE_SSL', 0)))
 EMAIL_HOST = os.getenv('LM_EMAIL_HOST')
-EMAIL_PORT = int(os.getenv('LM_EMAIL_PORT'))
+EMAIL_PORT = int(os.getenv('LM_EMAIL_PORT', 1234))
 EMAIL_HOST_USER = os.getenv('LM_EMAIL_HOST_USER')
 EMAIL_FROM = os.getenv('LM_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('LM_EMAIL_HOST_PASSWORD')
@@ -356,7 +356,7 @@ LOGIN_URL = '/'
 REGISTRATION_CONFIRMATION = False
 LOGIN_AFTER_REGISTRATION = True
 SEND_EMAIL_AFTER_REGISTRATION = True
-SUPERADMIN_EMAIL = os.getenv('LM_SUPERADMIN_EMAIL').split(',')
+SUPERADMIN_EMAIL = os.getenv('LM_SUPERADMIN_EMAIL', '').split(',')
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_HOST = REDIS_HOST
