@@ -153,6 +153,8 @@ class App(object):
                 auth_type = 'key'
             elif MonsterUserAuthView in cls_.__bases__:
                 auth_type = 'user'
+            elif LocalAPIAuthView in cls_.__bases__:
+                auth_type = 'local'
 
             self._endpoints[pat.name] = Endpoint(
                 name=pat.name,
@@ -177,7 +179,11 @@ if __name__ == "__main__":
     from languagemonster.settings import API_KEY
 
     from api.urls import urlpatterns
-    from api.views2.base import APIAuthView, MonsterUserAuthView
+    from api.views.base import (
+        APIAuthView,
+        LocalAPIAuthView,
+        MonsterUserAuthView,
+    )
 
     app = App(urlpatterns)
     app.print_endpoints()
