@@ -50,7 +50,7 @@
                                 {% endif %}
                                 {% if i in user_data_sets %}
                                 {% else %}
-                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'number_of_words %}" class="badge">{{ i.word_count }}</span></a></li>
+                                {% endif %}{{ i.name_base }} <span class="target">{{ i.name_target }}</span><span title="{% trans 'number_of_words' %}" class="badge">{{ i.word_count }}</span></a></li>
                         {% endfor %}
                     </ul>
                 </div>
