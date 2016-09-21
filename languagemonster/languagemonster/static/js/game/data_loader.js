@@ -22,8 +22,8 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
     $.ajax({
         method: "GET",
         crossDomain: false,
-        timeout: 12000,
-        url: "/api/get-game-data/" + this.dataset_id + "/" + this.email,
+        timeout: 15000,
+        url: "/api/local/words/" + this.dataset_id + "/" + this.email,
         error: function(x, t, m) {
             console.log('Error loading vocabulary: ' + t);
             that.success = false;
@@ -61,8 +61,9 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
             that.sender.game.view.addChild(b1);
         },
         success: function(m) {
-            var tmp = JSON.parse(m);
-            that.word_sets = tmp;
+            // console.log(m);
+            // var tmp = JSON.parse(m);
+            that.word_sets = m;
             that.success = true;
 
             console.log(m);

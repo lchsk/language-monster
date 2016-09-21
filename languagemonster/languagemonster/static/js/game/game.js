@@ -160,7 +160,7 @@ MONSTER.Game.prototype.initStage = function()
 };
 
 MONSTER.Game.prototype.next_level = function() {
-    var word_sets = this.word_sets;
+    var word_sets = this.word_sets.data;
     var words_sets_cnt = word_sets.length;
 
     if ((this.level_id + 1) == words_sets_cnt) {

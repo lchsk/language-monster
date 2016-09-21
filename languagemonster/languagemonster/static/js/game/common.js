@@ -107,47 +107,38 @@ MONSTER.Common.getWordSet = function(game_screen)
 {
     var game = game_screen.game;
 
-    // if (game.to_ask.length > 0)
-    // {
     if (game.round_id === game.to_ask.length) {
         return false;
     }
 
     var pair = game.to_ask[game.round_id];
     game.round_id++;
-    // game.to_ask.shift();
-    // }
-    // else
-    // {
-        // return false;
-    // }
 
-    // Draw direction
-    var dir = Math.random();
     var dir_q = 0;
     var dir_a = 1;
 
-    game_screen.question = pair[dir_q];
-    game_screen.answer = pair[dir_a];
+    game_screen.question = pair.words[dir_q];
+    game_screen.answer = pair.words[dir_a];
+    game_screen.wordpair_id = pair.id;
 
     game_screen.choices = [];
     game_screen.choices.push(game_screen.answer);
 
     // Get false answers
-    while(game_screen.choices.length != 4)
+    while (game_screen.choices.length != 4)
     {
         var id = Math.floor(Math.random() * game.all.length);
 
-        // must be obj.all!!!
-        var text = game.all[id][dir_a];
+        var text = game.all[id].words[dir_a];
+
         if (game_screen.choices.indexOf(text) === -1)
         {
             game_screen.choices.push(text);
         }
     }
 
-
     game_screen.choices = shuffle(game_screen.choices);
+
     return true;
 };
 

@@ -34,7 +34,7 @@ class AvailableDatasets(APIAuthView):
 
         resp = DataSetSerializer(datasets, many=True)
 
-        return success(resp.data)
+        return self.success(resp.data)
 
 
 class GetWords(MonsterUserAuthView):
@@ -61,7 +61,7 @@ class GetWords(MonsterUserAuthView):
 
             return self.failure('Invalid words serialization', 500)
 
-        return success(resp.data)
+        return self.success(resp.data)
 
 
 class LocalGetWords(LocalAPIAuthView):
@@ -93,4 +93,7 @@ class LocalGetWords(LocalAPIAuthView):
 
             return self.failure('Invalid words serialization', 500)
 
-        return success(resp.data)
+        import json
+        print json.dumps(resp.data)
+
+        return self.success(resp.data)
