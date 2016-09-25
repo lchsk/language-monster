@@ -16,6 +16,8 @@ def test_get_words_one_set_without_repeated(m_ds2wp):
         Mock(wp=Mock(id=1, base=u'kot', target=u'cat')),
         Mock(wp=Mock(id=2, base=u'pies', target=u'dog')),
         Mock(wp=Mock(id=3, base=u'koń', target=u'horse')),
+        Mock(wp=Mock(id=4, base=u'ryba', target=u'fish')),
+        Mock(wp=Mock(id=5, base=u'wiewiórka', target=u'squirrel')),
     ]
 
     m_ds2wp.return_value.select_related.return_value = data
@@ -40,6 +42,7 @@ def test_get_words_multiple_sets_without_repeated(m_ds2wp):
         Mock(wp=Mock(id=1, base=u'kot', target=u'cat')),
         Mock(wp=Mock(id=2, base=u'pies', target=u'dog')),
         Mock(wp=Mock(id=3, base=u'koń', target=u'horse')),
+        Mock(wp=Mock(id=4, base=u'ryba', target=u'fish')),
     ]
 
     m_ds2wp.return_value.select_related.return_value = data
@@ -64,6 +67,7 @@ def test_get_words_with_repeated(m_repeat, m_ds2wp):
         Mock(wp=Mock(id=4, base=u'kot', target=u'cat')),
         Mock(wp=Mock(id=5, base=u'pies', target=u'dog')),
         Mock(wp=Mock(id=6, base=u'koń', target=u'horse')),
+        Mock(wp=Mock(id=7, base=u'ryba', target=u'fish')),
     ]
 
     m_repeat.return_value = [

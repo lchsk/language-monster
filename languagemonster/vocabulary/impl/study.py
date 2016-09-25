@@ -115,6 +115,12 @@ def get_game_words(
         ).select_related('wp')
     ]
 
+    if len(word_pairs) < 4 or len(word_pairs) < rounds:
+        raise RuntimeError(
+            'There must be at least 4 word pairs, instead: {}, '
+            'dataset_id: {}'.format(len(word_pairs), dataset_id)
+        )
+
     if include_words_to_repeat:
         to_repeat = get_words_to_repeat(
             monster_user=monster_user,
@@ -127,10 +133,28 @@ def get_game_words(
 
     returned_words.extend(to_repeat)
 
-    items_to_pick = nsets * rounds - len(returned_words)
+    items_to_return = nsets * rounds
+    items_to_pick = items_to_return - len(returned_words)
 
-    for _ in xrange(items_to_pick):
-        returned_words.append(random.choice(word_pairs))
+    sentinel = 0;
+
+    while True or sentinel < 1000:
+        sentinel += 1
+
+        if sentinel == 1000:
+            raise RuntimeError('Too many iterations')
+
+        random.shuffle(word_pairs)
+        returned_words.extend(word_pairs)
+
+        words_cnt = len(returned_words)
+
+        rounded_size = words_cnt - words_cnt % rounds
+
+        returned_words = returned_words[:rounded_size]
+
+        if len(returned_words) >= items_to_return:
+            break
 
     resp = []
 
