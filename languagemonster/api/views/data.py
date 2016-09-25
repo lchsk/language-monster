@@ -93,7 +93,4 @@ class LocalGetWords(LocalAPIAuthView):
 
             return self.failure('Invalid words serialization', 500)
 
-        import json
-        print json.dumps(resp.data)
-
         return self.success(resp.data)

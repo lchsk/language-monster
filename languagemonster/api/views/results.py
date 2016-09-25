@@ -11,7 +11,10 @@ from api.views.base import (
     LocalAPIAuthView,
 )
 
-from api.serializers import SaveResultsRequest
+from api.serializers import (
+    SaveResultsRequest,
+    SaveResultsJSRequest,
+)
 
 logger = logging.getLogger(__name__)
 settings.LOGGER(logger, settings.LOG_API_HANDLER)
@@ -34,12 +37,12 @@ class SaveResults(MonsterUserAuthView):
             to_repeat=input_data.validated_data['to_repeat'],
         )
 
-        return success({})
+        return self.success({})
 
 
 class LocalSaveResults(LocalAPIAuthView):
-    def post(self, request, email):
-        input_data = SaveResultsRequest(data=request.data)
+    def post(self, request):
+        input_data = SaveResultsJSRequest(data=request.data)
 
         if not input_data.is_valid():
             logger.warning('Invalid input')
@@ -47,7 +50,9 @@ class LocalSaveResults(LocalAPIAuthView):
             return self.failure('Invalid input', 400)
 
         try:
-            monster_user = MonsterUser.objects.get(user__email=email)
+            monster_user = MonsterUser.objects.get(
+                user__email=input_data.validated_data['email']
+            )
         except MonsterUser.DoesNotExist:
             return self.failure('Does not exist', 404)
 
@@ -60,4 +65,4 @@ class LocalSaveResults(LocalAPIAuthView):
             to_repeat=input_data.validated_data['to_repeat'],
         )
 
-        return success({})
+        return self.success({})

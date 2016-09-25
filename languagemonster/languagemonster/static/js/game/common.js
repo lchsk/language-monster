@@ -7,7 +7,9 @@ MONSTER.Common.restart = function(obj)
 
 MONSTER.Common.correct = function(game_screen)
 {
-    game_screen.game.learned.push([game_screen.question, game_screen.answer]);
+    // console.log(game_screen.wordpair_id);
+    // game_screen.game.learned.push([game_screen.question, game_screen.answer]);
+    game_screen.game.learned.push(game_screen.wordpair_id);
 
     // Add points only if the question was asked the first time
 
@@ -21,7 +23,8 @@ MONSTER.Common.correct = function(game_screen)
 
 MONSTER.Common.negative = function(game_screen)
 {
-    game_screen.game.to_repeat.push([game_screen.question, game_screen.answer]);
+    // game_screen.game.to_repeat.push([game_screen.question, game_screen.answer]);
+    game_screen.game.to_repeat.push(game_screen.wordpair_id);
 
     game_screen.game.to_ask.push([game_screen.question, game_screen.answer]);
     // game_screen.game.rounds++;
@@ -369,9 +372,6 @@ MONSTER.Common.createButton = function(
 
 MONSTER.Common.sendResults = function(obj)
 {
-    // Animals (En-Es)
-    // dataset_id: 5521b4ec6e8ee52109857793
-    console.log('wysyalnie wynikow');
     console.log({
         dataset_id: obj.game.data.dataset_id,
         email: obj.game.data.email,
@@ -383,7 +383,7 @@ MONSTER.Common.sendResults = function(obj)
     $.ajax({
         method: "POST",
         crossDomain: false,
-        url: "/api/users/results/js",
+        url: "/api/local/users/results",
         contentType: "application/json",
         data: JSON.stringify(
         {
