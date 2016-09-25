@@ -27,11 +27,9 @@ if len(sys.argv) >= 2:
 else:
     DEBUG = False
 
-# TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
-
-if DEBUG:
-    PROFILING_SQL_QUERIES = True
+PROFILING_SQL_QUERIES = DEBUG
 
 # Loggin configuration
 

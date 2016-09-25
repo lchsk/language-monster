@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from rest_framework.serializers import (
     CharField,
     IntegerField,
@@ -75,8 +77,16 @@ class DataSetSerializer(ModelSerializer):
 ################################################
 
 class GetWordsFilters(Serializer):
-    rounds = IntegerField(default=10, min_value=1, max_value=30)
-    sets = IntegerField(default=1, min_value=1, max_value=30)
+    rounds = IntegerField(
+        default=settings.GAMES_DEFAULT_WORDS_COUNT,
+        min_value=4,
+        max_value=30,
+    )
+    sets = IntegerField(
+        default=settings.GAMES_DEFAULT_WORD_SETS_COUNT,
+        min_value=1,
+        max_value=30,
+    )
 
 class GetWordsSingleWordSerializer(Serializer):
     id = IntegerField(required=True)
