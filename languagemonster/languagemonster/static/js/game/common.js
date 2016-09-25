@@ -117,6 +117,10 @@ MONSTER.Common.getWordSet = function(game_screen)
     var dir_q = 0;
     var dir_a = 1;
 
+    console.log(pair);
+    console.log(game.to_ask);
+    console.log(game.all);
+
     game_screen.question = pair.words[dir_q];
     game_screen.answer = pair.words[dir_a];
     game_screen.wordpair_id = pair.id;
@@ -124,20 +128,23 @@ MONSTER.Common.getWordSet = function(game_screen)
     game_screen.choices = [];
     game_screen.choices.push(game_screen.answer);
 
-    // Get false answers
-    while (game_screen.choices.length != 4)
-    {
-        var id = Math.floor(Math.random() * game.all.length);
+    shuffle(game.all);
 
-        var text = game.all[id].words[dir_a];
-
-        if (game_screen.choices.indexOf(text) === -1)
-        {
-            game_screen.choices.push(text);
+    for (var i = 0; i < 4; i++) {
+        if (game.all[i].id != game_screen.wordpair_id) {
+            game_screen.choices.push(game.all[i].words[dir_a]);
         }
     }
 
     game_screen.choices = shuffle(game_screen.choices);
+
+    console.log(game_screen.choices.length);
+
+    console.log(game_screen.choices);
+
+    if (game_screen.choices.length != 4) {
+        throw "Not enough choices";
+    }
 
     return true;
 };
