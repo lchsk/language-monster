@@ -27,7 +27,6 @@ if len(sys.argv) >= 2:
 else:
     DEBUG = False
 
-TEMPLATE_DEBUG = DEBUG
 THUMBNAIL_DEBUG = DEBUG
 PROFILING_SQL_QUERIES = DEBUG
 
