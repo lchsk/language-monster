@@ -6,8 +6,6 @@ import json
 from django.utils.translation import ugettext_lazy as _
 
 from core.models import (
-    Language,
-    LanguagePair,
     DataSet,
     DataSetProgress,
     DS2WP,
@@ -41,20 +39,6 @@ def get_games_played(monster_user):
             played=True
         )
     ]
-
-#"""TODO: check if it can be removed"""
-def get_language_pair(base_language, target_slug):
-    # base_language = Language.objects.filter(slug=base_slug).first()
-    target_language = Language.objects.filter(slug=target_slug).first()
-
-    if base_language and target_language:
-        return LanguagePair.objects.filter(
-            base_language=base_language,
-            target_language=target_language
-        ).first()
-    else:
-        return False
-
 
 # CHECK IF USED
 def get_datasets(language_pair):

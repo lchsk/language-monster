@@ -16,7 +16,6 @@ from core.data.language import LANGUAGES
 
 from core.models import (
     MonsterUser,
-    BaseLanguage,
     Progression,
     MonsterUserGame,
 )

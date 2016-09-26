@@ -2,9 +2,6 @@ from django.contrib import admin
 
 from .models import (
     MonsterUser,
-    Language,
-    LanguagePair,
-    BaseLanguage,
     MonsterUserGame,
     DataSet,
     DataSetProgress,
@@ -19,9 +16,6 @@ from .models import (
 
 tables = (
     # MonsterUser,
-    Language,
-    LanguagePair,
-    BaseLanguage,
     MonsterUserGame,
     DataSet,
     DataSetProgress,

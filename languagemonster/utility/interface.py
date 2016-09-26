@@ -13,7 +13,6 @@ from django.http import HttpResponseRedirect
 
 from core.models import (
     MonsterUser,
-    BaseLanguage,
     Progression,
 )
 

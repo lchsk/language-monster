@@ -12,9 +12,7 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
 from core.models import (
-    LanguagePair,
     Progression,
-    Language,
     DataSet,
 )
 
