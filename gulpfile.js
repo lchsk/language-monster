@@ -16,8 +16,7 @@ var css_dir = static_dir + 'css/';
 var scss_dir = static_dir + 'scss/';
 
 gulp.task('lint', function() {
-    return gulp.src([js_dir + '**/*.js', '!' + js_dir + 'out/**/*.js'])
-        // .pipe(jshint())
+    return gulp.src([js_dir + '**/*.js', '!' + js_dir + 'build/**/*.js'])
         .pipe(eslint())
         .pipe(jshint.reporter('default'));
 });
@@ -68,14 +67,13 @@ gulp.task('js_games', function() {
         js_games_dir + 'shooter/ship.js',
         js_games_dir + 'shooter/interface.js',
 
-        // TODO: remove? 'loader.js',
         js_games_dir + 'game.js'
     ], {base: js_dir})
         .pipe(concat('games.js'))
-        .pipe(gulp.dest(js_dir + 'out/'))
+        .pipe(gulp.dest(js_dir + 'build/'))
         .pipe(rename('games.js'))
         .pipe(uglify())
-        .pipe(gulp.dest(js_dir + 'out/'))
+        .pipe(gulp.dest(js_dir + 'build/'))
 });
 
 gulp.task('js_app', function() {
@@ -84,10 +82,10 @@ gulp.task('js_app', function() {
         js_dir + 'modal-fix.js'
     ], {base: js_dir})
     .pipe(concat('app.js'))
-    .pipe(gulp.dest(js_dir + 'out/'))
+    .pipe(gulp.dest(js_dir + 'build/'))
     .pipe(rename('app.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(js_dir + 'out/'));
+    .pipe(gulp.dest(js_dir + 'build/'));
 });
 
 gulp.task('js_landing', function() {
@@ -97,10 +95,10 @@ gulp.task('js_landing', function() {
         js_dir + 'modal-fix.js'
     ], {base: js_dir})
     .pipe(concat('landing.js'))
-    .pipe(gulp.dest(js_dir + 'out/'))
+    .pipe(gulp.dest(js_dir + 'build/'))
     .pipe(rename('landing.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(js_dir + 'out/'));
+    .pipe(gulp.dest(js_dir + 'build/'));
 });
 
 gulp.task('js', ['js_landing', 'js_app', 'js_games']);
