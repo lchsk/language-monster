@@ -23,6 +23,7 @@ from core.models import (
 
 Status = namedtuple('Status', [
     'debug',
+    'debug_games',
     'version',
     'branch',
 ])
@@ -263,6 +264,7 @@ class Context(object):
     def _build_common(self):
         self._status = Status(
             debug=settings.DEBUG,
+            debug_games=settings.DEBUG_GAMES,
             version=settings.VERSION,
             branch=settings.BRANCH,
         )
