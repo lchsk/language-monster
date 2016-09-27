@@ -16,7 +16,7 @@ MONSTER.LoadingScreen = function(game)
         background: '0x76D3DE',
 
         success: '0x33E46D',
-        failure: '0xFF5039',
+        failure: '0xFF5039'
     };
 
     this.button_colors = {
@@ -41,7 +41,6 @@ MONSTER.LoadingScreen = function(game)
         this.game.data.dataset_id,
         this.game.data.email,
         this.max_rounds,
-        // MONSTER.Common.restart,
         this.start_loading,
         this
     );
@@ -70,8 +69,10 @@ MONSTER.LoadingScreen = function(game)
     this.pos_screen_comment = new PIXI.Text("", this.sizes['30']);
     this.pos_screen_text = new PIXI.Text("Language Monster", this.sizes['36']);
 
-    this.pos_screen_text.position.y = (this.game.height - this.pos_screen_text.height) / 2;
-    this.pos_screen_comment.position.y = (this.game.height - this.pos_screen_comment.height) / 4;
+    this.pos_screen_text.position.y =
+        (this.game.height - this.pos_screen_text.height) / 2;
+    this.pos_screen_comment.position.y =
+        (this.game.height - this.pos_screen_comment.height) / 4;
 
     this.box.addChild(this.pos_screen);
     this.pos_screen.addChild(this.pos_screen_text);
@@ -127,7 +128,6 @@ MONSTER.LoadingScreen = function(game)
         for (var img in game_assets) {
             if (game_assets.hasOwnProperty(img)) {
                 this.loader.add(img, game_assets[img]);
-                console.log(img);
             }
         }
     }
@@ -194,7 +194,7 @@ MONSTER.RunnerGame = function(game)
         background: '0x76D3DE',
 
         success: '0x33E46D',
-        failure: '0xFF5039',
+        failure: '0xFF5039'
     };
 
     this.button_colors = {
@@ -311,7 +311,14 @@ MONSTER.RunnerGame.prototype.update = function()
             for (var i = 0; i < this.answers.length; i++)
             {
                 {
-                    this.answers[i].text.position.x -= MONSTER.linear(this.game.round_id, 0, this.game.actual_rounds - 1, 0.2, 0.23) * t;
+                    this.answers[i].text.position.x -=
+                        MONSTER.linear(
+                            this.game.round_id,
+                            0,
+                            this.game.actual_rounds - 1,
+                            0.2,
+                            0.23
+                        ) * t;
                 }
             }
         }
@@ -371,8 +378,6 @@ MONSTER.RunnerGame.prototype.init = function()
     // movement UP
     this.ship.v_up = false;
     this.ship.v_down = false;
-    // this.ship.v_up_tmp = 0;
-    // this.jump_count = 0;
 
     this.game.view.addChild(this.top_bar);
 

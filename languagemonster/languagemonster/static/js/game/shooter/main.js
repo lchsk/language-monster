@@ -16,7 +16,7 @@ MONSTER.ShooterGame = function(game)
         background: '0x76D3DE',
 
         success: '0x33E46D',
-        failure: '0xFF5039',
+        failure: '0xFF5039'
     };
 
     this.button_colors = {
@@ -140,7 +140,14 @@ MONSTER.ShooterGame.prototype.update = function()
                 }
                 else
                 {
-                    this.answers[i].text.position.x -= MONSTER.linear(this.game.round_id, 0, this.game.actual_rounds - 1, 0.16, 0.19) * t;
+                    this.answers[i].text.position.x -=
+                        MONSTER.linear(
+                            this.game.round_id,
+                            0,
+                            this.game.actual_rounds - 1,
+                            0.16,
+                            0.19
+                        ) * t;
                 }
 
                 if (this.answers[i].text.position.x < this.answers[i].text.width / 2)
@@ -171,17 +178,15 @@ MONSTER.ShooterGame.prototype.onGamePauseOff = function()
 
 MONSTER.ShooterGame.prototype.mousemove = function(mouseData)
 {
-    // if (this.crosshair)
-    {
-        this.crosshair.position.x = mouseData.data.global.x;
-        this.crosshair.position.y = mouseData.data.global.y;
+    this.crosshair.position.x = mouseData.data.global.x;
+    this.crosshair.position.y = mouseData.data.global.y;
 
-        this.ship.position.x = MONSTER.linear(
-            this.crosshair.position.x,
-            0,
-            this.game.width,
-            this.game.width * 0.4, this.game.width * 0.6);
-    }
+    this.ship.position.x = MONSTER.linear(
+        this.crosshair.position.x,
+        0,
+        this.game.width,
+        this.game.width * 0.4, this.game.width * 0.6
+    );
 };
 
 MONSTER.ShooterGame.prototype.init = function()

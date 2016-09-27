@@ -3,7 +3,8 @@ MONSTER.SpaceGame.prototype.moveOutOfScreen = function()
 {
     // question
 
-    this.game.tweens.push(new MONSTER.Tween(this.top_bar, 'position.y', this.top_bar_y.hide, 1000));
+    this.game.tweens.push(new MONSTER.Tween(
+        this.top_bar, 'position.y', this.top_bar_y.hide, 1000));
 
     // answers
 
@@ -12,9 +13,15 @@ MONSTER.SpaceGame.prototype.moveOutOfScreen = function()
         var obj = this.answers[i];
 
         if (obj.text.position.x < this.game.width / 2.0)
-            this.game.tweens.push(new MONSTER.Tween(obj.text, 'position.x', - obj.text.width / 2, 1000));
+            this.game.tweens.push(new MONSTER.Tween(
+                obj.text, 'position.x', - obj.text.width / 2, 1000));
         else
-            this.game.tweens.push(new MONSTER.Tween(obj.text, 'position.x', this.game.width + obj.text.width / 2, 1000));
+            this.game.tweens.push(new MONSTER.Tween(
+                obj.text,
+                'position.x',
+                this.game.width + obj.text.width / 2,
+                1000
+            ));
     }
 };
 
@@ -40,13 +47,15 @@ MONSTER.SpaceGame.prototype.next_round = function()
     {
         // not the first round
 
-        this.game.tweens.push(new MONSTER.Tween(this.box.box, 'position.x', this.result_screen_x.left, 1000));
+        this.game.tweens.push(new MONSTER.Tween(
+            this.box.box, 'position.x', this.result_screen_x.left, 1000));
         setTimeout(function() {
             ctx.activateShipAgain();
         }, 1500);
     }
 
-    this.game.tweens.push(new MONSTER.Tween(this.top_bar, 'position.y', this.top_bar_y.show, 1000));
+    this.game.tweens.push(new MONSTER.Tween(
+        this.top_bar, 'position.y', this.top_bar_y.show, 1000));
     this.createAnswer(this.choices[0], 0);
     this.createAnswer(this.choices[1], 1);
     this.createAnswer(this.choices[2], 2);
@@ -59,7 +68,6 @@ MONSTER.SpaceGame.prototype.activateShipAgain = function()
 {
     this.shipActive = true;
     this.ship.alpha = 1.0;
-    // this.ship.tint = 0xffffff;
 };
 
 MONSTER.SpaceGame.prototype.createAnswer = function(t, id)
@@ -93,7 +101,12 @@ MONSTER.SpaceGame.prototype.createAnswer = function(t, id)
         text.anchor.x = text.anchor.y = 0.5;
         context.game.view.addChild(text);
 
-        var rect_ = new PIXI.Rectangle(rx - text.width / 2, text.position.y - text.height / 2, text.width, text.height);
+        var rect_ = new PIXI.Rectangle(
+            rx - text.width / 2,
+            text.position.y - text.height / 2,
+            text.width,
+            text.height
+        );
         var item_ = {
             'r' : rect_,
             'word' : t,

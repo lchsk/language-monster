@@ -47,8 +47,14 @@ window.addEventListener('keydown', function(event) { MONSTER.Key.onKeydown(event
 MONSTER.Key.blockScrolling = function()
 {
     window.addEventListener("keydown", function(e){
-      if([MONSTER.Key.SPACE, MONSTER.Key.LEFT, MONSTER.Key.RIGHT, MONSTER.Key.DOWN, MONSTER.Key.UP].indexOf(e.keyCode) > -1) {
-          e.preventDefault();
+        if([
+            MONSTER.Key.SPACE,
+            MONSTER.Key.LEFT,
+            MONSTER.Key.RIGHT,
+            MONSTER.Key.DOWN,
+            MONSTER.Key.UP
+        ].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
       }
     }, false);
 };

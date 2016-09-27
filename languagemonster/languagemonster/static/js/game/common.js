@@ -7,14 +7,10 @@ MONSTER.Common.restart = function(obj)
 
 MONSTER.Common.correct = function(game_screen)
 {
-    // console.log(game_screen.wordpair_id);
-    // game_screen.game.learned.push([game_screen.question, game_screen.answer]);
     game_screen.game.learned.push(game_screen.wordpair_id);
 
     // Add points only if the question was asked the first time
-
     if (game_screen.game.round_id <= game_screen.game.actual_rounds) {
-        console.log('POINTS++: ' + game_screen.game.points + '. Round #' + game_screen.game.round_id);
         game_screen.game.points++;
     }
 
@@ -23,11 +19,9 @@ MONSTER.Common.correct = function(game_screen)
 
 MONSTER.Common.negative = function(game_screen)
 {
-    // game_screen.game.to_repeat.push([game_screen.question, game_screen.answer]);
     game_screen.game.to_repeat.push(game_screen.wordpair_id);
 
     game_screen.game.to_ask.push([game_screen.question, game_screen.answer]);
-    // game_screen.game.rounds++;
 
     game_screen.resultScreen(false);
 };
@@ -120,10 +114,6 @@ MONSTER.Common.getWordSet = function(game_screen)
     var dir_q = 0;
     var dir_a = 1;
 
-    console.log(pair);
-    console.log(game.to_ask);
-    console.log(game.all);
-
     game_screen.question = pair.words[dir_q];
     game_screen.answer = pair.words[dir_a];
     game_screen.wordpair_id = pair.id;
@@ -140,10 +130,6 @@ MONSTER.Common.getWordSet = function(game_screen)
     }
 
     game_screen.choices = shuffle(game_screen.choices);
-
-    console.log(game_screen.choices.length);
-
-    console.log(game_screen.choices);
 
     if (game_screen.choices.length != 4) {
         throw "Not enough choices";
@@ -241,16 +227,18 @@ MONSTER.Common.fillBackground = function(obj, color)
 MONSTER.Common.setUpAjax = function()
 {
     $.ajaxSetup({
-      beforeSend: function(xhr, settings) {
-        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-          // Only send the token to relative URLs i.e. locally.
-          xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url)
+                  || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
         }
-      }
     });
 };
 
-MONSTER.Common.secure_answer_size = function(text_obj, sizes, max_size) {
+MONSTER.Common.secure_answer_size = function(text_obj, sizes, max_size)
+{
     // Used in games (for answers not buttons)
 
     // Number of characters that launches an attempt to split text
@@ -267,13 +255,12 @@ MONSTER.Common.secure_answer_size = function(text_obj, sizes, max_size) {
 
         if (breaks_cnt > 0) {
             for (var i = 0; i < len; i++) {
-                if (
-                    text_obj.text[i] == ' ' &&
-                    (i - last_break_idx > continous_len)
-                ) {
-                    last_break_idx = i;
-                    text_obj.text = MONSTER.Utils.replace_at(text_obj.text, i, '\n');
-                    breaks_cnt--;
+                if (text_obj.text[i] == ' '
+                    && (i - last_break_idx > continous_len)) {
+                        last_break_idx = i;
+                        text_obj.text = MONSTER.Utils.replace_at(
+                                text_obj.text, i, '\n');
+                        breaks_cnt--;
                 }
 
                 if (breaks_cnt === 0) {
@@ -284,7 +271,6 @@ MONSTER.Common.secure_answer_size = function(text_obj, sizes, max_size) {
     }
 
     for (var j = 0; j < sizes.length; j++) {
-
         text_obj.style = sizes[j];
 
         if (text_obj.width <= max_size) {
@@ -372,14 +358,6 @@ MONSTER.Common.createButton = function(
 
 MONSTER.Common.sendResults = function(obj)
 {
-    console.log({
-        dataset_id: obj.game.data.dataset_id,
-        email: obj.game.data.email,
-        mark: obj.game.pct,
-        words_learned: obj.game.learned,
-        to_repeat: obj.game.to_repeat,
-        game: obj.ID
-    });
     $.ajax({
         method: "POST",
         crossDomain: false,
@@ -398,13 +376,17 @@ MONSTER.Common.sendResults = function(obj)
     })
     .success(function(msg)
     {
-        obj.info.text = MONSTER.Common.trans("Results were sent", window.translations);
+        obj.info.text = MONSTER.Common.trans(
+            "Results were sent",
+            window.translations);
         obj.info.position.x = (obj.game.width - obj.info.width) / 2;
         obj.b.interactive = true;
     })
     .error(function(msg)
     {
-        obj.info.text = MONSTER.Common.trans("Error when sending results", window.translations);
+        obj.info.text = MONSTER.Common.trans(
+            "Error when sending results",
+            window.translations);
         obj.info.position.x = (obj.game.width - obj.info.width) / 2;
     });
 };
@@ -416,7 +398,8 @@ MONSTER.Common.trans = function(word, d)
     return word;
 };
 
-MONSTER.GoodWrongScreen = function(game, result_screen_x, result_screen_pos, sizes) {
+MONSTER.GoodWrongScreen = function(game, result_screen_x,
+                                   result_screen_pos, sizes) {
     var box = new PIXI.Container();
     var pos_screen = new PIXI.Graphics();
     pos_screen.beginFill(0xffffff, 0.8);
@@ -501,11 +484,16 @@ MONSTER.GoodWrongScreen.prepare = function(game_screen, is_correct) {
         ) / 2;
     }
 
-    var comment = is_correct ? MONSTER.Common.trans('Good', game_screen.trans) : MONSTER.Common.trans('Wrong', game_screen.trans);
-    box.pos_screen.tint = is_correct ? game_screen.colors.success : game_screen.colors.failure;
+    var comment = is_correct
+            ? MONSTER.Common.trans('Good', game_screen.trans)
+            : MONSTER.Common.trans('Wrong', game_screen.trans);
+    box.pos_screen.tint = is_correct ?
+        game_screen.colors.success
+        : game_screen.colors.failure;
 
     box.pos_screen_comment.text = comment;
-    box.pos_screen_comment.position.x = (game_screen.game.width - box.pos_screen_comment.width) / 2;
+    box.pos_screen_comment.position.x =
+        (game_screen.game.width - box.pos_screen_comment.width) / 2;
 
     box.box.position.x = game_screen.result_screen_x.right;
 

@@ -52,39 +52,15 @@ MONSTER.SpaceGame.prototype.checkCollisions = function()
             var obj = this.answers[i];
 
             if (obj.r.contains(this.ship.position.x, this.ship.position.y))
-            // if (
-            //     obj.r.contains(
-            //         this.ship.position.x - this.ship.width * this.ship.anchor.x,
-            //         this.ship.position.y - this.ship.height * this.ship.anchor.y
-            //     )
-            //     ||
-            //     obj.r.contains(
-            //         this.ship.position.x + this.ship.width * this.ship.anchor.x,
-            //         this.ship.position.y - this.ship.height * this.ship.anchor.y
-            //     )
-            //     ||
-            //     obj.r.contains(
-            //         this.ship.position.x - this.ship.width * this.ship.anchor.x,
-            //         this.ship.position.y + this.ship.height * this.ship.anchor.y
-            //     )
-            //     ||
-            //     obj.r.contains(
-            //         this.ship.position.x + this.ship.width * this.ship.anchor.x,
-            //         this.ship.position.y + this.ship.height * this.ship.anchor.y
-            //     )
-            // )
             {
                 this.hit = true;
                 this.shipActive = false;
-                // this.ship.tint = 0x000000;
                 this.ship.alpha = 0.5;
                 this.moveOutOfScreen();
 
                 if (obj.word == this.answer)
-                    // this.correct(obj.word);
                     MONSTER.Common.correct(this);
                 else
-                    // this.negative(obj.word);
                     MONSTER.Common.negative(this);
             }
         }

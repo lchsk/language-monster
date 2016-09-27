@@ -99,8 +99,6 @@ MONSTER.SimpleGame.prototype.next_round = function() {
 
 MONSTER.SimpleGame.prototype.resultScreen = function(is_correct)
 {
-    // this.question = 'United States of America';
-    // this.answer = 'Estados Unidos de America';
     MONSTER.GoodWrongScreen.prepare(this, is_correct);
 };
 
@@ -125,7 +123,10 @@ MONSTER.SimpleGame.prototype.init = function()
         return MONSTER.Common.endScreen(this);
     }
 
-    var text = new PIXI.Text(this.question, {font: "36px Montserrat", fill: this.colors.question});
+    var text = new PIXI.Text(
+        this.question,
+        {font: "36px Montserrat", fill: this.colors.question}
+    );
     text.position.x = (this.game.width - text.width) / 2;
     text.position.y = 0.12 * this.game.height;
     this.game.view.addChild(text);
@@ -134,25 +135,33 @@ MONSTER.SimpleGame.prototype.init = function()
     var h = 90;
     var time = 1400;
 
-    var b1 = MONSTER.Common.createButton(this, this.choices[0], 0, 0, w, h, -w, 150, function(){
+    var b1 = MONSTER.Common.createButton(
+        this,
+        this.choices[0], 0, 0, w, h, -w, 150, function(){
         b1.interactive = false;
         context.check_answer(context.choices[0]);
     });
     b1.interactive = true;
 
-    var b2 = MONSTER.Common.createButton(this, this.choices[1], 0, 0, w, h, this.game.width + w, 150, function(){
+    var b2 = MONSTER.Common.createButton(
+        this,
+        this.choices[1], 0, 0, w, h, this.game.width + w, 150, function(){
         b2.interactive = false;
         context.check_answer(context.choices[1]);
     });
     b2.interactive = true;
 
-    var b3 = MONSTER.Common.createButton(this, this.choices[2], 0, 0, w, h, -w, 280, function(){
+    var b3 = MONSTER.Common.createButton(
+        this,
+        this.choices[2], 0, 0, w, h, -w, 280, function(){
         b3.interactive = false;
         context.check_answer(context.choices[2]);
     });
     b3.interactive = true;
 
-    var b4 = MONSTER.Common.createButton(this, this.choices[3], 0, 0, w, h, this.game.width + w, 280, function(){
+    var b4 = MONSTER.Common.createButton(
+        this,
+        this.choices[3], 0, 0, w, h, this.game.width + w, 280, function(){
         b4.interactive = false;
         context.check_answer(context.choices[3]);
     });

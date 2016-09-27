@@ -1,6 +1,5 @@
 function setData(obj, key, val)
 {
-  // if (!obj) obj = data;
   var ka = key.split(/\./);
   if (ka.length < 2)
   {
@@ -17,7 +16,6 @@ function setData(obj, key, val)
 
 function getData(obj, key)
 {
-  // if (!obj) obj = data;
   var ka = key.split(/\./);
   if (ka.length < 2)
   {
@@ -63,7 +61,6 @@ MONSTER.Tween.prototype.update = function(t)
   if (this.currentTime > this.time)
   {
     this.active = false;
-    // this.currentTime = 0;
   }
 };
 
@@ -83,10 +80,6 @@ MONSTER.FuncTimer.prototype.update = function(t)
     if (! this.active)
         return;
   this.currentTime += t;
-  // var pct = this.currentTime / this.time;
-  // var ft = MONSTER.Easing.easeOutCubic(pct);
-  // 
-  // var val = Math.round(ft * (this.targetValue - this.startValue)) + this.startValue;
 
   if (this.active && this.currentTime > this.time)
   {

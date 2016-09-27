@@ -15,7 +15,7 @@ MONSTER.SpaceGame = function(game)
     this.colors = {
         background: '0x7FBFFF',
         success: '0x33E46D',
-        failure: '0xFF5039',
+        failure: '0xFF5039'
     };
 
     this.button_colors = {
@@ -25,7 +25,7 @@ MONSTER.SpaceGame = function(game)
         click: '0x940000'
     };
 
-    // True durign processing of a hit
+    // True during processing of a hit
     this.hit = false;
 
     // After hit ship is inactive for a while
@@ -138,10 +138,7 @@ MONSTER.SpaceGame.prototype.init = function()
     this.game.background.clear();
     this.game.view.removeChildren();
 
-    // MONSTER.Common.fillBackground(this, '#00ff00');
-
     MONSTER.Common.fillBackground(this, this.colors.background);
-    // this.fillBackground(this.colors.background);
 
     this.ship = PIXI.Sprite.fromImage(this.urls.ship);
     this.game.view.addChild(this.ship);

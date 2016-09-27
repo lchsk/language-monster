@@ -3,7 +3,8 @@ MONSTER.ShooterGame.prototype.moveOutOfScreen = function()
 {
     // question
 
-    this.game.tweens.push(new MONSTER.Tween(this.top_bar, 'position.y', this.top_bar_y.hide, 1000));
+    this.game.tweens.push(new MONSTER.Tween(
+        this.top_bar, 'position.y', this.top_bar_y.hide, 1000));
 
     // answers
 
@@ -12,16 +13,21 @@ MONSTER.ShooterGame.prototype.moveOutOfScreen = function()
         var obj = this.answers[i];
 
         if (obj.text.position.x < this.game.width / 2.0)
-            this.game.tweens.push(new MONSTER.Tween(obj.text, 'position.x', - obj.text.width / 2, 1000));
+            this.game.tweens.push(new MONSTER.Tween(
+                obj.text, 'position.x', - obj.text.width / 2, 1000));
         else
-            this.game.tweens.push(new MONSTER.Tween(obj.text, 'position.x', this.game.width + obj.text.width / 2, 1000));
+            this.game.tweens.push(new MONSTER.Tween(
+                obj.text,
+                'position.x',
+                this.game.width + obj.text.width / 2,
+                1000
+            ));
     }
 };
 
 MONSTER.ShooterGame.prototype.resultScreen = function(is_correct)
 {
     result_screen_on = true;
-    // this.round_id++;
     MONSTER.GoodWrongScreen.prepare(this, is_correct);
 };
 

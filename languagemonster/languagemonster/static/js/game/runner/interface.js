@@ -3,7 +3,8 @@ MONSTER.RunnerGame.prototype.moveOutOfScreen = function()
 {
     // question
 
-    this.game.tweens.push(new MONSTER.Tween(this.top_bar, 'position.y', this.top_bar_y.hide, 1000));
+    this.game.tweens.push(new MONSTER.Tween(
+        this.top_bar, 'position.y', this.top_bar_y.hide, 1000));
 
     // answers
 
@@ -12,19 +13,21 @@ MONSTER.RunnerGame.prototype.moveOutOfScreen = function()
         var obj = this.answers[i];
 
         if (obj.text.position.x < this.game.width / 2.0)
-            this.game.tweens.push(new MONSTER.Tween(obj.text, 'position.x', - obj.text.width / 2, 1000));
+            this.game.tweens.push(new MONSTER.Tween(
+                obj.text, 'position.x', - obj.text.width / 2, 1000));
         else
-            this.game.tweens.push(new MONSTER.Tween(obj.text, 'position.x', this.game.width + obj.text.width / 2, 1000));
+            this.game.tweens.push(new MONSTER.Tween(
+                obj.text,
+                'position.x',
+                this.game.width + obj.text.width / 2,
+                1000
+            ));
     }
 };
 
 MONSTER.RunnerGame.prototype.resultScreen = function(is_correct) {
     this.ship.stop();
     result_screen_on = true;
-    // this.round_id++;
-
-    // this.question = 'United States of America';
-    // this.answer = 'Estados Unidos de America';
 
     MONSTER.GoodWrongScreen.prepare(this, is_correct);
 };
@@ -44,7 +47,8 @@ MONSTER.RunnerGame.prototype.next_round = function()
     if (this.hit)
     {
         // not the first round
-        this.game.tweens.push(new MONSTER.Tween(this.box.box, 'position.x', this.result_screen_x.left, 1000));
+        this.game.tweens.push(new MONSTER.Tween(
+            this.box.box, 'position.x', this.result_screen_x.left, 1000));
 
         this.game.setStopFunc(this.activateShipAgain, 1500, this);
     }

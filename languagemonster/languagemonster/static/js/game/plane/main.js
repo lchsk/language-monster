@@ -16,7 +16,7 @@ MONSTER.PlaneGame = function(game)
         background: '0x76D3DE',
 
         success: '0x33E46D',
-        failure: '0xFF5039',
+        failure: '0xFF5039'
     };
 
     this.button_colors = {
@@ -144,7 +144,14 @@ MONSTER.PlaneGame.prototype.update = function()
                 }
                 else
                 {
-                    this.answers[i].text.position.x -= MONSTER.linear(this.game.round_id, 0, this.game.actual_rounds - 1, 0.08, 0.1) * t;
+                    this.answers[i].text.position.x -=
+                        MONSTER.linear(
+                            this.game.round_id,
+                            0,
+                            this.game.actual_rounds - 1,
+                            0.08,
+                            0.1
+                        ) * t;
                 }
             }
         }
@@ -190,9 +197,6 @@ MONSTER.PlaneGame.prototype.init = function()
     // movement UP
     this.ship.v_up = false;
     this.ship.v_up_tmp = 0;
-
-    // this.ship_v = 3;
-    // this.ship.rotation = Math.PI;
 
     this.game.view.addChild(this.top_bar);
 

@@ -25,11 +25,9 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
         timeout: 15000,
         url: "/api/local/words/" + this.dataset_id + "/" + this.email,
         error: function(x, t, m) {
-            console.log('Error loading vocabulary: ' + t);
             that.success = false;
             that.error_code = t;
 
-            // alert(that.error_code);
             var error_text = MONSTER.Common.trans(
                 "Server error, please try again",
                 window.translations
@@ -61,15 +59,9 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
             that.sender.game.view.addChild(b1);
         },
         success: function(m) {
-            // console.log(m);
-            // var tmp = JSON.parse(m);
             that.word_sets = m;
             that.success = true;
 
-            console.log(m);
-
-            // success_func: MONSTER.Common.restart
-            // sender: SimpleGame
             that.success_func.apply(that.sender, [that.sender]);
         }
     });

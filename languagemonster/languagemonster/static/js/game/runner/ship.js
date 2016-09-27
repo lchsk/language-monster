@@ -53,14 +53,13 @@ MONSTER.RunnerGame.prototype.moveShip = function()
 
             var pct = MONSTER.Easing.easeOutQuart(this.ship.v_time / T);
 
-            this.ship.position.y = Math.round(pct * (this.ship.stop_y - this.ship.start_y)) + this.ship.start_y;
-
-            // this.ship.rotation = 0;
+            this.ship.position.y = Math.round(
+                pct * (this.ship.stop_y - this.ship.start_y))
+                + this.ship.start_y;
 
             if (this.ship.v_time > T)
             {
                 this.ship.v_time = 0.0;
-                // this.ship.v_up_tmp = 0;
                 this.ship.v_up = false;
                 this.ship.position.y = this.ship.stop_y;
 

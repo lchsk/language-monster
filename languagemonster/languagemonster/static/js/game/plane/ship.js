@@ -2,13 +2,13 @@ MONSTER.PlaneGame.prototype.moveShip = function()
 {
     var t = this.game.timeSinceLastFrame;
 
-    if (MONSTER.Key && MONSTER.Key.isUp(MONSTER.Key.UP) && this.ship.position.y > this.ship.height * 1.5)
+    if (MONSTER.Key
+        && MONSTER.Key.isUp(MONSTER.Key.UP)
+        && this.ship.position.y > this.ship.height * 1.5)
     {
         if ( ! this.ship.v_up)
         {
             this.ship.v_up = true;
-
-            // this.ship.rotation = 0.3;
         }
     }
 
@@ -29,7 +29,6 @@ MONSTER.PlaneGame.prototype.moveShip = function()
             {
                 this.ship.v_up_tmp = 0;
                 this.ship.v_up = false;
-                // this.ship.rotation = 0;
             }
 
             return;
@@ -44,8 +43,6 @@ MONSTER.PlaneGame.prototype.moveShip = function()
         var pct = MONSTER.Easing.easeInOutQuart(this.ship.v_time / T);
 
         this.ship.position.y = Math.round(pct * (this.ship.stop_y - this.ship.start_y)) + this.ship.start_y;
-
-        // this.ship.rotation = 0;
 
         if (this.ship.v_time > T)
             this.ship.position.y = this.ship.stop_y;
@@ -70,14 +67,12 @@ MONSTER.PlaneGame.prototype.checkCollisions = function()
         {
             var obj = this.answers[i];
 
-            // if (obj.r.contains(this.ship.position.x, this.ship.position.y))
             if (Math.abs(obj.text.position.x - this.ship.position.x) < this.ship.width / 2 &&
                 Math.abs(obj.text.position.y - this.ship.position.y) < this.ship.height / 2
             )
             {
                 this.hit = true;
                 this.shipActive = false;
-                // this.ship.tint = 0x000000;
                 this.ship.alpha = 0.5;
                 this.moveOutOfScreen();
 

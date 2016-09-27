@@ -8,7 +8,6 @@ MONSTER.Game = function(fps)
         [640, 360]
     ];
 
-    // this.games = ['simple', 'space'];
     this.games = window.games;
     this.current_game = '';
 
@@ -25,8 +24,7 @@ MONSTER.Game = function(fps)
 
     this.max_rounds = 20;
 
-    for (var i = 0; i < this.games.length; i++)
-    {
+    for (var i = 0; i < this.games.length; i++) {
         var game_ = this.games[i];
         this.game_tmp[game] = null;
     }
@@ -247,10 +245,7 @@ MONSTER.Game.prototype.update = function()
             this.stopTimer += this.timeSinceLastFrame;
 
             if (this.stopTimer > this.stopTime) {
-                console.log("STOP FUNC");
-                // this.stopTimer = 0;
                 this.stopFunc.call(this.stopBind);
-                // this.stopFunc = undefined;
                 this.resetStopFunc();
             }
         }
