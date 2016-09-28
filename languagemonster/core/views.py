@@ -322,7 +322,7 @@ class ErrorPage(ContextView):
             auth = '<unlogged>'
 
         logger.error(
-                '{error} error encountered, '
+            '{error} error encountered, '
             'method: {method}, path: {path}, path_info: {path_info}, '
             'auth: {auth}'.format(
                 error=self.error,

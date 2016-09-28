@@ -77,15 +77,6 @@ def is_registration_valid(p_user):
         error = 'password_too_short'
         error_str = _('msg_password_too_short')
 
-    # TODO: Add email validation
-    # email address validation
-    # try:
-    #     EmailField().clean(p_user['email'])
-    # except ValidationError:
-    #     error = 'email_invalid'
-    #     error_str = 'That email address is not valid.'
-
-    # more strict: "^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$"
     if not re.match(r"[^@]+@[^@]+\.[^@]+", p_user['email']):
         error = 'email_invalid'
         error_str = _('msg_invalid_email')
