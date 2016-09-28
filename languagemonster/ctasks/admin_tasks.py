@@ -12,7 +12,6 @@ from core.models import (
 import core.impl.mail as mail
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
 
 @shared_task

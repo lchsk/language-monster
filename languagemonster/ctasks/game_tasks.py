@@ -21,7 +21,6 @@ from core.models import (
 )
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
 
 def count_user_words(user, progression):

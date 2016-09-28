@@ -47,7 +47,6 @@ from core.impl.user import (
 )
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger)
 
 class DoRegister(ContextView):
     def post(self, request, *args, **kwargs):

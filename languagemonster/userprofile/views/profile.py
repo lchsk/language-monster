@@ -32,7 +32,6 @@ from core.views import SpecialPageView
 from vocabulary.impl.study import get_user_games
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger)
 
 class SettingsView(AuthContextView):
     template_name = 'app/profile.html'

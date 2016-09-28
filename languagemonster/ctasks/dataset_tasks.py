@@ -13,7 +13,6 @@ from core.models import (
 from celery.utils.log import get_task_logger
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
 
 @shared_task

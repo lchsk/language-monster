@@ -25,7 +25,6 @@ from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 from core.data.language import LANGUAGES
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
 
 def get_context(request):
     return Context(request)

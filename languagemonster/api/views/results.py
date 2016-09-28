@@ -17,7 +17,6 @@ from api.serializers import (
 )
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
 class SaveResults(MonsterUserAuthView):
     def post(self, request):

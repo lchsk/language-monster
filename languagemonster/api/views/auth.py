@@ -16,7 +16,6 @@ from api.serializers import (
 from api.views.base import APIAuthView
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
 class UserRegistration(APIAuthView):
     def post(self, request):

@@ -22,7 +22,6 @@ from api.views.base import (
 )
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
 class AvailableDatasets(APIAuthView):
     def get(self, request, lang_pair):

@@ -14,7 +14,6 @@ from core.models import MonsterUser
 from utility.security import get_secure_hash
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_WWW_HANDLER)
 
 def authenticate_user(
     username=None,

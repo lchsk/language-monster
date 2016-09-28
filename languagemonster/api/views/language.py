@@ -18,7 +18,6 @@ from api.views.base import (
 )
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
 class StartLearningLanguage(MonsterUserAuthView):
     def post(self, request):

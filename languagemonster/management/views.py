@@ -48,7 +48,6 @@ from management.impl.set_action import (
 from management.impl.util import parse_line
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_WORKERS_HANDLER)
 
 class IndexView(SuperUserContextView):
     template_name = 'app/management/index.html'

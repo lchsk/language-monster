@@ -10,7 +10,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 logger = logging.getLogger(__name__)
-settings.LOGGER(logger, settings.LOG_API_HANDLER)
 
 class BaseAPIAuth(BaseAuthentication):
     def authenticate(self, request):

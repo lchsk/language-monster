@@ -1,9 +1,8 @@
 from __future__ import absolute_import
 
-import logging
+import logging.config
 import sys
 import os
-from logging.handlers import RotatingFileHandler
 
 ID = 'languagemonster'
 VERSION = '0.1.0'
@@ -31,76 +30,61 @@ DEBUG_GAMES = DEBUG
 THUMBNAIL_DEBUG = DEBUG
 PROFILING_SQL_QUERIES = DEBUG
 
-# Loggin configuration
 
-LOG_FORMATTER = logging.Formatter(
-    '%(asctime)s %(levelname)s %(name)s %(funcName)s(%(lineno)d) %(message)s'
-)
+LOG_FORMAT = ('%(asctime)s %(levelname)s %(name)s '
+                '%(funcName)s:%(lineno)d %(message)s')
 
 LOG_DIR = os.getenv('LM_LOG_DIR', './')
-LOG_WWW_FILE = LOG_DIR + 'www.log'
-LOG_API_FILE = LOG_DIR + 'api.log'
-LOG_WORKERS_FILE = LOG_DIR + 'workers.log'
-LOG_MAIL_FILE = LOG_DIR + 'mail.log'
 
-# 20M
-LOG_FILE_SIZE = 20 * 1000 * 1000
+LOGGING_CONFIG = None
 
-LOG_WWW_HANDLER = RotatingFileHandler(
-    LOG_WWW_FILE,
-    mode = 'a',
-    maxBytes = LOG_FILE_SIZE,
-    backupCount = 20,
-    encoding = None,
-    delay = 0
-)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': LOG_FORMAT,
+        },
+    },
+    'handlers': {
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'log_file':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join('./', 'monster.log'),
+            'maxBytes': 20 * 1024 * 1024,
+            'backupCount': 20,
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['log_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'apps': {
+            'handlers': ['log_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['log_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+    'root': {
+        'handlers': ['log_file', 'console'],
+        'level': 'DEBUG'
+    },
+}
 
-LOG_API_HANDLER = RotatingFileHandler(
-    LOG_API_FILE,
-    mode = 'a',
-    maxBytes = LOG_FILE_SIZE,
-    backupCount = 20,
-    encoding = None,
-    delay = 0
-)
-
-LOG_WORKERS_HANDLER = RotatingFileHandler(
-    LOG_WORKERS_FILE,
-    mode = 'a',
-    maxBytes = LOG_FILE_SIZE,
-    backupCount = 20,
-    encoding = None,
-    delay = 0
-)
-
-LOG_MAIL_HANDLER = RotatingFileHandler(
-    LOG_MAIL_FILE,
-    mode = 'a',
-    maxBytes = LOG_FILE_SIZE,
-    backupCount = 20,
-    encoding = None,
-    delay = 0
-)
-
-LOG_PRODUCTION_LEVEL = logging.INFO
-
-def LOGGER(logger, handler = LOG_WWW_HANDLER):
-    """
-        Function for setting logging in other modules.
-    """
-
-    handler.setFormatter(LOG_FORMATTER)
-
-    if DEBUG:
-        handler.setLevel(logging.DEBUG)
-        logger.setLevel(logging.DEBUG)
-    else:
-        handler.setLevel(LOG_PRODUCTION_LEVEL)
-        logger.setLevel(LOG_PRODUCTION_LEVEL)
-
-    logger.addHandler(handler)
-
-######################
+logging.config.dictConfig(LOGGING)
 
 ALLOWED_HOSTS = os.getenv('LM_ALLOWED_HOSTS', '').split(',')
 LOCAL_API_HOSTS = ('127.0.0.1',)
