@@ -3,6 +3,11 @@ from __future__ import absolute_import
 import logging.config
 import sys
 import os
+from datetime import timedelta
+
+from django.utils.translation import ugettext_lazy as _
+
+from celery.schedules import crontab
 
 ID = 'languagemonster'
 VERSION = '0.1.0'
@@ -11,7 +16,6 @@ BRANCH = 'master'
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('LM_SECRET_KEY', '123456789')
 API_KEY = os.getenv('LM_API_KEY')
 GAME_SESSION_KEY = os.getenv('LM_GAME_SESSION_KEY')
@@ -29,7 +33,6 @@ else:
 DEBUG_GAMES = DEBUG
 THUMBNAIL_DEBUG = DEBUG
 PROFILING_SQL_QUERIES = DEBUG
-
 
 LOG_FORMAT = ('%(asctime)s %(levelname)s %(name)s '
                 '%(funcName)s:%(lineno)d %(message)s')
@@ -103,7 +106,6 @@ THUMBANIL_ENGINE = 'sorl.thumbnail.engines.pil_engine.Engine'
 #####################
 # Games configuration
 #####################
-from django.utils.translation import ugettext_lazy as _
 
 GAMES_USE_CANVAS_ONLY = False
 
@@ -152,18 +154,22 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 3rd party
     'debug_toolbar',
     'sysmon',
     'sorl.thumbnail',
     'rosetta',
-    'core',
     'post_office',
     'rest_framework',
+    'django_countries',
+
+    # Apps
+    'core',
     'api',
     'vocabulary',
     'ctasks',
     'userprofile',
-    'django_countries',
 )
 
 MIDDLEWARE_CLASSES = ()
@@ -199,8 +205,6 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
-                # list if you haven't customized them:
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
@@ -231,12 +235,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
-    # FIXME:
-    # Setting below causes 415 in response...
-    # Probably need to list of parser classes...
-    # 'DEFAULTl_PARSER_CLASSES': (
-    #     'rest_framework.parsers.JSONParser',
-    # ),
 }
 
 DATABASES = {
@@ -253,16 +251,6 @@ DATABASES = {
         'CONN_MAX_AGE': 600,
     },
 }
-
-# FIXME: Change to read from env variable
-if 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            # 'ENGINE': 'django.db.backends.sqlite3',
-            # 'NAME': os.getenv('LM_DB_NAME'),
-            # 'PORT': '',
-        },
-    }
 
 CACHES = {
     'default': {
@@ -288,17 +276,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 USE_I18N = True
 LANGUAGE_CODE = 'en'
 TIME_ZONE = 'UTC'
-# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-# NOSE_ARGS = [
-    # '--with-coverage',
-    # '--cover-package=api, vocabulary, ctasks',
-# ]
 
 ROSETTA_MESSAGES_PER_PAGE = 100
 ROSETTA_STORAGE_CLASS = 'rosetta.storage.CacheRosettaStorage'
-
-# USE_L10N = True
-# USE_TZ = True
 
 EMAIL_USE_TLS = bool(int(os.getenv('LM_EMAIL_USE_TLS', 1)))
 EMAIL_USE_SSL = bool(int(os.getenv('LM_EMAIL_USE_SSL', 0)))
@@ -346,14 +326,11 @@ BROKER_URL = 'redis://{host}:{port}/'.format(
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_IMPORTS = (
-    "ctasks.game_tasks",
-    "ctasks.dataset_tasks",
-    "ctasks.admin_tasks"
+    'ctasks.game_tasks',
+    'ctasks.dataset_tasks',
+    'ctasks.admin_tasks',
 )
 CELERY_TIMEZONE = 'UTC'
-
-from celery.schedules import crontab
-from datetime import timedelta
 
 CELERYBEAT_SCHEDULE = {
     'update_users_stats_all': {
@@ -364,19 +341,12 @@ CELERYBEAT_SCHEDULE = {
         'task': 'ctasks.dataset_tasks.sync_word_counts',
         'schedule': crontab(hour=2, minute=0),
     },
-
-
-    # Email
-
     'send_queued_mail': {
         'task': 'ctasks.admin_tasks.send_queued_mail',
-        # 'schedule': crontab(seconds=30),
-        'schedule' : timedelta(seconds=100)
+        'schedule': timedelta(seconds=60)
     },
-
     'send_test_email': {
         'task': 'ctasks.admin_tasks.send_test_email',
         'schedule': crontab(hour='*/1', minute=0),
-        # 'schedule' : timedelta(seconds=30)
     },
 }
