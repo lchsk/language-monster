@@ -9,7 +9,6 @@ from datetime import (
 )
 
 from celery import shared_task
-from celery.utils.log import get_task_logger
 
 from core.models import (
     UserWordPair,

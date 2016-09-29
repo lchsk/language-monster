@@ -5,9 +5,7 @@ from celery import shared_task
 
 from django.conf import settings
 from django.core.management import call_command
-from core.models import (
-    MonsterUser,
-)
+from core.models import MonsterUser
 
 import core.impl.mail as mail
 
@@ -16,16 +14,17 @@ logger = logging.getLogger(__name__)
 
 @shared_task
 def send_queued_mail():
+    logger.info('Sending emails...')
+
     with open(settings.LOG_MAIL_FILE) as f:
         call_command('send_queued_mail', stdout=f, stderr=f)
 
 
 @shared_task
 def send_test_email():
-
     user_count = MonsterUser.objects.count()
 
-    logger.info('Sending a test email...')
+    logger.info('Sending test email. Users count: %s' % user_count)
 
     mail.send_template_email(
         request=None,

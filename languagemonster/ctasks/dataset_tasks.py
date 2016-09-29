@@ -17,12 +17,16 @@ logger = logging.getLogger(__name__)
 
 @shared_task
 def sync_word_counts():
-    '''
+    """
         Task counts number of words in every data set.
-    '''
+    """
 
     datasets = DataSet.objects.all()
+
+    logger.info('%s datasets found' % len(datasets))
 
     for ds in datasets:
         ds.word_count = DS2WP.objects.filter(ds=ds).count()
         ds.save()
+
+    logger.info('sync_word_counts finished')
