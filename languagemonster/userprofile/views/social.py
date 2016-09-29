@@ -1,5 +1,3 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django_countries.fields import Country
 from django.http import Http404
 

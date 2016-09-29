@@ -7,25 +7,18 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
-from core.models import (
-    MonsterUser,
-)
+from core.models import MonsterUser
 
 from core.impl import mail
 
 from utility.views import (
     ContextView,
     AuthContextView,
-    NoTemplateMixin,
 )
 
 from utility.security import validate_password
 
-from core.impl.user import (
-    authenticate_user,
-    update_public_name,
-    process_games_list,
-)
+from core.impl.user import process_games_list
 
 from core.views import SpecialPageView
 
