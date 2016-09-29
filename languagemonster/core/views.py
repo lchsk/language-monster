@@ -2,12 +2,9 @@
 
 import logging
 import datetime
-import os.path
-from uuid import uuid4
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.http import HttpResponseRedirect
 from django.contrib.auth import (
@@ -17,12 +14,6 @@ from django.contrib.auth import (
 from django.conf import settings
 from django.http import Http404
 
-from django_countries import countries
-
-from core.models import (
-    MonsterUserGame,
-    MonsterUser,
-)
 import core.impl.mail as mail
 
 from utility.views import (
@@ -31,20 +22,8 @@ from utility.views import (
     NoTemplateMixin,
 )
 from utility.user_language import landing_language
-from utility.security import validate_password
-from utility.interface import (
-    get_context,
-    context,
-    create_hash,
-    redirect_unauth,
-)
-from vocabulary.impl.study import get_user_games
 from core.impl.user import register as register_user
-from core.impl.user import (
-    authenticate_user,
-    update_public_name,
-    process_games_list,
-)
+from core.impl.user import authenticate_user
 
 logger = logging.getLogger(__name__)
 

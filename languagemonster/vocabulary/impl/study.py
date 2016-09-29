@@ -16,10 +16,8 @@ from core.models import (
 )
 import ctasks.game_tasks as game_tasks
 
-# REMOVE?
 def get_user_games(monster_user):
-    return [
-        {
+    return [{
             'game': mu_game.game,
             'played': mu_game.played,
             'banned': mu_game.banned
@@ -29,18 +27,6 @@ def get_user_games(monster_user):
         )
     ]
 
-
-# REMOVE?
-def get_games_played(monster_user):
-    return [
-        monster_user_game.game
-        for monster_user_game in MonsterUserGame.objects.filter(
-            monster_user=monster_user,
-            played=True
-        )
-    ]
-
-# CHECK IF USED
 def get_datasets(language_pair):
     return DataSet.objects.filter(
         lang_pair=language_pair,
@@ -48,13 +34,13 @@ def get_datasets(language_pair):
         status='A',
     ).order_by('-learners')
 
+def get_single_dataset(lang_pair_symbol, dataset_slug):
+    return DataSet.objects.filter(
+        slug=dataset_slug,
+        lang_pair=lang_pair_symbol,
+        status='A',
+    ).first()
 
-# CHECK IF USED
-def get_user_progress(user):
-    return DataSetProgress.objects.filter(user=user)
-
-
-# CHECK IF USED
 def get_user_data_sets(user):
     sets = []
     progress = DataSetProgress.objects.filter(user=user)
@@ -63,15 +49,6 @@ def get_user_data_sets(user):
         sets.append(p.data_set)
 
     return sets
-
-
-# CHECK IF USED
-def get_single_dataset(lang_pair_symbol, dataset_slug):
-    return DataSet.objects.filter(
-        slug=dataset_slug,
-        lang_pair=lang_pair_symbol,
-        status='A',
-    ).first()
 
 def get_words_to_repeat(monster_user, words):
     to_repeat = UserWordPair.objects.filter(

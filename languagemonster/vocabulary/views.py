@@ -19,7 +19,6 @@ from core.models import (
 from utility.url import redirect_to_previous_page
 from vocabulary.impl.study import (
     get_user_games,
-    get_games_played,
     get_datasets,
     get_user_data_sets,
     get_single_dataset,
