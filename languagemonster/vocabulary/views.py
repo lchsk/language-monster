@@ -182,7 +182,7 @@ class PlayView(AuthContextView):
         if not dataset:
             return Http404
 
-        context['game'] = True
+        context['context'].game = True
         context['dataset'] = dataset
         context['pair'] = pair
         context['data'] = dict(

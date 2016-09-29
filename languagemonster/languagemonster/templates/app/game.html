@@ -33,7 +33,7 @@
                 </div>
                 {% csrf_token %}
                 <script type="text/javascript">
-                    {% if game %}
+                    {% if context.game %}
                         play = true;
                     {% else %}
                         play = false;

@@ -26,9 +26,8 @@
 
 <script src="{{STATIC_URL}}js/build/app.js"></script>
 
-{% if game %}
+{% if context.game %}
 <script src="{{STATIC_URL}}lib/pixi.js"></script>
-{% endif %}
 
 {% if context.status.debug_games %}
 <script src="{{STATIC_URL}}js/game/base.js"></script>
@@ -61,6 +60,8 @@
 
 {% else %}
 <script src="{{STATIC_URL}}js/build/games.js"></script>
+{% endif %}
+
 {% endif %}
 
 <script src='http://app1.sugester.com/7098/widget.js' type='text/javascript'></script>

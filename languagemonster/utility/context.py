@@ -206,7 +206,18 @@ class Context(object):
         self._monster_user = None
         self._landing_language = None
 
+        # True if current view includes a game
+        self._game = False
+
         self._build_common()
+
+    @property
+    def game(self):
+        return self._game
+
+    @game.setter
+    def game(self, value):
+        self._game = value
 
     @property
     def urls(self):

@@ -35,7 +35,7 @@
                     {% if context.user.avatar %}
                     {% with context.urls.avatar|add:context.user.avatar as path %}
                       {% thumbnail path "30x30" crop="center" as im %}
-                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{user.public_name}}" />
+                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{context.user.public_name}}" />
                       {% endthumbnail %}
                     {% endwith %}
                     {% endif %}
