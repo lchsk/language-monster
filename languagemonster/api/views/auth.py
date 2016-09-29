@@ -1,7 +1,5 @@
 import logging
 
-from django.conf import settings
-
 from core.data.base_language import BASE_LANGUAGES
 from core.impl.user import (
     authenticate_user,

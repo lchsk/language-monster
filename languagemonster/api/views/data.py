@@ -1,7 +1,5 @@
 import logging
 
-from django.conf import settings
-
 from core.models import (
     DataSet,
     MonsterUser,

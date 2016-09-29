@@ -1,20 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import json
-
-from django.shortcuts import render
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib import messages
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 
-from core.models import (
-    Progression,
-    DataSet,
-)
+from core.models import Progression
 
 from utility.url import redirect_to_previous_page
 from vocabulary.impl.study import (
@@ -26,11 +17,7 @@ from vocabulary.impl.study import (
 )
 
 from utility.interface import (
-    get_context,
-    context,
-    redirect_unauth,
     get_lang_pair_from_slugs,
-    get_base_lang,
     get_progression_from_lang_pair,
 )
 from core.impl.user import process_games_list
@@ -40,7 +27,6 @@ from utility.views import (
     AuthContextView,
 )
 
-from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS,

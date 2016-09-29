@@ -1,7 +1,5 @@
 import logging
 
-from django.conf import settings
-
 from core.models import Progression
 from core.data.base_language import BASE_LANGUAGES
 from core.data.language_pair import LANGUAGE_PAIRS_FLAT

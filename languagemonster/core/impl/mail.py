@@ -4,8 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from utility.interface import *
 from django.template.loader import get_template
-from django.template import Context
-
 
 EMAILS = {
     # User emails

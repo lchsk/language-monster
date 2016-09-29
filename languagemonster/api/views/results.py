@@ -1,7 +1,5 @@
 import logging
 
-from django.conf import settings
-
 from core.models import MonsterUser
 
 from vocabulary.impl.study import do_save_results
