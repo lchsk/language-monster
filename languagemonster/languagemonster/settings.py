@@ -18,7 +18,6 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 SECRET_KEY = os.getenv('LM_SECRET_KEY', '123456789')
 API_KEY = os.getenv('LM_API_KEY')
-GAME_SESSION_KEY = os.getenv('LM_GAME_SESSION_KEY')
 
 CACHE_SECONDS = 600
 CACHE = False
