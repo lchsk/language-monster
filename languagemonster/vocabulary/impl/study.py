@@ -2,6 +2,7 @@
 
 import random
 import json
+import logging
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -15,6 +16,10 @@ from core.models import (
     UserWordPair,
 )
 import ctasks.game_tasks as game_tasks
+
+from utility.exception import NoDataFound
+
+logger = logging.getLogger(__name__)
 
 def get_user_games(monster_user):
     return [{
@@ -97,7 +102,7 @@ def get_game_words(
     items_to_return = nsets * rounds
     items_to_pick = items_to_return - len(returned_words)
 
-    sentinel = 0;
+    sentinel = 0
 
     while True or sentinel < 1000:
         sentinel += 1
@@ -184,7 +189,9 @@ def do_save_results(
     dataset = DataSet.objects.filter(id=dataset_id)
 
     if len(dataset) != 1:
-        raise Exception("NOPE")
+        logger.warning('Dataset not found, id:' % dataset_id)
+
+        raise NoDataFound()
 
     dataset = dataset[0]
 
@@ -217,7 +224,12 @@ def do_save_results(
         )
 
         if len(progressions) != 1:
-            raise Exception("111")
+            logger.warning('Progression not found, user: {}, pair: {}'.format(
+                monster_user,
+                dataset.lang_pair,
+            ))
+
+            raise NoDataFound()
 
         # Increase number of datasets user is learning
         monster_user.datasets += 1

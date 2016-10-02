@@ -2,6 +2,8 @@ import logging
 
 from core.models import MonsterUser
 
+from utility.exception import MonsterException
+
 from vocabulary.impl.study import do_save_results
 
 from api.views.base import (
@@ -25,14 +27,19 @@ class SaveResults(MonsterUserAuthView):
 
             return self.failure('Invalid input', 400)
 
-        do_save_results(
-            dataset_id=input_data.validated_data['dataset_id'],
-            monster_user=self.monster_user,
-            game=input_data.validated_data['game'],
-            mark=input_data.validated_data['mark'],
-            words_learned=input_data.validated_data['words_learned'],
-            to_repeat=input_data.validated_data['to_repeat'],
-        )
+        try:
+            do_save_results(
+                dataset_id=input_data.validated_data['dataset_id'],
+                monster_user=self.monster_user,
+                game=input_data.validated_data['game'],
+                mark=input_data.validated_data['mark'],
+                words_learned=input_data.validated_data['words_learned'],
+                to_repeat=input_data.validated_data['to_repeat'],
+            )
+        except MonsterException as e:
+            logger.info('Saving results failed: %s', e)
+
+            return self.failure('Internal error', 500)
 
         return self.success({})
 
@@ -53,13 +60,18 @@ class LocalSaveResults(LocalAPIAuthView):
         except MonsterUser.DoesNotExist:
             return self.failure('Does not exist', 404)
 
-        do_save_results(
-            dataset_id=input_data.validated_data['dataset_id'],
-            monster_user=monster_user,
-            game=input_data.validated_data['game'],
-            mark=input_data.validated_data['mark'],
-            words_learned=input_data.validated_data['words_learned'],
-            to_repeat=input_data.validated_data['to_repeat'],
-        )
+        try:
+            do_save_results(
+                dataset_id=input_data.validated_data['dataset_id'],
+                monster_user=monster_user,
+                game=input_data.validated_data['game'],
+                mark=input_data.validated_data['mark'],
+                words_learned=input_data.validated_data['words_learned'],
+                to_repeat=input_data.validated_data['to_repeat'],
+            )
+        except MonsterException as e:
+            logger.info('Saving results failed: %s', e)
+
+            return self.failure('Internal error', 500)
 
         return self.success({})
