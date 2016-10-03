@@ -142,12 +142,41 @@ def get_game_words(
 
     return resp
 
-def mark_wordpair(words, options):
+def mark_wordpair(monster_user, words, options):
     for wordpair_id in words:
-        # TODO
-        UserWordPair.objects.filter(word_pair__id=wordpair_id).update(
-            **options
+        try:
+            user_word_pair = UserWordPair.objects.get(
+                word_pair__id=wordpair_id,
+                user=monster_user,
+            )
+
+            user_word_pair.repeat = options['repeat']
+            user_word_pair.learned = options['learned']
+
+            created = False
+
+        except UserWordPair.DoesNotExist:
+            user_word_pair = UserWordPair(
+                word_pair_id=wordpair_id,
+                user=monster_user,
+                repeat=options['repeat'],
+                learned=options['learned'],
+            )
+
+            created = True
+
+        logger.info(
+            'UserWordPair {}, created: {}, wordpair_id: {}, '
+            'user: {}, options: {}'.format(
+                user_word_pair.id,
+                created,
+                wordpair_id,
+                monster_user,
+                options,
+            )
         )
+
+        user_word_pair.save()
 
 def get_game_translations():
 
@@ -252,12 +281,12 @@ def do_save_results(
 
     result.save()
 
-    mark_wordpair(words_learned, dict(
+    mark_wordpair(monster_user, words_learned, dict(
         learned=True,
         repeat=False,
     ))
 
-    mark_wordpair(to_repeat, dict(
+    mark_wordpair(monster_user, to_repeat, dict(
         learned=False,
         repeat=True,
     ))
