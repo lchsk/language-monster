@@ -7,7 +7,7 @@ MONSTER.Common.restart = function(obj)
 
 MONSTER.Common.correct = function(game_screen)
 {
-    game_screen.game.learned.push(game_screen.wordpair_id);
+    game_screen.game.learned.push(game_screen.current_pair.id);
 
     // Add points only if the question was asked the first time
     if (game_screen.game.round_id <= game_screen.game.actual_rounds) {
@@ -19,9 +19,9 @@ MONSTER.Common.correct = function(game_screen)
 
 MONSTER.Common.negative = function(game_screen)
 {
-    game_screen.game.to_repeat.push(game_screen.wordpair_id);
+    game_screen.game.to_repeat.push(game_screen.current_pair.id);
 
-    game_screen.game.to_ask.push([game_screen.question, game_screen.answer]);
+    game_screen.game.to_ask.push(game_screen.current_pair);
 
     game_screen.resultScreen(false);
 };
@@ -114,9 +114,9 @@ MONSTER.Common.getWordSet = function(game_screen)
     var dir_q = 0;
     var dir_a = 1;
 
+    game_screen.current_pair = pair;
     game_screen.question = pair.words[dir_q];
     game_screen.answer = pair.words[dir_a];
-    game_screen.wordpair_id = pair.id;
 
     game_screen.choices = [];
     game_screen.choices.push(game_screen.answer);
@@ -124,7 +124,7 @@ MONSTER.Common.getWordSet = function(game_screen)
     shuffle(game.all);
 
     for (var i = 0; i < 4; i++) {
-        if (game.all[i].id != game_screen.wordpair_id) {
+        if (game.all[i].id != game_screen.current_pair.id) {
             game_screen.choices.push(game.all[i].words[dir_a]);
         }
     }
