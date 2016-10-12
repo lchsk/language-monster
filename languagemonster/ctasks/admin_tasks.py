@@ -16,9 +16,10 @@ logger = logging.getLogger(__name__)
 def send_queued_mail():
     logger.info('Sending emails...')
 
-    with open(settings.LOG_MAIL_FILE) as f:
-        call_command('send_queued_mail', stdout=f, stderr=f)
+    call_command('send_queued_mail')
 
+    # with open(settings.LOG_MAIL_FILE) as f:
+        # call_command('send_queued_mail', stdout=f, stderr=f)
 
 @shared_task
 def send_test_email():

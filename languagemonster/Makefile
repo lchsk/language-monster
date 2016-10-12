@@ -18,6 +18,12 @@ send-mail:
 translations:
 	python manage.py makemessages -a
 
+beat:
+	celery beat -A languagemonster
+
+worker:
+	celery worker -A languagemonster
+
 lint: \
 	lint-api \
 	lint-core \
