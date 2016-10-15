@@ -123,9 +123,13 @@ MONSTER.Common.getWordSet = function(game_screen)
 
     shuffle(game.all);
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < game.all.length; i++) {
         if (game.all[i].id != game_screen.current_pair.id) {
             game_screen.choices.push(game.all[i].words[dir_a]);
+        }
+
+        if (game_screen.choices.length == 4) {
+            break;
         }
     }
 
