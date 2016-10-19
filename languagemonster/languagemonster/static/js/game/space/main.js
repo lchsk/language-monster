@@ -87,7 +87,11 @@ MONSTER.SpaceGame = function(game)
     // List of assets
 
     this.urls = {
-      'ship' : '/static/images/games/space/ship.png'
+        // 'ship' : '/static/images/games/space/ship.png'
+      'ship1' : '/static/images/games/plane/planeRed1.png',
+      'ship2' : '/static/images/games/plane/planeRed2.png',
+      'ship3' : '/static/images/games/plane/planeRed3.png',
+      'plane' : '/static/images/games/space/plane.png'
     };
 
     // Current speed
@@ -140,7 +144,20 @@ MONSTER.SpaceGame.prototype.init = function()
 
     MONSTER.Common.fillBackground(this, this.colors.background);
 
-    this.ship = PIXI.Sprite.fromImage(this.urls.ship);
+    var plane = PIXI.BaseTexture.fromImage(this.urls.plane);
+
+    var textures = [];
+
+    for (var i = 0; i < 6; i++) {
+        textures.push(new PIXI.Texture(
+            plane,
+            new PIXI.Rectangle(i * 512, 0, 512, 512)
+        ));
+    }
+
+    this.ship = new PIXI.extras.MovieClip(textures);
+    this.ship.animationSpeed = 0.2;
+    this.ship.play();
     this.game.view.addChild(this.ship);
 
     this.ship.anchor.x = 0.5;
