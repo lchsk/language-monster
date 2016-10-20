@@ -87,11 +87,9 @@ MONSTER.SpaceGame = function(game)
     // List of assets
 
     this.urls = {
-        // 'ship' : '/static/images/games/space/ship.png'
-      'ship1' : '/static/images/games/plane/planeRed1.png',
-      'ship2' : '/static/images/games/plane/planeRed2.png',
-      'ship3' : '/static/images/games/plane/planeRed3.png',
-      'plane' : '/static/images/games/space/plane.png'
+        'plane': '/static/images/games/space/plane.png',
+        'plane_left': '/static/images/games/space/plane_left.png',
+        'plane_right': '/static/images/games/space/plane_right.png'
     };
 
     // Current speed
@@ -142,38 +140,47 @@ MONSTER.SpaceGame.prototype.update = function()
 MONSTER.SpaceGame.prototype.init = function()
 {
     var context = this;
+
+    var FRAME_SZ = 78;
+    var FRAMES = 6;
+
     this.game.background.clear();
     this.game.view.removeChildren();
 
     MONSTER.Common.fillBackground(this, this.colors.background);
 
     var plane = PIXI.BaseTexture.fromImage(this.urls.plane);
+    var plane_left = PIXI.BaseTexture.fromImage(this.urls.plane_left);
+    var plane_right = PIXI.BaseTexture.fromImage(this.urls.plane_right);
 
     var textures = [];
-
-    var FRAME_SIZE = 78;
-    var FRAMES = 6;
+    var textures_left = [];
+    var textures_right = [];
 
     for (var i = 0; i < FRAMES; i++) {
-        textures.push(new PIXI.Texture(
-            plane,
-            new PIXI.Rectangle(i * FRAME_SIZE, 0, FRAME_SIZE, FRAME_SIZE)
-        ));
+        var rect = new PIXI.Rectangle(i * FRAME_SZ, 0, FRAME_SZ, FRAME_SZ);
+
+        textures.push(new PIXI.Texture(plane, rect));
+        textures_left.push(new PIXI.Texture(plane_left, rect));
+        textures_right.push(new PIXI.Texture(plane_right, rect));
     }
 
-    this.ship = new PIXI.extras.MovieClip(textures);
-    this.ship.animationSpeed = 0.5;
-    this.ship.play();
-    this.game.view.addChild(this.ship);
+    this.ship_normal = this.createShip(textures);
+    this.ship_left = this.createShip(textures_left);
+    this.ship_right = this.createShip(textures_right);
 
-    this.ship.anchor.x = 0.5;
-    this.ship.anchor.y = 0.5;
+    this.game.view.addChild(this.ship_normal);
+    this.game.view.addChild(this.ship_left);
+    this.game.view.addChild(this.ship_right);
+
+    // Initiate
+    this.ship = this.ship_normal;
+    this.ship.play();
     this.ship.position.x = this.game.width / 1.3;
-    this.ship_v = 3;
+    this.ship_v = 3.0;
     this.ship.rotation = Math.PI;
 
     this.game.view.addChild(this.top_bar);
-
 
     this.box.box.position.x = this.result_screen_x.right;
 

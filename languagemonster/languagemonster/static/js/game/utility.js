@@ -69,6 +69,11 @@ MONSTER.Const = function()
 
 MONSTER.Const.PI = 3.14159265359;
 MONSTER.Const.PI_2 = MONSTER.Const.PI / 2.0;
+
+MONSTER.Const.AHEAD = 1;
+MONSTER.Const.LEFT = 2;
+MONSTER.Const.RIGHT = 3;
+
 MONSTER.isZero = function(x)
 {
     if (Math.abs(x) < 0.000001)

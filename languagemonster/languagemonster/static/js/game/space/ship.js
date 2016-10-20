@@ -1,13 +1,29 @@
+MONSTER.SpaceGame.prototype.createShip = function(textures) {
+    var animation = new PIXI.extras.MovieClip(textures);
+
+    animation.animationSpeed = 0.5;
+    animation.anchor.x = animation.anchor.y = 0.5;
+    animation.position.x = -1000;
+
+    return animation;
+};
+
 MONSTER.SpaceGame.prototype.moveShip = function()
 {
     var t = this.game.timeSinceLastFrame;
 
-    if (MONSTER.Key && MONSTER.Key.isDown(MONSTER.Key.LEFT))
-    {
+    if (MONSTER.Key && MONSTER.Key.isDown(MONSTER.Key.LEFT)) {
         this.ship.rotation -= t * this.rotation_v;
+
+        this.turn(MONSTER.Const.LEFT);
     }
-    else if (MONSTER.Key && MONSTER.Key.isDown(MONSTER.Key.RIGHT))
+    else if (MONSTER.Key && MONSTER.Key.isDown(MONSTER.Key.RIGHT)) {
         this.ship.rotation += t * this.rotation_v;
+
+        this.turn(MONSTER.Const.RIGHT);
+    } else {
+        this.turn(MONSTER.Const.AHEAD);
+    }
 
     if (MONSTER.Key && MONSTER.Key.isDown(MONSTER.Key.UP))
         this.ship_v += t * this.acceleration + (1 / (this.max_v * this.max_v));
@@ -44,6 +60,41 @@ MONSTER.SpaceGame.prototype.moveShip = function()
     }
 };
 
+MONSTER.SpaceGame.prototype.turn = function(direction) {
+    var main = null;
+    var other = [];
+
+    if (direction === MONSTER.Const.LEFT) {
+        main = this.ship_left;
+
+        other.push(this.ship_normal);
+        other.push(this.ship_right);
+    } else if (direction === MONSTER.Const.RIGHT) {
+        main = this.ship_right;
+
+        other.push(this.ship_normal);
+        other.push(this.ship_left);
+    } else {
+        main = this.ship_normal;
+
+        other.push(this.ship_right);
+        other.push(this.ship_left);
+    }
+
+    main.position.x = this.ship.position.x;
+    main.position.y = this.ship.position.y;
+    main.rotation = this.ship.rotation;
+
+    main.play();
+
+    for (var i = 0; i < 2; i++) {
+        other[i].stop();
+        other[i].position.x = -1000;
+    }
+
+    this.ship = main;
+};
+
 MONSTER.SpaceGame.prototype.checkCollisions = function()
 {
     if (this.ship && this.ship_v > 0 && ! this.hit)
@@ -55,14 +106,20 @@ MONSTER.SpaceGame.prototype.checkCollisions = function()
             if (obj.r.contains(this.ship.position.x, this.ship.position.y))
             {
                 this.hit = true;
-                this.shipActive = false;
-                this.ship.alpha = 0.5;
+
                 this.moveOutOfScreen();
 
                 if (obj.word == this.answer)
                     MONSTER.Common.correct(this);
-                else
+                else {
+                    this.shipActive = false;
+
+                    this.ship_normal.alpha
+                        = this.ship_left.alpha
+                        = this.ship_right.alpha = 0.5;
+
                     MONSTER.Common.negative(this);
+                }
             }
         }
     }

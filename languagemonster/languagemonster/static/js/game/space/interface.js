@@ -67,7 +67,10 @@ MONSTER.SpaceGame.prototype.next_round = function()
 MONSTER.SpaceGame.prototype.activateShipAgain = function()
 {
     this.shipActive = true;
-    this.ship.alpha = 1.0;
+
+    this.ship_normal.alpha
+        = this.ship_left.alpha
+        = this.ship_right.alpha = 1.0;
 };
 
 MONSTER.SpaceGame.prototype.createAnswer = function(t, id)
