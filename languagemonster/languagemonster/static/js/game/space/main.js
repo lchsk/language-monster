@@ -98,7 +98,10 @@ MONSTER.SpaceGame = function(game)
     this.ship_v = 0.0;
 
     // Max speed
-    this.max_v = 6.0;
+    this.max_v = 4.8;
+
+    // Min speed
+    this.min_v = 0.8;
 
     this.drag = 0.0015;
 
@@ -148,15 +151,18 @@ MONSTER.SpaceGame.prototype.init = function()
 
     var textures = [];
 
-    for (var i = 0; i < 6; i++) {
+    var FRAME_SIZE = 78;
+    var FRAMES = 6;
+
+    for (var i = 0; i < FRAMES; i++) {
         textures.push(new PIXI.Texture(
             plane,
-            new PIXI.Rectangle(i * 512, 0, 512, 512)
+            new PIXI.Rectangle(i * FRAME_SIZE, 0, FRAME_SIZE, FRAME_SIZE)
         ));
     }
 
     this.ship = new PIXI.extras.MovieClip(textures);
-    this.ship.animationSpeed = 0.2;
+    this.ship.animationSpeed = 0.5;
     this.ship.play();
     this.game.view.addChild(this.ship);
 

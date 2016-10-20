@@ -27,8 +27,9 @@ MONSTER.SpaceGame.prototype.moveShip = function()
 
         // drag
         this.ship_v -= this.drag * t;
-        if (this.ship_v < 0)
-            this.ship_v = 0;
+
+        if (this.ship_v < this.min_v)
+            this.ship_v = this.min_v;
         if (this.ship_v > this.max_v)
             this.ship_v = this.max_v;
 
