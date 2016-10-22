@@ -268,11 +268,10 @@ MONSTER.RunnerGame = function(game)
     // List of assets
 
     this.urls = {
-      'walk1' : '/static/images/games/runner/bunny2_walk1.png',
-      'walk2' : '/static/images/games/runner/bunny2_walk2.png',
-      'jump' : '/static/images/games/runner/bunny2_jump.png',
-      'dirt' : '/static/images/games/runner/dirt.png',
-      'dirt_grass' : '/static/images/games/runner/dirt_grass.png'
+        'run': '/static/images/games/runner/panda_run.png',
+        'jump': '/static/images/games/runner/panda_jump.png',
+        'dirt' : '/static/images/games/runner/dirt.png',
+        'dirt_grass' : '/static/images/games/runner/dirt_grass.png'
     };
 
     // Current speed
@@ -347,15 +346,26 @@ MONSTER.RunnerGame.prototype.init = function()
     MONSTER.Common.fillBackground(this, this.colors.background);
 
     this.textures = [];
-    this.textures.push(PIXI.Texture.fromImage(this.urls.walk1));
-    this.textures.push(PIXI.Texture.fromImage(this.urls.walk2));
-
     this.textures_jump = [];
-    this.textures_jump.push(PIXI.Texture.fromImage(this.urls.jump));
+
+    var FRAME_W = 88;
+    var FRAME_RUN_H = 150;
+    var FRAME_JUMP_H = 158;
+    var FRAMES_RUN = 8;
+
+    var panda_run = PIXI.BaseTexture.fromImage(this.urls.run);
+    var panda_jump = PIXI.BaseTexture.fromImage(this.urls.jump);
+
+    for (var i = 0; i < FRAMES_RUN; i++) {
+        var rect_run = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_RUN_H);
+        var rect_jump = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_JUMP_H);
+
+        this.textures.push(new PIXI.Texture(panda_run, rect_run));
+        this.textures_jump.push(new PIXI.Texture(panda_jump, rect_jump));
+    }
 
     this.ship = new PIXI.extras.MovieClip(this.textures);
-    this.ship.animationSpeed = 0.13;
-    this.ship.scale.x = this.ship.scale.y = 0.7;
+    this.ship.animationSpeed = 0.2;
     this.ship.play();
 
     this.ship.anchor.x = 0.5;
