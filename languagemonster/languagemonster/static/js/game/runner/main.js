@@ -270,8 +270,13 @@ MONSTER.RunnerGame = function(game)
     this.urls = {
         'run': '/static/images/games/runner/panda_run.png',
         'jump': '/static/images/games/runner/panda_jump.png',
+        'far_background': '/static/images/games/runner/far_background.png',
+        'background': '/static/images/games/runner/background.png',
+        'trees': '/static/images/games/runner/trees.png',
+        'foreground': '/static/images/games/runner/foreground.png',
+        'top': '/static/images/games/runner/top_straight3.png',
         'dirt' : '/static/images/games/runner/dirt.png',
-        'dirt_grass' : '/static/images/games/runner/dirt_grass.png'
+        'dirt_grass' : '/static/images/games/runner/top_straight.png'
     };
 
     // Current speed
@@ -295,30 +300,46 @@ MONSTER.RunnerGame = function(game)
 MONSTER.RunnerGame.prototype = Object.create(MONSTER.AbstractScreen.prototype);
 MONSTER.RunnerGame.prototype.constructor = MONSTER.RunnerGame;
 
+MONSTER.RunnerGame.prototype._parallax = function(delta) {
+    for (var i = 0; i < this.parallax.length; i++) {
+        var sprites = this.parallax[i];
+        var speed = this.parallax_speed[i];
+
+        for (var j = 0; j < sprites.length; j++) {
+            var bg = sprites[j];
+
+            bg.position.x -= speed * delta;
+
+            if (bg.position.x <= -800) {
+                var shifted_bg = sprites.shift();
+                shifted_bg.position.x = 800;
+
+                sprites.push(shifted_bg);
+            }
+        }
+    }
+};
+
 MONSTER.RunnerGame.prototype.update = function()
 {
     MONSTER.AbstractScreen.prototype.update.call(this);
 
-    if ( ! this.hit)
-    {
+    var delta = this.game.timeSinceLastFrame;
+
+    if (! this.hit) {
+        this._parallax(delta);
         this.moveShip();
 
-        if (this.answers && this.game.actual_rounds)
-        {
-            var t = this.game.timeSinceLastFrame;
-
-            for (var i = 0; i < this.answers.length; i++)
-            {
-                {
-                    this.answers[i].text.position.x -=
-                        MONSTER.linear(
-                            this.game.round_id,
-                            0,
-                            this.game.actual_rounds - 1,
-                            0.2,
-                            0.23
-                        ) * t;
-                }
+        if (this.answers && this.game.actual_rounds) {
+            for (var i = 0; i < this.answers.length; i++) {
+                this.answers[i].text.position.x -=
+                    MONSTER.linear(
+                        this.game.round_id,
+                        0,
+                        this.game.actual_rounds - 1,
+                        0.2,
+                        0.23
+                    ) * delta;
             }
         }
 
@@ -343,7 +364,70 @@ MONSTER.RunnerGame.prototype.init = function()
     this.game.background.clear();
     this.game.view.removeChildren();
 
-    MONSTER.Common.fillBackground(this, this.colors.background);
+    var far_background = PIXI.Texture.fromImage(this.urls.far_background);
+    var background = PIXI.Texture.fromImage(this.urls.background);
+    var trees = PIXI.Texture.fromImage(this.urls.trees);
+    var foreground = PIXI.Texture.fromImage(this.urls.foreground);
+    var top = PIXI.Texture.fromImage(this.urls.top);
+
+    this.far_backgrounds = [
+        new PIXI.Sprite(far_background),
+        new PIXI.Sprite(far_background),
+    ];
+
+    this.backgrounds = [
+        new PIXI.Sprite(background),
+        new PIXI.Sprite(background)
+    ];
+
+    this.trees = [
+        new PIXI.Sprite(trees),
+        new PIXI.Sprite(trees)
+    ];
+
+    this.foregrounds = [
+        new PIXI.Sprite(foreground),
+        new PIXI.Sprite(foreground)
+    ];
+
+    this.top = [
+        new PIXI.Sprite(top),
+        new PIXI.Sprite(top)
+    ];
+
+    this.parallax = [
+        this.far_backgrounds,
+        this.backgrounds,
+        this.trees,
+        this.top,
+        this.foregrounds
+    ];
+
+    this.parallax_speed = [0.01, 0.03, 0.05, 0.07, 0.1];
+
+    this.far_backgrounds[0].position.x = 0;
+    this.far_backgrounds[1].position.x = 800;
+    this.backgrounds[0].position.x = 0;
+    this.backgrounds[1].position.x = 800;
+    this.trees[0].position.x = 0;
+    this.trees[1].position.x = 800;
+
+    this.top[0].position.x = 0;
+    this.top[0].position.y = 450 - 64;
+    this.top[1].position.x = 800;
+    this.top[1].position.y = 450 - 64;
+
+    this.foregrounds[0].position.x = 0;
+    this.foregrounds[0].position.y = 450 - 195;
+    this.foregrounds[1].position.x = 800;
+    this.foregrounds[1].position.y = 450 - 195;
+
+    this.game.background.addChild(this.far_backgrounds[0]);
+    this.game.background.addChild(this.far_backgrounds[1]);
+    this.game.background.addChild(this.backgrounds[0]);
+    this.game.background.addChild(this.backgrounds[1]);
+    this.game.background.addChild(this.trees[0]);
+    this.game.background.addChild(this.trees[1]);
 
     this.textures = [];
     this.textures_jump = [];
@@ -375,7 +459,7 @@ MONSTER.RunnerGame.prototype.init = function()
     var start_y = 0.71 * this.game.height;
 
     this.original_y = 0.71 * this.game.height;
-    this.slide_y = 0.78 * this.game.height;
+    this.slide_y = 0.82 * this.game.height;
     this.slide_t = 0;
 
     this.ship.position.x = 0.2 * this.game.width;
@@ -393,18 +477,25 @@ MONSTER.RunnerGame.prototype.init = function()
 
     this.box.box.position.x = this.result_screen_x.right;
 
-    var dirt_grass = PIXI.Texture.fromImage(this.urls.dirt_grass);
+    // var dirt_grass = PIXI.Texture.fromImage(this.urls.dirt_grass);
 
-    for (var i = 0; i < this.game.width; i += 64)
-    {
-        var s_dirt_grass = new PIXI.Sprite(dirt_grass);
-        s_dirt_grass.position.x = i;
-        s_dirt_grass.position.y = this.game.height - 64;
-        s_dirt_grass.scale.x = s_dirt_grass.scale.y = 0.5;
-        this.game.view.addChild(s_dirt_grass);
-    }
+    // for (var i = 0; i < this.game.width; i += 64)
+    // {
+        // var s_dirt_grass = new PIXI.Sprite(dirt_grass);
+        // s_dirt_grass.position.x = i;
+        // s_dirt_grass.position.y = this.game.height - 64;
+        // s_dirt_grass.scale.x = s_dirt_grass.scale.y = 0.5;
+        // this.game.view.addChild(s_dirt_grass);
+    // }
+
+    this.game.view.addChild(this.top[0]);
+    this.game.view.addChild(this.top[1]);
 
     this.game.view.addChild(this.ship);
+
+    this.game.view.addChild(this.foregrounds[0]);
+    this.game.view.addChild(this.foregrounds[1]);
+
     MONSTER.Common.addUI(this.game);
     this.game.view.addChild(this.box.box);
 
