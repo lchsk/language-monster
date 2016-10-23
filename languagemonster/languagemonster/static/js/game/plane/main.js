@@ -90,9 +90,7 @@ MONSTER.PlaneGame = function(game)
     // List of assets
 
     this.urls = {
-      'plane1' : '/static/images/games/plane/planeRed1.png',
-      'plane2' : '/static/images/games/plane/planeRed2.png',
-      'plane3' : '/static/images/games/plane/planeRed3.png'
+        'plane': '/static/images/games/plane/crazy_plane.png'
     };
 
     // Current speed
@@ -170,13 +168,21 @@ MONSTER.PlaneGame.prototype.init = function()
     MONSTER.Common.fillBackground(this, this.colors.background);
 
     var textures = [];
-    textures.push(PIXI.Texture.fromImage(this.urls.plane1));
-    textures.push(PIXI.Texture.fromImage(this.urls.plane2));
-    textures.push(PIXI.Texture.fromImage(this.urls.plane3));
+
+    var plane = PIXI.BaseTexture.fromImage(this.urls.plane);
+
+    var FRAMES = 5;
+    var FRAME_W = 100;
+    var FRAME_H = 60;
+
+    for (var i = 0; i < FRAMES; i++) {
+        var rect_run = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_H);
+
+        textures.push(new PIXI.Texture(plane, rect_run));
+    }
 
     this.ship = new PIXI.extras.MovieClip(textures);
-    this.ship.animationSpeed = 0.3;
-    this.ship.scale.x = this.ship.scale.y = 0.7;
+    this.ship.animationSpeed = 0.5;
     this.ship.play();
 
     this.game.view.addChild(this.ship);
