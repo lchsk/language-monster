@@ -49,6 +49,7 @@ gulp.task('js_games', function() {
         js_games_dir + 'key.js',
         js_games_dir + 'data_loader.js',
         js_games_dir + 'abstract_screen.js',
+        js_games_dir + 'loading_screen.js',
         js_games_dir + 'simple_game.js',
 
         js_games_dir + 'space/main.js',
