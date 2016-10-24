@@ -35,12 +35,12 @@ MONSTER.PlaneGame = function(game)
     this.constant_answer_speed = false;
 
     this.sizes = {
-        '36' : { font: "36px Montserrat", fill: "white" },
-        '30' : { font: "30px Montserrat", fill: "white" },
-        '26' : { font: "26px Montserrat", fill: "white" },
-        '22' : { font: "22px Montserrat", fill: "white" },
-        '16' : { font: "16px Montserrat", fill: "white" },
-        '12' : { font: "12px Montserrat", fill: "white" }
+        '36': {fontFamily: "Montserrat", fontSize: 36, fill: "white"},
+        '30': {fontFamily: "Montserrat", fontSize: 30, fill: "white"},
+        '26': {fontFamily: "Montserrat", fontSize: 26, fill: "white"},
+        '22': {fontFamily: "Montserrat", fontSize: 22, fill: "white"},
+        '16': {fontFamily: "Montserrat", fontSize: 16, fill: "white"},
+        '12': {fontFamily: "Montserrat", fontSize: 12, fill: "white"}
     };
 
     this.rects = [
