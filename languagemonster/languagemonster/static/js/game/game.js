@@ -40,11 +40,13 @@ MONSTER.Game = function(fps)
 
         },
         'runner': {
-            'walk1' : '/static/images/games/runner/bunny2_walk1.png',
-            'walk2' : '/static/images/games/runner/bunny2_walk2.png',
-            'jump' : '/static/images/games/runner/bunny2_jump.png',
-            'dirt' : '/static/images/games/runner/dirt.png',
-            'dirt_grass' : '/static/images/games/runner/dirt_grass.png'
+            'run': '/static/images/games/runner/panda_run.png',
+            'jump': '/static/images/games/runner/panda_jump.png',
+            'far_background': '/static/images/games/runner/far_background.png',
+            'background': '/static/images/games/runner/background.png',
+            'trees': '/static/images/games/runner/trees.png',
+            'foreground': '/static/images/games/runner/foreground.png',
+            'ground': '/static/images/games/runner/ground.png'
         },
         'shooter': {
             'grass1' : '/static/images/games/shooter/grass1.png',

@@ -89,15 +89,7 @@ MONSTER.RunnerGame = function(game)
 
     // List of assets
 
-    this.urls = {
-        'run': '/static/images/games/runner/panda_run.png',
-        'jump': '/static/images/games/runner/panda_jump.png',
-        'far_background': '/static/images/games/runner/far_background.png',
-        'background': '/static/images/games/runner/background.png',
-        'trees': '/static/images/games/runner/trees.png',
-        'foreground': '/static/images/games/runner/foreground.png',
-        'ground': '/static/images/games/runner/ground.png'
-    };
+    this.urls = this.game.assets.runner;
 
     // Current speed
     this.ship_v = 0.0;
@@ -190,64 +182,64 @@ MONSTER.RunnerGame.prototype.init = function()
     var foreground = PIXI.Texture.fromImage(this.urls.foreground);
     var ground = PIXI.Texture.fromImage(this.urls.ground);
 
-    this.far_backgrounds = [
+    far_backgrounds = [
         new PIXI.Sprite(far_background),
         new PIXI.Sprite(far_background),
     ];
 
-    this.backgrounds = [
+    backgrounds = [
         new PIXI.Sprite(background),
         new PIXI.Sprite(background)
     ];
 
-    this.trees = [
+    trees = [
         new PIXI.Sprite(trees),
         new PIXI.Sprite(trees)
     ];
 
-    this.foregrounds = [
+    foregrounds = [
         new PIXI.Sprite(foreground),
         new PIXI.Sprite(foreground)
     ];
 
-    this.ground = [
+    ground = [
         new PIXI.Sprite(ground),
         new PIXI.Sprite(ground)
     ];
 
     this.parallax = [
-        this.far_backgrounds,
-        this.backgrounds,
-        this.trees,
-        this.ground,
-        this.foregrounds
+        far_backgrounds,
+        backgrounds,
+        trees,
+        ground,
+        foregrounds
     ];
 
     this.parallax_speed = [0.01, 0.03, 0.05, 0.07, 0.1];
 
-    this.far_backgrounds[0].position.x = 0;
-    this.far_backgrounds[1].position.x = 800;
-    this.backgrounds[0].position.x = 0;
-    this.backgrounds[1].position.x = 800;
-    this.trees[0].position.x = 0;
-    this.trees[1].position.x = 800;
+    far_backgrounds[0].position.x = 0;
+    far_backgrounds[1].position.x = 800;
+    backgrounds[0].position.x = 0;
+    backgrounds[1].position.x = 800;
+    trees[0].position.x = 0;
+    trees[1].position.x = 800;
 
-    this.ground[0].position.x = 0;
-    this.ground[0].position.y = 450 - 64;
-    this.ground[1].position.x = 800;
-    this.ground[1].position.y = 450 - 64;
+    ground[0].position.x = 0;
+    ground[0].position.y = 450 - 64;
+    ground[1].position.x = 800;
+    ground[1].position.y = 450 - 64;
 
-    this.foregrounds[0].position.x = 0;
-    this.foregrounds[0].position.y = 450 - 195;
-    this.foregrounds[1].position.x = 800;
-    this.foregrounds[1].position.y = 450 - 195;
+    foregrounds[0].position.x = 0;
+    foregrounds[0].position.y = 450 - 195;
+    foregrounds[1].position.x = 800;
+    foregrounds[1].position.y = 450 - 195;
 
-    this.game.background.addChild(this.far_backgrounds[0]);
-    this.game.background.addChild(this.far_backgrounds[1]);
-    this.game.background.addChild(this.backgrounds[0]);
-    this.game.background.addChild(this.backgrounds[1]);
-    this.game.background.addChild(this.trees[0]);
-    this.game.background.addChild(this.trees[1]);
+    this.game.background.addChild(far_backgrounds[0]);
+    this.game.background.addChild(far_backgrounds[1]);
+    this.game.background.addChild(backgrounds[0]);
+    this.game.background.addChild(backgrounds[1]);
+    this.game.background.addChild(trees[0]);
+    this.game.background.addChild(trees[1]);
 
     this.textures = [];
     this.textures_jump = [];
@@ -297,13 +289,13 @@ MONSTER.RunnerGame.prototype.init = function()
 
     this.box.box.position.x = this.result_screen_x.right;
 
-    this.game.view.addChild(this.ground[0]);
-    this.game.view.addChild(this.ground[1]);
+    this.game.view.addChild(ground[0]);
+    this.game.view.addChild(ground[1]);
 
     this.game.view.addChild(this.ship);
 
-    this.game.view.addChild(this.foregrounds[0]);
-    this.game.view.addChild(this.foregrounds[1]);
+    this.game.view.addChild(foregrounds[0]);
+    this.game.view.addChild(foregrounds[1]);
 
     MONSTER.Common.addUI(this.game);
     this.game.view.addChild(this.box.box);
