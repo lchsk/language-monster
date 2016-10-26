@@ -124,9 +124,12 @@ MONSTER.PlaneGame.prototype.update = function()
 {
     MONSTER.AbstractScreen.prototype.update.call(this);
 
-    if ( ! this.hit)
-    {
+    if ( ! this.hit) {
+        var delta = this.game.timeSinceLastFrame;
+
         this.moveShip();
+
+        MONSTER.Common.parallax(delta, this.parallax, this.parallax_speed, 800);
 
         if (this.answers && this.game.actual_rounds)
         {
@@ -163,7 +166,57 @@ MONSTER.PlaneGame.prototype.init = function()
     this.game.background.clear();
     this.game.view.removeChildren();
 
-    MONSTER.Common.fillBackground(this, this.colors.background);
+    var sky_t = PIXI.Texture.fromImage(this.urls.sky);
+    var background_t = PIXI.Texture.fromImage(this.urls.background);
+    var valley_t = PIXI.Texture.fromImage(this.urls.valley);
+    var hills_t = PIXI.Texture.fromImage(this.urls.hills);
+
+    var sky = [new PIXI.Sprite(sky_t)];
+    var background = [
+        new PIXI.Sprite(background_t),
+        new PIXI.Sprite(background_t)
+    ];
+
+    var valley = [
+        new PIXI.Sprite(valley_t),
+        new PIXI.Sprite(valley_t)
+    ];
+
+    var hills = [
+        new PIXI.Sprite(hills_t),
+        new PIXI.Sprite(hills_t)
+    ];
+
+    this.parallax = [
+        background,
+        valley,
+        hills
+    ];
+
+    this.parallax_speed = [0.01, 0.03, 0.05];
+
+    this.game.background.addChild(sky[0]);
+
+    this.game.background.addChild(background[0]);
+    this.game.background.addChild(background[1]);
+    this.game.background.addChild(valley[0]);
+    this.game.background.addChild(valley[1]);
+    this.game.background.addChild(hills[0]);
+    this.game.background.addChild(hills[1]);
+
+    background[1].position.x = 800;
+    background[0].position.y = 450 - 260;
+    background[1].position.y = 450 - 260;
+
+    valley[1].position.x = 800;
+    valley[0].position.y = 450 - 180;
+    valley[1].position.y = 450 - 180;
+
+    hills[1].position.x = 800;
+    hills[0].position.y = 450 - 251;
+    hills[1].position.y = 450 - 251;
+
+    // -- end init parallax
 
     var textures = [];
 

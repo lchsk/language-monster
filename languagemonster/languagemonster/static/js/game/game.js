@@ -54,6 +54,10 @@ MONSTER.Game = function(fps)
             'crosshair_red' : '/static/images/games/shooter/crosshair_red_small.png'
         },
         'plane': {
+            'sky': '/static/images/games/plane/sky.png',
+            'background': '/static/images/games/plane/background.png',
+            'hills': '/static/images/games/plane/hills.png',
+            'valley': '/static/images/games/plane/valley.png',
             'plane': '/static/images/games/plane/crazy_plane.png'
         },
         'space': {

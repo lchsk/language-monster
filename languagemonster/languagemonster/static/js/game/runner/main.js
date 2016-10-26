@@ -184,7 +184,7 @@ MONSTER.RunnerGame.prototype.init = function()
 
     far_backgrounds = [
         new PIXI.Sprite(far_background),
-        new PIXI.Sprite(far_background),
+        new PIXI.Sprite(far_background)
     ];
 
     backgrounds = [
