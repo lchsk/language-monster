@@ -89,14 +89,7 @@ MONSTER.ShooterGame = function(game)
 
     // List of assets
 
-    this.urls = {
-      'grass1' : '/static/images/games/shooter/grass1.png',
-      'grass2' : '/static/images/games/shooter/grass2.png',
-      'rifle' : '/static/images/games/shooter/rifle.png',
-      'crosshair' : '/static/images/games/shooter/crosshair_white_small.png',
-      'crosshair_red' : '/static/images/games/shooter/crosshair_red_small.png'
-
-    };
+    this.urls = this.game.assets.shooter;
 
     // Current speed
     this.ship_v = 0.0;

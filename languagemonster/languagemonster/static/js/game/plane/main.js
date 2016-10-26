@@ -89,9 +89,7 @@ MONSTER.PlaneGame = function(game)
 
     // List of assets
 
-    this.urls = {
-        'plane': '/static/images/games/plane/crazy_plane.png'
-    };
+    this.urls = this.game.assets.plane;
 
     // Current speed
     this.ship_v = 0.0;

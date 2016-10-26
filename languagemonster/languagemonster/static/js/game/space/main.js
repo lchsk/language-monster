@@ -86,11 +86,7 @@ MONSTER.SpaceGame = function(game)
 
     // List of assets
 
-    this.urls = {
-        'plane': '/static/images/games/space/plane.png',
-        'plane_left': '/static/images/games/space/plane_left.png',
-        'plane_right': '/static/images/games/space/plane_right.png'
-    };
+    this.urls = this.game.assets.space;
 
     // Current speed
     this.ship_v = 0.0;

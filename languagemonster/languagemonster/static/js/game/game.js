@@ -36,9 +36,7 @@ MONSTER.Game = function(fps)
     this.tweens = [];
 
     this.assets = {
-        'simple': {
-
-        },
+        'simple': {},
         'runner': {
             'run': '/static/images/games/runner/panda_run.png',
             'jump': '/static/images/games/runner/panda_jump.png',
@@ -56,12 +54,12 @@ MONSTER.Game = function(fps)
             'crosshair_red' : '/static/images/games/shooter/crosshair_red_small.png'
         },
         'plane': {
-            'plane1' : '/static/images/games/plane/planeRed1.png',
-            'plane2' : '/static/images/games/plane/planeRed2.png',
-            'plane3' : '/static/images/games/plane/planeRed3.png'
+            'plane': '/static/images/games/plane/crazy_plane.png'
         },
         'space': {
-            'ship' : '/static/images/games/space/ship.png'
+            'plane': '/static/images/games/space/plane.png',
+            'plane_left': '/static/images/games/space/plane_left.png',
+            'plane_right': '/static/images/games/space/plane_right.png'
         }
     };
 
