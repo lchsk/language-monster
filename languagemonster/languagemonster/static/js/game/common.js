@@ -34,6 +34,24 @@ MONSTER.Common.check_answer = function(game, answer)
         MONSTER.Common.negative(answer);
 };
 
+MONSTER.Common._next_level = function(game)
+{
+    // Advance to the next level
+    game.level_id++;
+    game.next_level();
+    game.kick_off();
+};
+
+MONSTER.Common.keyup_handler = function(event, game)
+{
+    if (event.keyCode === MONSTER.Key.ENTER) {
+        document.removeEventListener('keyup', MONSTER.Common._continue_handler);
+        delete MONSTER.Common._continue_handler;
+
+        MONSTER.Common._next_level(game);
+    }
+};
+
 MONSTER.Common.endScreen = function(obj)
 {
     // End Level Screen (showing results)
@@ -74,9 +92,7 @@ MONSTER.Common.endScreen = function(obj)
         (obj.game.width - 200) / 2,
         0.6 * obj.game.height,
         function() {
-            context.game.level_id++;
-            context.game.next_level();
-            context.game.kick_off();
+            MONSTER.Common._next_level(obj.game);
         }
     );
 
@@ -84,7 +100,6 @@ MONSTER.Common.endScreen = function(obj)
     obj.game.view.addChild(comment);
     obj.game.view.addChild(obj.info);
 
-    obj.game.view.addChild(obj.b);
     MONSTER.Common.sendResults(obj);
 };
 
@@ -377,17 +392,25 @@ MONSTER.Common.sendResults = function(obj)
             game: obj.ID
         }),
         dataType: "json"
-    })
-    .success(function(msg)
-    {
+    }).success(function(msg) {
         obj.info.text = MONSTER.Common.trans(
             "Results were sent",
             window.translations);
         obj.info.position.x = (obj.game.width - obj.info.width) / 2;
+
+        // Go on to the next level with <enter>
+        MONSTER.Common._continue_handler = function(event) {
+            MONSTER.Common.keyup_handler(event, obj.game);
+        };
+
+        document.addEventListener('keyup', MONSTER.Common._continue_handler,
+                                  false);
+
+        // Add button to the stage
+        obj.game.view.addChild(obj.b);
         obj.b.interactive = true;
-    })
-    .error(function(msg)
-    {
+
+    }).error(function(msg) {
         obj.info.text = MONSTER.Common.trans(
             "Error when sending results",
             window.translations);
