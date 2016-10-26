@@ -139,7 +139,7 @@ MONSTER.RunnerGame.prototype.update = function()
     var delta = this.game.timeSinceLastFrame;
 
     if (! this.hit) {
-        this._parallax(delta);
+        MONSTER.Common.parallax(delta, this.parallax, this.parallax_speed, 800);
         this.moveShip();
 
         if (this.answers && this.game.actual_rounds) {

@@ -425,6 +425,27 @@ MONSTER.Common.trans = function(word, d)
     return word;
 };
 
+MONSTER.Common.parallax = function(delta, parallax_array, parallax_speed, width)
+{
+    for (var i = 0; i < parallax_array.length; i++) {
+        var sprites = parallax_array[i];
+        var speed = parallax_speed[i];
+
+        for (var j = 0; j < sprites.length; j++) {
+            var bg = sprites[j];
+
+            bg.position.x -= speed * delta;
+
+            if (bg.position.x <= -width) {
+                var shifted_bg = sprites.shift();
+                shifted_bg.position.x = width;
+
+                sprites.push(shifted_bg);
+            }
+        }
+    }
+}
+
 MONSTER.GoodWrongScreen = function(game, result_screen_x,
                                    result_screen_pos, sizes) {
     var box = new PIXI.Container();
