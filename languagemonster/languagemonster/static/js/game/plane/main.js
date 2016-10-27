@@ -131,18 +131,11 @@ MONSTER.PlaneGame.prototype.update = function()
 
         MONSTER.Common.parallax(delta, this.parallax, this.parallax_speed, 800);
 
-        if (this.answers && this.game.actual_rounds)
-        {
-            var t = this.game.timeSinceLastFrame;
-
-            for (var i = 0; i < this.answers.length; i++)
-            {
-                if (this.constant_answer_speed)
-                {
-                    this.answers[i].text.position.x -= t * 0.14;
-                }
-                else
-                {
+        if (this.answers && this.game.actual_rounds) {
+            for (var i = 0; i < this.answers.length; i++) {
+                if (this.constant_answer_speed) {
+                    this.answers[i].text.position.x -= delta * 0.14;
+                } else {
                     this.answers[i].text.position.x -=
                         MONSTER.linear(
                             this.game.round_id,
@@ -150,7 +143,7 @@ MONSTER.PlaneGame.prototype.update = function()
                             this.game.actual_rounds - 1,
                             0.08,
                             0.1
-                        ) * t;
+                        ) * delta;
                 }
             }
         }

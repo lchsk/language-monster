@@ -94,4 +94,6 @@ MONSTER.Utils.replace_at = function(string, index, character) {
     return string.substr(0, index) + character + string.substr(index + character.length);
 };
 
-
+MONSTER.Utils.to_radians = function(degrees) {
+    return degrees * MONSTER.Const.PI / 180;
+};

@@ -1,59 +1,56 @@
 MONSTER.PlaneGame.prototype.moveShip = function()
 {
-    var t = this.game.timeSinceLastFrame;
+    var delta = this.game.timeSinceLastFrame;
 
-    if (MONSTER.Key
-        && MONSTER.Key.isUp(MONSTER.Key.UP)
-        && this.ship.position.y > this.ship.height * 1.5)
-    {
-        if ( ! this.ship.v_up)
-        {
-            this.ship.v_up = true;
-        }
+    var rotation = 0;
+    var v_up = false;
+
+    if (MONSTER.Key.isDown(MONSTER.Key.UP)) {
+        v_up = true;
+        rotation = MONSTER.Utils.to_radians(-10);
     }
 
-    if (this.ship)
-    {
-        // up
+    if (this.ship.position.y <= 70) {
+        // Ship is near the top edge - we will keep it there as long
+        // the user wants it to fly upwards
 
-        if (this.ship.v_up)
-        {
-            this.ship.start_y = this.ship.position.y;
-            this.ship.v_time = 0.0;
-
-            var val = t * 0.2;
-            this.ship.v_up_tmp += val;
-            this.ship.position.y -= val;
-
-            if (this.ship.v_up_tmp >= 40)
-            {
-                this.ship.v_up_tmp = 0;
-                this.ship.v_up = false;
-            }
+        if (v_up) {
+            this.ship.position.y = 70;
+            this.ship.rotation = 0;
 
             return;
         }
+    }
 
-        // falling down
+    this.ship.rotation = rotation;
+    this.ship.v_up = v_up;
 
-        var T = 2000.0;
+    if (this.ship) {
+        if (this.ship.v_up) {
+            // Flying upwards
 
-        this.ship.v_time += t;
+            this.ship.start_y = this.ship.position.y;
+            this.ship.v_time = 0.0;
 
-        var pct = MONSTER.Easing.easeInOutQuart(this.ship.v_time / T);
+            var y_movement = delta * 0.11; // Speed of going up
+            this.ship.position.y -= y_movement;
+        } else {
+            // Falling down
 
-        this.ship.position.y = Math.round(pct * (this.ship.stop_y - this.ship.start_y)) + this.ship.start_y;
+            var T = 2000.0;
 
-        if (this.ship.v_time > T)
-            this.ship.position.y = this.ship.stop_y;
+            this.ship.v_time += delta;
+            this.ship.rotation = 0;
 
+            var pct = MONSTER.Easing.easeInOutQuart(this.ship.v_time / T);
 
-        // make sure the plane fits in the screen
+            this.ship.position.y = Math.round(
+                pct * (this.ship.stop_y - this.ship.start_y)
+            ) + this.ship.start_y;
 
-        if (this.ship.position.x > this.game.width - this.ship.width / 2)
-            this.ship.position.x = this.game.width - this.ship.width / 2;
-        if (this.ship.position.x < this.ship.width / 2)
-            this.ship.position.x = this.ship.width / 2;
+            if (this.ship.v_time > T)
+                this.ship.position.y = this.ship.stop_y;
+        }
     }
 };
 
