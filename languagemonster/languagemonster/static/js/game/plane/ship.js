@@ -10,12 +10,14 @@ MONSTER.PlaneGame.prototype.moveShip = function()
         rotation = MONSTER.Utils.to_radians(-10);
     }
 
-    if (this.ship.position.y <= 70) {
+    var top_edge = Math.round(0.14 * this.game.height);
+
+    if (this.ship.position.y <= top_edge) {
         // Ship is near the top edge - we will keep it there as long
         // the user wants it to fly upwards
 
         if (v_up) {
-            this.ship.position.y = 70;
+            this.ship.position.y = top_edge;
             this.ship.rotation = 0;
 
             return;
