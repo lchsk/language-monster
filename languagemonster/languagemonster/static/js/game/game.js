@@ -31,6 +31,7 @@ MONSTER.Game = function(fps)
 
     this.data = window.data;
     this.initStage();
+
     MONSTER.initFonts(
         [MONSTER.Const.DEFAULT_FONT_FAMILY],
         [
@@ -88,6 +89,29 @@ MONSTER.Game = function(fps)
         this.renderer = new PIXI.autoDetectRenderer(0, 0);
 
     this.resize();
+
+    if (window.debug) {
+        this.DEBUG = true;
+
+        var sizes = MONSTER.getFonts(
+            MONSTER.Const.DEFAULT_FONT_FAMILY,
+            MONSTER.Const.COLOURS["white"]
+        );
+
+        this.debug = {
+            'fps': new PIXI.Text("", sizes['16']),
+
+            // Calculating average in last second
+            'fps_ticks': 1,
+            'fps_avg_per_second': 0,
+            'fps_timer': 0
+        };
+
+        this.debug['fps'].position.y = this.height - 18;
+
+        this.top.addChild(this.debug['fps']);
+    }
+
 
     // Last time when the frame was updated
     this.lastTime = Date.now();

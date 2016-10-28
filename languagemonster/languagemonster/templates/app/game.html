@@ -39,6 +39,12 @@
                         play = false;
                     {% endif %}
 
+                    {% if context.status.debug %}
+                        debug = true;
+                    {% else %}
+                        debug = false;
+                    {% endif %}
+
                     {% if canvas_only %}
                         canvas_only = true;
                     {% else %}
