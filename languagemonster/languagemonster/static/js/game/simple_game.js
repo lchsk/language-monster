@@ -28,14 +28,10 @@ MONSTER.SimpleGame = function(game)
         click: '0x940000'
     };
 
-    this.sizes = {
-        '36': {fontFamily: "Montserrat", fontSize: 36, fill: "white"},
-        '30': {fontFamily: "Montserrat", fontSize: 30, fill: "white"},
-        '26': {fontFamily: "Montserrat", fontSize: 26, fill: "white"},
-        '22': {fontFamily: "Montserrat", fontSize: 22, fill: "white"},
-        '16': {fontFamily: "Montserrat", fontSize: 16, fill: "white"},
-        '12': {fontFamily: "Montserrat", fontSize: 12, fill: "white"}
-    };
+    this.sizes = MONSTER.getFonts(
+        MONSTER.Const.DEFAULT_FONT_FAMILY,
+        MONSTER.Const.COLOURS["white"]
+    );
 
     // - end settings
 
