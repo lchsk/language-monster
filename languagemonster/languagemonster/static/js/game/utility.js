@@ -63,9 +63,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
-MONSTER.Const = function()
-{
-};
+MONSTER.Const = function() {};
 
 MONSTER.Const.PI = 3.14159265359;
 MONSTER.Const.PI_2 = MONSTER.Const.PI / 2.0;
@@ -73,6 +71,49 @@ MONSTER.Const.PI_2 = MONSTER.Const.PI / 2.0;
 MONSTER.Const.AHEAD = 1;
 MONSTER.Const.LEFT = 2;
 MONSTER.Const.RIGHT = 3;
+
+// Fonts
+
+MONSTER.Const.FONTS = {};
+
+MONSTER.Const.DEFAULT_FONT_FAMILY = "Montserrat";
+
+MONSTER.Const.COLOURS = {
+    "navy": "#160E41",
+    "white": "#ffffff"
+};
+
+MONSTER.initFonts = function(font_families, colours, sizes)
+{
+    var fonts = MONSTER.Const.FONTS;
+
+    for (var i = 0; i < font_families.length; i++) {
+        var font_family = font_families[i];
+
+        fonts[font_family] = fonts[font_family] || {};
+
+        for (var j = 0; j < colours.length; j++) {
+            var colour = colours[j];
+
+            fonts[font_family][colour] = fonts[font_family][colour] || {};
+
+            for (var k = 0; k < sizes.length; k++) {
+                var size = sizes[k];
+
+                fonts[font_family][colour][size] = {
+                    fontFamily: font_family,
+                    fontSize: parseInt(size),
+                    fill: colour
+                };
+            }
+        }
+    }
+};
+
+MONSTER.getFonts = function(font_family, colour)
+{
+    return MONSTER.Const.FONTS[font_family][colour];
+};
 
 MONSTER.isZero = function(x)
 {

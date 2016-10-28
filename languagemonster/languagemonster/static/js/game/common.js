@@ -59,12 +59,17 @@ MONSTER.Common.endScreen = function(obj)
     var context = obj;
     obj.game.view.removeChildren();
 
+    var sizes = MONSTER.getFonts(
+        MONSTER.Const.DEFAULT_FONT_FAMILY,
+        MONSTER.Const.COLOURS["white"]
+    );
+
     obj.game.pct = Math.round(obj.game.points / obj.game.all.length * 100);
-    var text = new PIXI.Text(obj.game.pct + '%', obj.sizes['36']);
+    var text = new PIXI.Text(obj.game.pct + '%', sizes['36']);
     text.position.x = (obj.game.width - text.width) / 2;
     text.position.y = 0.35 * obj.game.height;
 
-    var comment = new PIXI.Text("", obj.sizes['30']);
+    var comment = new PIXI.Text("", sizes['30']);
     comment.text = MONSTER.Common.trans("Well done", window.translations);
     comment.position.x = (obj.game.width - comment.width) / 2;
     comment.position.y = 0.15 * obj.game.height;
@@ -74,7 +79,7 @@ MONSTER.Common.endScreen = function(obj)
             "Sending results...",
             window.translations
         ),
-        obj.sizes['16']
+        sizes['16']
     );
     obj.info.position.x = (obj.game.width - obj.info.width) / 2;
     obj.info.position.y = 0.89 * obj.game.height;
@@ -321,11 +326,16 @@ MONSTER.Common.createButton = function(
     b.hitArea = new PIXI.Rectangle(x, y, width, height);
     b.text = t;
 
+    var all_sizes = MONSTER.getFonts(
+        MONSTER.Const.DEFAULT_FONT_FAMILY,
+        MONSTER.Const.COLOURS["white"]
+    );
+
     var sizes = [
-        context.sizes['26'],
-        context.sizes['22'],
-        context.sizes['16'],
-        context.sizes['12']
+        all_sizes['26'],
+        all_sizes['22'],
+        all_sizes['16'],
+        all_sizes['12']
     ];
     var text = new PIXI.Text(t, sizes[0]);
 
@@ -444,10 +454,10 @@ MONSTER.Common.parallax = function(delta, parallax_array, parallax_speed, width)
             }
         }
     }
-}
+};
 
-MONSTER.GoodWrongScreen = function(game, result_screen_x,
-                                   result_screen_pos, sizes) {
+MONSTER.GoodWrongScreen = function(game, result_screen_x, result_screen_pos)
+{
     var box = new PIXI.Container();
     var pos_screen = new PIXI.Graphics();
     pos_screen.beginFill(0xffffff, 0.8);
@@ -458,6 +468,11 @@ MONSTER.GoodWrongScreen = function(game, result_screen_x,
         result_screen_pos.height
     );
     pos_screen.endFill();
+
+    var sizes = MONSTER.getFonts(
+        MONSTER.Const.DEFAULT_FONT_FAMILY,
+        MONSTER.Const.COLOURS["white"]
+    );
 
     var pos_screen_comment = new PIXI.Text("", sizes['30']);
     var pos_screen_text = new PIXI.Text("", sizes['36']);
@@ -502,7 +517,6 @@ MONSTER.GoodWrongScreen.prepare = function(game_screen, is_correct) {
         box.pos_screen_text_line2.text = '=';
         box.pos_screen_text_line3.text = game_screen.answer;
 
-        console.log(box);
         box.pos_screen_text_line1.position.x = (
             game_screen.game.width - box.pos_screen_text_line1.width
         ) / 2;

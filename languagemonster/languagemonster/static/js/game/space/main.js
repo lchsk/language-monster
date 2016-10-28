@@ -69,8 +69,7 @@ MONSTER.SpaceGame = function(game)
     this.box = MONSTER.GoodWrongScreen(
         this.game,
         this.result_screen_x,
-        this.result_screen_pos,
-        this.sizes
+        this.result_screen_pos
     );
 
     this.top_bar = new PIXI.Container();

@@ -31,6 +31,14 @@ MONSTER.Game = function(fps)
 
     this.data = window.data;
     this.initStage();
+    MONSTER.initFonts(
+        [MONSTER.Const.DEFAULT_FONT_FAMILY],
+        [
+            MONSTER.Const.COLOURS["navy"],
+            MONSTER.Const.COLOURS["white"]
+        ],
+        ["36", "30", "26", "22", "16", "12"]
+    );
 
     // array of all tweens
     this.tweens = [];
