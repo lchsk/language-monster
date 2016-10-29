@@ -73,6 +73,11 @@ MONSTER.Game = function(fps)
             'plane': '/static/images/games/space/plane.png',
             'plane_left': '/static/images/games/space/plane_left.png',
             'plane_right': '/static/images/games/space/plane_right.png'
+        },
+        'ui': {
+            'btn_info': '/static/images/games/information.png',
+            'star': '/static/images/games/star.png',
+            'dark_star': '/static/images/games/dark_star.png'
         }
     };
 

@@ -64,10 +64,22 @@ MONSTER.Common.endScreen = function(obj)
         MONSTER.Const.COLOURS["white"]
     );
 
+    var star_t = PIXI.Texture.fromImage(obj.game.assets.ui.star);
+    var dark_star_t = PIXI.Texture.fromImage(obj.game.assets.ui.dark_star);
+
     obj.game.pct = Math.round(obj.game.points / obj.game.all.length * 100);
-    var text = new PIXI.Text(obj.game.pct + '%', sizes['36']);
-    text.position.x = (obj.game.width - text.width) / 2;
-    text.position.y = 0.35 * obj.game.height;
+
+    var stars_cnt = obj.game.pct >= 75 ? 3 : obj.game.pct >= 45 ? 2 : 1;
+
+    var stars = [];
+
+    for (var i = 0; i < stars_cnt; i++) {
+        stars.push(new PIXI.Sprite(star_t));
+    }
+
+    for (var i = stars.length; i < 3; i++) {
+        stars.push(new PIXI.Sprite(dark_star_t));
+    }
 
     var comment = new PIXI.Text("", sizes['30']);
     comment.text = MONSTER.Common.trans("Well done", window.translations);
@@ -101,9 +113,26 @@ MONSTER.Common.endScreen = function(obj)
         }
     );
 
-    obj.game.view.addChild(text);
     obj.game.view.addChild(comment);
     obj.game.view.addChild(obj.info);
+
+    var stars_box = new PIXI.Container();
+
+    var star_w = stars[0].width + Math.round(stars[0].height * 0.1);
+
+    for (var i = 0; i < stars.length; i++) {
+        stars[i].position.x = i * star_w;
+
+        stars_box.addChild(stars[i]);
+    }
+
+    // Move edge stars a bit downwards
+    stars[0].position.y = stars[2].position.y = stars[0].position.y
+        += Math.round(0.25 * stars[0].height);
+
+    stars_box.position.x = (obj.game.width - (star_w * 3)) / 2;
+    stars_box.position.y = Math.round(0.28 * obj.game.height);
+    obj.game.view.addChild(stars_box);
 
     MONSTER.Common.sendResults(obj);
 };
@@ -162,15 +191,10 @@ MONSTER.Common.getWordSet = function(game_screen)
     return true;
 };
 
-MONSTER.Common.spriteURLs = {
-    'btn_info' : '/static/images/games/information.png'
-};
-
 MONSTER.Common.getLoader = function()
 {
     var loader = PIXI.loader;
     loader.reset();
-    loader.add('btn_info', MONSTER.Common.spriteURLs.btn_info);
 
     return loader;
 };
@@ -209,7 +233,7 @@ MONSTER.Common.showCursor = function()
 
 MONSTER.Common.addUI = function(game)
 {
-    var btn_info = PIXI.Sprite.fromImage(MONSTER.Common.spriteURLs.btn_info);
+    var btn_info = PIXI.Sprite.fromImage(game.assets.ui.btn_info);
     btn_info.scale.x = btn_info.scale.y = 0.65;
     btn_info.interactive = true;
 

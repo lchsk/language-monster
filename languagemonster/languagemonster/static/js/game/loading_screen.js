@@ -120,21 +120,30 @@ MONSTER.LoadingScreen = function(game)
 
     this.init();
 
-    var avail_games = window.games;
+    var avail_games = window.games.concat(["ui"]);
+
     this.loader = MONSTER.Common.getLoader();
+
+    console.log("Loading assets: " + avail_games);
 
     for (var i = 0; i < avail_games.length; i++) {
         var game_assets = game.assets[avail_games[i]];
+
         for (var img in game_assets) {
             if (game_assets.hasOwnProperty(img)) {
+                console.log("Loading " + img + " " + game_assets[img]);
+
                 this.loader.add(img, game_assets[img]);
             }
         }
     }
-    this.loader.on('progress', function() {
-        that.loading_bar_pos_x = that.loader.progress / 100.0 * that.game.width;
+    this.loader.on('progress', function(data) {
+        that.loading_bar_pos_x
+            = Math.round(that.loader.progress / 100.0 * that.game.width);
     });
     this.loader.on('complete', function() {
+        console.log("Assets loaded");
+
         that.kick_off();
     });
 
