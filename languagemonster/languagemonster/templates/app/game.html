@@ -12,8 +12,10 @@
                         <ol class="breadcrumb">
                             <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "dashboard" %}</a></li>
                             <li><a title="{% trans 'languages' %}" href="{% url 'vocabulary:add_language' %}">{% trans "languages" %}</a></li>
-                            <li><a href="{% url 'vocabulary:study' pair.target_language.slug %}">{% trans pair.target_language.english_name %} ({{ pair.target_language.original_name }})</a></li>
-                            <li class="active">{{ dataset.name_base }} ({{dataset.name_target}})</li>
+                            <li><a
+                                    title="{% trans "learn" %} {{pair.target_language.original_name}} - {{pair.target_language.english_name}}"
+                                    href="{% url 'vocabulary:study' pair.target_language.slug %}">{% trans pair.target_language.english_name %} ({{ pair.target_language.original_name }})</a></li>
+                            <li class="active">{{ dataset.name_base }} &bull; {{dataset.name_target}}</li>
                         </ol>
                     </div>
                     <div class="row" style="text-align: left;">
