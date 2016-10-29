@@ -308,14 +308,9 @@ MONSTER.Game.prototype.stop = function()
 MONSTER.Game.prototype.draw = function()
 {
     if (this && this.renderer) {
-        // console.log(Date.now() - this.lastTime);
-
-        // if ((Date.now() - this.lastTime) >= this.requestedFrameRate)
-        if ((Date.now() - this.lastTime) >= 16) {
-            this.update();
-            this.renderer.render(this.stage);
-            this.frameRate();
-        }
+        this.update();
+        this.renderer.render(this.stage);
+        this.frameRate();
     }
 
     this.requestId = requestAnimationFrame(this.draw.bind(this));
