@@ -99,17 +99,17 @@ MONSTER.Game = function(fps)
         );
 
         this.debug = {
-            'fps': new PIXI.Text("", sizes['16']),
+            'fps_text': new PIXI.Text("", sizes['16']),
 
             // Calculating average in last second
             'fps_ticks': 1,
-            'fps_avg_per_second': 0,
+            'fps': 0,
             'fps_timer': 0
         };
 
-        this.debug['fps'].position.y = this.height - 18;
+        this.debug['fps_text'].position.y = this.height - 18;
 
-        this.top.addChild(this.debug['fps']);
+        this.top.addChild(this.debug['fps_text']);
     }
 
 
@@ -307,14 +307,14 @@ MONSTER.Game.prototype.stop = function()
 
 MONSTER.Game.prototype.draw = function()
 {
-    if (this && this.renderer)
-    {
-        this.update();
+    if (this && this.renderer) {
+        // console.log(Date.now() - this.lastTime);
 
-        if ((Date.now() - this.lastTime) >= this.requestedFrameRate)
-        {
-            this.frameRate();
+        // if ((Date.now() - this.lastTime) >= this.requestedFrameRate)
+        if ((Date.now() - this.lastTime) >= 16) {
+            this.update();
             this.renderer.render(this.stage);
+            this.frameRate();
         }
     }
 
@@ -323,8 +323,7 @@ MONSTER.Game.prototype.draw = function()
 
 var game = null;
 
-function newGame()
-{
+function newGame() {
     game = new MONSTER.Game(60);
 }
 
