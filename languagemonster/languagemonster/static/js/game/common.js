@@ -444,10 +444,11 @@ MONSTER.Common.parallax = function(delta, parallax_array, parallax_speed, width)
         for (var j = 0; j < sprites.length; j++) {
             var bg = sprites[j];
 
-            bg.position.x -= speed * delta;
+            bg.position.x -= Math.round(speed * delta);
 
             if (bg.position.x <= -width) {
                 var shifted_bg = sprites.shift();
+
                 shifted_bg.position.x = width;
 
                 sprites.push(shifted_bg);
