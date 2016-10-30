@@ -4,8 +4,7 @@ MONSTER.Game = function(fps)
 
     // Possible resolutions
     this.res = [
-        [800, 450],
-        [640, 360]
+        [800, 450]
     ];
 
     this.games = window.games;
