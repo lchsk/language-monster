@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load partition %}
+
+{% for d in datasets_s|columns:3 %}
+<div class="col-md-4">
+    <ul class="nav nav-pills nav-stacked">
+        {% for i in d %}
+        <li role="presentation">
+            <a href="{% url 'vocabulary:play' pair.target_language.slug i.slug %}" class="play">
+
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 36px; text-align: center;">
+                            {% if i.icon %}
+                            <span class="ds-icon {{i.icon}}"></span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: left;">
+                            {{ i.name_base }} <br /><span class="target">{{ i.name_target }}</span>
+                        </td>
+                        <td style="margin-right: auto; text-align: right;">
+                            <span title="{% trans 'number_of_words' %}" class="badge">{{ i.word_count }}</span>
+                        </td>
+                    </tr>
+                </table>
+            </a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
