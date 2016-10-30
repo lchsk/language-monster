@@ -243,10 +243,7 @@ class DoChangeInterfaceLanguage(NoTemplateMixin, ContextView):
             **kwargs
         )
 
-        if 'HTTP_REFERER' in request.META:
-            url = request.META['HTTP_REFERER']
-        else:
-            url = reverse('index')
+        url = reverse('index')
 
         if self._context.is_authorised:
             base_language = None
