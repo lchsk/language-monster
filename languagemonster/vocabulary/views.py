@@ -108,7 +108,8 @@ class StudyView(AuthContextView):
     def get_context_data(self, **kwargs):
         context = super(StudyView, self).get_context_data(**kwargs)
 
-        progressions = self._context.user.studying
+        # Current language acronym
+        user_lang = self._context.user.language.language.acronym
         slug = kwargs['slug']
 
         pair_symbol = None
@@ -117,7 +118,7 @@ class StudyView(AuthContextView):
         for symbol, lang_pair in LANGUAGE_PAIRS_FLAT.iteritems():
             if (
                 lang_pair.target_language.slug == slug and
-                lang_pair.base_language.acronym == self._context.user.language.language.acronym
+                lang_pair.base_language.acronym == user_lang
             ):
                 pair_symbol = symbol
                 pair_obj = lang_pair
@@ -136,6 +137,17 @@ class StudyView(AuthContextView):
             return context
         else:
             raise Http404
+
+    def get(self, request, *args, **kwargs):
+        resp = super(StudyView, self).get(request, *args, **kwargs)
+
+        slug_lang_pair = resp.context_data['pair'].symbol
+        progressions = self._context.user.studying
+
+        if slug_lang_pair not in set(p[0].lang_pair for p in progressions):
+            return self.redirect('vocabulary:add_language')
+
+        return resp
 
 class PlayView(AuthContextView):
     template_name = 'app/game.html'
