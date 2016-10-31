@@ -111,23 +111,20 @@ MONSTER.ShooterGame.prototype.update = function()
 {
     MONSTER.AbstractScreen.prototype.update.call(this);
 
-    if ( ! this.hit)
-    {
+    if ( ! this.hit) {
         this.moveShip();
 
-        if (this.answers && this.game.actual_rounds)
-        {
-            var left = 0;
-            var t = this.game.timeSinceLastFrame;
+        var delta = this.game.timeSinceLastFrame;
 
-            for (var i = 0; i < this.answers.length; i++)
-            {
-                if (this.constant_answer_speed)
-                {
-                    this.answers[i].text.position.x -= t * 0.16;
-                }
-                else
-                {
+        MONSTER.Common.parallax(delta, this.parallax, this.parallax_speed, 800);
+
+        if (this.answers && this.game.actual_rounds) {
+            var left = 0;
+
+            for (var i = 0; i < this.answers.length; i++) {
+                if (this.constant_answer_speed) {
+                    this.answers[i].text.position.x -= delta * 0.16;
+                } else {
                     this.answers[i].text.position.x -=
                         MONSTER.linear(
                             this.game.round_id,
@@ -135,17 +132,15 @@ MONSTER.ShooterGame.prototype.update = function()
                             this.game.actual_rounds - 1,
                             0.16,
                             0.19
-                        ) * t;
+                        ) * delta;
                 }
 
-                if (this.answers[i].text.position.x < this.answers[i].text.width / 2)
-                {
+                if (this.answers[i].text.position.x < this.answers[i].text.width / 2) {
                     left++;
                 }
             }
 
-            if (left == this.answers.length)
-            {
+            if (left == this.answers.length) {
                 this.constant_answer_speed = true;
                 this.hit = true;
                 this.moveOutOfScreen();
@@ -168,13 +163,6 @@ MONSTER.ShooterGame.prototype.mousemove = function(mouseData)
 {
     this.crosshair.position.x = mouseData.data.global.x;
     this.crosshair.position.y = mouseData.data.global.y;
-
-    this.ship.position.x = MONSTER.linear(
-        this.crosshair.position.x,
-        0,
-        this.game.width,
-        this.game.width * 0.4, this.game.width * 0.6
-    );
 };
 
 MONSTER.ShooterGame.prototype.init = function()
@@ -185,7 +173,62 @@ MONSTER.ShooterGame.prototype.init = function()
 
     MONSTER.Common.hideCursor();
 
-    MONSTER.Common.fillBackground(this, this.colors.background);
+    var background_t = PIXI.Texture.fromImage(this.urls.background);
+    var clouds_t = PIXI.Texture.fromImage(this.urls.clouds);
+    var middle_t = PIXI.Texture.fromImage(this.urls.middle);
+    var foreground_t = PIXI.Texture.fromImage(this.urls.foreground);
+
+    var background = [
+        new PIXI.Sprite(background_t),
+        new PIXI.Sprite(background_t)
+    ];
+
+    var clouds = [
+        new PIXI.Sprite(clouds_t),
+        new PIXI.Sprite(clouds_t)
+    ];
+
+    var middle = [
+        new PIXI.Sprite(middle_t),
+        new PIXI.Sprite(middle_t)
+    ];
+
+    var foreground = [
+        new PIXI.Sprite(foreground_t),
+        new PIXI.Sprite(foreground_t)
+    ];
+
+    this.parallax = [
+        clouds,
+        background,
+        middle,
+        foreground
+    ];
+
+    this.parallax_speed = [0.01, 0.02, 0.03, 0.04];
+
+    this.game.background.addChild(background[0]);
+    this.game.background.addChild(background[1]);
+    this.game.background.addChild(clouds[0]);
+    this.game.background.addChild(clouds[1]);
+    this.game.background.addChild(middle[0]);
+    this.game.background.addChild(middle[1]);
+    this.game.background.addChild(foreground[0]);
+    this.game.background.addChild(foreground[1]);
+
+    background[0].position.y = 450 - 484;
+    background[1].position.y = 450 - 484;
+    background[1].position.x = 800;
+
+    clouds[1].position.x = 800;
+
+    middle[1].position.x = 800;
+    middle[0].position.y = 450 - 230;
+    middle[1].position.y = 450 - 230;
+
+    foreground[1].position.x = 800;
+    foreground[0].position.y = 450 - 320;
+    foreground[1].position.y = 450 - 320;
 
     this.crosshair_t = PIXI.Texture.fromImage(this.urls.crosshair);
     this.crosshair_red_t = PIXI.Texture.fromImage(this.urls.crosshair_red);
@@ -194,9 +237,6 @@ MONSTER.ShooterGame.prototype.init = function()
     this.crosshair.anchor.x = this.crosshair.anchor.y = 0.5;
     this.crosshair.position.x = this.game.width * 0.5;
     this.crosshair.position.y = this.game.height * 0.5;
-
-
-    this.ship = PIXI.Sprite.fromImage(this.urls.rifle);
 
     this.game.view.interactive = true;
     this.game.view.on('mousemove', this.mousemove.bind(this));
@@ -207,58 +247,12 @@ MONSTER.ShooterGame.prototype.init = function()
         context.crosshair.texture = context.crosshair_red_t;
     });
 
-
     this.game.view.on('click', this.checkHit.bind(this));
-
-    this.ship.anchor.x = 0.5;
-    this.ship.anchor.y = 0.5;
-    this.ship.scale.x = this.ship.scale.y = 0.5;
-
-    var stop_y = 0.56 * this.game.height;
-    var start_y = 0.71 * this.game.height;
-
-    this.original_y = 0.71 * this.game.height;
-    this.slide_y = 0.78 * this.game.height;
-    this.slide_t = 0;
-
-    this.ship.position.x = 0.5 * this.game.width;
-    this.ship.position.y = 0.9 * this.game.height;
-
-    this.ship.start_y = start_y;
-    this.ship.stop_y = stop_y;
-    this.ship.v_time = 0;
-
-    this.ship.v_up = false;
-    this.ship.v_down = false;
 
     this.game.view.addChild(this.top_bar);
 
-
     this.box.box.position.x = this.result_screen_x.right;
 
-    var grass1 = PIXI.Texture.fromImage(this.urls.grass1);
-    var grass2 = PIXI.Texture.fromImage(this.urls.grass2);
-
-    for (var i = 0, p = 0; i < this.game.width; i += 132, p++)
-    {
-        var s_grass;
-
-        if (p % 2 === 0)
-        {
-            s_grass = new PIXI.Sprite(grass1);
-            s_grass.position.y = this.game.height - 170;
-        }
-        else {
-            s_grass = new PIXI.Sprite(grass2);
-            s_grass.position.y = this.game.height - 186;
-        }
-
-        s_grass.position.x = i;
-
-        this.game.view.addChild(s_grass);
-    }
-
-    this.game.view.addChild(this.ship);
     this.game.view.addChild(this.crosshair);
     MONSTER.Common.addUI(this.game);
 

@@ -4,7 +4,7 @@ MONSTER.ShooterGame.prototype.moveShip = function()
 
     if (MONSTER.Key && MONSTER.Key.isUp(MONSTER.Key.UP))
     {
-        if ( ! this.ship.v_up && ! this.ship.v_down)
+        // if ( ! this.ship.v_up && ! this.ship.v_down)
         {
             this.ship.textures = this.textures_jump;
             this.ship.v_up = true;
@@ -15,7 +15,7 @@ MONSTER.ShooterGame.prototype.moveShip = function()
     }
     if (MONSTER.Key && MONSTER.Key.isUp(MONSTER.Key.DOWN))
     {
-        if ( ! this.ship.v_down && ! this.ship.v_up)
+        // if ( ! this.ship.v_down && ! this.ship.v_up)
         {
             this.ship.rotation = 3/4 * 2 * MONSTER.Const.PI;
             this.ship.gotoAndStop(1);
@@ -92,7 +92,7 @@ MONSTER.ShooterGame.prototype.moveShip = function()
 
 MONSTER.ShooterGame.prototype.checkHit = function()
 {
-    if (this.ship && ! this.hit)
+    if (! this.hit)
     {
         // var left = 0;
 
