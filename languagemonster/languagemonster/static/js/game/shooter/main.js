@@ -234,7 +234,6 @@ MONSTER.ShooterGame.prototype.init = function()
     foreground[1].position.y = 450 - 320;
 
     this.crosshair_t = PIXI.Texture.fromImage(this.urls.crosshair);
-    this.crosshair_red_t = PIXI.Texture.fromImage(this.urls.crosshair_red);
 
     var snowball_t = PIXI.Texture.fromImage(this.urls.snowball);
 
@@ -256,13 +255,6 @@ MONSTER.ShooterGame.prototype.init = function()
 
     this.game.view.interactive = true;
     this.game.view.on('mousemove', this.mousemove.bind(this));
-    this.game.view.on('mouseup', function(){
-        context.crosshair.texture = context.crosshair_t;
-    });
-    this.game.view.on('mousedown', function(){
-        context.crosshair.texture = context.crosshair_red_t;
-    });
-
     this.game.view.on('click', this.throw.bind(this));
 
     this.game.view.addChild(this.top_bar);

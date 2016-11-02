@@ -64,8 +64,7 @@ MONSTER.Game = function(fps)
             'grass1' : '/static/images/games/shooter/grass1.png',
             'grass2' : '/static/images/games/shooter/grass2.png',
 
-            'crosshair' : '/static/images/games/shooter/crosshair_white_small.png',
-            'crosshair_red' : '/static/images/games/shooter/crosshair_red_small.png'
+            'crosshair' : '/static/images/games/shooter/crosshair.png'
         },
         'plane': {
             'sky': '/static/images/games/plane/sky.png',
