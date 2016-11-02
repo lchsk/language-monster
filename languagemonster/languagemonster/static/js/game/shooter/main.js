@@ -115,7 +115,7 @@ MONSTER.ShooterGame.prototype.update = function()
     MONSTER.AbstractScreen.prototype.update.call(this);
 
     if ( ! this.hit) {
-        this.moveShip();
+        this.move();
 
         var delta = this.game.timeSinceLastFrame;
 

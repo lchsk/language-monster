@@ -1,4 +1,4 @@
-MONSTER.ShooterGame.prototype.moveShip = function()
+MONSTER.ShooterGame.prototype.move = function()
 {
     if (this.snowball.thrown) {
         var snowball = this.snowball;
