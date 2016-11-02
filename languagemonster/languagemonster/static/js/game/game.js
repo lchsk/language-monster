@@ -60,10 +60,6 @@ MONSTER.Game = function(fps)
             'middle' : '/static/images/games/shooter/middle.png',
             'foreground' : '/static/images/games/shooter/foreground.png',
             'snowball' : '/static/images/games/shooter/snowball.png',
-
-            'grass1' : '/static/images/games/shooter/grass1.png',
-            'grass2' : '/static/images/games/shooter/grass2.png',
-
             'crosshair' : '/static/images/games/shooter/crosshair.png'
         },
         'plane': {
