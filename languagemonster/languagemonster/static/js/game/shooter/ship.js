@@ -38,11 +38,8 @@ MONSTER.ShooterGame.prototype.moveShip = function()
             sprite.scale.x = sprite.scale.y = scale;
 
             this.checkHit(sprite.position.x, sprite.position.y);
-        }
-
-        if (snowball.time >= 1500) {
+        } else
             this.resetSnowball(this.snowball);
-        }
     }
 };
 
@@ -69,7 +66,7 @@ MONSTER.ShooterGame.prototype.throw = function()
             this.game.width * 0.2, this.game.width * 0.8
         );
 
-        var pos_y = this.game.height - 50;
+        var pos_y = this.game.height + snowball.sprite.height;
 
         snowball.src = [pos_x, pos_y];
         snowball.pos = [pos_x, pos_y];
