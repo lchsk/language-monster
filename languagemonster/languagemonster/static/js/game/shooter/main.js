@@ -26,6 +26,9 @@ MONSTER.ShooterGame = function(game)
         click: '0x940000'
     };
 
+    // Milliseconds to reach the target
+    this.SNOWBALL_TIME = 700.0;
+
     // True durign processing of a hit
     this.hit = false;
 
@@ -36,7 +39,7 @@ MONSTER.ShooterGame = function(game)
 
     this.sizes = MONSTER.getFonts(
         MONSTER.Const.DEFAULT_FONT_FAMILY,
-        MONSTER.Const.COLOURS["white"]
+        MONSTER.Const.COLOURS["navy"]
     );
 
     this.rects = [
@@ -205,7 +208,7 @@ MONSTER.ShooterGame.prototype.init = function()
         foreground
     ];
 
-    this.parallax_speed = [0.01, 0.02, 0.03, 0.04];
+    this.parallax_speed = [0.01, 0.02, 0.02, 0.04];
 
     this.game.background.addChild(background[0]);
     this.game.background.addChild(background[1]);
@@ -233,6 +236,19 @@ MONSTER.ShooterGame.prototype.init = function()
     this.crosshair_t = PIXI.Texture.fromImage(this.urls.crosshair);
     this.crosshair_red_t = PIXI.Texture.fromImage(this.urls.crosshair_red);
 
+    var snowball_t = PIXI.Texture.fromImage(this.urls.snowball);
+
+    this.snowball = {
+        'sprite': new PIXI.Sprite(snowball_t),
+        'src': [0, 0],
+        'dest': [0, 0],
+        'time': 0,
+        'thrown': false,
+
+        // Current
+        'pos': [0, 0]
+    };
+
     this.crosshair = new PIXI.Sprite(this.crosshair_t);
     this.crosshair.anchor.x = this.crosshair.anchor.y = 0.5;
     this.crosshair.position.x = this.game.width * 0.5;
@@ -247,13 +263,17 @@ MONSTER.ShooterGame.prototype.init = function()
         context.crosshair.texture = context.crosshair_red_t;
     });
 
-    this.game.view.on('click', this.checkHit.bind(this));
+    this.game.view.on('click', this.throw.bind(this));
 
     this.game.view.addChild(this.top_bar);
 
     this.box.box.position.x = this.result_screen_x.right;
 
     this.game.view.addChild(this.crosshair);
+    this.game.view.addChild(this.snowball.sprite);
+
+    this.resetSnowball(this.snowball);
+
     MONSTER.Common.addUI(this.game);
 
     this.game.view.addChild(this.box.box);

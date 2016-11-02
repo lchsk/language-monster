@@ -265,6 +265,19 @@ MONSTER.Common.addUI = function(game)
     game.view.addChild(btn_info);
 };
 
+MONSTER.Common.getAnswersMinusCurrent = function(answers, current) {
+    // Returns an array with answers without the one being clicked on
+
+    var resp = [];
+
+    for (var i = 0; i < answers.length; i++) {
+        if (answers[i].text.text !== current.text.text)
+            resp.push(answers[i]);
+    }
+
+    return resp;
+};
+
 MONSTER.Common.fillBackground = function(obj, color)
 {
     obj.game.background.beginFill(color, 1);

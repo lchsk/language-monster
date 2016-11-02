@@ -1,122 +1,124 @@
 MONSTER.ShooterGame.prototype.moveShip = function()
 {
-    var t = this.game.timeSinceLastFrame;
+    if (this.snowball.thrown) {
+        var snowball = this.snowball;
+        var delta = this.game.timeSinceLastFrame;
 
-    if (MONSTER.Key && MONSTER.Key.isUp(MONSTER.Key.UP))
-    {
-        // if ( ! this.ship.v_up && ! this.ship.v_down)
-        {
-            this.ship.textures = this.textures_jump;
-            this.ship.v_up = true;
-            this.ship.start_y = this.ship.position.y;
-            this.ship.stop_y = this.ship.start_y - 200;
+        var sprite = snowball.sprite;
 
-        }
-    }
-    if (MONSTER.Key && MONSTER.Key.isUp(MONSTER.Key.DOWN))
-    {
-        // if ( ! this.ship.v_down && ! this.ship.v_up)
-        {
-            this.ship.rotation = 3/4 * 2 * MONSTER.Const.PI;
-            this.ship.gotoAndStop(1);
-            this.ship.v_down = true;
-            this.ship.position.y = this.slide_y;
-        }
-    }
+        sprite.position.x = snowball.pos[0];
+        sprite.position.y = snowball.pos[1];
 
-    if (this.ship)
-    {
+        snowball.time += delta;
 
-        // slide
+        if (snowball.time < this.SNOWBALL_TIME) {
+            var new_pos = MONSTER.Utils.bezier(
+                snowball.time / this.SNOWBALL_TIME, [
+                    {
+                        'x': snowball.src[0],
+                        'y': snowball.src[1]
+                    },
+                    {
+                        'x': (snowball.src[0] + snowball.dest[0]) / 2.0,
+                        'y': (snowball.src[1] + snowball.dest[1]) / 2.0
+                    },
+                    {
+                        'x': snowball.dest[0],
+                        'y': snowball.dest[1]
+                    }
+                ]
+            );
 
-        if (this.ship.v_down)
-        {
-            this.slide_t += t;
+            sprite.position.x = new_pos.x;
+            sprite.position.y = new_pos.y;
 
-            if (this.slide_t > 1200)
-            {
-                this.slide_t = 0;
-                this.ship.v_down = false;
-                this.ship.rotation = 0;
-                this.ship.play();
-                this.ship.position.y = this.original_y;
-            }
+            var scale = this.SNOWBALL_TIME / 2.0 / snowball.time;
+
+            sprite.visible = scale < 4;
+            sprite.scale.x = sprite.scale.y = scale;
+
+            this.checkHit(sprite.position.x, sprite.position.y);
         }
 
-        // up
-
-        else if (this.ship.v_up)
-        {
-            var T = 700.0;
-
-            this.ship.v_time += t;
-
-            var pct = MONSTER.Easing.easeOutQuart(this.ship.v_time / T);
-
-            this.ship.position.y =
-                Math.round(
-                    pct * (this.ship.stop_y - this.ship.start_y))
-                + this.ship.start_y;
-
-            if (this.ship.v_time > T)
-            {
-                this.ship.v_time = 0.0;
-                this.ship.v_up = false;
-                this.ship.position.y = this.ship.stop_y;
-            }
+        if (snowball.time >= 1500) {
+            this.resetSnowball(this.snowball);
         }
-
-        // falling down
-
-        if ( ! this.ship.v_up && this.ship.position.y < this.original_y)
-        {
-            this.ship.position.y += t * 0.3;
-        }
-
-        if (this.ship.position.y > this.original_y)
-        {
-            // on the ground
-            this.jump_count = 0;
-            this.ship.textures = this.textures;
-        }
-
-
-        // make sure the plane fits in the screen
-
-        if (this.ship.position.x > this.game.width - this.ship.width / 2)
-            this.ship.position.x = this.game.width - this.ship.width / 2;
-        if (this.ship.position.x < this.ship.width / 2)
-            this.ship.position.x = this.ship.width / 2;
     }
 };
 
-MONSTER.ShooterGame.prototype.checkHit = function()
+MONSTER.ShooterGame.prototype.resetSnowball = function(snowball)
 {
-    if (! this.hit)
-    {
-        // var left = 0;
+    snowball.sprite.anchor.x = snowball.sprite.anchor.y = 0.5;
+    snowball.src = [0, 0];
+    snowball.pos = [0, 0];
+    snowball.time = 0;
+    snowball.thrown = false;
+};
 
-        for (var i = 0; i < this.answers.length; i++)
-        {
+MONSTER.ShooterGame.prototype.throw = function()
+{
+    var snowball = this.snowball;
+
+    snowball.thrown = true;
+
+    var pos_x = MONSTER.linear(
+        this.crosshair.position.x,
+        0,
+        this.game.width,
+        this.game.width * 0.2, this.game.width * 0.8
+    );
+
+    var pos_y = this.game.height - 50;
+
+    snowball.src = [pos_x, pos_y];
+    snowball.pos = [pos_x, pos_y];
+    snowball.dest = [this.crosshair.position.x, this.crosshair.position.y];
+};
+
+MONSTER.ShooterGame.prototype.checkHit = function(x, y)
+{
+    if (! this.hit) {
+        for (var i = 0; i < this.answers.length; i++) {
             var obj = this.answers[i];
-            var collision = false;
 
-            if (obj.text.position.x >= this.crosshair.position.x - this.crosshair.width &&
-                obj.text.position.x <= this.crosshair.position.x + this.crosshair.width &&
-                obj.text.position.y >= this.crosshair.position.y - this.crosshair.height &&
-                obj.text.position.y <= this.crosshair.position.y + this.crosshair.height
-            )
-                collision = true;
+            if (MONSTER.Utils.isPointInRectWithTol(x, y, [
+                obj.text.position.x,
+                obj.text.position.y,
+                obj.text.width,
+                obj.text.height
+            ], [100, 100])) {
+                this.game.tweens.push(
+                    new MONSTER.Tween(
+                        obj.text,
+                        'position.y',
+                        -200,
+                        1000
+                    )
+                );
+                this.game.tweens.push(
+                    new MONSTER.Tween(
+                        obj.text,
+                        'position.x',
+                        MONSTER.Utils.getRandomInt(
+                            0.2 * this.game.width,
+                            0.8 * this.game.width
+                        ),
+                        1000
+                    )
+                );
 
-            if (collision)
-            {
+                var answers = MONSTER.Common.getAnswersMinusCurrent(
+                    this.answers, obj
+                );
+
                 this.hit = true;
-                this.moveOutOfScreen();
+                this.removeAnswers(answers);
 
-                if (obj.word == this.answer)
+                if (obj.word === this.answer)
                     MONSTER.Common.correct(this);
                 else
                     MONSTER.Common.negative(this);
+
             }
         }
     }

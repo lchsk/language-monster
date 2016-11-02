@@ -138,3 +138,41 @@ MONSTER.Utils.replace_at = function(string, index, character) {
 MONSTER.Utils.to_radians = function(degrees) {
     return degrees * MONSTER.Const.PI / 180;
 };
+
+MONSTER.Utils.isPointInRect = function(x, y, rect) {
+    return MONSTER.Utils.isPointInRectWithTol(x, y, rect, [0, 0]);
+};
+
+MONSTER.Utils.isPointInRectWithTol = function(x, y, rect, tolerance) {
+    // x (number): X coordinate of a point
+    // y (number): Y coordinate of a point
+    // rect (array): An array with 4 items - x, y, width, height
+    // tolerance (array): An array with 2 items - tolerance on X and Y axis.
+    //                    0% tolerance is default
+
+    var tol_x = tolerance[0] / 100.0 * rect[2];
+    var tol_y = tolerance[1] / 100.0 * rect[3];
+
+    return (
+        x >= rect[0] - tol_x &&
+        x <= rect[0] + rect[2] + tol_x &&
+        y >= rect[1] - tol_y &&
+        y <= rect[1] + rect[3] + tol_y
+    );
+};
+
+MONSTER.Utils.getRandomInt = function(min, max) {
+    // Returns a random integer between min (inclusive) and max (inclusive)
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+MONSTER.Utils.bezier = function(t, p) {
+    var x = (1 - t) * (1 - t) * p[0].x + 2 * (1 - t) * t * p[1].x + t * t * p[2].x;
+    var y = (1 - t) * (1 - t) * p[0].y + 2 * (1 - t) * t * p[1].y + t * t * p[2].y;
+
+    return {
+        'x': x,
+        'y': y
+    };
+};

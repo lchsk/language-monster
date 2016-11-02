@@ -1,5 +1,5 @@
 
-MONSTER.ShooterGame.prototype.moveOutOfScreen = function()
+MONSTER.ShooterGame.prototype.removeAnswers = function(answers)
 {
     // question
 
@@ -8,9 +8,8 @@ MONSTER.ShooterGame.prototype.moveOutOfScreen = function()
 
     // answers
 
-    for (var i = 0; i < this.answers.length; i++)
-    {
-        var obj = this.answers[i];
+    for (var i = 0; i < answers.length; i++) {
+        var obj = answers[i];
 
         if (obj.text.position.x < this.game.width / 2.0)
             this.game.tweens.push(new MONSTER.Tween(
@@ -34,6 +33,7 @@ MONSTER.ShooterGame.prototype.resultScreen = function(is_correct)
 MONSTER.ShooterGame.prototype.next_round = function()
 {
     this.answers.length = 0;
+    this.game.tweens.length = 0;
 
     if ( ! MONSTER.Common.getWordSet(this))
     {
