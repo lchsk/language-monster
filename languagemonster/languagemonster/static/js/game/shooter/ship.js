@@ -59,20 +59,22 @@ MONSTER.ShooterGame.prototype.throw = function()
 {
     var snowball = this.snowball;
 
-    snowball.thrown = true;
+    if (! snowball.thrown) {
+        snowball.thrown = true;
 
-    var pos_x = MONSTER.linear(
-        this.crosshair.position.x,
-        0,
-        this.game.width,
-        this.game.width * 0.2, this.game.width * 0.8
-    );
+        var pos_x = MONSTER.linear(
+            this.crosshair.position.x,
+            0,
+            this.game.width,
+            this.game.width * 0.2, this.game.width * 0.8
+        );
 
-    var pos_y = this.game.height - 50;
+        var pos_y = this.game.height - 50;
 
-    snowball.src = [pos_x, pos_y];
-    snowball.pos = [pos_x, pos_y];
-    snowball.dest = [this.crosshair.position.x, this.crosshair.position.y];
+        snowball.src = [pos_x, pos_y];
+        snowball.pos = [pos_x, pos_y];
+        snowball.dest = [this.crosshair.position.x, this.crosshair.position.y];
+    }
 };
 
 MONSTER.ShooterGame.prototype.checkHit = function(x, y)
