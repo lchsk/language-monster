@@ -85,7 +85,7 @@ MONSTER.ShooterGame.prototype.checkHit = function(x, y)
                 obj.text.position.y,
                 obj.text.width,
                 obj.text.height
-            ], [100, 100])) {
+            ], [0, 40])) {
                 this.game.tweens.push(
                     new MONSTER.Tween(
                         obj.text,

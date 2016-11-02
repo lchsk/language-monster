@@ -138,7 +138,8 @@ MONSTER.ShooterGame.prototype.update = function()
                         ) * delta;
                 }
 
-                if (this.answers[i].text.position.x < this.answers[i].text.width / 2) {
+                if (this.answers[i].text.position.x
+                    + this.answers[i].text.width < 0) {
                     left++;
                 }
             }
@@ -146,7 +147,7 @@ MONSTER.ShooterGame.prototype.update = function()
             if (left == this.answers.length) {
                 this.constant_answer_speed = true;
                 this.hit = true;
-                this.moveOutOfScreen();
+                this.removeAnswers(this.answers);
                 MONSTER.Common.negative(this);
             }
         }
