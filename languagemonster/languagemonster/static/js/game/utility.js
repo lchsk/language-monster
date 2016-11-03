@@ -167,6 +167,16 @@ MONSTER.Utils.getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+MONSTER.Utils.clamp = function(value, min, max) {
+    if (value <= min)
+        return min;
+
+    if (value >= max)
+        return max;
+
+    return value;
+};
+
 MONSTER.Utils.bezier = function(t, p) {
     var x = (1 - t) * (1 - t) * p[0].x + 2 * (1 - t) * t * p[1].x + t * t * p[2].x;
     var y = (1 - t) * (1 - t) * p[0].y + 2 * (1 - t) * t * p[1].y + t * t * p[2].y;

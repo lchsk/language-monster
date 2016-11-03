@@ -35,12 +35,14 @@ MONSTER.SpaceGame.prototype.moveShip = function()
         var x = this.ship.position.x;
         var y = this.ship.position.y;
         var angle = this.ship.rotation;
-        var new_x = x * Math.cos (angle) - y * Math.sin (angle);
-        var new_y = x * Math.sin (angle) + y * Math.cos (angle);
+        // var new_x = x * Math.cos (angle) - y * Math.sin (angle);
+        // var new_y = x * Math.sin (angle) + y * Math.cos (angle);
 
         this.ship.position.x += this.ship_v * Math.cos(angle - MONSTER.Const.PI_2);
         this.ship.position.y += this.ship_v * Math.sin(angle - MONSTER.Const.PI_2);
 
+        this.diff_x = this.ship.position.x - x;
+        this.diff_y = this.ship.position.y - y;
         // drag
         this.ship_v -= this.drag * t;
 

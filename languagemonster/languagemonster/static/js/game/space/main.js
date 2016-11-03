@@ -33,7 +33,7 @@ MONSTER.SpaceGame = function(game)
 
     this.sizes = MONSTER.getFonts(
         MONSTER.Const.DEFAULT_FONT_FAMILY,
-        MONSTER.Const.COLOURS["white"]
+        MONSTER.Const.COLOURS["navy"]
     );
 
     this.rects = [
@@ -121,7 +121,21 @@ MONSTER.SpaceGame.prototype.update = function()
 
     if ( ! this.hit)
     {
+        var delta = this.game.timeSinceLastFrame;
         this.moveShip();
+
+        var new_x = this.island.position.x + delta * 0.0005 * -this.diff_x;
+        var new_y = this.island.position.y + delta * 0.0005 * -this.diff_y;
+
+        this.island.position.x = MONSTER.Utils.clamp(new_x, -25, 25);
+        this.island.position.y = MONSTER.Utils.clamp(new_y, -25, 25);
+
+        MONSTER.Common.parallax(
+            delta,
+            this.parallax,
+            this.parallax_speed,
+            800
+        );
 
         if (this.shipActive)
             this.checkCollisions();
@@ -138,7 +152,38 @@ MONSTER.SpaceGame.prototype.init = function()
     this.game.background.clear();
     this.game.view.removeChildren();
 
-    MONSTER.Common.fillBackground(this, this.colors.background);
+    MONSTER.Common.fillBackground(this, '0x2d98a9');
+
+    var ocean_t = PIXI.Texture.fromImage(this.urls.ocean);
+    var clouds_t = PIXI.Texture.fromImage(this.urls.clouds);
+
+    var ocean = [
+        new PIXI.Sprite(ocean_t),
+        new PIXI.Sprite(ocean_t)
+    ];
+
+    var clouds = [
+        new PIXI.Sprite(clouds_t),
+        new PIXI.Sprite(clouds_t)
+    ];
+
+    this.parallax = [
+        clouds
+    ];
+
+    this.parallax_speed = [0.005, 0.02, 0.02, 0.04];
+
+    this.game.background.addChild(ocean[0]);
+    this.game.background.addChild(ocean[1]);
+
+    ocean[1].position.x = 800;
+
+    this.island = ocean[0];
+
+    this.game.background.addChild(clouds[0]);
+    this.game.background.addChild(clouds[1]);
+
+    clouds[1].position.x = 800;
 
     var plane = PIXI.BaseTexture.fromImage(this.urls.plane);
     var plane_left = PIXI.BaseTexture.fromImage(this.urls.plane_left);

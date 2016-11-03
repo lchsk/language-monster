@@ -70,6 +70,8 @@ MONSTER.Game = function(fps)
             'plane': '/static/images/games/plane/crazy_plane.png'
         },
         'space': {
+            'ocean': '/static/images/games/space/ocean.png',
+            'clouds': '/static/images/games/space/clouds.png',
             'plane': '/static/images/games/space/plane.png',
             'plane_left': '/static/images/games/space/plane_left.png',
             'plane_right': '/static/images/games/space/plane_right.png'
