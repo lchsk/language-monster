@@ -29,6 +29,7 @@ MONSTER.PlaneGame.prototype.resultScreen = function(is_correct)
 MONSTER.PlaneGame.prototype.next_round = function()
 {
     this.answers.length = 0;
+    this.game.tweens.length = 0;
 
     if ( ! MONSTER.Common.getWordSet(this)) {
         return MONSTER.Common.endScreen(this);

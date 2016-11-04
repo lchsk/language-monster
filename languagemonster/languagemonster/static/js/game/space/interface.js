@@ -33,6 +33,8 @@ MONSTER.SpaceGame.prototype.resultScreen = function(is_correct)
 MONSTER.SpaceGame.prototype.next_round = function()
 {
     this.answers.length = 0;
+    this.game.tweens.length = 0;
+
     var ctx = this;
 
     if ( ! MONSTER.Common.getWordSet(this))
