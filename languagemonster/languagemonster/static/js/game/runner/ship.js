@@ -110,7 +110,7 @@ MONSTER.RunnerGame.prototype.checkCollisions = function()
             }
         }
 
-        if (left == this.answers.length)
+        if (left === this.answers.length && this.state === this.State.RUNNING)
         {
             this.constant_answer_speed = true;
             this.hit = true;
