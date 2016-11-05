@@ -1,6 +1,5 @@
 MONSTER.PlaneGame = function(game)
 {
-    var that = this;
     this.ID = 'plane';
     game.tutorial = 'modal-tut-plane';
 
@@ -75,8 +74,8 @@ MONSTER.PlaneGame = function(game)
     this.top_bar_text = new PIXI.Text("", this.sizes['36']);
 
     this.top_bar_y = {
-      'show' : 0.18 * this.game.height,
-      'hide' : - this.top_bar_text.height
+        'show': 0.18 * this.game.height,
+        'hide': - this.top_bar_text.height
     };
 
     this.top_bar_text.position.y = this.top_bar_y.hide;
@@ -150,7 +149,6 @@ MONSTER.PlaneGame.prototype.update = function()
 
 MONSTER.PlaneGame.prototype.init = function()
 {
-    var context = this;
     this.game.background.clear();
     this.game.view.removeChildren();
 

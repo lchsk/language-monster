@@ -1,6 +1,5 @@
 MONSTER.ShooterGame = function(game)
 {
-    var that = this;
     this.ID = 'shooter';
     game.tutorial = 'modal-tut-shooter';
 
@@ -78,8 +77,8 @@ MONSTER.ShooterGame = function(game)
     this.top_bar_text = new PIXI.Text("", this.sizes['36']);
 
     this.top_bar_y = {
-      'show' : 0.18 * this.game.height,
-      'hide' : - this.top_bar_text.height
+        'show': 0.18 * this.game.height,
+        'hide': - this.top_bar_text.height
     };
 
     this.top_bar_text.position.y = this.top_bar_y.hide;
@@ -171,7 +170,6 @@ MONSTER.ShooterGame.prototype.mousemove = function(mouseData)
 
 MONSTER.ShooterGame.prototype.init = function()
 {
-    var context = this;
     this.game.background.clear();
     this.game.view.removeChildren();
 

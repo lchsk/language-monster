@@ -1,35 +1,37 @@
-function shuffle(array) {
-  var m = array.length, t, i;
+function shuffle(array)
+{
+    var m = array.length, t, i;
 
-  while (m) {
-    i = Math.floor(Math.random() * m--);
+    while (m) {
+        i = Math.floor(Math.random() * m--);
 
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
 
-  return array;
+    return array;
 }
 
 // Converts 1-dimensional array, eg. [dog, perro, cat, gato]
 // to 2-dimensional, eg. [[dog, perro], [cat, cato]]
 function convertTo2D(array_1d)
 {
-  // input array must have even number of elements
-  if (array_1d.length % 2 !== 0) return false;
+    // input array must have even number of elements
+    if (array_1d.length % 2 !== 0) return false;
 
-  var ret = [];
+    var ret = [];
 
-  for (var i = 0; i < array_1d.length - 1; i += 2)
-  {
-    var e1 = array_1d[i];
-    var e2 = array_1d[i + 1];
-    var tmp = [e1, e2];
-    ret.push(tmp);
-  }
+    for (var i = 0; i < array_1d.length - 1; i += 2) {
+        var e1 = array_1d[i];
+        var e2 = array_1d[i + 1];
 
-  return ret;
+        var tmp = [e1, e2];
+
+        ret.push(tmp);
+    }
+
+    return ret;
 }
 
 function objectValues(obj)
@@ -47,20 +49,25 @@ function objectValues(obj)
     return result;
 }
 
-function getCookie(name) {
-  var cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = jQuery.trim(cookies[i]);
-      // Does this cookie string begin with the name we want?
-      if (cookie.substring(0, name.length + 1) == (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
+function getCookie(name)
+{
+    var cookieValue = null;
+
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  }
-  return cookieValue;
+
+    return cookieValue;
 }
 
 MONSTER.Const = function() {};

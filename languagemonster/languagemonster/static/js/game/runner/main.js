@@ -1,6 +1,5 @@
 MONSTER.RunnerGame = function(game)
 {
-    var that = this;
     this.ID = 'runner';
     game.tutorial = 'modal-tut-runner';
 
@@ -75,8 +74,8 @@ MONSTER.RunnerGame = function(game)
     this.top_bar_text = new PIXI.Text("", this.sizes['36']);
 
     this.top_bar_y = {
-      'show' : 0.18 * this.game.height,
-      'hide' : - this.top_bar_text.height
+        'show': 0.18 * this.game.height,
+        'hide': - this.top_bar_text.height
     };
 
     this.top_bar_text.position.y = this.top_bar_y.hide;
@@ -157,7 +156,6 @@ MONSTER.RunnerGame.prototype.onGamePauseOff = function()
 
 MONSTER.RunnerGame.prototype.init = function()
 {
-    var context = this;
     this.game.background.clear();
     this.game.view.removeChildren();
 
@@ -167,27 +165,27 @@ MONSTER.RunnerGame.prototype.init = function()
     var foreground = PIXI.Texture.fromImage(this.urls.foreground);
     var ground = PIXI.Texture.fromImage(this.urls.ground);
 
-    far_backgrounds = [
+    var far_backgrounds = [
         new PIXI.Sprite(far_background),
         new PIXI.Sprite(far_background)
     ];
 
-    backgrounds = [
+    var backgrounds = [
         new PIXI.Sprite(background),
         new PIXI.Sprite(background)
     ];
 
-    trees = [
+    var trees = [
         new PIXI.Sprite(tree),
         new PIXI.Sprite(tree)
     ];
 
-    foregrounds = [
+    var foregrounds = [
         new PIXI.Sprite(foreground),
         new PIXI.Sprite(foreground)
     ];
 
-    grounds = [
+    var grounds = [
         new PIXI.Sprite(ground),
         new PIXI.Sprite(ground)
     ];

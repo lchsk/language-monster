@@ -26,7 +26,7 @@ MONSTER.ShooterGame.prototype.removeAnswers = function(answers)
 
 MONSTER.ShooterGame.prototype.resultScreen = function(is_correct)
 {
-    result_screen_on = true;
+    // result_screen_on = true;
     MONSTER.GoodWrongScreen.prepare(this, is_correct);
 };
 
@@ -71,7 +71,6 @@ MONSTER.ShooterGame.prototype.createAnswer = function(t, id)
     var context = this;
 
     var r = this.rects[id];
-    var tmp = new PIXI.Graphics();
 
     var sizes = [
         this.sizes['22'], this.sizes['16'], this.sizes['12']

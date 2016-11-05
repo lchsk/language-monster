@@ -68,7 +68,6 @@ MONSTER.PlaneGame.prototype.createAnswer = function(t, id)
     var context = this;
 
     var r = this.rects[id];
-    var tmp = new PIXI.Graphics();
 
     var sizes = [
         this.sizes['22'], this.sizes['16'], this.sizes['12']

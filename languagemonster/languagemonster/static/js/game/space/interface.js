@@ -80,7 +80,6 @@ MONSTER.SpaceGame.prototype.createAnswer = function(t, id)
     var context = this;
 
     var r = this.rects[id];
-    var tmp = new PIXI.Graphics();
 
     var rx = Math.floor(Math.random() * r.width + r.x);
     var ry = Math.floor(Math.random() * r.height + r.y);

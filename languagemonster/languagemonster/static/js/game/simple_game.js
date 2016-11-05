@@ -1,7 +1,7 @@
 MONSTER.SimpleGame = function(game)
 {
     MONSTER.AbstractScreen.call(this, game);
-    var that = this;
+
     this.ID = 'simple';
     game.tutorial = 'modal-tut-simple';
     this.trans = window.translations;
@@ -133,33 +133,33 @@ MONSTER.SimpleGame.prototype.init = function()
     var b1 = MONSTER.Common.createButton(
         this,
         this.choices[0], 0, 0, w, h, -w, 150, function(){
-        b1.interactive = false;
-        context.check_answer(context.choices[0]);
-    });
+            b1.interactive = false;
+            context.check_answer(context.choices[0]);
+        });
     b1.interactive = true;
 
     var b2 = MONSTER.Common.createButton(
         this,
         this.choices[1], 0, 0, w, h, this.game.width + w, 150, function(){
-        b2.interactive = false;
-        context.check_answer(context.choices[1]);
-    });
+            b2.interactive = false;
+            context.check_answer(context.choices[1]);
+        });
     b2.interactive = true;
 
     var b3 = MONSTER.Common.createButton(
         this,
         this.choices[2], 0, 0, w, h, -w, 280, function(){
-        b3.interactive = false;
-        context.check_answer(context.choices[2]);
-    });
+            b3.interactive = false;
+            context.check_answer(context.choices[2]);
+        });
     b3.interactive = true;
 
     var b4 = MONSTER.Common.createButton(
         this,
         this.choices[3], 0, 0, w, h, this.game.width + w, 280, function(){
-        b4.interactive = false;
-        context.check_answer(context.choices[3]);
-    });
+            b4.interactive = false;
+            context.check_answer(context.choices[3]);
+        });
     b4.interactive = true;
 
     this.game.view.addChild(b1);

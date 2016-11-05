@@ -73,11 +73,13 @@ MONSTER.Common.endScreen = function(obj)
 
     var stars = [];
 
-    for (var i = 0; i < stars_cnt; i++) {
+    var i = 0;
+
+    for (i = 0; i < stars_cnt; i++) {
         stars.push(new PIXI.Sprite(star_t));
     }
 
-    for (var i = stars.length; i < 3; i++) {
+    for (i = stars.length; i < 3; i++) {
         stars.push(new PIXI.Sprite(dark_star_t));
     }
 
@@ -120,7 +122,7 @@ MONSTER.Common.endScreen = function(obj)
 
     var star_w = stars[0].width + Math.round(stars[0].height * 0.1);
 
-    for (var i = 0; i < stars.length; i++) {
+    for (i = 0; i < stars.length; i++) {
         stars[i].position.x = i * star_w;
 
         stars_box.addChild(stars[i]);
@@ -318,10 +320,10 @@ MONSTER.Common.secure_answer_size = function(text_obj, sizes, max_size)
             for (var i = 0; i < len; i++) {
                 if (text_obj.text[i] == ' '
                     && (i - last_break_idx > continous_len)) {
-                        last_break_idx = i;
-                        text_obj.text = MONSTER.Utils.replace_at(
-                                text_obj.text, i, '\n');
-                        breaks_cnt--;
+                    last_break_idx = i;
+                    text_obj.text = MONSTER.Utils.replace_at(
+                        text_obj.text, i, '\n');
+                    breaks_cnt--;
                 }
 
                 if (breaks_cnt === 0) {
@@ -430,14 +432,14 @@ MONSTER.Common.sendResults = function(obj)
         url: "/api/local/users/results",
         contentType: "application/json",
         data: JSON.stringify(
-        {
-            dataset_id: obj.game.data.dataset_id,
-            email: obj.game.data.email,
-            mark: obj.game.pct,
-            words_learned: obj.game.learned,
-            to_repeat: obj.game.to_repeat,
-            game: obj.ID
-        }),
+            {
+                dataset_id: obj.game.data.dataset_id,
+                email: obj.game.data.email,
+                mark: obj.game.pct,
+                words_learned: obj.game.learned,
+                to_repeat: obj.game.to_repeat,
+                game: obj.ID
+            }),
         dataType: "json"
     }).success(function(msg) {
         obj.info.text = MONSTER.Common.trans(

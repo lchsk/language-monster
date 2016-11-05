@@ -24,7 +24,6 @@ MONSTER.Game = function(fps)
     this.max_rounds = 20;
 
     for (var i = 0; i < this.games.length; i++) {
-        var game_ = this.games[i];
         this.game_tmp[game] = null;
     }
 
@@ -226,7 +225,6 @@ MONSTER.Game.prototype.resize = function()
 {
     this.resolutionOK = false;
     var width = this.parent.width();
-    var height = this.parent.height();
 
     // Size of the game screen
     this.width = 0;

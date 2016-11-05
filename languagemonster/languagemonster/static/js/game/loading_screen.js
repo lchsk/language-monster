@@ -96,13 +96,13 @@ MONSTER.LoadingScreen = function(game)
     this.loading_bar.endFill();
 
     this.top_bar_text_pos = {
-      'y' : 0.5 * this.game.height - 0.5 * this.top_bar_text.height,
-      'x' : 0.5 * this.game.width - 0.5 * this.top_bar_text.width
+        'y': 0.5 * this.game.height - 0.5 * this.top_bar_text.height,
+        'x': 0.5 * this.game.width - 0.5 * this.top_bar_text.width
     };
 
     this.top_bar_loading_text_pos = {
-      'y' : 0.7 * this.game.height - 0.5 * this.top_bar_loading_text.height,
-      'x' : 0.5 * this.game.width - 0.5 * this.top_bar_loading_text.width
+        'y': 0.7 * this.game.height - 0.5 * this.top_bar_loading_text.height,
+        'x': 0.5 * this.game.width - 0.5 * this.top_bar_loading_text.width
     };
 
     this.top_bar_text.position.y = this.top_bar_text_pos.y;
@@ -167,7 +167,6 @@ MONSTER.LoadingScreen.prototype.start_loading = function() {
 
 MONSTER.LoadingScreen.prototype.init = function()
 {
-    var context = this;
     this.game.background.clear();
     this.game.view.removeChildren();
 

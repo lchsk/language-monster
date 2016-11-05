@@ -1,6 +1,5 @@
 MONSTER.SpaceGame = function(game)
 {
-    var that = this;
     this.ID = 'space';
     game.tutorial = 'modal-tut-space';
 
@@ -72,8 +71,8 @@ MONSTER.SpaceGame = function(game)
     this.top_bar_text = new PIXI.Text("", this.sizes['36']);
 
     this.top_bar_y = {
-      'show' : 0.18 * this.game.height,
-      'hide' : - this.top_bar_text.height
+        'show': 0.18 * this.game.height,
+        'hide': - this.top_bar_text.height
     };
 
     this.top_bar_text.position.y = this.top_bar_y.hide;
@@ -144,8 +143,6 @@ MONSTER.SpaceGame.prototype.update = function()
 
 MONSTER.SpaceGame.prototype.init = function()
 {
-    var context = this;
-
     var FRAME_SZ = 78;
     var FRAMES = 6;
 

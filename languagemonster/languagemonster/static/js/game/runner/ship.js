@@ -12,12 +12,12 @@ MONSTER.RunnerGame.prototype.moveShip = function()
     }
 
     if (this.state === this.State.RUNNING) {
-         if (MONSTER.Key.isDown(MONSTER.Key.DOWN)) {
+        if (MONSTER.Key.isDown(MONSTER.Key.DOWN)) {
             this.state = this.State.SLIDING;
             this.ship.rotation = 0.75 * 2.0 * MONSTER.Const.PI;
             this.ship.gotoAndStop(1);
             this.ship.position.y = this.slide_y;
-         }
+        }
     }
 
     if (this.state === this.State.SLIDING) {
