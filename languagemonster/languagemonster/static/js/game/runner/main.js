@@ -108,7 +108,7 @@ MONSTER.RunnerGame = function(game)
     this.state = this.State.RUNNING;
     this.JUMP_TIME = 600.0;
 
-    this.assets = objectValues(this.urls);
+    this.assets = MONSTER.Utils.objectValues(this.urls);
 
     this.init();
 };

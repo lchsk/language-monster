@@ -98,7 +98,7 @@ MONSTER.SpaceGame = function(game)
 
     this.acceleration = 0.003;
 
-    this.assets = objectValues(this.urls);
+    this.assets = MONSTER.Utils.objectValues(this.urls);
 
     this.init();
 };

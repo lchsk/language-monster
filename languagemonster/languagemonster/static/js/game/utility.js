@@ -34,21 +34,6 @@ function convertTo2D(array_1d)
     return ret;
 }
 
-function objectValues(obj)
-{
-    var result = [];
-
-    for (var key in obj)
-    {
-        if (obj.hasOwnProperty(key))
-        {
-            result.push(obj[key]);
-        }
-    }
-
-    return result;
-}
-
 MONSTER.Const = function() {};
 
 MONSTER.Const.PI = 3.14159265359;
@@ -113,7 +98,19 @@ MONSTER.linear = function(x, x_min, x_max, y_min, y_max)
     return (x / (x_max - x_min)) * (y_max - y_min) + y_min;
 };
 
-MONSTER.Utils = function() {
+MONSTER.Utils = function() {};
+
+MONSTER.Utils.objectValues = function(obj)
+{
+    var result = [];
+
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            result.push(obj[key]);
+        }
+    }
+
+    return result;
 };
 
 // Change character in a string given an index
