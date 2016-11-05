@@ -107,7 +107,7 @@ MONSTER.RunnerGame = function(game)
     };
 
     this.state = this.State.RUNNING;
-    this.JUMP_TIME = 700.0;
+    this.JUMP_TIME = 600.0;
 
     this.assets = objectValues(this.urls);
 
@@ -239,10 +239,13 @@ MONSTER.RunnerGame.prototype.init = function()
 
     for (var i = 0; i < FRAMES_RUN; i++) {
         var rect_run = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_RUN_H);
-        var rect_jump = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_JUMP_H);
-
         this.textures.push(new PIXI.Texture(panda_run, rect_run));
-        this.textures_jump.push(new PIXI.Texture(panda_jump, rect_jump));
+
+        if (i > 0) {
+            // Animation with 0th frame does not look good
+            var rect_jump = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_JUMP_H);
+            this.textures_jump.push(new PIXI.Texture(panda_jump, rect_jump));
+        }
     }
 
     this.ship = new PIXI.extras.MovieClip(this.textures);
