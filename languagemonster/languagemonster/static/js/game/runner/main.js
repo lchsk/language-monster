@@ -99,6 +99,15 @@ MONSTER.RunnerGame = function(game)
 
     this.acceleration = 0.003;
 
+    this.State = {
+        'RUNNING': 0,
+        'JUMPING': 1,
+        'FALLING': 2,
+        'SLIDING': 3
+    };
+
+    this.state = this.State.RUNNING;
+
     this.assets = objectValues(this.urls);
 
     this.init();
