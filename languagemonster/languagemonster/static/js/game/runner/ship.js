@@ -2,7 +2,7 @@ MONSTER.RunnerGame.prototype.moveShip = function()
 {
     var t = this.game.timeSinceLastFrame;
 
-    if (this.state == this.State.RUNNING) {
+    if (this.state === this.State.RUNNING) {
         if (MONSTER.Key.isUp(MONSTER.Key.UP)) {
             this.state = this.State.JUMPING;
             this.ship.textures = this.textures_jump;
@@ -16,7 +16,7 @@ MONSTER.RunnerGame.prototype.moveShip = function()
         }
     }
 
-    if (this.state == this.State.SLIDING) {
+    if (this.state === this.State.SLIDING) {
         this.slide_t += t;
 
         if (this.slide_t > 1200) {
@@ -26,19 +26,17 @@ MONSTER.RunnerGame.prototype.moveShip = function()
             this.ship.play();
             this.ship.position.y = this.original_y;
         }
-    } else if (this.state == this.State.JUMPING) {
-        var jump_length = 700.0;
-
+    } else if (this.state === this.State.JUMPING) {
         this.ship.v_time += t;
 
-        var pct = MONSTER.Easing.easeOutQuart(this.ship.v_time / jump_length);
+        var pct = MONSTER.Easing.easeOutQuart(this.ship.v_time / this.JUMP_LENGTH);
 
         // Move upwards
         this.ship.position.y = Math.round(
             pct * (this.ship.stop_y - this.ship.start_y))
             + this.ship.start_y;
 
-        if (this.ship.v_time > jump_length) {
+        if (this.ship.v_time > this.JUMP_LENGTH) {
             // Falling now
 
             this.ship.v_time = 0.0;
@@ -47,13 +45,14 @@ MONSTER.RunnerGame.prototype.moveShip = function()
         }
     }
 
-    if (this.state == this.State.FALLING
+    if (this.state === this.State.FALLING
         && this.ship.position.y < this.original_y) {
         // Move downwards
+
         this.ship.position.y += t * 0.3;
     }
 
-    if (this.state == this.State.FALLING
+    if (this.state === this.State.FALLING
         && this.ship.position.y >= this.original_y) {
         // Back on the ground
 

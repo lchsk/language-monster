@@ -107,6 +107,7 @@ MONSTER.RunnerGame = function(game)
     };
 
     this.state = this.State.RUNNING;
+    this.JUMP_LENGTH = 700.0;
 
     this.assets = objectValues(this.urls);
 
