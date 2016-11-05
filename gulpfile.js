@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 
-var jshint = require('gulp-jshint');
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -18,7 +17,7 @@ var scss_dir = static_dir + 'scss/';
 gulp.task('lint', function() {
     return gulp.src([js_dir + '**/*.js', '!' + js_dir + 'build/**/*.js'])
         .pipe(eslint())
-        .pipe(jshint.reporter('default'));
+        .pipe(eslint.format());
 });
 
 gulp.task('scss_app', function() {
