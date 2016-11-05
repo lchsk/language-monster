@@ -1,24 +1,3 @@
-// Converts 1-dimensional array, eg. [dog, perro, cat, gato]
-// to 2-dimensional, eg. [[dog, perro], [cat, cato]]
-function convertTo2D(array_1d)
-{
-    // input array must have even number of elements
-    if (array_1d.length % 2 !== 0) return false;
-
-    var ret = [];
-
-    for (var i = 0; i < array_1d.length - 1; i += 2) {
-        var e1 = array_1d[i];
-        var e2 = array_1d[i + 1];
-
-        var tmp = [e1, e2];
-
-        ret.push(tmp);
-    }
-
-    return ret;
-}
-
 MONSTER.Const = function() {};
 
 MONSTER.Const.PI = 3.14159265359;
