@@ -183,7 +183,7 @@ MONSTER.RunnerGame.prototype.init = function()
 
     var far_background = PIXI.Texture.fromImage(this.urls.far_background);
     var background = PIXI.Texture.fromImage(this.urls.background);
-    var trees = PIXI.Texture.fromImage(this.urls.trees);
+    var tree = PIXI.Texture.fromImage(this.urls.trees);
     var foreground = PIXI.Texture.fromImage(this.urls.foreground);
     var ground = PIXI.Texture.fromImage(this.urls.ground);
 
@@ -198,8 +198,8 @@ MONSTER.RunnerGame.prototype.init = function()
     ];
 
     trees = [
-        new PIXI.Sprite(trees),
-        new PIXI.Sprite(trees)
+        new PIXI.Sprite(tree),
+        new PIXI.Sprite(tree)
     ];
 
     foregrounds = [
@@ -207,7 +207,7 @@ MONSTER.RunnerGame.prototype.init = function()
         new PIXI.Sprite(foreground)
     ];
 
-    ground = [
+    grounds = [
         new PIXI.Sprite(ground),
         new PIXI.Sprite(ground)
     ];
@@ -216,7 +216,7 @@ MONSTER.RunnerGame.prototype.init = function()
         far_backgrounds,
         backgrounds,
         trees,
-        ground,
+        grounds,
         foregrounds
     ];
 
@@ -229,10 +229,10 @@ MONSTER.RunnerGame.prototype.init = function()
     trees[0].position.x = 0;
     trees[1].position.x = 800;
 
-    ground[0].position.x = 0;
-    ground[0].position.y = 450 - 64;
-    ground[1].position.x = 800;
-    ground[1].position.y = 450 - 64;
+    grounds[0].position.x = 0;
+    grounds[0].position.y = 450 - 64;
+    grounds[1].position.x = 800;
+    grounds[1].position.y = 450 - 64;
 
     foregrounds[0].position.x = 0;
     foregrounds[0].position.y = 450 - 195;
@@ -293,8 +293,8 @@ MONSTER.RunnerGame.prototype.init = function()
 
     this.box.box.position.x = this.result_screen_x.right;
 
-    this.game.view.addChild(ground[0]);
-    this.game.view.addChild(ground[1]);
+    this.game.view.addChild(grounds[0]);
+    this.game.view.addChild(grounds[1]);
 
     this.game.view.addChild(this.ship);
 
