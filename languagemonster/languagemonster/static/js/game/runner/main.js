@@ -107,7 +107,7 @@ MONSTER.RunnerGame = function(game)
     };
 
     this.state = this.State.RUNNING;
-    this.JUMP_LENGTH = 700.0;
+    this.JUMP_TIME = 700.0;
 
     this.assets = objectValues(this.urls);
 
@@ -277,7 +277,6 @@ MONSTER.RunnerGame.prototype.init = function()
 
     this.original_y = 0.71 * this.game.height;
     this.slide_y = 0.82 * this.game.height;
-    this.slide_t = 0;
 
     this.ship.position.x = 0.2 * this.game.width;
     this.ship.position.y = start_y;
