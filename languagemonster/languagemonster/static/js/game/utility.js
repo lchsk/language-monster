@@ -1,18 +1,3 @@
-function shuffle(array)
-{
-    var m = array.length, t, i;
-
-    while (m) {
-        i = Math.floor(Math.random() * m--);
-
-        t = array[m];
-        array[m] = array[i];
-        array[i] = t;
-    }
-
-    return array;
-}
-
 // Converts 1-dimensional array, eg. [dog, perro, cat, gato]
 // to 2-dimensional, eg. [[dog, perro], [cat, cato]]
 function convertTo2D(array_1d)
@@ -111,6 +96,21 @@ MONSTER.Utils.objectValues = function(obj)
     }
 
     return result;
+};
+
+MONSTER.Utils.shuffle = function(array)
+{
+    var m = array.length, t, i;
+
+    while (m) {
+        i = Math.floor(Math.random() * m--);
+
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+    }
+
+    return array;
 };
 
 // Change character in a string given an index

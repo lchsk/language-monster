@@ -172,7 +172,8 @@ MONSTER.Common.getWordSet = function(game_screen)
     game_screen.choices = [];
     game_screen.choices.push(game_screen.answer);
 
-    shuffle(game.all);
+    // TODO: Check if it makes a difference
+    MONSTER.Utils.shuffle(game.all);
 
     for (var i = 0; i < game.all.length; i++) {
         if (game.all[i].id != game_screen.current_pair.id) {
@@ -184,7 +185,7 @@ MONSTER.Common.getWordSet = function(game_screen)
         }
     }
 
-    game_screen.choices = shuffle(game_screen.choices);
+    game_screen.choices = MONSTER.Utils.shuffle(game_screen.choices);
 
     if (game_screen.choices.length != 4) {
         throw "Not enough choices";
