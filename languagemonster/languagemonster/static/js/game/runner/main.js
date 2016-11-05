@@ -117,26 +117,6 @@ MONSTER.RunnerGame = function(game)
 MONSTER.RunnerGame.prototype = Object.create(MONSTER.AbstractScreen.prototype);
 MONSTER.RunnerGame.prototype.constructor = MONSTER.RunnerGame;
 
-MONSTER.RunnerGame.prototype._parallax = function(delta) {
-    for (var i = 0; i < this.parallax.length; i++) {
-        var sprites = this.parallax[i];
-        var speed = this.parallax_speed[i];
-
-        for (var j = 0; j < sprites.length; j++) {
-            var bg = sprites[j];
-
-            bg.position.x -= speed * delta;
-
-            if (bg.position.x <= -800) {
-                var shifted_bg = sprites.shift();
-                shifted_bg.position.x = 800;
-
-                sprites.push(shifted_bg);
-            }
-        }
-    }
-};
-
 MONSTER.RunnerGame.prototype.update = function()
 {
     MONSTER.AbstractScreen.prototype.update.call(this);
