@@ -57,33 +57,33 @@ $(document).ready(function() {
     });
 
     // admin pages
-    var get_words = function()
-    {
-        var items = $('tr.data_item');
-        var d = {};
+    // var get_words = function()
+    // {
+    //     var items = $('tr.data_item');
+    //     var d = {};
 
-        for (var i = 0; i < items.length; i++)
-        {
-            var tmp = {};
-            var id = items[i].id;
-            var save = $('#' + id).find('input.save').first();
-            var base = $('#' + id).find('input.base').first();
-            var target = $('#' + id).find('input.target').first();
+    //     for (var i = 0; i < items.length; i++)
+    //     {
+    //         var tmp = {};
+    //         var id = items[i].id;
+    //         var save = $('#' + id).find('input.save').first();
+    //         var base = $('#' + id).find('input.base').first();
+    //         var target = $('#' + id).find('input.target').first();
 
-            if (save.length == 1)
-                tmp.save = save[0].checked;
+    //         if (save.length == 1)
+    //             tmp.save = save[0].checked;
 
-            if (base.length == 1)
-                tmp.base = base[0].value;
+    //         if (base.length == 1)
+    //             tmp.base = base[0].value;
 
-            if (target.length == 1)
-                tmp.target = target[0].value;
+    //         if (target.length == 1)
+    //             tmp.target = target[0].value;
 
-            d[id] = tmp;
-        }
+    //         d[id] = tmp;
+    //     }
 
-        return d;
-    };
+    //     return d;
+    // };
 
     // var save_edit_words_form = function(words, save_link, redirect_link)
     // {
