@@ -32,7 +32,7 @@ function setupAjax()
 
 $(document).ready(function() {
     // Used in admin pages
-    $('#btn-unselect-zero').click(function(event) {
+    $('#btn-unselect-zero').click(function() {
         $('.data_item').each(function() {
             var pop = $(this).find('.pop').html().trim();
 
@@ -44,7 +44,7 @@ $(document).ready(function() {
     });
 
     // Used in admin pages
-    $('#selectall').click(function(event) {
+    $('#selectall').click(function() {
         if(this.checked) {
             $('.checkbox').each(function() {
                 this.checked = true;
@@ -166,14 +166,14 @@ $(document).ready(function() {
             url: '/languages/error',
             data: { 'json': JSON.stringify(d) }
         })
-          .success(function( msg )
+          .success(function()
           {
               $('#modal-report-error .alert').hide();
               $('#form-report-error-div').hide();
               $('#form-report-alert-success').fadeIn();
 
           })
-          .error(function(msg){
+          .error(function(){
               $('#modal-report-error .alert').hide();
               $('#form-report-alert-failure').fadeIn();
           });

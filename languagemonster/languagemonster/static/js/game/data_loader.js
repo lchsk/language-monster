@@ -24,7 +24,7 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
         crossDomain: false,
         timeout: 15000,
         url: "/api/local/words/" + this.dataset_id + "/" + this.email,
-        error: function(x, t, m) {
+        error: function(x, t) {
             that.success = false;
             that.error_code = t;
 

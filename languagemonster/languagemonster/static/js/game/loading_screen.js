@@ -133,7 +133,7 @@ MONSTER.LoadingScreen = function(game)
             }
         }
     }
-    this.loader.on('progress', function(data) {
+    this.loader.on('progress', function() {
         that.loading_bar_pos_x
             = Math.round(that.loader.progress / 100.0 * that.game.width);
     });

@@ -245,17 +245,17 @@ MONSTER.Common.addUI = function(game)
 
     var tutorial_id = game.tutorial;
 
-    btn_info.click = function(d)
+    btn_info.click = function()
     {
         MONSTER.Common._showTutorial(game, tutorial_id);
     };
 
-    btn_info.mouseover = function(d)
+    btn_info.mouseover = function()
     {
         document.body.style.cursor = 'pointer';
     };
 
-    btn_info.mouseout = function(d)
+    btn_info.mouseout = function()
     {
         document.body.style.cursor = 'default';
     };
@@ -418,7 +418,7 @@ MONSTER.Common.createButton = function(
     secureSize(width);
     b.addChild(text);
 
-    b.click = function(d)
+    b.click = function()
     {
         b.clear();
         b.beginFill(context.button_colors.click);
@@ -427,7 +427,7 @@ MONSTER.Common.createButton = function(
         onclick();
     };
 
-    b.mouseover = function(d)
+    b.mouseover = function()
     {
         b.clear();
         b.beginFill(context.button_colors.hover);
@@ -436,7 +436,7 @@ MONSTER.Common.createButton = function(
         document.body.style.cursor = 'pointer';
     };
 
-    b.mouseout = function(d)
+    b.mouseout = function()
     {
         b.clear();
         b.beginFill(context.button_colors.active);
@@ -466,7 +466,7 @@ MONSTER.Common.sendResults = function(obj)
                 game: obj.ID
             }),
         dataType: "json"
-    }).success(function(msg) {
+    }).success(function() {
         obj.info.text = MONSTER.Common.trans(
             "Results were sent",
             window.translations);
@@ -484,7 +484,7 @@ MONSTER.Common.sendResults = function(obj)
         obj.game.view.addChild(obj.b);
         obj.b.interactive = true;
 
-    }).error(function(msg) {
+    }).error(function() {
         obj.info.text = MONSTER.Common.trans(
             "Error when sending results",
             window.translations);
