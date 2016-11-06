@@ -162,9 +162,9 @@ $(document).ready(function() {
         setupAjax();
 
         $.ajax({
-          method: "POST",
-          url: '/languages/error',
-          data: { 'json': JSON.stringify(d) }
+            method: "POST",
+            url: '/languages/error',
+            data: { 'json': JSON.stringify(d) }
         })
           .success(function( msg )
           {
