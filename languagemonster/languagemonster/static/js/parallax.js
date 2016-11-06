@@ -1,6 +1,6 @@
 $(document).ready(function(){
     // cache the window object
-    $window = $(window);
+    var $window = $(window);
 
     $('section[data-type="background"]').each(function(){
         // declare the variable to affect the defined data-type

@@ -1,9 +1,9 @@
 MONSTER.Common = function(){};
 
-MONSTER.Common.restart = function(obj)
-{
+// MONSTER.Common.restart = function(obj)
+// {
 
-};
+// };
 
 MONSTER.Common.correct = function(game_screen)
 {
