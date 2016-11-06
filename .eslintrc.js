@@ -8,6 +8,9 @@ module.exports = {
     },
     "globals": {
         "MONSTER": true,
-        "PIXI": true
+        "PIXI": true,
+        "$": true,
+        "jQuery": true,
+        "smoothScroll": true
     }
 };
