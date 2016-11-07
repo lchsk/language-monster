@@ -103,7 +103,7 @@ MONSTER.SpaceGame.prototype.createAnswer = function(t, id)
 
         text.position.y = ry;
         text.anchor.x = text.anchor.y = 0.5;
-        context.game.view.addChild(text);
+        context.game.background.addChild(text);
 
         var rect_ = new PIXI.Rectangle(
             rx - text.width / 2,

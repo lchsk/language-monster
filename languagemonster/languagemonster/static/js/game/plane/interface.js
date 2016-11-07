@@ -86,7 +86,7 @@ MONSTER.PlaneGame.prototype.createAnswer = function(t, id)
         text.position.y = Math.floor(Math.random() * r.height + r.y);
 
         text.anchor.x = text.anchor.y = 0.5;
-        context.game.view.addChild(text);
+        context.game.background.addChild(text);
 
         var item_ = {
             'word' : t,
