@@ -151,8 +151,8 @@ MONSTER.SpaceGame.prototype.init = function()
 
     MONSTER.Common.fillBackground(this, '0x2d98a9');
 
-    var ocean_t = PIXI.Texture.fromImage(this.urls.ocean);
-    var clouds_t = PIXI.Texture.fromImage(this.urls.clouds);
+    var ocean_t = PIXI.Texture.fromImage(this.urls.space_ocean);
+    var clouds_t = PIXI.Texture.fromImage(this.urls.space_clouds);
 
     var ocean = [
         new PIXI.Sprite(ocean_t),
@@ -182,9 +182,9 @@ MONSTER.SpaceGame.prototype.init = function()
 
     clouds[1].position.x = 800;
 
-    var plane = PIXI.BaseTexture.fromImage(this.urls.plane);
-    var plane_left = PIXI.BaseTexture.fromImage(this.urls.plane_left);
-    var plane_right = PIXI.BaseTexture.fromImage(this.urls.plane_right);
+    var plane = PIXI.BaseTexture.fromImage(this.urls.space_plane);
+    var plane_left = PIXI.BaseTexture.fromImage(this.urls.space_plane_left);
+    var plane_right = PIXI.BaseTexture.fromImage(this.urls.space_plane_right);
 
     var textures = [];
     var textures_left = [];

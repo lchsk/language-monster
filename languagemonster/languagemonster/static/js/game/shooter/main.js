@@ -175,10 +175,10 @@ MONSTER.ShooterGame.prototype.init = function()
 
     MONSTER.Common.hideCursor();
 
-    var background_t = PIXI.Texture.fromImage(this.urls.background);
-    var clouds_t = PIXI.Texture.fromImage(this.urls.clouds);
-    var middle_t = PIXI.Texture.fromImage(this.urls.middle);
-    var foreground_t = PIXI.Texture.fromImage(this.urls.foreground);
+    var background_t = PIXI.Texture.fromImage(this.urls.shooter_background);
+    var clouds_t = PIXI.Texture.fromImage(this.urls.shooter_clouds);
+    var middle_t = PIXI.Texture.fromImage(this.urls.shooter_middle);
+    var foreground_t = PIXI.Texture.fromImage(this.urls.shooter_foreground);
 
     var background = [
         new PIXI.Sprite(background_t),
@@ -232,9 +232,9 @@ MONSTER.ShooterGame.prototype.init = function()
     foreground[0].position.y = 450 - 320;
     foreground[1].position.y = 450 - 320;
 
-    this.crosshair_t = PIXI.Texture.fromImage(this.urls.crosshair);
+    this.crosshair_t = PIXI.Texture.fromImage(this.urls.shooter_crosshair);
 
-    var snowball_t = PIXI.Texture.fromImage(this.urls.snowball);
+    var snowball_t = PIXI.Texture.fromImage(this.urls.shooter_snowball);
 
     this.snowball = {
         'sprite': new PIXI.Sprite(snowball_t),

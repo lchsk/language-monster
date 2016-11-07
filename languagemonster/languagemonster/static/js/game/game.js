@@ -45,40 +45,40 @@ MONSTER.Game = function(fps)
     this.assets = {
         'simple': {},
         'runner': {
-            'run': '/static/images/games/runner/panda_run.png',
-            'jump': '/static/images/games/runner/panda_jump.png',
-            'far_background': '/static/images/games/runner/far_background.png',
-            'background': '/static/images/games/runner/background.png',
-            'trees': '/static/images/games/runner/trees.png',
-            'foreground': '/static/images/games/runner/foreground.png',
-            'ground': '/static/images/games/runner/ground.png'
+            'runner_run': '/static/images/games/runner/panda_run.png',
+            'runner_jump': '/static/images/games/runner/panda_jump.png',
+            'runner_far_background': '/static/images/games/runner/far_background.png',
+            'runner_background': '/static/images/games/runner/background.png',
+            'runner_trees': '/static/images/games/runner/trees.png',
+            'runner_foreground': '/static/images/games/runner/foreground.png',
+            'runner_ground': '/static/images/games/runner/ground.png'
         },
         'shooter': {
-            'background' : '/static/images/games/shooter/background.png',
-            'clouds' : '/static/images/games/shooter/clouds.png',
-            'middle' : '/static/images/games/shooter/middle.png',
-            'foreground' : '/static/images/games/shooter/foreground.png',
-            'snowball' : '/static/images/games/shooter/snowball.png',
-            'crosshair' : '/static/images/games/shooter/crosshair.png'
+            'shooter_background' : '/static/images/games/shooter/background.png',
+            'shooter_clouds' : '/static/images/games/shooter/clouds.png',
+            'shooter_middle' : '/static/images/games/shooter/middle.png',
+            'shooter_foreground' : '/static/images/games/shooter/foreground.png',
+            'shooter_snowball' : '/static/images/games/shooter/snowball.png',
+            'shooter_crosshair' : '/static/images/games/shooter/crosshair.png'
         },
         'plane': {
-            'sky': '/static/images/games/plane/sky.png',
-            'background': '/static/images/games/plane/background.png',
-            'hills': '/static/images/games/plane/hills.png',
-            'valley': '/static/images/games/plane/valley.png',
-            'plane': '/static/images/games/plane/crazy_plane.png'
+            'plane_sky': '/static/images/games/plane/sky.png',
+            'plane_background': '/static/images/games/plane/background.png',
+            'plane_hills': '/static/images/games/plane/hills.png',
+            'plane_valley': '/static/images/games/plane/valley.png',
+            'plane_plane': '/static/images/games/plane/crazy_plane.png'
         },
         'space': {
-            'ocean': '/static/images/games/space/ocean.png',
-            'clouds': '/static/images/games/space/clouds.png',
-            'plane': '/static/images/games/space/plane.png',
-            'plane_left': '/static/images/games/space/plane_left.png',
-            'plane_right': '/static/images/games/space/plane_right.png'
+            'space_ocean': '/static/images/games/space/ocean.png',
+            'space_clouds': '/static/images/games/space/clouds.png',
+            'space_plane': '/static/images/games/space/plane.png',
+            'space_plane_left': '/static/images/games/space/plane_left.png',
+            'space_plane_right': '/static/images/games/space/plane_right.png'
         },
         'ui': {
-            'btn_info': '/static/images/games/information.png',
-            'star': '/static/images/games/star.png',
-            'dark_star': '/static/images/games/dark_star.png'
+            'ui_btn_info': '/static/images/games/information.png',
+            'ui_star': '/static/images/games/star.png',
+            'ui_dark_star': '/static/images/games/dark_star.png'
         }
     };
 

@@ -64,8 +64,8 @@ MONSTER.Common.endScreen = function(obj)
         MONSTER.Const.COLOURS["white"]
     );
 
-    var star_t = PIXI.Texture.fromImage(obj.game.assets.ui.star);
-    var dark_star_t = PIXI.Texture.fromImage(obj.game.assets.ui.dark_star);
+    var star_t = PIXI.Texture.fromImage(obj.game.assets.ui.ui_star);
+    var dark_star_t = PIXI.Texture.fromImage(obj.game.assets.ui.ui_dark_star);
 
     obj.game.pct = Math.round(obj.game.points / obj.game.all.length * 100);
 
@@ -236,7 +236,7 @@ MONSTER.Common.showCursor = function()
 
 MONSTER.Common.addUI = function(game)
 {
-    var btn_info = PIXI.Sprite.fromImage(game.assets.ui.btn_info);
+    var btn_info = PIXI.Sprite.fromImage(game.assets.ui.ui_btn_info);
     btn_info.scale.x = btn_info.scale.y = 0.65;
     btn_info.interactive = true;
 

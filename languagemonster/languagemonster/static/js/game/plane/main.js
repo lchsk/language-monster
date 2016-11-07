@@ -152,10 +152,10 @@ MONSTER.PlaneGame.prototype.init = function()
     this.game.background.clear();
     this.game.view.removeChildren();
 
-    var sky_t = PIXI.Texture.fromImage(this.urls.sky);
-    var background_t = PIXI.Texture.fromImage(this.urls.background);
-    var valley_t = PIXI.Texture.fromImage(this.urls.valley);
-    var hills_t = PIXI.Texture.fromImage(this.urls.hills);
+    var sky_t = PIXI.Texture.fromImage(this.urls.plane_sky);
+    var background_t = PIXI.Texture.fromImage(this.urls.plane_background);
+    var valley_t = PIXI.Texture.fromImage(this.urls.plane_valley);
+    var hills_t = PIXI.Texture.fromImage(this.urls.plane_hills);
 
     var sky = [new PIXI.Sprite(sky_t)];
     var background = [
@@ -206,7 +206,7 @@ MONSTER.PlaneGame.prototype.init = function()
 
     var textures = [];
 
-    var plane = PIXI.BaseTexture.fromImage(this.urls.plane);
+    var plane = PIXI.BaseTexture.fromImage(this.urls.plane_plane);
 
     var FRAMES = 5;
     var FRAME_W = 100;

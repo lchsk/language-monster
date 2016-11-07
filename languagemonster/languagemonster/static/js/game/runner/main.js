@@ -159,11 +159,11 @@ MONSTER.RunnerGame.prototype.init = function()
     this.game.background.clear();
     this.game.view.removeChildren();
 
-    var far_background = PIXI.Texture.fromImage(this.urls.far_background);
-    var background = PIXI.Texture.fromImage(this.urls.background);
-    var tree = PIXI.Texture.fromImage(this.urls.trees);
-    var foreground = PIXI.Texture.fromImage(this.urls.foreground);
-    var ground = PIXI.Texture.fromImage(this.urls.ground);
+    var far_background = PIXI.Texture.fromImage(this.urls.runner_far_background);
+    var background = PIXI.Texture.fromImage(this.urls.runner_background);
+    var tree = PIXI.Texture.fromImage(this.urls.runner_trees);
+    var foreground = PIXI.Texture.fromImage(this.urls.runner_foreground);
+    var ground = PIXI.Texture.fromImage(this.urls.runner_ground);
 
     var far_backgrounds = [
         new PIXI.Sprite(far_background),
@@ -232,8 +232,8 @@ MONSTER.RunnerGame.prototype.init = function()
     var FRAME_JUMP_H = 158;
     var FRAMES_RUN = 8;
 
-    var panda_run = PIXI.BaseTexture.fromImage(this.urls.run);
-    var panda_jump = PIXI.BaseTexture.fromImage(this.urls.jump);
+    var panda_run = PIXI.BaseTexture.fromImage(this.urls.runner_run);
+    var panda_jump = PIXI.BaseTexture.fromImage(this.urls.runner_jump);
 
     for (var i = 0; i < FRAMES_RUN; i++) {
         var rect_run = new PIXI.Rectangle(i * FRAME_W, 0, FRAME_W, FRAME_RUN_H);
