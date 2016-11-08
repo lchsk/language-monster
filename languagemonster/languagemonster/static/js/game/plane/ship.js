@@ -58,18 +58,17 @@ MONSTER.PlaneGame.prototype.moveShip = function()
 
 MONSTER.PlaneGame.prototype.checkCollisions = function()
 {
-    if (this.ship && ! this.hit)
-    {
+    if (this.ship && this.shipActive) {
         var left = 0;
 
-        for (var i = 0; i < this.answers.length; i++)
-        {
+        for (var i = 0; i < this.answers.length; i++) {
             var obj = this.answers[i];
 
-            if (Math.abs(obj.text.position.x - this.ship.position.x) < this.ship.width / 2 &&
-                Math.abs(obj.text.position.y - this.ship.position.y) < this.ship.height / 2
-            )
-            {
+            if (Math.abs(obj.text.position.x - this.ship.position.x)
+                < this.ship.width / 2
+                && Math.abs(obj.text.position.y - this.ship.position.y)
+                < this.ship.height / 2
+            ) {
                 this.hit = true;
                 this.shipActive = false;
                 this.ship.alpha = 0.5;
