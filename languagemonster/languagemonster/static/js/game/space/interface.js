@@ -49,11 +49,12 @@ MONSTER.SpaceGame.prototype.next_round = function()
     {
         // not the first round
 
-        this.game.tweens.push(new MONSTER.Tween(
-            this.box.box, 'position.x', this.result_screen_x.left, 1000));
-        setTimeout(function() {
-            ctx.activateShipAgain();
-        }, 1500);
+        this.game.tweens.push(
+            new MONSTER.Tween(
+                this.box.box, 'position.x', this.result_screen_x.left, 1000
+            )
+        );
+        this.time_to_reenable = 1500;
     }
 
     this.game.tweens.push(new MONSTER.Tween(
@@ -64,15 +65,6 @@ MONSTER.SpaceGame.prototype.next_round = function()
     this.createAnswer(this.choices[3], 3);
 
     this.hit = false;
-};
-
-MONSTER.SpaceGame.prototype.activateShipAgain = function()
-{
-    this.shipActive = true;
-
-    this.ship_normal.alpha
-        = this.ship_left.alpha
-        = this.ship_right.alpha = 1.0;
 };
 
 MONSTER.SpaceGame.prototype.createAnswer = function(t, id)

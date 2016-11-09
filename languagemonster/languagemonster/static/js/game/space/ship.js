@@ -108,21 +108,37 @@ MONSTER.SpaceGame.prototype.checkCollisions = function()
             if (obj.r.contains(this.ship.position.x, this.ship.position.y))
             {
                 this.hit = true;
+                this.shipActive = false;
+
+                this.ship_normal.alpha
+                    = this.ship_left.alpha
+                    = this.ship_right.alpha = 0.5;
 
                 this.moveOutOfScreen();
 
                 if (obj.word == this.answer)
                     MONSTER.Common.correct(this);
-                else {
-                    this.shipActive = false;
-
-                    this.ship_normal.alpha
-                        = this.ship_left.alpha
-                        = this.ship_right.alpha = 0.5;
-
+                else
                     MONSTER.Common.negative(this);
-                }
             }
         }
     }
+};
+
+MONSTER.SpaceGame.prototype.enableShip = function()
+{
+    this.shipActive = true;
+
+    this.ship_normal.alpha
+        = this.ship_left.alpha
+        = this.ship_right.alpha = 1.0;
+};
+
+MONSTER.SpaceGame.prototype.disableShip = function()
+{
+    this.shipActive = false;
+
+    this.ship_normal.alpha
+        = this.ship_left.alpha
+        = this.ship_right.alpha = 0.5;
 };

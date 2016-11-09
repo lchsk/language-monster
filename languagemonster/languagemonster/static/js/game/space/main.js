@@ -82,6 +82,8 @@ MONSTER.SpaceGame = function(game)
 
     this.urls = this.game.assets.space;
 
+    this.time_to_reenable = 0;
+
     // Current speed
     this.ship_v = 0.0;
 
@@ -118,8 +120,7 @@ MONSTER.SpaceGame.prototype.update = function()
 {
     MONSTER.AbstractScreen.prototype.update.call(this);
 
-    if ( ! this.hit)
-    {
+    if (! this.hit) {
         var delta = this.game.timeSinceLastFrame;
         this.moveShip();
 
@@ -138,6 +139,12 @@ MONSTER.SpaceGame.prototype.update = function()
 
         if (this.shipActive)
             this.checkCollisions();
+        else {
+            this.time_to_reenable -= delta;
+
+            if (this.time_to_reenable <= 0)
+                this.enableShip();
+        }
     }
 };
 
