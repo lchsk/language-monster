@@ -58,7 +58,7 @@ MONSTER.PlaneGame.prototype.moveShip = function()
 
 MONSTER.PlaneGame.prototype.checkCollisions = function()
 {
-    if (this.ship && this.shipActive) {
+    if (this.ship && ! this.hit) {
         var left = 0;
 
         for (var i = 0; i < this.answers.length; i++) {
@@ -70,8 +70,6 @@ MONSTER.PlaneGame.prototype.checkCollisions = function()
                 < this.ship.height / 2
             ) {
                 this.hit = true;
-                this.shipActive = false;
-                this.ship.alpha = 0.5;
                 this.moveOutOfScreen();
 
                 if (obj.word == this.answer)
@@ -89,8 +87,6 @@ MONSTER.PlaneGame.prototype.checkCollisions = function()
         {
             this.constant_answer_speed = true;
             this.hit = true;
-            this.shipActive = false;
-            this.ship.alpha = 0.5;
             this.moveOutOfScreen();
             MONSTER.Common.negative(this);
         }

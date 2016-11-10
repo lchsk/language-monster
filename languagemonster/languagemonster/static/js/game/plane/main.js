@@ -28,9 +28,6 @@ MONSTER.PlaneGame = function(game)
     // True durign processing of a hit
     this.hit = false;
 
-    // After hit ship is inactive for a while
-    this.shipActive = true;
-
     this.constant_answer_speed = false;
 
     this.sizes = MONSTER.getFonts(
@@ -142,8 +139,7 @@ MONSTER.PlaneGame.prototype.update = function()
             }
         }
 
-        if (this.shipActive)
-            this.checkCollisions();
+        this.checkCollisions();
     }
 };
 

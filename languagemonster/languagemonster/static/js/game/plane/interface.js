@@ -44,7 +44,6 @@ MONSTER.PlaneGame.prototype.next_round = function()
 
         this.game.tweens.push(new MONSTER.Tween(
             this.box.box, 'position.x', this.result_screen_x.left, 1000));
-        this.activateShipAgain();
     }
 
     this.game.tweens.push(new MONSTER.Tween(
@@ -55,12 +54,6 @@ MONSTER.PlaneGame.prototype.next_round = function()
     this.createAnswer(this.choices[3], 3);
 
     this.hit = false;
-};
-
-MONSTER.PlaneGame.prototype.activateShipAgain = function()
-{
-    this.shipActive = true;
-    this.ship.alpha = 1.0;
 };
 
 MONSTER.PlaneGame.prototype.createAnswer = function(t, id)
