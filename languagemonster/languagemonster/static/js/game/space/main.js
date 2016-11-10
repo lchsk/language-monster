@@ -216,9 +216,10 @@ MONSTER.SpaceGame.prototype.init = function()
     // Initiate
     this.ship = this.ship_normal;
     this.ship.play();
-    this.ship.position.x = this.game.width / 1.3;
-    this.ship_v = 3.0;
-    this.ship.rotation = Math.PI;
+    this.ship.position.x = this.game.width;
+    this.ship.position.y = this.ship.height;
+    this.ship_v = (this.max_v - this.min_v) / 2.0;
+    this.ship.rotation = 3.0 / 2.0 * Math.PI;
 
     this.game.view.addChild(this.top_bar);
 
