@@ -34,7 +34,12 @@ class SettingsView(AuthContextView):
 
         context['countries'] = countries
         context['games'] = process_games_list(
-            settings.GAMES,
+            {
+                game_name: game_def
+                for game_name, game_def in settings.GAMES.iteritems()
+                # Show all games in DEBUG mode
+                if game_def['prod'] or settings.DEBUG
+            },
             get_user_games(self._context.user.raw)
         )
         context['gender'] = dict(

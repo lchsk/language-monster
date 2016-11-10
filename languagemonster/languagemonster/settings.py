@@ -116,29 +116,34 @@ GAMES_DEFAULT_WORD_SETS_COUNT = 10
 
 GAMES = {
     'space': {
-        'available' : True,
-        'name' : _('game_space_game'),
-        'image' : 'space2.png'
+        'available': True,
+        'name': _('game_space_game'),
+        'image': 'space2.png',
+        'prod': True,
     },
     'simple': {
-        'available' : True,
-        'name' : _('game_four_buttons'),
-        'image' : 'simple.png'
+        'available': True,
+        'name': _('game_four_buttons'),
+        'image': 'simple.png',
+        'prod': False,
     },
     'plane': {
-        'available' : True,
-        'name' : _('game_crazy_plane'),
-        'image' : 'plane.png'
+        'available': True,
+        'name': _('game_crazy_plane'),
+        'image': 'plane.png',
+        'prod': True,
     },
     'runner': {
-        'available' : True,
-        'name' : _('game_bunny_runner'),
-        'image' : 'runner.png'
+        'available': True,
+        'name': _('game_bunny_runner'),
+        'image': 'runner.png',
+        'prod': True,
     },
     'shooter': {
-        'available' : True,
-        'name' : _('game_word_sniper'),
-        'image' : 'shooter.png'
+        'available': True,
+        'name': _('game_word_sniper'),
+        'image': 'shooter.png',
+        'prod': True,
     }
 }
 
