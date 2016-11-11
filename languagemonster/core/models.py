@@ -85,9 +85,7 @@ class MonsterUser(models.Model):
         verbose_name_plural = 'Monster Users'
 
     def __unicode__(self):
-        return u'{email}'.format(
-            email=self.user.email,
-        )
+        return u'MonsterUser id: {}'.format(self.user.id)
 
 class MonsterUserGame(models.Model):
     monster_user = models.ForeignKey(
