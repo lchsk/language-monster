@@ -35,18 +35,14 @@ MONSTER.SpaceGame.prototype.next_round = function()
     this.answers.length = 0;
     this.game.tweens.length = 0;
 
-    var ctx = this;
-
-    if ( ! MONSTER.Common.getWordSet(this))
-    {
+    if ( ! MONSTER.Common.getWordSet(this)) {
         return MONSTER.Common.endScreen(this);
     }
 
     this.top_bar_text.text = this.question;
     this.top_bar_text.position.x = (this.game.width - this.top_bar_text.width) / 2;
 
-    if (this.hit)
-    {
+    if (this.hit) {
         // not the first round
 
         this.game.tweens.push(
@@ -57,8 +53,12 @@ MONSTER.SpaceGame.prototype.next_round = function()
         this.time_to_reenable = 1500;
     }
 
-    this.game.tweens.push(new MONSTER.Tween(
-        this.top_bar, 'position.y', this.top_bar_y.show, 1000));
+    this.game.tweens.push(
+        new MONSTER.Tween(
+            this.top_bar, 'position.y', this.top_bar_y.show, 1000
+        )
+    );
+
     this.createAnswer(this.choices[0], 0);
     this.createAnswer(this.choices[1], 1);
     this.createAnswer(this.choices[2], 2);
