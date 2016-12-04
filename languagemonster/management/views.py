@@ -654,7 +654,6 @@ class ImportSetView(SuperUserContextView):
 
         return context
 
-# TODO: to fix?
 class DoImportSet(SuperUserContextView):
     template_name = 'app/management/index.html'
 
@@ -682,24 +681,14 @@ class DoImportSet(SuperUserContextView):
             ).first()
 
             pair = metadata['pair']
-
-            base = Language.objects.filter(acronym=pair['base']).first()
-            target = Language.objects.filter(acronym=pair['target']).first()
-
-            language_pair = LanguagePair.objects.filter(
-                base_language=base,
-                target_language=target
-            ).first()
+            language_pair = '{}_{}'.format(pair['base'], pair['target'])
 
             if set_exists:
                 error = 'Data set ({0}) already exists'.format(
                     metadata['name_en']
                 )
             elif not language_pair:
-                error = 'Language Pair does not exist ({} -> {})'.format(
-                    pair['base'],
-                    pair['target']
-                )
+                error = 'Language Pair does not exist ()'.format(language_pair)
             else:
                 # Validation passed: actually adding data
 
@@ -710,7 +699,7 @@ class DoImportSet(SuperUserContextView):
                     name_base=metadata['name_base'],
                     name_en=metadata['name_en'],
                     name_target=metadata['name_target'],
-                    pair=language_pair,
+                    lang_pair=language_pair,
                     pos=metadata['pos'],
                     reversed_set=metadata['reversed_set'],
                     simple_dataset=metadata['simple_dataset'],
@@ -721,7 +710,7 @@ class DoImportSet(SuperUserContextView):
 
                 imported_ds.save()
 
-                datasets = DataSet.objects.filter(pair=language_pair).all()
+                datasets = DataSet.objects.filter(lang_pair=language_pair).all()
 
                 # Checking if word already exists in the DB
 
@@ -748,7 +737,6 @@ class DoImportSet(SuperUserContextView):
                         wp_obj = WordPair(
                             base=wp['ebase'],
                             target=wp['etarget'],
-                            pair=language_pair
                         )
                         wp_obj.save()
 
@@ -776,119 +764,6 @@ class DoImportSet(SuperUserContextView):
 
         return self.redirect('management:index')
 
-# TODO: To be removed?
-@require_superuser
-def do_import_set(request):
-    """
-        Save imported set (metadata + words)
-    """
-
-    c = get_context(request)
-
-    error = None
-    remote_data = None
-
-    try:
-        remote_data = json.loads(request.POST['data'])
-        words = remote_data['words']
-        metadata = remote_data['metadata']
-    except:
-        error = 'JSON invalid'
-
-    if not error:
-        set_exists = DataSet.objects.filter(
-            name_en=metadata['name_en']
-        ).first()
-
-        pair = metadata['pair']
-
-        base = Language.objects.filter(acronym=pair['base']).first()
-        target = Language.objects.filter(acronym=pair['target']).first()
-
-        language_pair = LanguagePair.objects.filter(
-            base_language=base,
-            target_language=target
-        ).first()
-
-        if set_exists:
-            error = 'Data set ({0}) already exists'.format(metadata['name_en'])
-        elif not language_pair:
-            error = 'Language Pair does not exist ({0} -> {0})'.format(
-                pair['base'],
-                pair['target']
-            )
-        else:
-            # Validation passed: actually adding data
-
-            imported_ds = DataSet(
-                from_exported_file=metadata['from_exported_file'],
-                icon=metadata['icon'],
-                learners=metadata['learners'],
-                name_base=metadata['name_base'],
-                name_en=metadata['name_en'],
-                name_target=metadata['name_target'],
-                pair=language_pair,
-                pos=metadata['pos'],
-                reversed_set=metadata['reversed_set'],
-                simple_dataset=metadata['simple_dataset'],
-                slug=metadata['slug'],
-                # it's better if it requires manual changing to visible
-                # visible=metadata['visible'],
-                visible=False,
-                word_count=metadata['word_count'],
-            )
-            imported_ds.save()
-
-            datasets = DataSet.objects.filter(
-                pair=language_pair
-            ).all()
-
-            # Checking if word already exists in the DB
-
-            for wp in words:
-
-                wp_obj = None
-
-                for ds in datasets:
-                    links = DS2WP.objects.filter(
-                        ds=ds
-                    )
-
-                    for link in links:
-                        if all((
-                            link.wp.base == wp['ebase'],
-                            link.wp.target == wp['etarget']
-                        )):
-                            wp_obj = link.wp
-                            break
-
-                    if wp_obj:
-                        break
-
-                if not wp_obj:
-                    # Word doesn't exist in the DB, we need to add it
-                    logger.info('adding word %s' % str(wp_obj))
-                    wp_obj = WordPair(
-                        base=wp['ebase'],
-                        target=wp['etarget'],
-                        pair=language_pair
-                    )
-                    wp_obj.save()
-
-                # Add new link
-                if wp_obj:
-                    logger.info('adding link %s' % str(wp_obj))
-                    new_link = DS2WP(
-                        ds=imported_ds,
-                        wp=wp_obj
-                    )
-                    new_link.save()
-
-    if error:
-        c['error'] = error
-        return render(request, "app/management/import.html", c)
-
-    return redirect(reverse('management:index'))
 
 class DanglingWordPairsView(SuperUserContextView):
     template_name = 'app/management/view_dangling_word_pairs.html'
