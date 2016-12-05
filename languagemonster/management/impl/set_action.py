@@ -11,7 +11,33 @@ def export_words(request, dataset_id, context):
     context['count'] = len(exported_values)
     context['data'] = json.dumps(exported_values)
 
-def export_set(request,  dataset_id, context):
+def export_metadata(ds):
+    return dict(
+        from_exported_file=True,
+        icon=ds.icon,
+        learners=ds.learners,
+        name_base=ds.name_base,
+        name_en=ds.name_en,
+        name_target=ds.name_target,
+        lang_pair=ds.lang_pair,
+        pos=ds.pos,
+        reversed_set=ds.reversed_set,
+        simple_dataset=ds.simple_dataset,
+        slug=ds.slug,
+        visible=ds.visible,
+        word_count=ds.word_count,
+    )
+
+def get_words_for_export(words):
+    return [
+        dict(
+            ebase=w.wp.base,
+            etarget=w.wp.target,
+        )
+        for w in words
+    ]
+
+def export_set(request, dataset_id, context):
     exported_values = _get_words_from_request(request, dataset_id)
     ds = DataSet.objects.filter(pk=dataset_id).first()
 

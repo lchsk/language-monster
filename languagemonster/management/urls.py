@@ -59,6 +59,11 @@ urlpatterns = [
         views.DoImportSet.as_view(),
         name='do_import_set',
     ),
+    url(
+        r'^do-export-all-sets/?$',
+        views.DoExportAllSets.as_view(),
+        name='do_export_all_sets',
+    ),
     url(r'^save-diff/(.*)$', views.save_diff, name='save_diff'),
 
     url(

@@ -43,6 +43,8 @@ from management.impl.set_action import (
     export_words,
     export_set,
     update_set,
+    get_words_for_export,
+    export_metadata,
 )
 
 from management.impl.util import parse_line
@@ -761,6 +763,31 @@ class DoImportSet(SuperUserContextView):
                 messages.WARNING,
                 'Success',
             )
+
+        return self.redirect('management:index')
+
+class DoExportAllSets(SuperUserContextView):
+    def get(self, *args, **kwargs):
+        datasets = DataSet.objects.all();
+
+        resp = []
+
+        for ds in datasets:
+            words = DS2WP.objects.filter(ds=ds).select_related('wp')
+
+            resp.append(dict(
+                words=get_words_for_export(words),
+                metadata=export_metadata(ds),
+            ))
+
+        for d in resp:
+            filename = u'{lang_pair}__{slug}.json'.format(
+                lang_pair=d['metadata']['lang_pair'],
+                slug=d['metadata']['slug'],
+            )
+
+            with open('./tmp/{}'.format(filename), 'w') as f:
+                f.write(json.dumps(d))
 
         return self.redirect('management:index')
 
