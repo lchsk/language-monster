@@ -682,8 +682,7 @@ class DoImportSet(SuperUserContextView):
                 name_en=metadata['name_en']
             ).first()
 
-            pair = metadata['pair']
-            language_pair = '{}_{}'.format(pair['base'], pair['target'])
+            language_pair = metadata['lang_pair']
 
             if set_exists:
                 error = 'Data set ({0}) already exists'.format(
