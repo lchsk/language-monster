@@ -712,44 +712,48 @@ class DoImportSet(SuperUserContextView):
 
                 imported_ds.save()
 
-                datasets = DataSet.objects.filter(lang_pair=language_pair).all()
+                all_lang_words = DS2WP.objects.filter(
+                    ds__lang_pair=language_pair
+                ).select_related('wp')
 
-                # Checking if word already exists in the DB
+                for word in words:
+                    wp_link = None
 
-                for wp in words:
-                    wp_obj = None
+                    for wp in all_lang_words:
+                        if (wp.wp.base == word['ebase']
+                            and wp.wp.target == word['etarget']
+                        ):
+                            # Already exists
 
-                    for ds in datasets:
-                        links = DS2WP.objects.filter(ds=ds)
-
-                        for link in links:
-                            if all((
-                                link.wp.base == wp['ebase'],
-                                link.wp.target == wp['etarget']
-                            )):
-                                wp_obj = link.wp
-                                break
-
-                        if wp_obj:
+                            wp_link = wp
                             break
 
-                    if not wp_obj:
-                        # Word doesn't exist in the DB, we need to add it
-                        logger.info('adding word %s' % str(wp_obj))
-                        wp_obj = WordPair(
-                            base=wp['ebase'],
-                            target=wp['etarget'],
-                        )
-                        wp_obj.save()
+                    if wp_link:
+                        # Add just a link
 
-                    # Add new link
-                    if wp_obj:
-                        logger.info('adding link %s' % str(wp_obj))
+                        logger.info('Adding link %s' % wp_link)
+
                         new_link = DS2WP(
                             ds=imported_ds,
-                            wp=wp_obj
+                            wp=wp_link.wp,
                         )
                         new_link.save()
+
+                    else:
+                        # Word doesn't exist in the DB, we need to add it
+
+                        wp_obj = WordPair(
+                            base=word['ebase'],
+                            target=word['etarget'],
+                        )
+
+                        logger.info('Inserting word %s' % wp_obj)
+
+                        new_link = DS2WP(
+                            ds=imported_ds,
+                            wp=wp_obj,
+                        )
+                        wp_obj.save()
 
         if error:
             messages.add_message(
