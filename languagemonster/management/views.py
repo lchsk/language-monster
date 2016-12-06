@@ -677,12 +677,13 @@ class DoImportSet(SuperUserContextView):
         except:
             error = 'JSON invalid'
 
+        language_pair = metadata['lang_pair']
+
         if not error:
             set_exists = DataSet.objects.filter(
-                name_en=metadata['name_en']
+                name_en=metadata['name_en'],
+                lang_pair=language_pair,
             ).first()
-
-            language_pair = metadata['lang_pair']
 
             if set_exists:
                 error = 'Data set ({0}) already exists'.format(
