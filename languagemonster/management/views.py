@@ -746,6 +746,7 @@ class DoImportSet(SuperUserContextView):
                             base=word['ebase'],
                             target=word['etarget'],
                         )
+                        wp_obj.save()
 
                         logger.info('Inserting word %s' % wp_obj)
 
@@ -753,7 +754,8 @@ class DoImportSet(SuperUserContextView):
                             ds=imported_ds,
                             wp=wp_obj,
                         )
-                        wp_obj.save()
+                        new_link.save()
+
 
         if error:
             messages.add_message(
