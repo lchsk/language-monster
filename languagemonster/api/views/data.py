@@ -62,7 +62,7 @@ class GetWords(MonsterUserAuthView):
 
 
 class LocalGetWords(LocalAPIAuthView):
-    def get(self, request, dataset_id, email):
+    def get(self, request, dataset_id, uri):
         filters = GetWordsFilters(data=self.request.query_params)
 
         if not filters.is_valid():
@@ -71,7 +71,7 @@ class LocalGetWords(LocalAPIAuthView):
             return self.failure('Invalid input', 400)
 
         try:
-            monster_user = MonsterUser.objects.get(user__email=email)
+            monster_user = MonsterUser.objects.get(uri=uri)
         except MonsterUser.DoesNotExist:
             return self.failure('Does not exist', 404)
 

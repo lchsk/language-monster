@@ -47,7 +47,7 @@ class MonsterUser(models.Model):
     # Number of data sets user is learning (in all languages)
     datasets = models.IntegerField(default=0)
 
-    # User's chosen address: /profile/uri
+    # User's unique public identifier
     uri = models.CharField(
         max_length=150,
         db_index=True,

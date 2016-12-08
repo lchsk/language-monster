@@ -145,4 +145,4 @@ class SaveResultsRequest(SaveResultsBase):
 
 # Called from JS
 class SaveResultsJSRequest(SaveResultsBase):
-    email = CharField(max_length=50)
+    email = CharField(max_length=150)

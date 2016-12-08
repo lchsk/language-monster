@@ -184,7 +184,8 @@ class PlayView(AuthContextView):
         context['pair'] = pair
         context['data'] = dict(
             dataset_id=str(dataset.id),
-            email=str(self._context.user.email),
+            # User's unique identifier
+            email=str(self._context.user.uri),
         )
 
         user_games = get_user_games(self._context.user.raw)

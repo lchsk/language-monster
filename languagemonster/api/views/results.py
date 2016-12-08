@@ -55,7 +55,7 @@ class LocalSaveResults(LocalAPIAuthView):
 
         try:
             monster_user = MonsterUser.objects.get(
-                user__email=input_data.validated_data['email']
+                uri=input_data.validated_data['email']
             )
         except MonsterUser.DoesNotExist:
             return self.failure('Does not exist', 404)
