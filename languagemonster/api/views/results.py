@@ -8,7 +8,7 @@ from vocabulary.impl.study import do_save_results
 
 from api.views.base import (
     MonsterUserAuthView,
-    LocalAPIAuthView,
+    PublicAPIAuthView,
 )
 
 from api.serializers import (
@@ -44,7 +44,7 @@ class SaveResults(MonsterUserAuthView):
         return self.success({})
 
 
-class LocalSaveResults(LocalAPIAuthView):
+class LocalSaveResults(PublicAPIAuthView):
     def post(self, request):
         input_data = SaveResultsJSRequest(data=request.data)
 

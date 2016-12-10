@@ -15,7 +15,7 @@ from api.serializers import (
 
 from api.views.base import (
     APIAuthView,
-    LocalAPIAuthView,
+    PublicAPIAuthView,
     MonsterUserAuthView,
 )
 
@@ -61,7 +61,7 @@ class GetWords(MonsterUserAuthView):
         return self.success(resp.data)
 
 
-class LocalGetWords(LocalAPIAuthView):
+class LocalGetWords(PublicAPIAuthView):
     def get(self, request, dataset_id, uri):
         filters = GetWordsFilters(data=self.request.query_params)
 

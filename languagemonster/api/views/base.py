@@ -24,16 +24,13 @@ class BaseAPIAuth(BaseAuthentication):
         self._token = token
 
 
-class LocalAPIAuth(BaseAuthentication):
+class PublicAPIAuth(BaseAuthentication):
     def authenticate(self, request):
-        remote_addr = request.META.get('REMOTE_ADDR')
-
-        if remote_addr not in settings.LOCAL_API_HOSTS:
-            logger.warning('Remote address not localhost: %s' % remote_addr)
-
-            raise AuthenticationFailed('Unauthorised')
-
-        logger.info('Remote address is local: %s' % remote_addr)
+        logger.info(
+            'Public api access, remote address: %s' % request.META.get(
+                'REMOTE_ADDR'
+            )
+        )
 
 
 class BaseView(object):
@@ -92,8 +89,8 @@ class APIAuth(BaseAPIAuth):
 class APIAuthView(APIView, BaseView):
     authentication_classes = (APIAuth,)
 
-class LocalAPIAuthView(APIView, BaseView):
-    authentication_classes = (LocalAPIAuth,)
+class PublicAPIAuthView(APIView, BaseView):
+    authentication_classes = (PublicAPIAuth,)
 
 class MonsterUserAuthView(APIView, BaseView):
     authentication_classes = (MonsterUserAuth,)

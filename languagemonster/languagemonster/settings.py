@@ -89,7 +89,6 @@ LOGGING = {
 logging.config.dictConfig(LOGGING)
 
 ALLOWED_HOSTS = os.getenv('LM_ALLOWED_HOSTS', '').split(',')
-LOCAL_API_HOSTS = ('127.0.0.1',)
 
 REDIS_HOST = os.getenv('LM_REDIS_HOST', 'localhost')
 REDIS_PORT = os.getenv('LM_REDIS_PORT', '1234')
