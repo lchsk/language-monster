@@ -667,7 +667,7 @@ class DoImportSet(SuperUserContextView):
     def post(self, *args, **kwargs):
         request = self.request
 
-        error = None
+        error = []
         remote_data = None
 
         try:
@@ -675,7 +675,7 @@ class DoImportSet(SuperUserContextView):
             words = remote_data['words']
             metadata = remote_data['metadata']
         except:
-            error = 'JSON invalid'
+            error.append('JSON invalid')
 
         language_pair = metadata['lang_pair']
 
@@ -686,11 +686,11 @@ class DoImportSet(SuperUserContextView):
             ).first()
 
             if set_exists:
-                error = 'Data set ({0}) already exists'.format(
+                error.append('Data set ({0}) already exists'.format(
                     metadata['name_en']
-                )
+                ))
             elif not language_pair:
-                error = 'Language Pair does not exist ()'.format(language_pair)
+                error.append('Language Pair does not exist ()'.format(language_pair))
             else:
                 # Validation passed: actually adding data
 
@@ -737,8 +737,17 @@ class DoImportSet(SuperUserContextView):
                             ds=imported_ds,
                             wp=wp_link.wp,
                         )
-                        new_link.save()
+                        try:
+                            new_link.save()
+                        except Exception as e:
+                            err_str = 'Cannot insert a new link: %s into %s, %s' % (
+                                wp_link.wp,
+                                imported_ds,
+                                e,
+                            )
 
+                            logger.warning(err_str)
+                            error.append(err_str)
                     else:
                         # Word doesn't exist in the DB, we need to add it
 
@@ -754,14 +763,24 @@ class DoImportSet(SuperUserContextView):
                             ds=imported_ds,
                             wp=wp_obj,
                         )
-                        new_link.save()
+                        try:
+                            new_link.save()
+                        except Exception as e:
+                            err_str = 'Cannot insert a new link (to a new work):'
+                            ' %s into %s, %s' % (
+                                wp_link.wp,
+                                imported_ds,
+                                e,
+                            )
 
+                            logger.warning(err_str)
+                            error.append(err_str)
 
         if error:
             messages.add_message(
                 request,
                 messages.WARNING,
-                error,
+                '\n'.join(error),
             )
         else:
             messages.add_message(
