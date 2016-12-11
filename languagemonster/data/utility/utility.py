@@ -1,12 +1,22 @@
 # -*- encoding: utf-8 -*-
 
+import time
+import datetime
+import re
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import time, datetime, re
 
 
 def get_engine():
-    return create_engine('mysql://USER:PASSWORD@localhost/DB_NAME?charset=utf8')
+    return create_engine(
+        'mysql://{user}:{password}@localhost/{name}?charset=utf8'.format(
+            user=os.getenv('LM_DATA_DB_USER'),
+            password=os.getenv('LM_DATA_DB_PASS'),
+            name=os.getenv('LM_DATA_DB_NAME'),
+        )
+    )
 
 def get_session():
     return sessionmaker(bind=get_engine())()
