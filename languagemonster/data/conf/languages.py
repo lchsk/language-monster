@@ -22,6 +22,9 @@ t['en'] = dict(
     pos={
         'Noun': u'Noun',
         'Proper noun': u'Proper noun',
+        'Verb': u'Verb',
+        'Adverb': u'Adverb',
+        'Adjective': u'Adjective',
     },
     languages=dict(
         pl='Polish',
@@ -46,6 +49,9 @@ t['pl'] = dict(
     pos={
         'Noun': 'rzeczownik',
         'Proper noun': 'nazwa własna',
+        'Verb': u'czasownik',
+        'Adverb': u'przysłówek',
+        'Adjective': u'przymiotnik',
     },
     languages=dict(
         pl='język polski',
@@ -70,6 +76,9 @@ t['pt'] = dict(
     pos={
         'Noun': u'Substantivo',
         'Proper noun': 'Substantivo',
+        'Verb': u'Verbo',
+        'Adverb': u'Advérbio',
+        'Adjective': u'Adjetivo',
     },
     languages=dict(
         pl='-pl-',
@@ -94,6 +103,9 @@ t['it'] = dict(
     pos={
         'Noun': u'sost',
         'Proper noun': 'nome',
+        'Verb': u'verb',
+        'Adverb': u'adv',
+        'Adjective': u'agg',
     },
     languages=dict(
         pl='-pl-',
@@ -118,6 +130,9 @@ t['de'] = dict(
     pos={
         'Noun': u'Substantiv',
         'Proper noun': 'Bedeutungen',
+        'Verb': u'Verb',
+        'Adverb': u'Adverb',
+        'Adjective': u'Adjektiv',
     },
     languages=dict(
         pl='Polnisch',
@@ -141,7 +156,10 @@ t['es'] = dict(
     clinks=None,
     pos={
         'Noun': 'sustantivo',
-        'Proper noun': 'Sustantivo propio',
+        'Proper noun': 'sustantivo propio',
+        'Verb': u'verbo',
+        'Adverb': u'adverbio',
+        'Adjective': u'adjetivo',
     },
     languages=dict(
         pl='pl',
@@ -166,6 +184,9 @@ t['fr'] = dict(
     pos={
         'Noun': u'nom',
         'Proper noun': 'nom propre',
+        'Verb': u'verbe',
+        'Adverb': u'adverbe',
+        'Adjective': u'adjectif',
     },
     languages=dict(
         pl='pl',
