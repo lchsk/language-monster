@@ -920,6 +920,23 @@ class CopyWordsToView(SuperUserContextView):
 
         return render(self.request, self.template_name, context)
 
+class DoUpdateSets(SuperUserContextView):
+    template_name = 'app/management/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DoUpdateSets, self).get_context_data(**kwargs)
+
+        return context
+
+    def post(self, *args, **kwargs):
+        sets = self.request.POST.getlist('sets')
+        sets_visible = self.request.POST.getlist('sets_visible')
+
+        DataSet.objects.filter(id__in=sets).update(visible=False)
+        DataSet.objects.filter(id__in=sets_visible).update(visible=True)
+
+        return self.redirect_with_success('management:sets', 'Updated')
+
 class DoCopyWords(SuperUserContextView):
     template_name = 'app/management/index.html'
 

@@ -9,6 +9,11 @@ urlpatterns = [
         name='index',
     ),
     url(
+        r'^do-update-sets/?$',
+        views.DoUpdateSets.as_view(),
+        name='do_update_sets',
+    ),
+    url(
         r'^status/$',
         views.StatusView.as_view(),
         name='status',

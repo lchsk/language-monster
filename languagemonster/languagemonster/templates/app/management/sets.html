@@ -60,8 +60,23 @@
 
                     <div>Returned: {{sets|length}} item(s)</div>
 
+                    <form
+                        method="post"
+                        action="{% url 'management:do_update_sets' %}"
+                        class="form-horizontal">
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            name="accept"
+                            value="accept">
+                            Accept
+                        </button>
+                        {% csrf_token %}
+
                     <table class="table table-striped">
                         <tr>
+                            <th></th>
+                            <th>No.</th>
                             <th>Pair</th>
                             <th>Name (English)</th>
                             <th>Name (Base)</th>
@@ -77,7 +92,23 @@
                                 <tr style="background-color: #bbb;">
                             {% else %}
                                 <tr>
-                            {% endif %}
+                                    {% endif %}
+                                    <td>
+                                        <input name="sets"
+                                            type="hidden"
+                                            value="{{s.id}}"
+                                        >
+
+                                    <input
+                                        name="sets_visible"
+                                        type="checkbox"
+                                        value="{{s.id}}"
+                                        {% if s.visible %}
+                                        checked
+                                        {%endif%}
+                                    >
+                                </td>
+                               <td>{{forloop.counter}}</td>
                                 <td>{{s.lang_pair}}</td>
                                 <td><a href="{% url 'management:edit_set' s.id %}"><b>{{s.name_en}}</b></a></td>
                                 <td>{{s.name_base}}</td>
@@ -103,6 +134,7 @@
                             </tr>
                         {% endfor%}
                     </table>
+                    </form>
                 </div>
             </div>
         </div>
