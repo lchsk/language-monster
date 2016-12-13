@@ -8,6 +8,12 @@ WORKING_LANGUAGES = (
     'pl', 'en', 'it', 'pt', 'de', 'es', 'fr',
 )
 
+Noun = 'Noun'
+ProperNoun = 'ProperNoun'
+Verb = 'Verb'
+Adverb = 'Adverb'
+Adjective = 'Adjective'
+
 t = {}
 
 t['en'] = dict(
@@ -20,11 +26,11 @@ t['en'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': u'Noun',
-        'Proper noun': u'Proper noun',
-        'Verb': u'Verb',
-        'Adverb': u'Adverb',
-        'Adjective': u'Adjective',
+        Noun: u'Noun',
+        ProperNoun: u'Proper noun',
+        Verb: u'Verb',
+        Adverb: u'Adverb',
+        Adjective: u'Adjective',
     },
     languages=dict(
         pl='Polish',
@@ -47,11 +53,11 @@ t['pl'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': u'rzeczownik',
-        'Proper noun': u'nazwa własna',
-        'Verb': u'czasownik',
-        'Adverb': u'przysłówek',
-        'Adjective': u'przymiotnik',
+        Noun: u'rzeczownik',
+        ProperNoun: u'nazwa własna',
+        Verb: u'czasownik',
+        Adverb: u'przysłówek',
+        Adjective: u'przymiotnik',
     },
     languages=dict(
         pl='język polski',
@@ -74,11 +80,11 @@ t['pt'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': u'Substantivo',
-        'Proper noun': u'Substantivo',
-        'Verb': u'Verbo',
-        'Adverb': u'Advérbio',
-        'Adjective': u'Adjetivo',
+        Noun: u'Substantivo',
+        ProperNoun: u'Substantivo',
+        Verb: u'Verbo',
+        Adverb: u'Advérbio',
+        Adjective: u'Adjetivo',
     },
     languages=dict(
         pl='-pl-',
@@ -101,11 +107,11 @@ t['it'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': u'sost',
-        'Proper noun': u'nome',
-        'Verb': u'verb',
-        'Adverb': u'adv',
-        'Adjective': u'agg',
+        Noun: u'sost',
+        ProperNoun: u'nome',
+        Verb: u'verb',
+        Adverb: u'adv',
+        Adjective: u'agg',
     },
     languages=dict(
         pl='-pl-',
@@ -128,11 +134,11 @@ t['de'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': u'Substantiv',
-        'Proper noun': u'Bedeutungen',
-        'Verb': u'Verb',
-        'Adverb': u'Adverb',
-        'Adjective': u'Adjektiv',
+        Noun: u'Substantiv',
+        ProperNoun: u'Bedeutungen',
+        Verb: u'Verb',
+        Adverb: u'Adverb',
+        Adjective: u'Adjektiv',
     },
     languages=dict(
         pl='Polnisch',
@@ -155,11 +161,11 @@ t['es'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': 'sustantivo',
-        'Proper noun': u'sustantivo propio',
-        'Verb': u'verbo',
-        'Adverb': u'adverbio',
-        'Adjective': u'adjetivo',
+        Noun: 'sustantivo',
+        ProperNoun: u'sustantivo propio',
+        Verb: u'verbo',
+        Adverb: u'adverbio',
+        Adjective: u'adjetivo',
     },
     languages=dict(
         pl='pl',
@@ -182,11 +188,11 @@ t['fr'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': u'nom',
-        'Proper noun': u'nom propre',
-        'Verb': u'verbe',
-        'Adverb': u'adverbe',
-        'Adjective': u'adjectif',
+        Noun: u'nom',
+        ProperNoun: u'nom propre',
+        Verb: u'verbe',
+        Adverb: u'adverbe',
+        Adjective: u'adjectif',
     },
     languages=dict(
         pl='pl',
