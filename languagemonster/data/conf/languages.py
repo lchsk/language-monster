@@ -47,8 +47,8 @@ t['pl'] = dict(
     data=None,
     clinks=None,
     pos={
-        'Noun': 'rzeczownik',
-        'Proper noun': 'nazwa własna',
+        'Noun': u'rzeczownik',
+        'Proper noun': u'nazwa własna',
         'Verb': u'czasownik',
         'Adverb': u'przysłówek',
         'Adjective': u'przymiotnik',
@@ -75,7 +75,7 @@ t['pt'] = dict(
     clinks=None,
     pos={
         'Noun': u'Substantivo',
-        'Proper noun': 'Substantivo',
+        'Proper noun': u'Substantivo',
         'Verb': u'Verbo',
         'Adverb': u'Advérbio',
         'Adjective': u'Adjetivo',
@@ -102,7 +102,7 @@ t['it'] = dict(
     clinks=None,
     pos={
         'Noun': u'sost',
-        'Proper noun': 'nome',
+        'Proper noun': u'nome',
         'Verb': u'verb',
         'Adverb': u'adv',
         'Adjective': u'agg',
@@ -129,7 +129,7 @@ t['de'] = dict(
     clinks=None,
     pos={
         'Noun': u'Substantiv',
-        'Proper noun': 'Bedeutungen',
+        'Proper noun': u'Bedeutungen',
         'Verb': u'Verb',
         'Adverb': u'Adverb',
         'Adjective': u'Adjektiv',
@@ -156,7 +156,7 @@ t['es'] = dict(
     clinks=None,
     pos={
         'Noun': 'sustantivo',
-        'Proper noun': 'sustantivo propio',
+        'Proper noun': u'sustantivo propio',
         'Verb': u'verbo',
         'Adverb': u'adverbio',
         'Adjective': u'adjetivo',
@@ -183,7 +183,7 @@ t['fr'] = dict(
     clinks=None,
     pos={
         'Noun': u'nom',
-        'Proper noun': 'nom propre',
+        'Proper noun': u'nom propre',
         'Verb': u'verbe',
         'Adverb': u'adverbe',
         'Adjective': u'adjectif',
@@ -198,6 +198,10 @@ t['fr'] = dict(
         fr='fr',
     )
 )
+
+defs = t
+
+__all__ = (defs,)
 
 MANDATORY_FIELDS = (
     'name',
