@@ -203,7 +203,7 @@ class DoSaveNewSet(SuperUserContextView):
                             target_en=p['target_en'],
                             from_english=p['from_english'],
                             verified=p['verified'],
-                            pos=pos,
+                            pos=p['pos'],
                             pop=p['pop'],
                         )
 
@@ -482,7 +482,7 @@ class AddNewSetFromFileView(SuperUserContextView):
 
         files = []
         sets = {}
-        base_dir = os.path.join(settings.BASE_DIR, '../data/output/')
+        base_dir = os.path.join(settings.BASE_DIR, './data_loader/output/')
 
         for root, dirnames, filenames in os.walk(base_dir):
             if root and filenames:

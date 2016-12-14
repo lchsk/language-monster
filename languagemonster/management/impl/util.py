@@ -5,14 +5,14 @@ def parse_line(line):
 
     line = line.split('||')
 
-    columns = 5
+    columns = 6
 
     assert len(line) == columns, 'Invalid format: should be {0} columns'.format(columns)
 
-    # base, target, english, comments
+    # base, target, english, comments, pos
 
     base_en, target_en = '', ''
-    b, t, pop, en, c = line[0], line[1], line[2], line[3], line[4]
+    b, t, pop, en, c, pos = line
     from_english = '{{from_english}}' in c
     english_invalid = '{{english_invalid}}' in c
     verified = '{{verified}}' in c
@@ -40,7 +40,8 @@ def parse_line(line):
         from_english=from_english,
         english_invalid=english_invalid,
         verified=verified,
-        pop=pop
+        pop=pop,
+        pos=pos,
     )
 
     for key, value in pair.iteritems():

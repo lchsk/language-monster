@@ -24,7 +24,7 @@ urlpatterns = [
         name='add_new_set_from_file',
     ),
     url(
-        r'^add-set/(?P<path>[\w\/\.\-_]+)$',
+        r'^add-set/(?P<path>[\w\W\/\.\-_]+)$',
         views.AddNewSetView.as_view(),
         name='add_set',
     ),

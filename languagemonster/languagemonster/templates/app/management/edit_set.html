@@ -185,6 +185,7 @@
                 <th>Pop</th>
                 <th style="min-width: 250px;">Base</th>
                 <th style="min-width: 250px;">Target</th>
+                <th>POS</th>
                 <th>Comments</th>
             </tr>
             {% for k in susp %}
@@ -231,6 +232,7 @@
                     >
                     <div style="text-align: center;">{{k.wp.target_en}}</div>
                 </td>
+                <td>{{k.wp.pos}}</td>
                 <td title="{{k.wp.english}}">
                     <div>{{k.wp.english}}</div>
                     <div style="font-weight: bold;">{{k.wp.comments}}</div>
@@ -281,6 +283,7 @@
             >
             <div style="text-align: center;">{{k.wp.target_en}}</div>
         </td>
+        <td>{{k.wp.pos}}</td>
         <td title="{{k.wp.english}}">
             <div>{{k.wp.english}}</div>
             <div style="font-weight: bold;">{{k.wp.comments}}</div>
