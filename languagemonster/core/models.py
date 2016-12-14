@@ -3,6 +3,8 @@ from django.utils.text import slugify
 from django.db import models
 from django.contrib.auth import models as contrib_models
 
+from data_loader.conf.languages import POS
+
 from core.data.language_pair import (
     LANGUAGE_PAIRS_FLAT,
     LANGUAGE_PAIRS_FLAT_ALL,
@@ -250,7 +252,16 @@ class WordPair(models.Model):
 
     # Part of Speech (in English, eg. Noun)
 
-    pos = models.TextField()
+    pos = models.CharField(
+        max_length=50,
+        null=True,
+        default='A',
+        help_text='Part of speech',
+        choices=[
+            (pos, pos)
+            for pos in POS
+        ],
+    )
 
     base_en = models.TextField()
     target_en = models.TextField()
