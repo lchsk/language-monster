@@ -14,6 +14,14 @@ Verb = 'Verb'
 Adverb = 'Adverb'
 Adjective = 'Adjective'
 
+POS = (
+    Noun,
+    ProperNoun,
+    Verb,
+    Adverb,
+    Adjective,
+)
+
 t = {}
 
 t['en'] = dict(
@@ -207,7 +215,10 @@ t['fr'] = dict(
 
 defs = t
 
-__all__ = (defs,)
+__all__ = (
+    defs,
+    POS,
+)
 
 MANDATORY_FIELDS = (
     'name',
