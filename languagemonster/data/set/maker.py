@@ -231,14 +231,29 @@ class Maker(object):
 
                 _items.add(
                     OutItem(
-                        b = b,
-                        t = r.word.decode('utf-8'),
-                        p = r.pop,
-                        c = r.comments
+                        b=b,
+                        t=r.word.decode('utf-8'),
+                        p=r.pop,
+                        c=r.comments,
+                        pos=self._read_pos(r),
                     )
                 )
 
         return _items
+
+    def _read_pos(self, row):
+        from conf.languages import defs
+
+        head3 = row.head3.lower()
+        head4 = row.head4.lower()
+
+        for en_pos, POS in defs[self.target]['pos'].iteritems():
+            pos = POS.encode('utf-8').lower()
+
+            if pos in head3 or pos in head4:
+                return en_pos
+
+        return ''
 
     def _missed_words(self, result, argument):
         """
@@ -333,12 +348,13 @@ class Maker(object):
                         for j in base_en:
                             if i.t == j.t:
                                 self.items.append(OutItem(
-                                    b = j.b,
-                                    t = i.b,
-                                    e = i.t,
-                                    i = True,
-                                    c = '',
-                                    p = 0
+                                    b=j.b,
+                                    t=i.b,
+                                    e=i.t,
+                                    i=True,
+                                    c='',
+                                    p=0,
+                                    pos=i.pos,
                                 ))
                                 # cnt += 1
 
@@ -429,12 +445,13 @@ class Maker(object):
                     if i.t == en:
                         _b_t.append(
                             OutItem(
-                                b = i.b,
-                                t = ta,
-                                e = en,
-                                i = True,
-                                c = i.c + u'{{from_english}}',
-                                p = i.p
+                                b=i.b,
+                                t=ta,
+                                e=en,
+                                i=True,
+                                c=i.c + u'{{from_english}}',
+                                p=i.p,
+                                pos=i.pos,
                             )
                         )
 

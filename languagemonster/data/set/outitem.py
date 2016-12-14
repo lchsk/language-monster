@@ -2,9 +2,9 @@
 
 class OutItem(object):
 
-    LINE = u"{base}||{target}||{pop}||{english}||{comments}\n"
+    LINE = u"{base}||{target}||{pop}||{english}||{comments}||{pos}\n"
 
-    def __init__(self, b, t, e = '', c = '', i = False, p = 0):
+    def __init__(self, b, t, pos=None, e='', c='', i=False, p=0):
 
         # word in base language
 
@@ -30,6 +30,8 @@ class OutItem(object):
 
         self.i = i
 
+        self.pos = pos
+
     def __eq__(self, other):
         return self.b == other.b
 
@@ -47,11 +49,12 @@ class OutItem(object):
         self.c = self.c.replace('||', '\|\|')
 
         _text = OutItem.LINE.format(
-            base = self.b,
-            target = self.t,
-            english = self.e,
-            comments = self.c,
-            pop = self.p,
+            base=self.b,
+            target=self.t,
+            english=self.e,
+            comments=self.c,
+            pop=self.p,
+            pos=self.pos,
         )
         return _text.encode('utf-8')
 
