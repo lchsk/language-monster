@@ -722,6 +722,7 @@ class DoImportSet(SuperUserContextView):
                     for wp in all_lang_words:
                         if (wp.wp.base == word['ebase']
                             and wp.wp.target == word['etarget']
+                            and wp.wp.pos == word.get('pos', '')
                         ):
                             # Already exists
 
@@ -754,6 +755,7 @@ class DoImportSet(SuperUserContextView):
                         wp_obj = WordPair(
                             base=word['ebase'],
                             target=word['etarget'],
+                            pos=word.get('pos', ''),
                         )
                         wp_obj.save()
 

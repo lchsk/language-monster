@@ -33,6 +33,7 @@ def get_words_for_export(words):
         dict(
             ebase=w.wp.base,
             etarget=w.wp.target,
+            pos=w.wp.pos,
         )
         for w in words
     ]
@@ -49,10 +50,7 @@ def export_set(request, dataset_id, context):
             name_base=ds.name_base,
             name_en=ds.name_en,
             name_target=ds.name_target,
-            pair=dict(
-                base=ds.pair.base_language.acronym,
-                target=ds.pair.target_language.acronym,
-            ),
+            lang_pair=ds.lang_pair,
             pos=ds.pos,
             reversed_set=ds.reversed_set,
             simple_dataset=ds.simple_dataset,
@@ -135,6 +133,7 @@ def _get_words_from_request(request, dataset_id):
 
                 item['ebase'] = request.POST[key_base]
                 item['etarget'] = request.POST[key_target]
+                item['pos'] = p.pos
 
                 to_export.append(item)
 
