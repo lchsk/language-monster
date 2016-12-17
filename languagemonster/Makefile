@@ -2,7 +2,7 @@
 all: env-dev
 
 check:
-	py.test --cov ./
+	py.test --cov ./ --ignore ./data_loader
 
 env-dev:
 	git checkout master

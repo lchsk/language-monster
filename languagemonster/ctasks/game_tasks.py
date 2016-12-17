@@ -70,6 +70,7 @@ def update_streak(user, progression):
     results = UserResult.objects.filter(
         user=user
     ).select_related('data_set').order_by('-date')
+
     streak = 0
     marks = 0
     results_count = 0
