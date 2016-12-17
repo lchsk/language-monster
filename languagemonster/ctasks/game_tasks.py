@@ -1,8 +1,6 @@
 from __future__ import absolute_import
 import logging
 
-from django.conf import settings
-
 from datetime import (
     date,
     timedelta,
@@ -23,9 +21,9 @@ logger = logging.getLogger(__name__)
 
 
 def count_user_words(user, progression):
-    '''
+    """
         Counts how many words a user knows in a single language.
-    '''
+    """
 
     logger.info('Count words: %s', progression)
 
@@ -33,8 +31,8 @@ def count_user_words(user, progression):
         uwp.word_pair
         for uwp in UserWordPair.objects.filter(
             user=user,
-            learned=True
-        )
+            learned=True,
+        ).select_related('word_pair')
     ]
 
     count = 0
@@ -42,8 +40,8 @@ def count_user_words(user, progression):
     all_words = [
         link.wp
         for link in DS2WP.objects.filter(
-            ds__pair=progression.pair
-        )
+            ds__lang_pair=progression.lang_pair
+        ).select_related('wp')
     ]
 
     for uw in user_words:
@@ -64,19 +62,21 @@ def count_user_words(user, progression):
 
 
 def update_streak(user, progression):
-    '''
+    """
         Updates user streak (number of straight days with a level finished)
         and average.
-    '''
+    """
 
-    results = UserResult.objects.filter(user=user).order_by('-date')
+    results = UserResult.objects.filter(
+        user=user
+    ).select_related('data_set').order_by('-date')
     streak = 0
     marks = 0
     results_count = 0
     date_tmp = date.today()
 
     for r in results:
-        if r and progression and r.data_set.pair == progression.pair:
+        if r and progression and r.data_set.lang_pair == progression.lang_pair:
             marks += r.mark
             results_count += 1
 
@@ -133,14 +133,14 @@ def update_user_stats(email, dataset_id):
 
     language = Progression.objects.filter(
         user=u,
-        pair=d.pair
+        lang_pair=d.lang_pair,
     ).first()
 
     if u and d and language:
         words = count_user_words(u, language)
         streak, average, levels = update_streak(u, language)
 
-        logger.info('Updating stats of a single user ({0})'.format(email))
+        logger.info('Updating stats of a single user (%s)', email)
 
         language.strength, language.trend = compute_strength(
             language.strength,
@@ -153,17 +153,15 @@ def update_user_stats(email, dataset_id):
 
 @shared_task
 def update_all_users_stats():
-    '''
-        Celery task run daily (during the night) to update stats of all users.
-        It might be heavy.
-    '''
+    """
+        Update stats of all users.
+    """
 
     logger.info("Started procedure to update statistics of all users.")
 
     users = MonsterUser.objects.all()
 
     for u in users:
-
         user_langs = Progression.objects.filter(user=u)
 
         for language in user_langs:

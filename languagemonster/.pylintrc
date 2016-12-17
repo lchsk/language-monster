@@ -1,5 +1,5 @@
 [MESSAGES CONTROL]
 # C0111 Missing docstring
 # C0103 Invalid %s name "%s"
-
-disable=C0111, C0103
+# E1101 %s %r has no %r member
+disable=C0111, C0103, E1101
