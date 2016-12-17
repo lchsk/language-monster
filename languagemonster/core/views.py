@@ -30,9 +30,9 @@ logger = logging.getLogger(__name__)
 class DoRegister(ContextView):
     def post(self, request, *args, **kwargs):
         if request.POST['monster_username']:
-            logger.critical("No username")
+            logger.warning("Received: %s", request.POST['monster_username'])
 
-            return self.redirect('info', args=[''])
+            return self.redirect('info', args=['']) # will raise 404
 
         password1 = request.POST['password1']
         password2 = request.POST['password2']
@@ -86,11 +86,11 @@ class DoRegister(ContextView):
                     _('msg_email_failed'),
                 )
         else:
-            logger.warning("Registration data invalid")
+            logger.warning("Registration data invalid: %s", error_str)
 
-            messages.add_message(request, messages.WARNING, (error_str))
+            messages.add_message(request, messages.WARNING, error_str)
 
-            return self.redirect('info', args=[''])
+            return self.redirect('info', args=['failure'])
 
         return self.redirect('index')
 
@@ -191,7 +191,9 @@ class DoSaveContactEmail(ContextView):
         self.get_context_data()
 
         if request.POST['username']:
-            return self.redirect('info', args=[''])
+            logger.warning('Suspicious argument: %s', request.POST['username'])
+
+            return self.redirect('info', args=['']) # will raise 404
 
         name = request.POST['name']
         email = request.POST['email']

@@ -1,16 +1,18 @@
 from django.contrib import admin
-from django.conf.urls import patterns, include, url
+from django.conf.urls import (
+    include,
+    url,
+)
 from django.conf import settings
+from django.conf.urls.static import static
+
 from core.views import (
     IndexView,
     SpecialPageView,
     ErrorPage,
 )
-from django.conf.urls.static import static
-from userprofile.views import (
-    social,
-    profile,
-)
+
+from userprofile.views import social
 
 handler400 = ErrorPage.as_view(error=400)
 handler404 = ErrorPage.as_view(error=404)
@@ -41,5 +43,5 @@ if settings.DEBUG:
         url(r'^500/?$', ErrorPage.as_view(error=500)),
     ]
 
-if 'rosetta' in settings.INSTALLED_APPS:
-    urlpatterns += [url(r'^rosetta/', include('rosetta.urls'))]
+    if 'rosetta' in settings.INSTALLED_APPS:
+        urlpatterns += [url(r'^rosetta/', include('rosetta.urls'))]
