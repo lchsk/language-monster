@@ -1,25 +1,24 @@
-
 /* Links */
 .modal-body a, .info-block a,
 .modal-body a:focus, .info-block a:focus,
 .modal-body a:active, .info-block a:active{
-  color: $color-text;
-  border-bottom: 1px solid $color-light-blue;
+    color: $color-text;
+    border-bottom: 1px solid $color-light-blue;
 }
 
 .modal-body a:hover, .info-block a:hover{
-  color: $color-text;
-  text-decoration: none;
-  border-bottom: 1px solid $color-red;
+    color: $color-text;
+    text-decoration: none;
+    border-bottom: 1px solid $color-red;
 }
 
 /* Custom default button */
 .btn-default,
 .btn-default:hover,
 .btn-default:focus {
-  text-shadow: none; /* Prevent inheritence from `body` */
-  background-color: #fff;
-  border: 1px solid #fff;
+    text-shadow: none; /* Prevent inheritence from `body` */
+    background-color: #fff;
+    border: 1px solid #fff;
 }
 
 .btn {
@@ -29,17 +28,16 @@
 }
 
 .round{
-  -webkit-border-radius: 2em;
-  -moz-border-radius: 2em;
-  border-radius: 2em;
+    -webkit-border-radius: 2em;
+    -moz-border-radius: 2em;
+    border-radius: 2em;
 }
 
 /* Top level menu for an unlogged user */
 .navbar-transparent{
-  background-color: transparent;
-  border-width: 0;
+    background-color: transparent;
+    border-width: 0;
 }
-
 
 #navbar-unlogged {
     text-transform: uppercase;
@@ -50,25 +48,25 @@
 .navbar-default .navbar-nav>.open>a,
 .navbar-default .navbar-nav>.open>a:focus,
 .navbar-default .navbar-nav>.open>a:hover{
-  background-color: transparent;
-  color: $color-red;
+    background-color: transparent;
+    color: $color-navy;
 }
 
 ul.nav > li.dropdown > ul.dropdown-menu > li > a{
-  font-family: $font-common;
-  text-transform: none;
+    font-family: $font-common;
+    text-transform: none;
 }
 
 ul.nav > li.page-scroll > a, ul.nav > li.dropdown > a{
-  color: $color-white;
+    color: $color-navy;
 }
 
 ul.nav > li.page-scroll > a:hover, ul.nav > li.dropdown > a:hover{
-  color: $color-red;
+    color: $color-red;
 }
 
 ul.nav > li.page-scroll > a:focus, ul.nav > li.dropdown > a:focus{
-  outline: 0;
+    outline: 0;
 }
 
 #navbar-unlogged .navbar-nav {
@@ -80,79 +78,74 @@ ul.nav > li.page-scroll > a:focus, ul.nav > li.dropdown > a:focus{
 }
 
 /* Logo */
-#logo{
-  background-image: url(../images/website/logo200.png);
-  background-repeat: no-repeat;
-  width: 200px;
-  height: 101px;
-  margin: 8px 0 0 8px;
-  padding: 0;
-}
+// #logo{
+//   background-image: url(../images/website/logo200.png);
+//   background-repeat: no-repeat;
+//   width: 200px;
+//   height: 101px;
+//   margin: 8px 0 0 8px;
+//   padding: 0;
+// }
 
-@media screen and (max-width: 1000px) {
-  #logo {
-    background: url(../images/website/logo90.png);
-    width: 90px;
-    height: 45px;
-  }
-  #navbar-unlogged li a{
-    margin-top: 8px;
-  }
-}
+// @media screen and (max-width: 1000px) {
+//   #logo {
+//     background: url(../images/website/logo90.png);
+//     width: 90px;
+//     height: 45px;
+//   }
+//   #navbar-unlogged li a{
+//     margin-top: 8px;
+//   }
+// }
 
 .absolute-center-bottom{
-  position: absolute;
-  bottom: 5%;
-  left: 49%;
+    position: absolute;
+    bottom: 5%;
+    left: 49%;
 }
 
 .absolute-bottom{
-  position: absolute;
-  bottom: 5%;
-  left: 5%;
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
 }
 
 .jumbotron{
-  background-color: transparent;
+    background-color: transparent;
 }
 .jumbotron h1, h2, h3{
-  color: white;
+    color: black;
 }
 
 h2.static{
-  color: $color-black;
-  font-family: $font-base;
+    color: $color-black;
+    font-family: $font-base;
 }
 
 .xxlarge{
-  font-size: 48px;
-  font-weight: bold;
+    font-size: 48px;
+    font-weight: bold;
 }
 
 .xlarge{
-  font-size: 32px;
+    font-size: 32px;
 }
 .large{
-  font-size: 26px;
+    font-size: 26px;
 }
 
 .color-white{
-  color: $color-white;
+    color: $color-white;
 }
 
 #intro-header {
     display: block;
     text-transform: uppercase;
-    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    // text-align: left;
+    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 3em;
     font-weight: 700;
-    color: $color-white;
-}
-
-#intro-text {
-    font-size: 1.25em;
-    font-weight: 300;
-    color: $color-white;
+    color: $color-navy;
 }
 
 .btn-transparent {
@@ -216,25 +209,10 @@ h2.static{
     padding: 200px 0;
 }
 
-#photo-1 {
-    background: url(../../images/cover/rome.jpg) 50% 0 fixed;
-}
-
-#photo-2 {
-    background: url(../../images/cover/krakow.jpg) 50% 0 fixed;
-}
-
-#photo-3 {
-    background: url(../../images/cover/paris.jpg) 50% 0 fixed;
-}
-
-#photo-4 {
-    background: url(../../images/cover/germany.jpg) 50% 0 fixed;
-}
-
-#photo-5 {
-    background: url(../../images/cover/cuba.jpg) 50% 0 fixed;
-    padding: 350px 0;
+#second-section {
+    // background: #ffffff 50% 0 fixed;
+    background: $color-light-blue 50% 0 fixed;
+    // padding: 350px 0;
 }
 
 #modal-login{
@@ -248,30 +226,30 @@ h2.static{
 }
 
 .btn-submit{
-  font-family: $font-base;
-  color: $color-white;
-  background-color: $color-red;
-  font-size: 16px;
-  border-width: 0;
+    font-family: $font-base;
+    color: $color-white;
+    background-color: $color-red;
+    font-size: 16px;
+    border-width: 0;
 }
 
 .btn-submit:hover{
-  background-color: $color-navy;
-  color: $color-white;
-  border-width: 0;
+    background-color: $color-navy;
+    color: $color-white;
+    border-width: 0;
 }
 
 
 .info-block{
-  min-height: 200px;
-  background-color: #ffffff;
-  padding: 20px;
+    min-height: 200px;
+    background-color: #ffffff;
+    padding: 20px;
 }
 
 #links-collection a,
 #links-collection a:focus, #links-collection a:active{
-  color: $color-white;
-  font-family: $font-base;
+    color: $color-white;
+    font-family: $font-base;
 }
 
 
@@ -296,9 +274,11 @@ h2.static{
     font-size: 11px;
     color: $color-shaded;
     font-family: $font-base;
-    width: 200px;
-    text-align: justify;
     margin-top: 20px;
+}
+
+.link-item {
+    padding-right: 6px;
 }
 
 .form-text{
@@ -354,29 +334,61 @@ h2.static{
 .us_30px {width: 30px; height: 30px; background: url(../../images/flags.png) -47px -227px;}
 .us_40px {width: 40px; height: 40px; background: url(../../images/flags.png) -2px -182px;}
 
+.font40px {
+    font-size: 40px;
+}
+.button3d {
+    display: inline-block;
+    margin: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0 10px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    -moz-box-shadow: 0 10px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    box-shadow: 0 10px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    -webkit-transition: -webkit-box-shadow .1s ease-in-out;
+    -moz-transition: -moz-box-shadow .1s ease-in-out;
+    -o-transition: -o-box-shadow .1s ease-in-out;
+    transition: box-shadow .1s ease-in-out;
+    color: $color-white;
+}
 
-// Blinking cursor effect for Typed.js
+.button3d span {
+    color: $color-white;
+    display: inline-block;
+    padding: 20px 30px;
+    background-color: $color-button3d;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    -moz-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    line-height: 1;
+    text-shadow: 0 -1px 1px $color-button3d-text-shadow, 0 0 5px $color-button3d-text-shadow;
+    -webkit-transition: background-color .2s ease-in-out, -webkit-transform .1s ease-in-out;
+    -moz-transition: background-color .2s ease-in-out, -moz-transform .1s ease-in-out;
+    -o-transition: background-color .2s ease-in-out, -o-transform .1s ease-in-out;
+    transition: background-color .2s ease-in-out, transform .1s ease-in-out;
+}
 
-// .typed-cursor{
-//     opacity: 1;
-//     -webkit-animation: blink 0.7s infinite;
-//     -moz-animation: blink 0.7s infinite;
-//     animation: blink 0.7s infinite;
-// }
-// @keyframes blink{
-//     0% { opacity:1; }
-//     50% { opacity:0; }
-//     100% { opacity:1; }
-// }
-// @-webkit-keyframes blink{
-//     0% { opacity:1; }
-//     50% { opacity:0; }
-//     100% { opacity:1; }
-// }
-// @-moz-keyframes blink{
-//     0% { opacity:1; }
-//     50% { opacity:0; }
-//     100% { opacity:1; }
-// }
+.button3d:hover span {
+    color: $color-white;
+    text-shadow: 0 -1px 10px $color-button3d-text-shadow, 0 0 10px $color-button3d-text-shadow;
+}
 
-// ---
+.button3d:active, .button:focus {
+    color: $color-white;
+    -webkit-box-shadow: 0 10px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 10px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+    box-shadow: 0 10px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+}
+
+.button3d:active span {
+    color: $color-white;
+    -webkit-transform: translate(0, 5px);
+    -moz-transform: translate(0, 5px);
+    -o-transform: translate(0, 5px);
+    transform: translate(0, 5px);
+}
