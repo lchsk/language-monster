@@ -364,7 +364,7 @@ h2.static{
     -webkit-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
     -moz-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
     box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
-    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-family: $font-base;
     line-height: 1;
     text-shadow: 0 -1px 1px $color-button3d-text-shadow, 0 0 5px $color-button3d-text-shadow;
     -webkit-transition: background-color .2s ease-in-out, -webkit-transform .1s ease-in-out;
