@@ -59,7 +59,7 @@
                                         <div class="col-md-6 col-xs-6 value">{% blocktrans with value=p.strength %} {{value}} pts{% endblocktrans %}</div>
                                     </div>
                                     <div class="row">
-                                            <a title="{% trans 'learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" class="learn btn btn-submit">{% trans "learn" %} <span class="glyphicon glyphicon-play"></span></a>
+                                        <a title="{% trans 'learn' %} {{lang_pair.target_language.slug|capfirst}}" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" class="learn button3d button3d-small font16px"><span class="small text">{% trans "learn" %} <span class="glyphicon glyphicon-play"></span></span></a>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-xs-4">

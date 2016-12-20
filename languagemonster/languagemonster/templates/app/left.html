@@ -46,39 +46,44 @@
             {% endif %}
 
             <div class="row">
-              <div class="main-menu">
-                    {% if context.user.studying|length > 0 %}
-                        <br />
+                
+                {% if context.user.studying|length > 0 %}
+                <div class="main-menu align-left">
                         <h4>{% trans "header_your_languages" %}</h4>
 
                         {% for pro, lang_pair in context.user.studying %}
 
                         {% if lang_pair.base_language.acronym == context.language.language.acronym %}
-                            <div style="padding-left: 18px;">
-    <a href="{% url 'vocabulary:study' lang_pair.target_language.slug %}" style="padding: 0;">
+                        <!-- <div style="padding-left: 18px;"> -->
+                        <div>
+    <a class="main-menu-link" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}">
         <div
           style="width: 20px; height: 20px; display: inline-block; margin-right: 4px;"
 		  class="{{lang_pair.target_language.flag_filename}}_20px img-circle pull-left"
 		  alt="{{lang_pair.target_language.original_name}}">
         </div>{% trans lang_pair.target_language.english_name %}
     </a>
-                            </div>
+                </div>
                         {% endif %}
-                    {% endfor %}
+                            {% endfor %}
+                            </div>
                     {% endif %}
 
                     <br />
-                    <div style="text-align: center;">
-                        <a title="{% trans 'add_language' %}" href="{% url 'vocabulary:add_language' %}" class="btn btn-submit"><span class="glyphicon glyphicon-plus-sign"></span>{% trans "add_language" %}</a>
-                    </div>
-
-                    <br />
+                    <!-- <div style="text-align: center;"> -->
+                    <a class="button3d button3d-small font16px" title="{% trans 'add_language' %}" href="{% url 'vocabulary:add_language' %}"><span class="small text">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                        {% trans "add_language" %}</span></a>
+                        <!-- </div> -->
+                        <br />
+                        <br />
+                        <div class="main-menu align-left">
                     <h4>LANGUAGE MONSTER</h4>
 
-                    <a class="common" title="{% trans 'dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "dashboard" %}</a><br />
-                    <a class="common" title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "profile" %}</a><br />
-                    <a class="common" title="{% trans 'settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "settings" %}</a><br />
-                </div>
+                    <a class="common main-menu-link" title="{% trans 'dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "dashboard" %}</a><br />
+                    <a class="common main-menu-link" title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "profile" %}</a><br />
+                    <a class="common main-menu-link" title="{% trans 'settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "settings" %}</a><br />
+                    </div>
             </div>
         </div>
     </div>

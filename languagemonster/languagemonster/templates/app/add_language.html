@@ -39,10 +39,10 @@
                             </div>
                             <div style="position: absolute; bottom: 8px; right: 8px; ">
                                 {% if item.learning %}
-                                    <a title="{% trans 'msg_continue' %}" href="{% url 'vocabulary:study' item.lang.slug %}" class="btn btn-submit add-language-box-btn">{% trans "msg_continue" %} <span class="glyphicon glyphicon-play"></span></a>
+                                <a title="{% trans 'msg_continue' %}" href="{% url 'vocabulary:study' item.lang.slug %}" class="button3d button3d-small font16px add-language-box-btn"><span class="small text">{% trans "msg_continue" %} <span class="glyphicon glyphicon-play"></span></span></a>
 
                                 {% else %}
-                                    <a title="{% trans 'join' %}" href="{% url 'vocabulary:save_language' item.lang.slug %}" class="btn btn-submit add-language-box-btn">{% trans "learn" %} <span class="glyphicon glyphicon-plus"></span></a>
+                                    <a title="{% trans 'join' %}" href="{% url 'vocabulary:save_language' item.lang.slug %}" class="button3d button3d-small font16px add-language-box-btn"><span class="small text">{% trans "learn" %} <span class="glyphicon glyphicon-plus-sign"></span></span></a>
                                 {% endif %}
                             </div>
                         </div>

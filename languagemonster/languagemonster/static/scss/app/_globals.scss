@@ -1,6 +1,22 @@
+#container {
+   min-height: 100%;
+   position: relative;
+   margin: 0;
+   padding: 0;
+}
 
+#body {
+   padding: 0;
+   margin: 0;
+   min-height: 650px;
+}
 
-/*$font-theme: 'Bebas';*/
+#footer {
+    margin-left: 0;
+   bottom: 0;
+   width: 100%;
+   left: 0;
+}
 
 
 /* Links */
@@ -237,43 +253,22 @@ header .intro-text .skills {
     Landing page parallax sections
 */
 
-.text-section{
-    background-color: $color-white;
-    height: auto;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    padding: 140px 0;
-}
+// .text-section{
+//     background-color: $color-white;
+//     height: auto;
+//     margin: 0 auto;
+//     width: 100%;
+//     position: relative;
+//     padding: 140px 0;
+// }
 
-.photo-section{
-    height: auto;
-    margin: 0 auto;
-    width: 100%;
-    position: relative;
-    padding: 200px 0;
-    /*box-shadow: 1px 1px 40px $color-black;*/
-}
-
-// #photo-1 {
-//     background: url(../images/cover/rome.jpg) 50% 0 fixed;
-// }
-// 
-// #photo-2 {
-//     background: url(../images/cover/krakow.jpg) 50% 0 fixed;
-// }
-// 
-// #photo-3 {
-//     background: url(../images/cover/paris.jpg) 50% 0 fixed;
-// }
-// 
-// #photo-4 {
-//     background: url(../images/cover/germany.jpg) 50% 0 fixed;
-// }
-// 
-// #photo-5 {
-//     background: url(../images/cover/cuba.jpg) 50% 0 fixed;
-//     padding: 350px 0;
+// .photo-section{
+//     height: auto;
+//     margin: 0 auto;
+//     width: 100%;
+//     position: relative;
+//     padding: 200px 0;
+//     /*box-shadow: 1px 1px 40px $color-black;*/
 // }
 
 #modal-login{
@@ -304,41 +299,34 @@ header .intro-text .skills {
 .hello-screen a:focus {
 }
 
-
-
 /* Main Menu */
 .main-menu{
-  text-align: left;
+    padding-left: 18px;
 }
 
 .main-menu div{
   margin-bottom: 4px;
 }
 
-.main-menu a{
+a.main-menu-link{
   color: $color-white;
   font-family: $font-base;
   text-decoration: none;
-  padding-left: 18px;
 }
 
-.main-menu a span{
-  padding-right: 4px;
+a.main-menu-link span{
+    padding-right: 4px;
 }
 
-.main-menu a.common:hover{
+a.main-menu .common:hover{
     text-decoration: underline;
 }
 
-.main-menu a:focus {
-}
-
 .main-menu h4{
-  font-family: $font-base;
-  font-size: 12px;
-  text-align: left;
-  color: #999;
-  padding-left: 10px;
+    font-family: $font-base;
+    font-size: 12px;
+    text-align: left;
+    color: #999;
 }
 
 /* Language Box */
@@ -436,8 +424,6 @@ header .intro-text .skills {
   color: $color-white;
 }
 
-
-
 /* Add Language Box*/
 
 .add-language-box{
@@ -468,7 +454,6 @@ header .intro-text .skills {
 .clear{
   clear: both;
 }
-
 
 /* Breadcrumbs */
 ol.breadcrumb{
@@ -548,20 +533,6 @@ margin-left: 0 !important;
     border-radius: 0 0 3pt 0;
 }
 
-// .add-language-image{
-//     // z-index: 0;
-//     transition: all 0.75s ease-out;
-//     // -moz-filter: blur(1px);
-//   // -o-filter: blur(1px);
-//   // -ms-filter: blur(1px);
-//   // filter: blur(5px);
-// }
-//
-// .add-language-image:hover{
-//     // -webkit-filter: blur(1px);
-//     -webkit-filter: sepia(50%) blur(1px);
-// }
-
 .add-language-box
 {
     text-align: center;
@@ -600,9 +571,7 @@ margin-left: 0 !important;
     width: 50px;
     height: 80px;
     background: transparent;
-    // box-shadow: -1px -1px 10px #DDD;
     position: absolute;
-    // z-index: 100;
     top: 0;
     left: 0;
 }
@@ -619,18 +588,6 @@ margin-left: 0 !important;
 
     width: 80px;
     height: 20px;
-    // box-shadow: 0 2px 0 #DDD;
-
-    // text-align: center;
-    // -webkit-transform: rotateZ(-45deg);
-    // -moz-transform: rotateZ(-45deg);
-
-    /* Rhombus */
-    // border-width: 0 30px 30px 30px;
-    // border-style: solid;
-    // border-color: transparent transparent #3AE transparent;
-
-
 }
 
 /* This does the text "featured" and the gradient that makes it look curved */
@@ -647,42 +604,6 @@ margin-left: 0 !important;
     padding-top: 5px;
 
     background: $color-red;
-    // background-image:
-    //
-    //     -webkit-linear-gradient(45deg,
-    //     transparent 0%,
-    //     transparent 77%,
-    //     rgba(255,255,255,0.3) 80%,
-    //     rgba(255,255,255,0.3) 81%,
-    //     rgba(0,0,0,0.4) 82%,
-    //     transparent 83%
-    //     ),
-    //
-    //     -webkit-linear-gradient(-45deg,
-    //     transparent 0%,
-    //     transparent 17%,
-    //     rgba(0,0,0,0.5) 18%,
-    //     rgba(255,255,255,0.3) 19%,
-    //     rgba(255,255,255,0.3) 20%,
-    //     transparent 23%
-    //     );
-    // background-image:
-    //     -moz-linear-gradient(45deg,
-    //     transparent 0%,
-    //     transparent 77%,
-    //     rgba(255,255,255,0.3) 80%,
-    //     rgba(255,255,255,0.3) 81%,
-    //     rgba(0,0,0,0.4) 82%,
-    //     transparent 83%
-    //     ),
-    //     -moz-linear-gradient(-45deg,
-    //     transparent 0%,
-    //     transparent 17%,
-    //     rgba(0,0,0,0.5) 18%,
-    //     rgba(255,255,255,0.3) 19%,
-    //     rgba(255,255,255,0.3) 20%,
-    //     transparent 23%
-    //     );
 
     -webkit-transform: rotateZ(-45deg);
     -moz-transform: rotateZ(-45deg);
@@ -693,25 +614,6 @@ margin-left: 0 !important;
     text-align: center;
     text-shadow: 0 1px rgba(255,255,25,0.1);
 }
-
-
-// body{
-//
-//     background:
-//         -webkit-radial-gradient(rgba(0,0,0,0.05) 15%, transparent 16%) 0 0,
-//         -webkit-radial-gradient(rgba(0,0,0,0.05) 15%, transparent 16%) 8px 8px,
-//         -webkit-radial-gradient(rgba(0,0,0,.05) 15%, transparent 20%) 0 1px,
-//         -webkit-radial-gradient(rgba(0,0,0,.05) 15%, transparent 20%) 8px 9px;
-//
-//     background:
-//         -moz-radial-gradient(rgba(0,0,0,0.05) 15%, transparent 16%) 0 0,
-//         -moz-radial-gradient(rgba(0,0,0,0.05) 15%, transparent 16%) 8px 8px,
-//         -moz-radial-gradient(rgba(0,0,0,.05) 15%, transparent 20%) 0 1px,
-//         -moz-radial-gradient(rgba(0,0,0,.05) 15%, transparent 20%) 8px 9px;
-//
-//     background-color:#FAFAFA;
-//     background-size:16px 16px;
-// }
 
 .au_20px {width: 20px; height: 20px; background: url(../../images/flags.png) -152px -27px;}
 .au_24px {width: 24px; height: 24px; background: url(../../images/flags.png) -127px -2px;}
