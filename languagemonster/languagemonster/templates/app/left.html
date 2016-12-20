@@ -2,22 +2,21 @@
 {% load i18n %}
 
 <div>
-    <div style="background-color: #22262E; height: 60px; padding: 6px 6px 6px 24px;">
+    <div class="left-bar">
         <div class="fluid-container">
             <div class="row" style="padding-right: 15px; padding-top: 2px;">
-                    <a title="Language Monster" href="{% url 'index' %}"><img src="{{STATIC_URL}}images/website/language_monster_1.png" alt="Language Monster" /></a>
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-unlogged">
-                <span class="sr-only">{% trans "toggle_nav" %}</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <section class="beta">
-
-              </section>
-                </div>
+                <a title="Language Monster" href="{% url 'index' %}"><img src="{{STATIC_URL}}images/website/language_monster_1.png" alt="Language Monster" /></a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-unlogged">
+                    <span class="sr-only">{% trans "toggle_nav" %}</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <section class="beta">
+                </section>
             </div>
         </div>
+    </div>
 
     <div class="collapse navbar-collapse" id="navbar-unlogged">
         <ul class="nav navbar-nav navbar-right">
@@ -30,15 +29,15 @@
     <div id="app-left-column">
         <div class="fluid-container">
             <div class="row">
-              <a title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}">
-                        {% if context.user.avatar %}
-                        {% with context.urls.avatar|add:context.user.avatar as path %}
-                            {% thumbnail path "60x60" crop="center" as im %}
-                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{context.user.public_name}}" />
-                            {% endthumbnail %}
-                        {% endwith %}
-                        {% endif %}
-                    </a>
+                <a title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}">
+                    {% if context.user.avatar %}
+                    {% with context.urls.avatar|add:context.user.avatar as path %}
+                    {% thumbnail path "60x60" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-circle" alt="{{context.user.public_name}}" />
+                    {% endthumbnail %}
+                    {% endwith %}
+                    {% endif %}
+                </a>
             </div>
             <div class="row hello-screen">{% trans "hello" %}<br />{{context.user.public_name}}</div>
             {% if context.user.is_superuser%}
@@ -46,44 +45,38 @@
             {% endif %}
 
             <div class="row">
-                
                 {% if context.user.studying|length > 0 %}
                 <div class="main-menu align-left">
-                        <h4>{% trans "header_your_languages" %}</h4>
+                    <h4>{% trans "header_your_languages" %}</h4>
 
-                        {% for pro, lang_pair in context.user.studying %}
-
-                        {% if lang_pair.base_language.acronym == context.language.language.acronym %}
-                        <!-- <div style="padding-left: 18px;"> -->
-                        <div>
-    <a class="main-menu-link" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}">
-        <div
-          style="width: 20px; height: 20px; display: inline-block; margin-right: 4px;"
-		  class="{{lang_pair.target_language.flag_filename}}_20px img-circle pull-left"
-		  alt="{{lang_pair.target_language.original_name}}">
-        </div>{% trans lang_pair.target_language.english_name %}
-    </a>
-                </div>
-                        {% endif %}
-                            {% endfor %}
-                            </div>
+                    {% for pro, lang_pair in context.user.studying %}
+                    {% if lang_pair.base_language.acronym == context.language.language.acronym %}
+                    <div>
+                        <a class="main-menu-link" href="{% url 'vocabulary:study' lang_pair.target_language.slug %}">
+                            <div
+                                class="{{lang_pair.target_language.flag_filename}}_20px img-circle pull-left left-bar-flag"
+		                alt="{{lang_pair.target_language.original_name}}">
+                            </div>{% trans lang_pair.target_language.english_name %}
+                        </a>
+                    </div>
                     {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
 
-                    <br />
-                    <!-- <div style="text-align: center;"> -->
-                    <a class="button3d button3d-small font16px" title="{% trans 'add_language' %}" href="{% url 'vocabulary:add_language' %}"><span class="small text">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                        {% trans "add_language" %}</span></a>
-                        <!-- </div> -->
-                        <br />
-                        <br />
-                        <div class="main-menu align-left">
+                <br />
+                <a class="button3d button3d-small font16px" title="{% trans 'add_language' %}" href="{% url 'vocabulary:add_language' %}"><span class="small text">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    {% trans "add_language" %}</span></a>
+                <br />
+                <br />
+                <div class="main-menu align-left">
                     <h4>LANGUAGE MONSTER</h4>
 
                     <a class="common main-menu-link" title="{% trans 'dashboard' %}" href="{% url 'index' %}"><span class="glyphicon glyphicon-home"></span>{% trans "dashboard" %}</a><br />
                     <a class="common main-menu-link" title="{% trans 'profile' %}" href="{% url 'public_page' context.user.uri %}"><span class="glyphicon glyphicon-user"></span>{% trans "profile" %}</a><br />
                     <a class="common main-menu-link" title="{% trans 'settings' %}" href="{% url 'core:settings' %}"><span class="glyphicon glyphicon-wrench"></span>{% trans "settings" %}</a><br />
-                    </div>
+                </div>
             </div>
         </div>
     </div>
