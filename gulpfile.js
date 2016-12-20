@@ -10,6 +10,7 @@ var eslint = require('gulp-eslint');
 var static_dir = 'languagemonster/languagemonster/static/';
 
 var js_dir = static_dir + 'js/';
+var js_build_dir = static_dir + 'js_build/';
 var js_games_dir = static_dir + 'js/game/';
 var css_dir = static_dir + 'css/';
 var scss_dir = static_dir + 'scss/';
@@ -70,10 +71,10 @@ gulp.task('js_games', function() {
         js_games_dir + 'game.js'
     ], {base: js_dir})
         .pipe(concat('games.js'))
-        .pipe(gulp.dest(js_dir + 'build/'))
+        .pipe(gulp.dest(js_build_dir))
         .pipe(rename('games.js'))
         .pipe(uglify())
-        .pipe(gulp.dest(js_dir + 'build/'));
+        .pipe(gulp.dest(js_build_dir));
 });
 
 gulp.task('js_app', function() {
@@ -81,10 +82,10 @@ gulp.task('js_app', function() {
         js_dir + 'interface.js'
     ], {base: js_dir})
     .pipe(concat('app.js'))
-    .pipe(gulp.dest(js_dir + 'build/'))
+    .pipe(gulp.dest(js_build_dir))
     .pipe(rename('app.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(js_dir + 'build/'));
+    .pipe(gulp.dest(js_build_dir));
 });
 
 gulp.task('js_landing', function() {
@@ -92,10 +93,10 @@ gulp.task('js_landing', function() {
         js_dir + 'init.js'
     ], {base: js_dir})
     .pipe(concat('landing.js'))
-    .pipe(gulp.dest(js_dir + 'build/'))
+    .pipe(gulp.dest(js_build_dir))
     .pipe(rename('landing.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(js_dir + 'build/'));
+    .pipe(gulp.dest(js_build_dir));
 });
 
 gulp.task('js', ['js_landing', 'js_app', 'js_games']);
