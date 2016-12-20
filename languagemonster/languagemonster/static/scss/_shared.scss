@@ -1,0 +1,91 @@
+.align-left {
+    text-align: left;
+}
+
+.font40px {
+    font-size: 40px;
+}
+
+.font16px {
+    font-size: 16px;
+}
+
+.button3d-small {
+    -webkit-box-shadow: 0 4px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    -moz-box-shadow: 0 4px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    box-shadow: 0 4px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+}
+
+.button3d-large {
+    -webkit-box-shadow: 0 10px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    -moz-box-shadow: 0 10px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+    box-shadow: 0 10px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
+}
+
+.button3d {
+    display: inline-block;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-transition: -webkit-box-shadow .1s ease-in-out;
+    -moz-transition: -moz-box-shadow .1s ease-in-out;
+    -o-transition: -o-box-shadow .1s ease-in-out;
+    transition: box-shadow .1s ease-in-out;
+    color: $color-white;
+}
+
+.button3d span.small {
+    padding: 10px 15px;
+}
+
+.button3d span.large {
+    padding: 20px 30px;
+}
+
+.button3d span.text {
+    color: $color-white;
+    display: inline-block;
+    background-color: $color-button3d;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    -moz-box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    box-shadow: inset 0 -1px 1px rgba(255, 255, 255, .15);
+    font-family: $font-base;
+    line-height: 1;
+    text-shadow: 0 -1px 1px $color-button3d-text-shadow, 0 0 5px $color-button3d-text-shadow;
+    -webkit-transition: background-color .2s ease-in-out, -webkit-transform .1s ease-in-out;
+    -moz-transition: background-color .2s ease-in-out, -moz-transform .1s ease-in-out;
+    -o-transition: background-color .2s ease-in-out, -o-transform .1s ease-in-out;
+    transition: background-color .2s ease-in-out, transform .1s ease-in-out;
+}
+
+.button3d:hover span {
+    color: $color-white;
+    text-shadow: 0 -1px 10px $color-button3d-text-shadow, 0 0 10px $color-button3d-text-shadow;
+}
+
+.button3d-large:active, .button3d-large:focus {
+    -webkit-box-shadow: 0 10px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 10px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+    box-shadow: 0 10px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+}
+
+.button3d-small:active, .button3d-small:focus {
+    -webkit-box-shadow: 0 4px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 4px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+    box-shadow: 0 4px 0 $color-button3d-shadow, 0 12px 10px rgba(0, 0, 0, .3);
+}
+
+.button3d:active, .button3d:focus {
+    color: $color-white;
+}
+
+.button3d:active span {
+    color: $color-white;
+    -webkit-transform: translate(0, 5px);
+    -moz-transform: translate(0, 5px);
+    -o-transform: translate(0, 5px);
+    transform: translate(0, 5px);
+}
