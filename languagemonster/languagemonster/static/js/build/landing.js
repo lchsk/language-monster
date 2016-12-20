@@ -1,1 +1,1 @@
-smoothScroll.init(),$(".btn-popover").popover({placement:"auto"}),$(document).ready(function(){var o=$(window);$('section[data-type="background"]').each(function(){var n=$(this);$(window).scroll(function(){var t=-(o.scrollTop()/n.data("speed")),a="50% "+t+"px";n.css({backgroundPosition:a})})})});
+smoothScroll.init(),$(".btn-popover").popover({placement:"auto"});
