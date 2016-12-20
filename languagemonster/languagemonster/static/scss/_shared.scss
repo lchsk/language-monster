@@ -90,6 +90,21 @@
     transform: translate(0, 5px);
 }
 
+// Fix bootstrap shifting content with modal window open
+
+body.modal-open {
+    overflow: auto;
+}
+
+body.modal-open[style] {
+    padding-right: 0px !important;
+}
+
+.modal::-webkit-scrollbar {
+    width: 0 !important; /*removes the scrollbar but still scrollable*/
+    /* reference: http://stackoverflow.com/a/26500272/2259400 */
+}
+
 // Flags
 
 .au_20px {width: 20px; height: 20px; background: url(../../images/flags.png) -152px -27px;}

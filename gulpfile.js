@@ -73,13 +73,12 @@ gulp.task('js_games', function() {
         .pipe(gulp.dest(js_dir + 'build/'))
         .pipe(rename('games.js'))
         .pipe(uglify())
-        .pipe(gulp.dest(js_dir + 'build/'))
+        .pipe(gulp.dest(js_dir + 'build/'));
 });
 
 gulp.task('js_app', function() {
     return gulp.src([
-        js_dir + 'interface.js',
-        js_dir + 'modal-fix.js'
+        js_dir + 'interface.js'
     ], {base: js_dir})
     .pipe(concat('app.js'))
     .pipe(gulp.dest(js_dir + 'build/'))
@@ -91,8 +90,7 @@ gulp.task('js_app', function() {
 gulp.task('js_landing', function() {
     return gulp.src([
         js_dir + 'init.js',
-        js_dir + 'parallax.js',
-        js_dir + 'modal-fix.js'
+        js_dir + 'parallax.js'
     ], {base: js_dir})
     .pipe(concat('landing.js'))
     .pipe(gulp.dest(js_dir + 'build/'))
