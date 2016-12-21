@@ -74,6 +74,7 @@ gulp.task('js_games', function() {
         .pipe(gulp.dest(js_build_dir))
         .pipe(rename('games.js'))
         .pipe(uglify())
+        .pipe(rename('games.min.js'))
         .pipe(gulp.dest(js_build_dir));
 });
 
