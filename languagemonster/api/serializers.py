@@ -70,6 +70,10 @@ class DataSetSerializer(ModelSerializer):
             'slug',
         )
 
+class ToStudySerializer(Serializer):
+    langs_to_learn = ListField(child=LanguagePairSerializer())
+    datasets = ListField(child=DataSetSerializer())
+
 ################################################
 #                                              #
 #                    GetWords                  #

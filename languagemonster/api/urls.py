@@ -12,6 +12,7 @@ from api.views.data import (
     AvailableDatasets,
     GetWords,
     LocalGetWords,
+    LocalGetToStudy,
 )
 
 from api.views.user import UserStats
@@ -63,6 +64,11 @@ urlpatterns = [
         r'^local/words/(?P<dataset_id>\d+)/(?P<uri>.+)/?$',
         LocalGetWords.as_view(),
         name='local_words',
+    ),
+    url(
+        r'^local/to-study/(?P<language>\w{2})/?$',
+        LocalGetToStudy.as_view(),
+        name='to_study',
     ),
     url(
         r'^users/stats/?$',

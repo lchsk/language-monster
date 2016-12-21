@@ -15,6 +15,8 @@ from django.conf import settings
 from django.http import Http404
 
 import core.impl.mail as mail
+from core.impl.user import register as register_user
+from core.impl.user import authenticate_user
 
 from utility.views import (
     ContextView,
@@ -22,8 +24,8 @@ from utility.views import (
     NoTemplateMixin,
 )
 from utility.user_language import landing_language
-from core.impl.user import register as register_user
-from core.impl.user import authenticate_user
+
+from vocabulary.impl.study import get_datasets
 
 logger = logging.getLogger(__name__)
 

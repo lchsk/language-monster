@@ -1,14 +1,20 @@
 import logging
+from collections import namedtuple
 
 from core.models import (
     DataSet,
     MonsterUser,
 )
+from core.data.language_pair import LANGUAGE_PAIRS
 
-from vocabulary.impl.study import get_game_words
+from vocabulary.impl.study import (
+    get_game_words,
+    get_datasets_by_base,
+)
 
 from api.serializers import (
     DataSetSerializer,
+    ToStudySerializer,
     GetWordsFilters,
     GetWordsSingleSetSerializer,
 )
@@ -21,8 +27,25 @@ from api.views.base import (
 
 logger = logging.getLogger(__name__)
 
+ToStudy = namedtuple('ToStudy', 'langs_to_learn datasets')
+
+class LocalGetToStudy(PublicAPIAuthView):
+    def get(self, request, language):
+        langs_to_learn = LANGUAGE_PAIRS[language]
+
+        datasets = get_datasets_by_base(language)
+
+        resp = ToStudySerializer(ToStudy(
+            langs_to_learn=langs_to_learn.values(),
+            datasets=datasets,
+        ))
+
+        return self.success(resp.data)
+
+
 class AvailableDatasets(APIAuthView):
     def get(self, request, lang_pair):
+        # TODO: Use get_datasets (vocabulary.impl.study)
         datasets = DataSet.objects.filter(
             lang_pair=lang_pair,
             visible=True,

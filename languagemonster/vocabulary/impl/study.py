@@ -39,6 +39,15 @@ def get_datasets(language_pair):
         status='A',
     ).order_by('-learners')
 
+def get_datasets_by_base(base_language):
+    """Load sets for a given base language."""
+
+    return DataSet.objects.filter(
+        lang_pair__contains=base_language + '_',
+        visible=True,
+        status='A',
+    ).order_by('-learners')
+
 def get_single_dataset(lang_pair_symbol, dataset_slug):
     return DataSet.objects.filter(
         slug=dataset_slug,
