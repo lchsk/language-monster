@@ -5,17 +5,18 @@
 <span id="top"></span>
 
 <div class="site-wrapper">
-  <div class="site-wrapper-inner">
-    <div class="cover-container" style="margin-top: 0; padding-top: 0;">
-      <div class="masthead clearfix">
-        {% include "landing/nav.html" %}
-      </div>
-        {% block content %}
-        {% include "landing/centre.html" %}
-        {% endblock content %}
-
+    <div class="site-wrapper-inner">
+        <div class="cover-container" style="margin-top: 0; padding-top: 0;">
+            <div class="masthead clearfix">
+                {% include "landing/nav.html" %}
+            </div>
+            <div style="text-align: center; margin: auto;">
+            {% block content %}
+            {% include "landing/centre.html" %}
+                {% endblock content %}
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 {% include "landing/sections.html" %}
@@ -24,10 +25,10 @@
 {% include "forms/form-contact.html" %}
 {% include "forms/form-language.html" %}
 
-
 <script src="{{STATIC_URL}}lib/jquery-1.11.2.min.js"></script>
 <script src="{{STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="{{STATIC_URL}}lib/smooth-scroll.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js"></script>
 
 <script src="{{STATIC_URL}}js_build/landing.js"></script>
 

@@ -1,16 +1,72 @@
 {% load i18n %}
 
+<script type="text/javascript">
+window.language = "{{context.language.language.acronym}}";
+</script>
+
 <header>
-    <div class="container-fluid">
+    <div class="container-fluid" style="text-align: center;">
         <div class="row">
-            <div class="col-lg-12">
-                <div id="intro-header">
+          <div class="col-lg-12">
+            <div id="monster-home">
+                <div id="intro-header" v-show="view=='main'">
                     {% trans "landing_header1" %}
                     <div>
-                        <a href="#" class="button3d button3d-large font40px"><span class="large text">{% trans "btn_play_now" %}</span></a>
+                        <a v-on:click="load_game" href="#" class="button3d button3d-large font40px"><span class="large text">{% trans "btn_play_now" %}</span></a>
                     </div>
+                </div>
+                <div v-show="view=='game'">
+                  <div id="game"></div>
+                </div>
+                <div v-show="view=='datasets'" class="menu-container img-rounded">
+                  <div class="row" style="text-align: left;">
+                    <ol class="breadcrumb">
+                      <li><a v-on:click="goto('main')" title="{% trans 'home' %}" href="#">{% trans "home" %}</a></li>
+                      <li><a v-on:click="goto('languages')" title="{% trans 'languages' %}" href="#">{% trans "languages" %}</a></li>
+                      <li class="active">{% trans "datasets" %}</li>
+                    </ol>
+                  </div>
+                  <h1>
+                    <div
+                      :class="selected_flag" class="img-circle flag-border"
+                      style="width: 30px; height: 30px; display: inline-block; vertical-align: middle;"
+                      :title="target_lang_name">
+                    </div>
+                    [[this.target_lang_name]]</h1>
+                  <div class="list-group">
+                    <template v-for="d in vis_datasets">
+                        <a href="#" v-on:click="play(d.id)" class="list-group-item list-group-item-action">[[d.name_target]] [[d.name_base]]</a>
+                    </template>
+                  </div>
+                  <div class="align-center">
+                    <a v-show="datasets_btns[0]" v-on:click="prev_sets_page" href="#" class="button3d button3d-large font24px"><span class="small text">{% trans "btn_prev" %}</span></a></span>
+                      [[this.datasets_cp]] / [[this.datasets_pages]]
+                      <a v-show="datasets_btns[1]" v-on:click="next_sets_page" href="#" class="button3d button3d-large font24px"><span class="small text">{% trans "btn_next" %}</span></a>
+                  </div>
+                </div>
+                <div v-show="view=='languages'" class="menu-container img-rounded">
+                  <div class="row" style="text-align: left;">
+                    <ol class="breadcrumb">
+                      <li><a v-on:click="goto('main')" title="{% trans 'home' %}" href="#">{% trans "home" %}</a></li>
+                      <li class="active">{% trans "languages" %}</li>
+                    </ol>
+                  </div>
+                  <h1>{% trans "languages_you_can_learn" %}</h1>
+                  <div class="list-group">
+                    <template v-for="lang in langs_to_learn">
+                      <a v-on:click="select_language(lang)" class="list-group-item list-group-item-action" href="#" >
+                        <div
+                          :class="lang.target_language.flag_filename" class="img-circle flag-border"
+                          style="width: 24px; height: 24px; display: inline-block; vertical-align: middle;"
+                          :title="lang.target_language.original_name">
+                        </div>
+                        [[ lang.target_language.original_name ]]
+                      </a>
+                  </div>
+                  </template>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </header>
