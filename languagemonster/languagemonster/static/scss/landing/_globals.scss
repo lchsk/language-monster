@@ -266,3 +266,20 @@ h2.static{
 .flag-border{
     border: 1px solid #ccc;
 }
+
+// Landing page menu
+
+div.menu-container {
+    width: 800px;
+    height: 450px;
+    background-color: $color-white;
+    // background-color: #76D3DE;
+    display: inline-block;
+    padding: 25px;
+    text-align: left;
+}
+
+.menu-container h1 {
+    color: $color-navy;
+    font-family: $font-base;
+}
