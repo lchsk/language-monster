@@ -323,11 +323,11 @@ MONSTER.Game.prototype.draw = function()
 
 var game = null;
 
-function newGame() {
+MONSTER.newGame = function() {
     game = new MONSTER.Game(60);
-}
+};
 
 window.onload = function() {
     if (window.play)
-        newGame();
+        MONSTER.newGame();
 };

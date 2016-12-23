@@ -90,7 +90,7 @@ new Vue({
         },
         init_game: function() {
             if (window.PIXI && window.MONSTER) {
-                newGame();
+                MONSTER.newGame();
             }
         },
         play: function(dataset_id) {
