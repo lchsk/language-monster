@@ -29,7 +29,11 @@
 <script src="{{STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.6/vue.min.js"></script>
 
+{% if context.status.debug %}
 <script src="{{STATIC_URL}}js_build/landing.js"></script>
+{% else %}
+<script src="{{STATIC_URL}}js_build/landing.min.js"></script>
+{% endif%}
 
 {% include "google.html" %}
 

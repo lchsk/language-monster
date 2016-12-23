@@ -1,5 +1,3 @@
-$('.btn-popover').popover({placement: 'auto'});
-
 new Vue({
     delimiters: ["[[", "]]"],
     el: '#monster-home',
@@ -95,7 +93,13 @@ new Vue({
             this.view = 'game';
 
             this.load_script('/static/lib/pixi.js');
-            this.load_script('/static/js_build/games.js');
+
+            var games_src = '/static/js_build/games.min.js';
+
+            if (window.debug)
+                games_src = '/static/js_build/games.js';
+
+            this.load_script(games_src);
 
             window.play = true;
             // TODO:

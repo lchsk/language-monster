@@ -80,23 +80,25 @@ gulp.task('js_games', function() {
 
 gulp.task('js_app', function() {
     return gulp.src([
-        js_dir + 'interface.js'
+        js_dir + 'app/interface.js'
     ], {base: js_dir})
     .pipe(concat('app.js'))
     .pipe(gulp.dest(js_build_dir))
     .pipe(rename('app.js'))
     .pipe(uglify())
+    .pipe(rename('app.min.js'))
     .pipe(gulp.dest(js_build_dir));
 });
 
 gulp.task('js_landing', function() {
     return gulp.src([
-        js_dir + 'init.js'
+        js_dir + 'landing/home.js'
     ], {base: js_dir})
     .pipe(concat('landing.js'))
     .pipe(gulp.dest(js_build_dir))
     .pipe(rename('landing.js'))
     .pipe(uglify())
+    .pipe(rename('landing.min.js'))
     .pipe(gulp.dest(js_build_dir));
 });
 
