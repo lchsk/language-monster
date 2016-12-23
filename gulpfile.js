@@ -80,7 +80,8 @@ gulp.task('js_games', function() {
 
 gulp.task('js_app', function() {
     return gulp.src([
-        js_dir + 'app/interface.js'
+        js_dir + 'app/interface.js',
+        js_dir + 'app/admin.js'
     ], {base: js_dir})
     .pipe(concat('app.js'))
     .pipe(gulp.dest(js_build_dir))
