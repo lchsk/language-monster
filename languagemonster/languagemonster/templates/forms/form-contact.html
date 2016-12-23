@@ -8,8 +8,9 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" style="color: #000000;" id="modal-login-header">{% trans "contact" %}</h4>
       </div>
+      <form action="{% url 'core:send_email' %}" method="post">
       <div class="modal-body">
-        <form action="{% url 'core:send_email' %}" method="post">
+
         {% csrf_token %}
         <div class="form-group">
           <input type="text" class="form-control" id="contact-name" name="name" placeholder="{% trans 'ph_your_name' %}">
@@ -35,4 +36,3 @@
       </div>
     </div>
   </div>
-</div>
