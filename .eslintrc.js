@@ -12,6 +12,7 @@ module.exports = {
         "PIXI": true,
         "$": true,
         "jQuery": true,
+        "Vue": true,
         "smoothScroll": true
     }
 };

@@ -2,6 +2,14 @@
 
 <script type="text/javascript">
 window.language = "{{context.language.language.acronym}}";
+window.games = {{games|safe}};
+window.translations = {{xl|safe}};
+
+{% if context.status.debug %}
+    window.debug = true;
+{% else %}
+    window.debug = false
+{% endif %}
 </script>
 
 <header>

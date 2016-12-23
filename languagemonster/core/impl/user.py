@@ -107,6 +107,15 @@ def update_public_name(monster_user):
         monster_user.public_name = monster_user.user.email
 
 
+def get_games():
+    return {
+        game_name: game_def
+        for game_name, game_def in settings.GAMES.iteritems()
+        # Show all games in DEBUG mode
+        if game_def['prod'] or settings.DEBUG
+    }
+
+
 def process_games_list(games, user_games):
     """Mark games not selected by the user."""
 

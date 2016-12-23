@@ -93,16 +93,20 @@ class LocalGetWords(PublicAPIAuthView):
 
             return self.failure('Invalid input', 400)
 
-        try:
-            monster_user = MonsterUser.objects.get(uri=uri)
-        except MonsterUser.DoesNotExist:
-            return self.failure('Does not exist', 404)
+        if uri:
+            try:
+                monster_user = MonsterUser.objects.get(uri=uri)
+            except MonsterUser.DoesNotExist:
+                return self.failure('Does not exist', 404)
+        else:
+            # Game for anonymous user
+            monster_user = None
 
         words = get_game_words(
             dataset_id=dataset_id,
             monster_user=monster_user,
             rounds=filters.validated_data['rounds'],
-            include_words_to_repeat=True,
+            include_words_to_repeat=bool(uri),
             nsets=filters.validated_data['sets'],
         )
 

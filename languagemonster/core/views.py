@@ -15,8 +15,11 @@ from django.conf import settings
 from django.http import Http404
 
 import core.impl.mail as mail
-from core.impl.user import register as register_user
-from core.impl.user import authenticate_user
+from core.impl.user import (
+    register as register_user,
+    authenticate_user,
+    get_games,
+)
 
 from utility.views import (
     ContextView,
@@ -25,7 +28,10 @@ from utility.views import (
 )
 from utility.user_language import landing_language
 
-from vocabulary.impl.study import get_datasets
+from vocabulary.impl.study import (
+    get_datasets,
+    get_game_translations,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -148,6 +154,9 @@ class IndexView(ContextView):
             self.template_name = 'app/dashboard.html'
         else:
             self.template_name = 'landing/base.html'
+
+            context['games'] = get_games().keys()
+            context['xl'] = get_game_translations()
 
         return context
 

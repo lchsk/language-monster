@@ -19,11 +19,17 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
     that.success = false;
     that.error_code = null;
 
+    var url = "/api/local/words/" + this.dataset_id;
+
+    // Anonymous player
+    if (this.email)
+        url += "/" + this.email;
+
     $.ajax({
         method: "GET",
         crossDomain: false,
         timeout: 15000,
-        url: "/api/local/words/" + this.dataset_id + "/" + this.email,
+        url: url,
         error: function(x, t) {
             that.success = false;
             that.error_code = t;

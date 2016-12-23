@@ -109,8 +109,6 @@ def get_game_words(
     returned_words.extend(to_repeat)
 
     items_to_return = nsets * rounds
-    items_to_pick = items_to_return - len(returned_words)
-
     sentinel = 0
 
     while True or sentinel < 1000:
