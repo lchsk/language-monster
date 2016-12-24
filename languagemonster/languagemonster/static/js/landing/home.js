@@ -96,7 +96,7 @@ window.MONSTER.home_menu = new Vue({
 
             this.load_script('/static/lib/pixi.js');
 
-            var games_src = '/static/js_build/games.js';
+            var games_src = '/static/js_build/games.min.js';
 
             if (window.debug)
                 games_src = '/static/js_build/games.js';
