@@ -304,7 +304,8 @@ STATICFILES_DIRS = (
 )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = './tmp/media/' if DEBUG else os.getenv('LM_MEDIA_ROOT')
+MEDIA_ROOT = (os.path.join(BASE_DIR, './tmp/media/') if DEBUG
+              else os.getenv('LM_MEDIA_ROOT'))
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, 'locale'),
