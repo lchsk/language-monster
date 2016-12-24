@@ -9,10 +9,11 @@
 <div class="site-wrapper">
   <div class="site-wrapper-inner">
     <div class="cover-container" style="margin-top: 0; padding-top: 0;">
-      <div class="masthead clearfix">
+        <div class="masthead clearfix">
+            {% include "landing/nav.html" %}
       </div>
       <header>
-        <div class="container-fluid">
+        <div class="container">
           <div class="row">
             {% for msg in messages %}
             <div class="alert alert-{{msg.tags}} alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{msg}}</div>
@@ -29,11 +30,11 @@
               </div>
               <div id="intro-text">
                 <div>
-                  {% if error != 404 %}
+                  {% if error == 404 %}
                     {% trans "msg_error_404_longer" %}
                   {% endif %}
                 </div>
-                <div><a href="{{home}}" class="btn btn-submit">{% trans "btn_home" %}</a></div>
+                <div><a href="{% url 'index' %}" class="button3d button3d-small font24px"><span class="small text">{% trans "btn_home" %}</span></a></div>
               </div>
             </div>
           </div>
@@ -42,5 +43,10 @@
     </div>
   </div>
 </div>
+{% include "forms/form-login.html" %}
+{% include "forms/form-signup.html" %}
+{% include "forms/form-language.html" %}
+<script src="{{STATIC_URL}}lib/jquery-1.11.2.min.js"></script>
+<script src="{{STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
