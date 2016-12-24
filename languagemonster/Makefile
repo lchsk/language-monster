@@ -18,6 +18,9 @@ send-mail:
 translations:
 	python manage.py makemessages -a
 
+clean-thumbnails:
+	python manage.py thumbnail cleanup
+
 beat:
 	celery beat -A languagemonster
 

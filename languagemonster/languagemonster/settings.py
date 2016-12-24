@@ -117,7 +117,7 @@ GAMES = {
     'space': {
         'available': True,
         'name': _('game_space_game'),
-        'image': 'space2.png',
+        'image': 'space.png',
         'prod': True,
     },
     'simple': {
@@ -304,7 +304,7 @@ STATICFILES_DIRS = (
 )
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.getenv('LM_MEDIA_ROOT')
+MEDIA_ROOT = './tmp/media/' if DEBUG else os.getenv('LM_MEDIA_ROOT')
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, 'locale'),
