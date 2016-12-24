@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-12 15:34+0000\n"
-"PO-Revision-Date: 2016-10-12 19:51+0000\n"
-"Last-Translator: lchsk \n"
+"POT-Creation-Date: 2016-12-24 16:00+0000\n"
+"PO-Revision-Date: 2016-12-24 16:49+0000\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,6 @@ msgid "mail_subj_new_password"
 msgstr "Zmiana hasła - Language Monster"
 
 #: core/impl/user.py:73
-#| msgid "Passwords are not equal."
 msgid "msg_passwords_not_equal"
 msgstr "Hasła się różnią"
 
@@ -40,130 +39,121 @@ msgstr "Hasła się różnią"
 msgid "msg_password_too_short"
 msgstr "Hasło jest za krótkie"
 
-#: core/impl/user.py:82 userprofile/views/profile.py:280
+#: core/impl/user.py:82 userprofile/views/profile.py:285
 msgid "msg_invalid_email"
 msgstr "Niepoprawny email"
 
-#: core/impl/user.py:88 userprofile/views/profile.py:211
+#: core/impl/user.py:88 userprofile/views/profile.py:216
 msgid "msg_email_already_in_use"
 msgstr "Podany email jest już zajęty"
 
-#: core/views.py:77
+#: core/views.py:85
 msgid "msg_user_registered"
 msgstr "Użytkownik jest zarejestrowany"
 
-#: core/views.py:86 core/views.py:233
+#: core/views.py:94 core/views.py:246
 msgid "msg_email_failed"
 msgstr "Wysyłanie email się nie powiodło"
 
-#: core/views.py:122
+#: core/views.py:130
 msgid "msg_user_inactive"
 msgstr "Użytkownik jest nieaktywny"
 
-#: core/views.py:131
+#: core/views.py:139
 msgid "msg_invalid_email_password"
 msgstr "Nieprawny email lub hasło"
 
-#: core/views.py:220
+#: core/views.py:233
 msgid "msg_contact_recv"
 msgstr "Dziękujemy za skontaktowanie się"
 
-#: languagemonster/settings.py:120
+#: languagemonster/settings.py:119
 #: languagemonster/templates/app/game_tuts/space.html:10
 msgid "game_space_game"
-msgstr "Kosmiczna gra"
+msgstr "Samolotowy raj"
 
 #: languagemonster/settings.py:125
 #: languagemonster/templates/app/game_tuts/simple.html:10
-#| msgid "Four buttons"
 msgid "game_four_buttons"
 msgstr "Cztery przyciski"
 
-#: languagemonster/settings.py:130
+#: languagemonster/settings.py:131
 #: languagemonster/templates/app/game_tuts/plane.html:10
-#| msgid "Crazy plane"
 msgid "game_crazy_plane"
 msgstr "Szalony samolot"
 
-#: languagemonster/settings.py:135
+#: languagemonster/settings.py:137
 #: languagemonster/templates/app/game_tuts/runner.html:10
-#| msgid "Bunny runner"
 msgid "game_bunny_runner"
-msgstr "Królik biegacz"
+msgstr "Panda biegacz"
 
-#: languagemonster/settings.py:140
+#: languagemonster/settings.py:143
 #: languagemonster/templates/app/game_tuts/shooter.html:10
-#| msgid "Word sniper"
 msgid "game_word_sniper"
-msgstr "Snajper"
+msgstr "Śnieżna bitwa"
 
 #: languagemonster/templates/app/add_language.html:16
 #: languagemonster/templates/app/content.html:15
 #: languagemonster/templates/app/game.html:13
-#: languagemonster/templates/app/left.html:78
-#: languagemonster/templates/app/study.html:18
-#| msgid "Dashboard"
+#: languagemonster/templates/app/left.html:76
+#: languagemonster/templates/app/study.html:17
 msgid "dashboard"
 msgstr "Strona główna"
 
 #: languagemonster/templates/app/add_language.html:17
 #: languagemonster/templates/app/game.html:14
-#: languagemonster/templates/app/study.html:19
-#| msgid "Languages"
+#: languagemonster/templates/app/study.html:18
+#: languagemonster/templates/landing/centre.html:33
+#: languagemonster/templates/landing/centre.html:59
 msgid "languages"
 msgstr "Języki"
 
 #: languagemonster/templates/app/add_language.html:19
-#: languagemonster/templates/app/add_language.html:45
+#: languagemonster/templates/app/add_language.html:44
 #: languagemonster/templates/app/dashboard.html:22
 #: languagemonster/templates/app/dashboard.html:62
-#| msgid "Learn"
+#: languagemonster/templates/app/game.html:16
 msgid "learn"
 msgstr "Ucz się"
 
-#: languagemonster/templates/app/add_language.html:42
-#| msgid "Continue"
+#: languagemonster/templates/app/add_language.html:41
 msgid "msg_continue"
 msgstr "Kontynuuj"
 
-#: languagemonster/templates/app/add_language.html:45
+#: languagemonster/templates/app/add_language.html:44
 msgid "join"
 msgstr "Zacznij"
 
 #: languagemonster/templates/app/content.html:16
 #: languagemonster/templates/app/content.html:45
-#: languagemonster/templates/app/left.html:80
-#| msgid "Settings"
+#: languagemonster/templates/app/left.html:78
 msgid "settings"
 msgstr "Ustawienia"
 
 #: languagemonster/templates/app/content.html:17
-#: languagemonster/templates/app/left.html:72
-#| msgid "Add language"
+#: languagemonster/templates/app/left.html:68
+#: languagemonster/templates/app/left.html:70
 msgid "add_language"
 msgstr "Dodaj język"
 
 #: languagemonster/templates/app/content.html:44
-#: languagemonster/templates/app/left.html:24
-#: languagemonster/templates/app/left.html:33
-#: languagemonster/templates/app/left.html:79
+#: languagemonster/templates/app/left.html:23
+#: languagemonster/templates/app/left.html:32
+#: languagemonster/templates/app/left.html:77
 #: languagemonster/templates/app/profile.html:16
-#| msgid "Profile"
 msgid "profile"
 msgstr "Profil"
 
 #: languagemonster/templates/app/content.html:48
-#: languagemonster/templates/app/left.html:26
+#: languagemonster/templates/app/left.html:25
 msgid "log_out"
 msgstr "Wyloguj się"
 
 #: languagemonster/templates/app/dashboard.html:36
-#| msgid "Words"
 msgid "words"
 msgstr "Słowa"
 
 #: languagemonster/templates/app/dashboard.html:40
-#| msgid "Streak"
 msgid "streak"
 msgstr "Seria"
 
@@ -173,7 +163,6 @@ msgid " %(value)s day(s)"
 msgstr "%(value)s dni"
 
 #: languagemonster/templates/app/dashboard.html:44
-#| msgid "Average"
 msgid "average"
 msgstr "Średnia"
 
@@ -192,37 +181,33 @@ msgid " %(value)s pts"
 msgstr "%(value)s pkt."
 
 #: languagemonster/templates/app/footer.html:20
-#| msgid "It's all about you"
 msgid "all_about_you"
 msgstr "Dla Ciebie"
 
 #: languagemonster/templates/app/footer.html:21
-#| msgid "Language"
 msgid "language"
 msgstr "Język"
 
 #: languagemonster/templates/app/footer.html:22
-#| msgid "Contact us"
 msgid "contact_us"
 msgstr "Kontakt"
 
 #: languagemonster/templates/app/footer.html:39
-#: languagemonster/templates/landing/sections.html:119
+#: languagemonster/templates/landing/sections.html:28
 msgid "msg_cookies"
 msgstr ""
 "Language Monster wykorzystuje ciasteczka. Korzystając z tej strony zgadasz "
 "się na korzystanie z ciasteczek"
 
-#: languagemonster/templates/app/game.html:23
-#| msgid "Learning data set"
+#: languagemonster/templates/app/game.html:25
 msgid "learning_data_set"
 msgstr "Nauka"
 
-#: languagemonster/templates/app/game.html:29
+#: languagemonster/templates/app/game.html:31
 msgid "msg_browser_window_too_small"
 msgstr "Okno przeglądarki jest za małe"
 
-#: languagemonster/templates/app/game.html:32
+#: languagemonster/templates/app/game.html:34
 msgid "msg_no_games_selected"
 msgstr "Nie wybrano żadnych gier!"
 
@@ -255,7 +240,6 @@ msgstr ""
 "z grą"
 
 #: languagemonster/templates/app/game_tuts/runner.html:13
-#| msgid "Bunny runner"
 msgid "game_tut_bunny_runner"
 msgstr ""
 "Przeskakuj lub ślizgaj się pod złymi tłumaczeniami i zbieraj słowa "
@@ -279,7 +263,6 @@ msgid "game_tut_lmb"
 msgstr "Lewy przycisk  myszy"
 
 #: languagemonster/templates/app/game_tuts/simple.html:13
-#| msgid "Four buttons"
 msgid "game_tut_four_buttons"
 msgstr "Kliknij na przycisk pasujący do słowa u góry ekranu"
 
@@ -290,7 +273,6 @@ msgstr ""
 "ekranu"
 
 #: languagemonster/templates/app/game_tuts/space.html:21
-#| msgid "Accelerate"
 msgid "game_tut_accelerate"
 msgstr "Przyspiesz"
 
@@ -304,7 +286,6 @@ msgstr "W lewo / prawo"
 
 #: languagemonster/templates/app/head.html:9
 #: languagemonster/templates/landing/head.html:9
-#| msgid "Language Monster"
 msgid "language_monster"
 msgstr "Language Monster"
 
@@ -312,20 +293,18 @@ msgstr "Language Monster"
 msgid "toggle_nav"
 msgstr "Zwiń"
 
-#: languagemonster/templates/app/left.html:43
+#: languagemonster/templates/app/left.html:42
 #: languagemonster/templates/emails/email_change.html:6
 #: languagemonster/templates/emails/password_recovery.html:6
 #: languagemonster/templates/emails/welcome.html:6
-#| msgid "Hello"
 msgid "hello"
 msgstr "Cześć"
 
-#: languagemonster/templates/app/left.html:52
+#: languagemonster/templates/app/left.html:50
 msgid "header_your_languages"
 msgstr "Twoje języki"
 
 #: languagemonster/templates/app/profile.html:26
-#| msgid "First Name"
 msgid "first_name"
 msgstr "Imię"
 
@@ -334,57 +313,47 @@ msgid "last_name"
 msgstr "Nazwisko"
 
 #: languagemonster/templates/app/profile.html:40
-#| msgid "Gender"
 msgid "gender"
 msgstr "Płeć"
 
 #: languagemonster/templates/app/profile.html:43
-#| msgid "Select gender"
 msgid "select_gender"
 msgstr "Wybierz płeć"
 
 #: languagemonster/templates/app/profile.html:56
 #: languagemonster/templates/app/public_page.html:51
-#| msgid "Location"
 msgid "location"
 msgstr "Miejscowość"
 
 #: languagemonster/templates/app/profile.html:63
 #: languagemonster/templates/app/public_page.html:60
-#| msgid "Country"
 msgid "country"
 msgstr "Państwo"
 
 #: languagemonster/templates/app/profile.html:66
-#| msgid "Select your country"
 msgid "select_your_country"
 msgstr "Wybierz państwo"
 
 #: languagemonster/templates/app/profile.html:79
 #: languagemonster/templates/app/public_page.html:69
-#| msgid "Website"
 msgid "website"
 msgstr "Strona WWW"
 
 #: languagemonster/templates/app/profile.html:86
 #: languagemonster/templates/app/public_page.html:78
-#| msgid "About Me"
 msgid "about_me"
 msgstr "O mnie"
 
 #: languagemonster/templates/app/profile.html:94
-#| msgid "Save details"
 msgid "btn_save_details"
 msgstr "Zapisz"
 
 #: languagemonster/templates/app/profile.html:104
-#| msgid "Current email"
 msgid "current_email"
 msgstr "Obecny email"
 
 #: languagemonster/templates/app/profile.html:110
 #: languagemonster/templates/app/profile.html:112
-#| msgid "New email"
 msgid "new_email"
 msgstr "Nowy email"
 
@@ -396,13 +365,11 @@ msgstr ""
 
 #: languagemonster/templates/app/profile.html:120
 #: languagemonster/templates/app/profile.html:143
-#| msgid "Update"
 msgid "btn_update"
 msgstr "Zapisz"
 
 #: languagemonster/templates/app/profile.html:129
 #: languagemonster/templates/app/profile.html:130
-#| msgid "Current password"
 msgid "current_password"
 msgstr "Obecne hasło"
 
@@ -410,27 +377,22 @@ msgstr "Obecne hasło"
 #: languagemonster/templates/app/profile.html:134
 #: languagemonster/templates/landing/generate_password.html:16
 #: languagemonster/templates/landing/generate_password.html:17
-#| msgid "New password"
 msgid "new_password"
 msgstr "Nowe hasło"
 
 #: languagemonster/templates/app/profile.html:137
-#| msgid "Confirm"
 msgid "confirm"
 msgstr "Potwierdź"
 
 #: languagemonster/templates/app/profile.html:138
-#| msgid "Current password"
 msgid "repeat_password"
 msgstr "Powtórz hasło"
 
 #: languagemonster/templates/app/profile.html:161
-#| msgid "No avatar."
 msgid "msg_no_avatar"
 msgstr "Brak awatara"
 
 #: languagemonster/templates/app/profile.html:166
-#| msgid "Change avatar"
 msgid "msg_change_avatar"
 msgstr "Zmień awatar"
 
@@ -439,7 +401,6 @@ msgid "msg_avatar_rules"
 msgstr "Tylko pliki JPG i PNG są akceptowane"
 
 #: languagemonster/templates/app/profile.html:176
-#| msgid "Upload"
 msgid "btn_upload"
 msgstr "Wyślij"
 
@@ -448,7 +409,6 @@ msgid "msg_select_games_to_play"
 msgstr "Wybierz gry"
 
 #: languagemonster/templates/app/profile.html:207
-#| msgid "Available"
 msgid "available"
 msgstr "Dostępna"
 
@@ -457,22 +417,18 @@ msgid "btn_save"
 msgstr "Zapisz"
 
 #: languagemonster/templates/app/profile.html:230
-#| msgid "Save details"
 msgid "tab_details"
 msgstr "Szczegóły"
 
 #: languagemonster/templates/app/profile.html:231
-#| msgid "Enter email"
 msgid "tab_email"
 msgstr "Email"
 
 #: languagemonster/templates/app/profile.html:232
-#| msgid "Password"
 msgid "tab_password"
 msgstr "Hasło"
 
 #: languagemonster/templates/app/profile.html:233
-#| msgid "Avatar"
 msgid "tab_avatar"
 msgstr "Awatar"
 
@@ -492,25 +448,20 @@ msgstr "Użytkownik uczy się"
 msgid "public_page_about_user"
 msgstr "O użytkowniku"
 
-#: languagemonster/templates/app/study.html:34
-#| msgid "Most popular"
+#: languagemonster/templates/app/study.html:33
 msgid "dataset_most_popular"
 msgstr "Najpopularniejsze"
 
-#: languagemonster/templates/app/study.html:35
-#| msgid "All data sets"
+#: languagemonster/templates/app/study.html:34
 msgid "dataset_basic"
 msgstr "Podstawowe"
 
-#: languagemonster/templates/app/study.html:36
+#: languagemonster/templates/app/study.html:35
 msgid "dataset_all"
 msgstr "Wszystkie"
 
-#: languagemonster/templates/app/study.html:53
-#: languagemonster/templates/app/study.html:75
-#: languagemonster/templates/app/study.html:97
 #: languagemonster/templates/app/study/dataset_item.html:13
-#| msgid "Number of words"
+#: languagemonster/templates/app/study_single_item.html:22
 msgid "number_of_words"
 msgstr "Liczba słów"
 
@@ -538,7 +489,6 @@ msgstr "Pozdrowienia"
 #: languagemonster/templates/emails/email_change.html:17
 #: languagemonster/templates/emails/password_recovery.html:17
 #: languagemonster/templates/emails/welcome.html:13
-#| msgid "Language Monster"
 msgid "email_language_monster"
 msgstr "Language Monster"
 
@@ -561,45 +511,36 @@ msgstr ""
 "Mamy nadzieję, że korzystanie z niej będzie dla Ciebie przyjemnością!"
 
 #: languagemonster/templates/forms/form-contact.html:9
-#| msgid "Contact"
 msgid "contact"
 msgstr "Kontakt"
 
-#: languagemonster/templates/forms/form-contact.html:15
-#: languagemonster/templates/landing/contact.html:10
+#: languagemonster/templates/forms/form-contact.html:16
 msgid "ph_your_name"
 msgstr "Imię"
 
-#: languagemonster/templates/forms/form-contact.html:19
+#: languagemonster/templates/forms/form-contact.html:20
 #: languagemonster/templates/forms/form-login.html:13
-#: languagemonster/templates/forms/form-signup.html:15
-#: languagemonster/templates/landing/contact.html:14
+#: languagemonster/templates/forms/form-signup.html:16
 #: languagemonster/templates/landing/forgot_password.html:12
 #: languagemonster/templates/landing/generate_password.html:12
-#| msgid "Enter your email"
 msgid "ph_your_email"
 msgstr "Wpisz swój email"
 
-#: languagemonster/templates/forms/form-contact.html:23
-#: languagemonster/templates/forms/form-signup.html:16
-#| msgid "Enter username"
+#: languagemonster/templates/forms/form-contact.html:24
+#: languagemonster/templates/forms/form-signup.html:17
 msgid "ph_your_username"
 msgstr "Wpisz nazwę użytkownika"
 
-#: languagemonster/templates/forms/form-contact.html:27
-#: languagemonster/templates/landing/contact.html:18
-#| msgid "Enter your message"
+#: languagemonster/templates/forms/form-contact.html:28
 msgid "ph_your_message"
 msgstr "Wpisz wiadomość"
 
-#: languagemonster/templates/forms/form-contact.html:31
-#: languagemonster/templates/landing/contact.html:22
+#: languagemonster/templates/forms/form-contact.html:33
 #: languagemonster/templates/landing/forgot_password.html:15
 msgid "btn_send"
 msgstr "Wyślij"
 
 #: languagemonster/templates/forms/form-language.html:11
-#| msgid "Change the language"
 msgid "change_language"
 msgstr "Zmień język"
 
@@ -608,13 +549,11 @@ msgid "header_login"
 msgstr "Zaloguj się"
 
 #: languagemonster/templates/forms/form-login.html:14
-#: languagemonster/templates/forms/form-signup.html:17
-#| msgid "Repeat your new password"
+#: languagemonster/templates/forms/form-signup.html:18
 msgid "ph_your_password"
 msgstr "Powtórz hasło"
 
 #: languagemonster/templates/forms/form-login.html:15
-#| msgid "I forgot my password"
 msgid "link_forgot_password"
 msgstr "Nie pamiętam hasła"
 
@@ -626,72 +565,87 @@ msgstr "Zaloguj się"
 msgid "header_sign_up"
 msgstr "Rejestracja"
 
-#: languagemonster/templates/forms/form-signup.html:13
-#: languagemonster/templates/landing/sections.html:101
-#| msgid "Takes less than 10 seconds!"
+#: languagemonster/templates/forms/form-signup.html:14
 msgid "msg_takes_less_than_10s"
 msgstr "Zajmuje mniej niż 10 sekund!"
 
-#: languagemonster/templates/forms/form-signup.html:18
-#| msgid "Confirm password"
+#: languagemonster/templates/forms/form-signup.html:19
 msgid "ph_confirm_password"
 msgstr "Potwierdź hasło"
 
-#: languagemonster/templates/forms/form-signup.html:21
+#: languagemonster/templates/forms/form-signup.html:22
 msgid "btn_sign_up"
 msgstr "Rejestracja"
 
-#: languagemonster/templates/landing/centre.html:7
+#: languagemonster/templates/landing/centre.html:21
 msgid "landing_header1"
-msgstr "Zacznij uczyć się języka obcego"
+msgstr "Ucz się języków obcych grając w gry"
 
-#: languagemonster/templates/landing/centre.html:11
-msgid "landing_header2"
-msgstr "Ucz się z przyjemnością"
+#: languagemonster/templates/landing/centre.html:23
+#| msgid "btn_upload"
+msgid "btn_play_now"
+msgstr "Graj teraz"
 
-#: languagemonster/templates/landing/contact.html:6
-msgid "header_contact"
-msgstr "Kontakt"
+#: languagemonster/templates/landing/centre.html:32
+#: languagemonster/templates/landing/centre.html:58
+#| msgid "btn_home"
+msgid "home"
+msgstr "Strona główna"
 
-#: languagemonster/templates/landing/error.html:24
+#: languagemonster/templates/landing/centre.html:34
+#| msgid "dataset_basic"
+msgid "datasets"
+msgstr "Zestawy"
+
+#: languagemonster/templates/landing/centre.html:50
+#| msgid "btn_update"
+msgid "btn_prev"
+msgstr "Cofnij"
+
+#: languagemonster/templates/landing/centre.html:52
+#| msgid "btn_save"
+msgid "btn_next"
+msgstr "Dalej"
+
+#: languagemonster/templates/landing/centre.html:62
+#| msgid "msg_many_languages_to_learn"
+msgid "languages_you_can_learn"
+msgstr "Języki których możesz się uczyć"
+
+#: languagemonster/templates/landing/error.html:25
 msgid "msg_error_404"
 msgstr "Nie znaleziono strony"
 
-#: languagemonster/templates/landing/error.html:26
+#: languagemonster/templates/landing/error.html:27
 msgid "msg_error_500"
-msgstr "Przepraszamy, podana strona nie jest teraz dostępna"
+msgstr "Błąd serwera"
 
-#: languagemonster/templates/landing/error.html:33
+#: languagemonster/templates/landing/error.html:34
 msgid "msg_error_404_longer"
 msgstr "Przepraszamy, podana strona nie została znaleziona"
 
-#: languagemonster/templates/landing/error.html:36
+#: languagemonster/templates/landing/error.html:37
 msgid "btn_home"
 msgstr "Strona główna"
 
 #: languagemonster/templates/landing/forgot_password.html:4
-#| msgid "Recover forgotten password"
 msgid "header_forgotten_password"
 msgstr "Odzyskaj hasło"
 
 #: languagemonster/templates/landing/forgot_password.html:7
-#| msgid "Recover forgotten password"
 msgid "msg_forgotten_password"
 msgstr "Odzyskanie hasła zajmuje tylko kilka chwil"
 
 #: languagemonster/templates/landing/generate_password.html:4
-#| msgid "Create your new password"
 msgid "header_new_password"
 msgstr "Utwórz nowe hasło"
 
 #: languagemonster/templates/landing/generate_password.html:10
-#| msgid "Email"
 msgid "email"
 msgstr "Email"
 
 #: languagemonster/templates/landing/generate_password.html:20
 #: languagemonster/templates/landing/generate_password.html:21
-#| msgid "Confirm password"
 msgid "confirm_password"
 msgstr "Potwierdź hasło"
 
@@ -703,170 +657,102 @@ msgstr "Ok"
 msgid "link_toggle_nav"
 msgstr "Zwiń"
 
-#: languagemonster/templates/landing/nav.html:25
+#: languagemonster/templates/landing/nav.html:31
 msgid "link_index"
 msgstr "Strona główna"
 
-#: languagemonster/templates/landing/nav.html:29
+#: languagemonster/templates/landing/nav.html:35
 msgid "link_login"
 msgstr "Zaloguj się"
 
-#: languagemonster/templates/landing/nav.html:32
-#: languagemonster/templates/landing/sections.html:100
+#: languagemonster/templates/landing/nav.html:38
 msgid "link_sign_up"
 msgstr "Rejestracja"
 
-#: languagemonster/templates/landing/nav.html:35
+#: languagemonster/templates/landing/nav.html:41
 msgid "link_what_it_is"
 msgstr "Jak to działa?"
 
-#: languagemonster/templates/landing/sections.html:11
-#| msgid "Many games to choose from"
-msgid "sec_many_games_to_choose_from"
-msgstr "Wiele gier do wyboru"
-
-#: languagemonster/templates/landing/sections.html:16
-msgid "header_what_is_it"
-msgstr "Jak to działa?"
-
-#: languagemonster/templates/landing/sections.html:17
-msgid "what_is_it_expl"
-msgstr "Ucz się słownictwa"
-
-#: languagemonster/templates/landing/sections.html:35
-#| msgid "That is how it works"
-msgid "header_how_it_works"
-msgstr "Dlaczego?"
-
-#: languagemonster/templates/landing/sections.html:36
-#| msgid "How it works?"
-msgid "how_it_works_expl"
-msgstr "Uczeni słówek jest nudne, z nami je pokochasz"
-
-#: languagemonster/templates/landing/sections.html:39
-#| msgid "Learning may be fun!"
-msgid "msg_learning_may_be_fun"
-msgstr "Nauka w przyjemny sposób"
-
-#: languagemonster/templates/landing/sections.html:56
-#| msgid "What can you learn?"
-msgid "header_what_can_you_learn"
-msgstr "Jakich języków mogę się uczyć?"
-
-#: languagemonster/templates/landing/sections.html:57
-#| msgid "What can you learn?"
-msgid "what_can_you_learn_expl"
-msgstr "angielski, niemiecki, francuski, hiszpański, włoski, portugalski"
-
-#: languagemonster/templates/landing/sections.html:60
-msgid "msg_many_languages_to_learn"
-msgstr "Wiele języków do wyboru"
-
-#: languagemonster/templates/landing/sections.html:76
-msgid "header_it_is_fun"
-msgstr "Gry"
-
-#: languagemonster/templates/landing/sections.html:77
-msgid "it_is_fun_expl"
-msgstr "Kilka gier do wyboru, bez konieczności instalacji"
-
-#: languagemonster/templates/landing/sections.html:80
-#| msgid "Many games to choose from"
-msgid "msg_many_games_to_choose_from"
-msgstr "Wiele gier do wyboru"
-
-#: languagemonster/templates/landing/sections.html:96
-msgid "header_where_can_you_use_it"
-msgstr "Nawet tego nie czytaj"
-
-#: languagemonster/templates/landing/sections.html:97
-msgid "where_can_you_use_it_expl"
-msgstr "Zarejestruj się już teraz!"
-
-#: languagemonster/templates/landing/sections.html:115
-#| msgid "Contact"
+#: languagemonster/templates/landing/sections.html:10
 msgid "link_contact"
 msgstr "Kontakt"
 
-#: languagemonster/templates/landing/sections.html:116
-msgid "Go to top"
-msgstr "Do góry"
-
-#: languagemonster/templates/landing/special_page.html:29
-msgid "header_success"
+#: languagemonster/templates/landing/special_page.html:26
+#| msgid "header_success"
+msgid "header_msg_success"
 msgstr "Sukces"
 
-#: languagemonster/templates/landing/special_page.html:35
-msgid "header_failure"
-msgstr "Porażka"
+#: languagemonster/templates/landing/special_page.html:32
+#| msgid "header_failure"
+msgid "header_msg_failure"
+msgstr "Wystąpił problem"
 
-#: languagemonster/templates/landing/special_page.html:42
+#: languagemonster/templates/landing/special_page.html:43
 msgid "link_go_back_to"
 msgstr "Wróć do"
 
-#: languagemonster/templates/landing/special_page.html:42
+#: languagemonster/templates/landing/special_page.html:43
 msgid "link_home_page"
 msgstr "strona główna"
 
-#: userprofile/views/profile.py:41
+#: userprofile/views/profile.py:46
 msgid "gender_male"
 msgstr "Mężczyzna"
 
-#: userprofile/views/profile.py:42
-#| msgid "female"
+#: userprofile/views/profile.py:47
 msgid "gender_female"
 msgstr "Kobieta"
 
-#: userprofile/views/profile.py:43
+#: userprofile/views/profile.py:48
 msgid "gender_other"
 msgstr "Inna"
 
-#: userprofile/views/profile.py:70 userprofile/views/profile.py:99
-#: userprofile/views/profile.py:121
+#: userprofile/views/profile.py:75 userprofile/views/profile.py:104
+#: userprofile/views/profile.py:126
 msgid "msg_profile_updated"
 msgstr "Profil został zaktualizowany"
 
-#: userprofile/views/profile.py:142
+#: userprofile/views/profile.py:147
 msgid "msg_only_png_jpg"
 msgstr "Tylko pliki PNG i JPG są dozwolone"
 
-#: userprofile/views/profile.py:156
+#: userprofile/views/profile.py:161
 msgid "msg_file_too_large_0_5_mb"
 msgstr "Plik jest zbyt duży (maksimum: 0.5 MB)"
 
-#: userprofile/views/profile.py:172
+#: userprofile/views/profile.py:177
 msgid "msg_file_uploaded"
 msgstr "Plik został dodany"
 
-#: userprofile/views/profile.py:184
+#: userprofile/views/profile.py:189
 msgid "msg_unknown_error"
 msgstr "Nieznany błąd"
 
-#: userprofile/views/profile.py:198
+#: userprofile/views/profile.py:203
 msgid "msg_type_new_email"
 msgstr "Nowe hasło"
 
-#: userprofile/views/profile.py:234 userprofile/views/profile.py:318
+#: userprofile/views/profile.py:239 userprofile/views/profile.py:323
 msgid "msg_email_sent"
 msgstr "Email został wysłany"
 
-#: userprofile/views/profile.py:252
+#: userprofile/views/profile.py:257
 msgid "msg_confirmation_failed"
 msgstr "Nie udało się potwierdzić"
 
-#: userprofile/views/profile.py:266
+#: userprofile/views/profile.py:271
 msgid "msg_email_verified"
 msgstr "Email został zweryfikowany"
 
-#: userprofile/views/profile.py:294 userprofile/views/profile.py:351
+#: userprofile/views/profile.py:299 userprofile/views/profile.py:356
 msgid "msg_email_not_found"
 msgstr "Email nie został znaleziony"
 
-#: userprofile/views/profile.py:372
+#: userprofile/views/profile.py:377
 msgid "msg_password_changed"
 msgstr "Hasło zostało zmienione"
 
-#: userprofile/views/profile.py:380
+#: userprofile/views/profile.py:385
 msgid "msg_invalid_values"
 msgstr "Wprowadzone wartości są niepoprawne"
 
@@ -875,58 +761,105 @@ msgid "msg_password_min_8_chars"
 msgstr "Hasło musi mieć co najmniej 8 znaków"
 
 #: utility/security.py:27
-#| msgid "Passwords don't match."
 msgid "msg_passwords_dont_match"
 msgstr "Hasła muszą do siebie pasować"
 
-#: vocabulary/impl/study.py:184
+#: vocabulary/impl/study.py:191
 msgid "Good"
 msgstr "Dobrze"
 
-#: vocabulary/impl/study.py:185
+#: vocabulary/impl/study.py:192
 msgid "Wrong"
 msgstr "Źle"
 
-#: vocabulary/impl/study.py:186
+#: vocabulary/impl/study.py:193
 msgid "Well done"
 msgstr "Gratulacje"
 
-#: vocabulary/impl/study.py:187
+#: vocabulary/impl/study.py:194
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: vocabulary/impl/study.py:189
+#: vocabulary/impl/study.py:196
 msgid "Error when sending results"
 msgstr "Błąd podczas zapisywania wyników"
 
-#: vocabulary/impl/study.py:190
+#: vocabulary/impl/study.py:197
 msgid "Results were sent"
 msgstr "Wyniki zostały zapisane"
 
-#: vocabulary/impl/study.py:191 vocabulary/impl/study.py:192
+#: vocabulary/impl/study.py:198 vocabulary/impl/study.py:199
 msgid "Sending results..."
 msgstr "Zapisywanie wyników..."
 
-#: vocabulary/impl/study.py:193
+#: vocabulary/impl/study.py:200
 msgid "Language Monster"
 msgstr "Language Monster"
 
-#: vocabulary/impl/study.py:194
+#: vocabulary/impl/study.py:201
 msgid "Loading, please wait"
 msgstr "Wczytywanie, proszę czekać"
 
-#: vocabulary/impl/study.py:195
+#: vocabulary/impl/study.py:202
 msgid "Server error, please try again"
 msgstr ""
 "Nieznany błąd. Proszę spróbować później. Przepraszamy za niedogodności"
 
-#: vocabulary/impl/study.py:196
+#: vocabulary/impl/study.py:203
 msgid "Try again"
 msgstr "Spróbuj ponownie"
 
 #: vocabulary/views.py:98
 msgid "msg_new_lang_added"
 msgstr "Uczysz się nowego języka"
+
+#~ msgid "landing_header2"
+#~ msgstr "Ucz się z przyjemnością"
+
+#~ msgid "header_contact"
+#~ msgstr "Kontakt"
+
+#~ msgid "sec_many_games_to_choose_from"
+#~ msgstr "Wiele gier do wyboru"
+
+#~ msgid "header_what_is_it"
+#~ msgstr "Jak to działa?"
+
+#~ msgid "what_is_it_expl"
+#~ msgstr "Ucz się słownictwa"
+
+#~ msgid "header_how_it_works"
+#~ msgstr "Dlaczego?"
+
+#~ msgid "how_it_works_expl"
+#~ msgstr "Uczeni słówek jest nudne, z nami je pokochasz"
+
+#~ msgid "msg_learning_may_be_fun"
+#~ msgstr "Nauka w przyjemny sposób"
+
+#~ msgid "header_what_can_you_learn"
+#~ msgstr "Jakich języków mogę się uczyć?"
+
+#~ msgid "what_can_you_learn_expl"
+#~ msgstr "angielski, niemiecki, francuski, hiszpański, włoski, portugalski"
+
+#~ msgid "header_it_is_fun"
+#~ msgstr "Gry"
+
+#~ msgid "it_is_fun_expl"
+#~ msgstr "Kilka gier do wyboru, bez konieczności instalacji"
+
+#~ msgid "msg_many_games_to_choose_from"
+#~ msgstr "Wiele gier do wyboru"
+
+#~ msgid "header_where_can_you_use_it"
+#~ msgstr "Nawet tego nie czytaj"
+
+#~ msgid "where_can_you_use_it_expl"
+#~ msgstr "Zarejestruj się już teraz!"
+
+#~ msgid "Go to top"
+#~ msgstr "Do góry"
 
 #~ msgid "ashboard"
 #~ msgstr "Strona główna"
