@@ -1,12 +1,12 @@
 /* Links */
-.modal-body a, .info-block a,
-.modal-body a:focus, .info-block a:focus,
-.modal-body a:active, .info-block a:active{
+a.simple,
+a.simple.focus,
+a.simple:active {
     color: $color-text;
     border-bottom: 1px solid $color-light-blue;
 }
 
-.modal-body a:hover, .info-block a:hover{
+a.simple:hover {
     color: $color-text;
     text-decoration: none;
     border-bottom: 1px solid $color-red;
