@@ -61,7 +61,7 @@ urlpatterns = [
         name='words',
     ),
     url(
-        r'^local/words/(?P<dataset_id>\d+)/(?P<uri>.+)?/?$',
+        r'^local/words/(?P<dataset_id>\d+)(/(?P<uri>.+))?/?$',
         LocalGetWords.as_view(),
         name='local_words',
     ),
