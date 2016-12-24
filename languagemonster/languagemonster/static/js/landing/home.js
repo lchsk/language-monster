@@ -1,4 +1,6 @@
-new Vue({
+window.MONSTER = window.MONSTER || {};
+
+window.MONSTER.home_menu = new Vue({
     delimiters: ["[[", "]]"],
     el: '#monster-home',
     data: {

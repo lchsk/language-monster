@@ -393,23 +393,38 @@ MONSTER.Common.addUI = function(game)
     btn_info.scale.x = btn_info.scale.y = 0.65;
     btn_info.interactive = true;
 
+    var btn_menu = PIXI.Sprite.fromImage(game.assets.ui.ui_btn_menu);
+    btn_menu.scale.x = btn_menu.scale.y = 0.65;
+    btn_menu.interactive = true;
+    btn_menu.position.x = 28;
+    btn_menu.position.y = 2;
+
     if ( ! game.currentScreen)
         return;
 
     var tutorial_id = game.tutorial;
 
-    btn_info.click = function()
-    {
+    btn_info.click = function() {
         MONSTER.Common._showTutorial(game, tutorial_id);
     };
 
-    btn_info.mouseover = function()
-    {
+    btn_info.mouseover = function() {
         document.body.style.cursor = 'pointer';
     };
 
-    btn_info.mouseout = function()
-    {
+    btn_info.mouseout = function() {
+        document.body.style.cursor = 'default';
+    };
+
+    btn_menu.click = function() {
+        MONSTER.home_menu.goto('main');
+    };
+
+    btn_menu.mouseover = function() {
+        document.body.style.cursor = 'pointer';
+    };
+
+    btn_menu.mouseout = function() {
         document.body.style.cursor = 'default';
     };
 
@@ -419,6 +434,7 @@ MONSTER.Common.addUI = function(game)
     });
 
     game.view.addChild(btn_info);
+    game.view.addChild(btn_menu);
 };
 
 MONSTER.Common.getAnswersMinusCurrent = function(answers, current) {
@@ -3469,6 +3485,7 @@ MONSTER.Game = function(fps)
         },
         'ui': {
             'ui_btn_info': '/static/images/games/information.png',
+            'ui_btn_menu': '/static/images/games/menu.png',
             'ui_star': '/static/images/games/star.png',
             'ui_dark_star': '/static/images/games/dark_star.png'
         }

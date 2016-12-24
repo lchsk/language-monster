@@ -77,6 +77,7 @@ MONSTER.Game = function(fps)
         },
         'ui': {
             'ui_btn_info': '/static/images/games/information.png',
+            'ui_btn_menu': '/static/images/games/menu.png',
             'ui_star': '/static/images/games/star.png',
             'ui_dark_star': '/static/images/games/dark_star.png'
         }
