@@ -49,7 +49,7 @@ window.MONSTER.home_menu = new Vue({
 
             this.datasets_cp
                 = Math.floor(this.datasets_offset / this.datasets_pp) + 1;
-            this.datasets_pages = Math.floor(sets.length / this.datasets_pp) + 1;
+            this.datasets_pages = Math.ceil(sets.length / this.datasets_pp);
 
             this.datasets_btns
                 = [this.datasets_cp > 1, this.datasets_cp < this.datasets_pages];
