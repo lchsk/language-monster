@@ -251,7 +251,7 @@ MONSTER.Common.addUI = function(game)
     var btn_menu = PIXI.Sprite.fromImage(game.assets.ui.ui_btn_menu);
     btn_menu.scale.x = btn_menu.scale.y = 0.65;
     btn_menu.interactive = true;
-    btn_menu.position.x = 28;
+    btn_menu.position.x = 34;
     btn_menu.position.y = 2;
 
     if ( ! game.currentScreen)
