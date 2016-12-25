@@ -272,7 +272,7 @@ MONSTER.Common.addUI = function(game)
     };
 
     btn_menu.click = function() {
-        MONSTER.home_menu.goto('main');
+        location.reload();
     };
 
     btn_menu.mouseover = function() {
