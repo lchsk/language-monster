@@ -17,6 +17,7 @@ window.MONSTER.home_menu = new Vue({
         datasets_cp: 0, // current page
         datasets_btns: [false, false], // show prev/next buttons in datasets
         datasets_pages: 0,
+        loaded_scripts: {},
         langs_to_learn: null
     },
     created: function () {
@@ -67,16 +68,24 @@ window.MONSTER.home_menu = new Vue({
             this.datasets_offset += this.datasets_pp;
             this.filter_datasets();
         },
-        load_script: function(script_scr) {
+        load_script: function(script_src) {
             var self = this;
+
+            if (this.loaded_scripts[script_src]) {
+                this.init_game(script_src);
+
+                return;
+            }
+
+            this.loaded_scripts[script_src] = false;
 
             var script = document.createElement('script');
 
             script.type = 'text/javascript';
             script.async = true;
-            script.src = script_scr;
+            script.src = script_src;
             script.addEventListener('load', function () {
-                self.init_game();
+                self.init_game(script_src);
             }, false);
 
             var tag = document.getElementsByTagName('script')[0];
@@ -86,10 +95,18 @@ window.MONSTER.home_menu = new Vue({
         goto: function(view) {
             this.view = view;
         },
-        init_game: function() {
-            if (window.PIXI && window.MONSTER) {
-                MONSTER.newGame();
+        init_game: function(loaded_script) {
+            this.loaded_scripts[loaded_script] = true;
+
+            for (var key in this.loaded_scripts) {
+                if (this.loaded_scripts.hasOwnProperty(key)) {
+                    if (! this.loaded_scripts[key])
+                        return;
+                }
             }
+
+            MONSTER.newGame();
+
         },
         play: function(dataset_id) {
             this.view = 'game';
