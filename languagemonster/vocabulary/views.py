@@ -20,7 +20,10 @@ from utility.interface import (
     get_lang_pair_from_slugs,
     get_progression_from_lang_pair,
 )
-from core.impl.user import process_games_list
+from core.impl.user import (
+    process_games_list,
+    get_games,
+)
 
 from utility.views import (
     NoTemplateMixin,
@@ -193,10 +196,10 @@ class PlayView(AuthContextView):
         context['translations'] = get_game_translations()
 
         context['games'] = process_games_list(
-            games=settings.GAMES,
+            games=get_games(),
             user_games=user_games
         )
-        context['games_played']  = [
+        context['games_played'] = [
             user_game['game']
             for user_game in user_games
             if user_game['played']
