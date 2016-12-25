@@ -33,11 +33,14 @@ MONSTER.LoadingScreen = function(game)
 
     MONSTER.Common.setUpAjax();
 
+    this.game.anon_game = ! this.game.data.email;
+
     this.data_loader = new MONSTER.DataLoader(
         this.game.data.dataset_id,
         this.game.data.email,
         this.max_rounds,
         this.start_loading,
+        this.game.anon_game,
         this
     );
 

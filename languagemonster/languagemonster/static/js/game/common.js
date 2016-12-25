@@ -59,6 +59,8 @@ MONSTER.Common.endScreen = function(obj)
     var context = obj;
     obj.game.view.removeChildren();
 
+    var anon_game = obj.game.anon_game;
+
     var sizes = MONSTER.getFonts(
         MONSTER.Const.DEFAULT_FONT_FAMILY,
         MONSTER.Const.COLOURS["white"]
@@ -88,15 +90,21 @@ MONSTER.Common.endScreen = function(obj)
     comment.position.x = (obj.game.width - comment.width) / 2;
     comment.position.y = 0.15 * obj.game.height;
 
-    obj.info = new PIXI.Text(
-        MONSTER.Common.trans(
-            "Sending results...",
-            window.translations
-        ),
-        sizes['16']
-    );
-    obj.info.position.x = (obj.game.width - obj.info.width) / 2;
-    obj.info.position.y = 0.89 * obj.game.height;
+    obj.game.view.addChild(comment);
+
+    if (! anon_game) {
+        obj.info = new PIXI.Text(
+            MONSTER.Common.trans(
+                "Sending results...",
+                window.translations
+            ),
+            sizes['16']
+        );
+        obj.info.position.x = (obj.game.width - obj.info.width) / 2;
+        obj.info.position.y = 0.89 * obj.game.height;
+
+        obj.game.view.addChild(obj.info);
+    }
 
     obj.b = MONSTER.Common.createButton(
         context,
@@ -114,9 +122,6 @@ MONSTER.Common.endScreen = function(obj)
             MONSTER.Common._next_level(obj.game);
         }
     );
-
-    obj.game.view.addChild(comment);
-    obj.game.view.addChild(obj.info);
 
     var stars_box = new PIXI.Container();
 
@@ -136,7 +141,10 @@ MONSTER.Common.endScreen = function(obj)
     stars_box.position.y = Math.round(0.28 * obj.game.height);
     obj.game.view.addChild(stars_box);
 
-    MONSTER.Common.sendResults(obj);
+    if (anon_game)
+        MONSTER.Common._activate_button(obj, obj.b);
+    else
+        MONSTER.Common.sendResults(obj);
 };
 
 MONSTER.Common.cancelAnimationFrame = function(id)
@@ -496,9 +504,7 @@ MONSTER.Common.sendResults = function(obj)
         document.addEventListener('keyup', MONSTER.Common._continue_handler,
                                   false);
 
-        // Add button to the stage
-        obj.game.view.addChild(obj.b);
-        obj.b.interactive = true;
+        MONSTER.Common._activate_button(obj, obj.b);
 
     }).error(function() {
         obj.info.text = MONSTER.Common.trans(
@@ -506,6 +512,12 @@ MONSTER.Common.sendResults = function(obj)
             window.translations);
         obj.info.position.x = (obj.game.width - obj.info.width) / 2;
     });
+};
+
+MONSTER.Common._activate_button = function(context, button)
+{
+    context.game.view.addChild(button);
+    button.interactive = true;
 };
 
 MONSTER.Common.trans = function(word, d)

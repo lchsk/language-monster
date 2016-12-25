@@ -12,6 +12,8 @@ MONSTER.Game = function(fps)
 
     this.pause = false;
 
+    this.anon_game = true;
+
     // games temps
 
     this.game_tmp = {};

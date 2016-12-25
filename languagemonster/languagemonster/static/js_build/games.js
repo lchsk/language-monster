@@ -212,6 +212,8 @@ MONSTER.Common.endScreen = function(obj)
     var context = obj;
     obj.game.view.removeChildren();
 
+    var anon_game = obj.game.anon_game;
+
     var sizes = MONSTER.getFonts(
         MONSTER.Const.DEFAULT_FONT_FAMILY,
         MONSTER.Const.COLOURS["white"]
@@ -241,15 +243,21 @@ MONSTER.Common.endScreen = function(obj)
     comment.position.x = (obj.game.width - comment.width) / 2;
     comment.position.y = 0.15 * obj.game.height;
 
-    obj.info = new PIXI.Text(
-        MONSTER.Common.trans(
-            "Sending results...",
-            window.translations
-        ),
-        sizes['16']
-    );
-    obj.info.position.x = (obj.game.width - obj.info.width) / 2;
-    obj.info.position.y = 0.89 * obj.game.height;
+    obj.game.view.addChild(comment);
+
+    if (! anon_game) {
+        obj.info = new PIXI.Text(
+            MONSTER.Common.trans(
+                "Sending results...",
+                window.translations
+            ),
+            sizes['16']
+        );
+        obj.info.position.x = (obj.game.width - obj.info.width) / 2;
+        obj.info.position.y = 0.89 * obj.game.height;
+
+        obj.game.view.addChild(obj.info);
+    }
 
     obj.b = MONSTER.Common.createButton(
         context,
@@ -267,9 +275,6 @@ MONSTER.Common.endScreen = function(obj)
             MONSTER.Common._next_level(obj.game);
         }
     );
-
-    obj.game.view.addChild(comment);
-    obj.game.view.addChild(obj.info);
 
     var stars_box = new PIXI.Container();
 
@@ -289,7 +294,10 @@ MONSTER.Common.endScreen = function(obj)
     stars_box.position.y = Math.round(0.28 * obj.game.height);
     obj.game.view.addChild(stars_box);
 
-    MONSTER.Common.sendResults(obj);
+    if (anon_game)
+        MONSTER.Common._activate_button(obj, obj.b);
+    else
+        MONSTER.Common.sendResults(obj);
 };
 
 MONSTER.Common.cancelAnimationFrame = function(id)
@@ -649,9 +657,7 @@ MONSTER.Common.sendResults = function(obj)
         document.addEventListener('keyup', MONSTER.Common._continue_handler,
                                   false);
 
-        // Add button to the stage
-        obj.game.view.addChild(obj.b);
-        obj.b.interactive = true;
+        MONSTER.Common._activate_button(obj, obj.b);
 
     }).error(function() {
         obj.info.text = MONSTER.Common.trans(
@@ -659,6 +665,12 @@ MONSTER.Common.sendResults = function(obj)
             window.translations);
         obj.info.position.x = (obj.game.width - obj.info.width) / 2;
     });
+};
+
+MONSTER.Common._activate_button = function(context, button)
+{
+    context.game.view.addChild(button);
+    button.interactive = true;
 };
 
 MONSTER.Common.trans = function(word, d)
@@ -976,7 +988,14 @@ MONSTER.Key.blockScrolling = function()
     }, false);
 };
 
-MONSTER.DataLoader = function(dataset_id, email, max_rounds, success_func, sender)
+MONSTER.DataLoader = function(
+    dataset_id,
+    email,
+    max_rounds,
+    success_func,
+    anon_game,
+    sender
+)
 {
     this.dataset_id = dataset_id;
     this.email = email;
@@ -985,6 +1004,7 @@ MONSTER.DataLoader = function(dataset_id, email, max_rounds, success_func, sende
     this.success = false;
     this.success_func = success_func;
     this.sender = sender;
+    this.anon_game = anon_game;
 };
 
 MONSTER.DataLoader.prototype.constructor = MONSTER.DataLoader;
@@ -1000,7 +1020,7 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
     var url = "/api/local/words/" + this.dataset_id;
 
     // Anonymous player
-    if (this.email)
+    if (! this.anon_game)
         url += "/" + this.email;
 
     $.ajax({
@@ -1112,11 +1132,14 @@ MONSTER.LoadingScreen = function(game)
 
     MONSTER.Common.setUpAjax();
 
+    this.game.anon_game = ! this.game.data.email;
+
     this.data_loader = new MONSTER.DataLoader(
         this.game.data.dataset_id,
         this.game.data.email,
         this.max_rounds,
         this.start_loading,
+        this.game.anon_game,
         this
     );
 
@@ -3419,6 +3442,8 @@ MONSTER.Game = function(fps)
     this.current_game = '';
 
     this.pause = false;
+
+    this.anon_game = true;
 
     // games temps
 

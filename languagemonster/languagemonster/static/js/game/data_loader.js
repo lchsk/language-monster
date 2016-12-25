@@ -1,4 +1,11 @@
-MONSTER.DataLoader = function(dataset_id, email, max_rounds, success_func, sender)
+MONSTER.DataLoader = function(
+    dataset_id,
+    email,
+    max_rounds,
+    success_func,
+    anon_game,
+    sender
+)
 {
     this.dataset_id = dataset_id;
     this.email = email;
@@ -7,6 +14,7 @@ MONSTER.DataLoader = function(dataset_id, email, max_rounds, success_func, sende
     this.success = false;
     this.success_func = success_func;
     this.sender = sender;
+    this.anon_game = anon_game;
 };
 
 MONSTER.DataLoader.prototype.constructor = MONSTER.DataLoader;
@@ -22,7 +30,7 @@ MONSTER.DataLoader.prototype.loadWordPairs = function()
     var url = "/api/local/words/" + this.dataset_id;
 
     // Anonymous player
-    if (this.email)
+    if (! this.anon_game)
         url += "/" + this.email;
 
     $.ajax({
