@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 
+import logging
 import time
 import datetime
 import re
@@ -7,7 +8,14 @@ import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import compiler
 
+from MySQLdb.converters import (
+    conversions,
+    escape,
+)
+
+logger = logging.getLogger(__name__)
 
 def get_engine():
     return create_engine(
@@ -20,6 +28,25 @@ def get_engine():
 
 def get_session():
     return sessionmaker(bind=get_engine())()
+
+def get_mysql_query_with_params(query):
+    dialect = query.session.bind.dialect
+    statement = query.statement
+    comp = compiler.SQLCompiler(dialect, statement)
+    comp.compile()
+
+    enc = dialect.encoding
+    params = []
+
+    for k in comp.positiontup:
+        v = comp.params[k]
+
+        if isinstance(v, unicode):
+            v = v.encode(enc)
+
+        params.append(escape(v, conversions))
+
+    return (comp.string.encode(enc) % tuple(params)).decode(enc)
 
 def get_time():
     return datetime.datetime.now(), time.strftime(
@@ -47,6 +74,42 @@ def rm_re(regexp, where):
     """
 
     return re.sub(regexp, '', where)
+
+def _eval(code):
+    try:
+        return eval(code)
+    except (TypeError, SyntaxError, NameError):
+        logger.warning('Cannot evaluate "%s"', code)
+
+        try:
+            return unicode(code)
+        except:
+            return ''
+
+def read_comments(comments):
+    resp = []
+
+    tokens = comments.split('||')
+
+    for token in tokens:
+        comment = _eval(token)
+
+        if comment:
+            if isinstance(comment, (tuple, list)):
+                resp.append(u' '.join(comment))
+            elif isinstance(comment, basestring):
+                resp.append(comment)
+            else:
+                logger.warning(
+                    'Cannot add comment "%s" of type "%s"',
+                    comment,
+                    type(comment)
+                )
+
+    return u' '.join(
+        u'{no}) {val}'.format(no=no + 1, val=val)
+        for no, val in enumerate(resp)
+    )
 
 def startswith(regexp, where):
     """

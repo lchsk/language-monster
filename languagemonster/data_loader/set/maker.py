@@ -1,18 +1,28 @@
 # -*- encoding: utf-8 -*-
+import logging
+import os
+import sys
+import json
+
+from sqlalchemy import (
+    func,
+    or_,
+)
+
 from db.structure import *
 from utility.utility import *
-from sqlalchemy import func
-from sqlalchemy import or_
-import os, sys, json
+
 from set.outitem import OutItem
 from validation import comparison
-
 from conf import languages
+from conf.languages import defs
 
 # If set to true, English wiki will be used as an intermediate translation
 # in case words are not found in base/target wikis
 
 USE_ENGLISH = True
+
+logger = logging.getLogger(__name__)
 
 class Maker(object):
     def __init__(self, base, target, p_type, output, category):
@@ -163,19 +173,27 @@ class Maker(object):
         target_config,
         validate = False
     ):
-        _type = base_config.get('pos').get(self.type)
+        _type = base_config.get('pos', {}).get(self.type, {})
+
+        if not _type:
+            _type = base_config.get('meaning')
+
         _language = base_config['languages'][target_config['acronym']]
         _items = set()
 
+        logger.info('Number of words to translate: %s', len(to_translate))
+        logger.info('Using language "%s", type "%s"', _language, _type)
+        logger.info('Using data table "%s"', data_table)
+
         for word in to_translate:
-            rs = self.session.query(
+            q = self.session.query(
                 data_table
             ).filter(
                 data_table.word_lower == word.lower()
             ).filter(
                 or_(
-                    data_table.head3.ilike('%{0}%'.format(_type)),
-                    data_table.head4.ilike('%{0}%'.format(_type)),
+                    data_table.head3.ilike(u'%{0}%'.format(_type)),
+                    data_table.head4.ilike(u'%{0}%'.format(_type)),
                     _type is None
                 )
             ).filter(
@@ -183,11 +201,17 @@ class Maker(object):
             ).filter(
                 or_(
                     data_table.definition != '',
-                    data_table.comments != ''
+                    # data_table.comments != ''
                 )
-            ).group_by(
-                data_table.word_lower, data_table.head3, data_table.head4
-            ).all()
+            )
+            # .group_by(
+                # data_table.word_lower, data_table.head3, data_table.head4
+            # )
+
+            logger.info('Preparing translations for "%s"', word)
+            logger.info('Executing query: \n%s', get_mysql_query_with_params(q))
+
+            rs = q.all()
 
             tmp_results = []
 
@@ -229,12 +253,19 @@ class Maker(object):
                 else:
                     b = r.definition
 
+                logger.info('Base: %s, def: %s, word: %s', b, r.definition, r.word)
+
+                comments = read_comments(r.comments)
+
+                if comments:
+                    logger.info('Found comments: %s', comments)
+
                 _items.add(
                     OutItem(
                         b=b,
                         t=r.word.decode('utf-8'),
                         p=r.pop,
-                        c=r.comments,
+                        c=comments,
                         pos=self._read_pos(r),
                     )
                 )
@@ -242,7 +273,7 @@ class Maker(object):
         return _items
 
     def _read_pos(self, row):
-        from conf.languages import defs
+
 
         head3 = row.head3.lower()
         head4 = row.head4.lower()
@@ -371,6 +402,8 @@ class Maker(object):
         Translates text file with words in separate lines
         """
 
+        logger.info('Translating file "%s"', file_path)
+
         if os.path.exists(file_path):
             with open(file_path) as f:
 
@@ -393,7 +426,7 @@ class Maker(object):
                 self.clean()
                 self.save()
         else:
-            print 'Path {0} does not exist'.format(file_path)
+            logger.warning('Path %s does not exist', file_path)
 
     def translation(self):
 
