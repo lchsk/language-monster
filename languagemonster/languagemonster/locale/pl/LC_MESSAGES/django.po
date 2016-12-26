@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-26 12:08+0000\n"
-"PO-Revision-Date: 2016-12-26 12:18+0000\n"
+"PO-Revision-Date: 2016-12-26 13:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -252,7 +252,7 @@ msgstr ""
 #: languagemonster/templates/app/game_tuts/runner.html:13
 msgid "game_tut_bunny_runner"
 msgstr ""
-"Przeskakuj lub ślizgaj się pod złymi tłumaczeniami i zbieraj słowa "
+"Przeskakuj lub ślizgaj się pod niepoprawnymi tłumaczeniami i zbieraj słowa "
 "odpowiadające wyrazom u góry ekranu"
 
 #: languagemonster/templates/app/game_tuts/runner.html:21
@@ -265,7 +265,7 @@ msgstr "Ślizgaj się"
 
 #: languagemonster/templates/app/game_tuts/shooter.html:13
 msgid "game_tut_word_sniper"
-msgstr "Kontroluj celownik i trafiaj poprawne tłumaczenia"
+msgstr "Kontroluj celownik i trafiaj śnieżkami poprawne tłumaczenia"
 
 #: languagemonster/templates/app/game_tuts/shooter.html:21
 #: languagemonster/templates/app/game_tuts/simple.html:21
@@ -279,8 +279,7 @@ msgstr "Kliknij na przycisk pasujący do słowa u góry ekranu"
 #: languagemonster/templates/app/game_tuts/space.html:13
 msgid "game_tut_space_game"
 msgstr ""
-"Steruj statkiem kosmicznym i zbieraj tłumaczenia słów, które widzisz u góry "
-"ekranu"
+"Steruj samolotem i zbieraj tłumaczenia słów, które widzisz u góry ekranu"
 
 #: languagemonster/templates/app/game_tuts/space.html:21
 msgid "game_tut_accelerate"

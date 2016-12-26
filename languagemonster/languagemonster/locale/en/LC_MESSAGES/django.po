@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-26 12:08+0000\n"
-"PO-Revision-Date: 2016-12-26 12:14+0000\n"
+"PO-Revision-Date: 2016-12-26 13:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -263,7 +263,7 @@ msgstr "Slide"
 
 #: languagemonster/templates/app/game_tuts/shooter.html:13
 msgid "game_tut_word_sniper"
-msgstr "Use mouse to shoot correct translations"
+msgstr "Use a mouse to throw a snowball at correct translations"
 
 #: languagemonster/templates/app/game_tuts/shooter.html:21
 #: languagemonster/templates/app/game_tuts/simple.html:21
@@ -277,8 +277,8 @@ msgstr "Click on the button corresponding to the word at the top"
 #: languagemonster/templates/app/game_tuts/space.html:13
 msgid "game_tut_space_game"
 msgstr ""
-"Control a space ship and collect the translation of the word you see at the "
-"top of the screen"
+"Control a plane and collect the translation of the word you see at the top "
+"of the screen"
 
 #: languagemonster/templates/app/game_tuts/space.html:21
 msgid "game_tut_accelerate"
