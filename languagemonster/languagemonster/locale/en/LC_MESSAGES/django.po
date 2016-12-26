@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-24 16:00+0000\n"
-"PO-Revision-Date: 2016-12-24 16:46+0000\n"
+"POT-Creation-Date: 2016-12-26 12:08+0000\n"
+"PO-Revision-Date: 2016-12-26 12:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,17 +93,17 @@ msgstr "Snowball Sniper"
 
 #: languagemonster/templates/app/add_language.html:16
 #: languagemonster/templates/app/content.html:15
-#: languagemonster/templates/app/game.html:13
+#: languagemonster/templates/app/game.html:12
 #: languagemonster/templates/app/left.html:76
 #: languagemonster/templates/app/study.html:17
 msgid "dashboard"
 msgstr "Dashboard"
 
 #: languagemonster/templates/app/add_language.html:17
-#: languagemonster/templates/app/game.html:14
+#: languagemonster/templates/app/game.html:13
 #: languagemonster/templates/app/study.html:18
-#: languagemonster/templates/landing/centre.html:33
-#: languagemonster/templates/landing/centre.html:59
+#: languagemonster/templates/landing/centre.html:43
+#: languagemonster/templates/landing/centre.html:69
 msgid "languages"
 msgstr "Languages"
 
@@ -111,7 +111,7 @@ msgstr "Languages"
 #: languagemonster/templates/app/add_language.html:44
 #: languagemonster/templates/app/dashboard.html:22
 #: languagemonster/templates/app/dashboard.html:62
-#: languagemonster/templates/app/game.html:16
+#: languagemonster/templates/app/game.html:15
 msgid "learn"
 msgstr "Learn"
 
@@ -198,15 +198,24 @@ msgstr ""
 "Language Monster uses cookies. By continuing to use this website you are "
 "giving consent to cookies being used."
 
-#: languagemonster/templates/app/game.html:25
+#: languagemonster/templates/app/game.html:24
 msgid "learning_data_set"
 msgstr "Learning set"
 
-#: languagemonster/templates/app/game.html:31
+#: languagemonster/templates/app/game.html:76
+#: languagemonster/templates/landing/centre.html:32
+msgid "msg_running_on_mobile"
+msgstr ""
+"It looks like you're using a mobile device. We're sorry but, unfortunately, "
+"they are not supported at the moment. Please use the desktop web browser and"
+" visit us again soon as we're working on mobile applications."
+
+#: languagemonster/templates/app/game.html:79
+#: languagemonster/templates/landing/centre.html:27
 msgid "msg_browser_window_too_small"
 msgstr "Web browser window is too small"
 
-#: languagemonster/templates/app/game.html:34
+#: languagemonster/templates/app/game.html:82
 msgid "msg_no_games_selected"
 msgstr "No games are selected"
 
@@ -582,33 +591,27 @@ msgid "landing_header1"
 msgstr "Learn foreign languages by playing games"
 
 #: languagemonster/templates/landing/centre.html:23
-#| msgid "btn_upload"
 msgid "btn_play_now"
 msgstr "Play now"
 
-#: languagemonster/templates/landing/centre.html:32
-#: languagemonster/templates/landing/centre.html:58
-#| msgid "btn_home"
+#: languagemonster/templates/landing/centre.html:42
+#: languagemonster/templates/landing/centre.html:68
 msgid "home"
 msgstr "Home"
 
-#: languagemonster/templates/landing/centre.html:34
-#| msgid "dataset_basic"
+#: languagemonster/templates/landing/centre.html:44
 msgid "datasets"
 msgstr "Sets"
 
-#: languagemonster/templates/landing/centre.html:50
-#| msgid "btn_update"
+#: languagemonster/templates/landing/centre.html:60
 msgid "btn_prev"
 msgstr "Previous"
 
-#: languagemonster/templates/landing/centre.html:52
-#| msgid "btn_save"
+#: languagemonster/templates/landing/centre.html:62
 msgid "btn_next"
 msgstr "Next"
 
-#: languagemonster/templates/landing/centre.html:62
-#| msgid "msg_many_languages_to_learn"
+#: languagemonster/templates/landing/centre.html:72
 msgid "languages_you_can_learn"
 msgstr "Languages you can learn"
 
@@ -678,12 +681,10 @@ msgid "link_contact"
 msgstr "Contact"
 
 #: languagemonster/templates/landing/special_page.html:26
-#| msgid "header_success"
 msgid "header_msg_success"
 msgstr "Success"
 
 #: languagemonster/templates/landing/special_page.html:32
-#| msgid "header_failure"
 msgid "header_msg_failure"
 msgstr "Something went wrong"
 
@@ -808,7 +809,7 @@ msgstr "Unknown error. Sorry, please try again later"
 msgid "Try again"
 msgstr "Try again"
 
-#: vocabulary/views.py:98
+#: vocabulary/views.py:101
 msgid "msg_new_lang_added"
 msgstr "You are learning new language"
 
