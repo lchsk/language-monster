@@ -15,7 +15,10 @@ from utility.utility import *
 from set.outitem import OutItem
 from validation import comparison
 from conf import languages
-from conf.languages import defs
+from conf.languages import (
+    defs,
+    POS,
+)
 
 # If set to true, English wiki will be used as an intermediate translation
 # in case words are not found in base/target wikis
@@ -178,14 +181,34 @@ class Maker(object):
         if not _type:
             _type = base_config.get('meaning')
 
+            logger.info('Type not provided using meaning: "%s"', _type)
+
         _language = base_config['languages'][target_config['acronym']]
         _items = set()
 
         logger.info('Number of words to translate: %s', len(to_translate))
-        logger.info('Using language "%s", type "%s"', _language, _type)
+        logger.info(
+            'Using language "%s", type "%s"',
+            _language,
+            _type.encode('utf-8')
+        )
         logger.info('Using data table "%s"', data_table)
 
-        for word in to_translate:
+        for word, pos in to_translate:
+            if pos:
+                if pos not in POS:
+                    logger.critical('Invalid POS "%s" for word "%s"', pos, word)
+
+                    sys.exit(1)
+
+                _type = base_config.get('pos', {}).get(pos)
+
+                logger.info(
+                    'Found POS definition for "%s", new pos: "%s"',
+                    word,
+                    _type
+                )
+
             q = self.session.query(
                 data_table
             ).filter(
@@ -410,7 +433,18 @@ class Maker(object):
                 to_be_translated = []
 
                 for line in f:
-                    to_be_translated.append(line.strip())
+                    tokens = line.split('||')
+
+                    if not tokens:
+                        continue
+
+                    word = tokens[0].strip()
+                    pos = ''
+
+                    if len(tokens) == 2:
+                        pos = tokens[1].strip()
+
+                    to_be_translated.append((word, pos))
 
                 items = self._translate(
                     to_translate = to_be_translated,
