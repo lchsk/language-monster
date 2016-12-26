@@ -18,13 +18,29 @@ window.MONSTER.home_menu = new Vue({
         datasets_btns: [false, false], // show prev/next buttons in datasets
         datasets_pages: 0,
         loaded_scripts: {},
-        langs_to_learn: null
+        langs_to_learn: null,
+        is_mobile: false,
+        screen_size_fine: false,
+        err: null
     },
     created: function () {
         this.load_menu_data();
+
+        window.addEventListener('orientationchange', this.on_resize, false);
+        window.addEventListener('resize', this.on_resize, false);
+
+        this.on_resize();
     },
     methods: {
-        load_game: function(){
+        on_resize: function() {
+            this.is_mobile = MONSTER.is_mobile();
+            this.screen_size_fine = MONSTER.is_screen_size_fine();
+
+            this.err = this.is_mobile
+                ? 'mobile' : ! this.screen_size_fine
+                ? 'size' : null;
+        },
+        load_game: function() {
             this.show_play_now = false;
             this.view = 'languages';
         },
@@ -106,7 +122,6 @@ window.MONSTER.home_menu = new Vue({
             }
 
             MONSTER.newGame();
-
         },
         play: function(dataset_id) {
             this.view = 'game';

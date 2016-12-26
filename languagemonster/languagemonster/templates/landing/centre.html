@@ -19,8 +19,18 @@ window.translations = {{xl|safe}};
             <div id="monster-home">
                 <div id="intro-header" v-show="view=='main'">
                     {% trans "landing_header1" %}
-                    <div>
+                    <div v-show="err===null">
                         <a v-on:click="load_game" href="#" class="button3d button3d-large font40px"><span class="large text">{% trans "btn_play_now" %}</span></a>
+                    </div>
+                    <div v-show="err==='size'">
+                      <div class="alert alert-warning medium-font" role="alert">
+                        {% trans "msg_browser_window_too_small" %}
+                      </div>
+                    </div>
+                    <div v-show="err==='mobile'">
+                      <div class="alert alert-warning medium-font" role="alert">
+                        {% trans "msg_running_on_mobile" %}
+                      </div>
                     </div>
                 </div>
                 <div v-show="view=='game'">

@@ -93,7 +93,9 @@ gulp.task('js_app', function() {
 
 gulp.task('js_landing', function() {
     return gulp.src([
+        js_dir + 'util.js',
         js_dir + 'landing/home.js'
+
     ], {base: js_dir})
     .pipe(concat('landing.js'))
     .pipe(gulp.dest(js_build_dir))

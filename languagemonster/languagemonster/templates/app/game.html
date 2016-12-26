@@ -7,7 +7,6 @@
     <div class="col-md-12">
         <div id="study" class="content-box img-rounded light-border">
             <div class="container-fluid" style="padding: 0 40px 40px 40px;">
-                <!-- <div class="row" style="text-align: left;"> -->
                     <div class="row" style="text-align: left;">
                         <ol class="breadcrumb">
                             <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "dashboard" %}</a></li>
@@ -26,12 +25,11 @@
                                 </div>
                         </h2>
                     </div>
-                <!-- </div> -->
                 <div id="alert-browser-size" class="alert alert-warning" role="alert">
-                    {% trans "msg_browser_window_too_small" %}</strong>
+                    {% trans "msg_browser_window_too_small" %}
                 </div>
                 <div id="alert-no-games" class="alert alert-warning" role="alert">
-                    {% trans "msg_no_games_selected" %}</strong>
+                    {% trans "msg_no_games_selected" %}
                 </div>
                 {% csrf_token %}
                 <script type="text/javascript">
