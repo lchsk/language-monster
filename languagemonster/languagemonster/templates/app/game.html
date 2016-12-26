@@ -27,6 +27,8 @@
                     </div>
                 {% csrf_token %}
                 <script type="text/javascript">
+                    window.MONSTER = window.MONSTER || {};
+
                     {% if context.game %}
                         play = true;
                     {% else %}
@@ -58,10 +60,10 @@
                         document.getElementById('alert-no-games').style.display = 'block';
                     }
 
-                     if (MONSTER.is_mobile()) {
-                         play = false;
-                         document.getElementById('alert-running-on-mobile').style.display = 'block';
-                     }
+                    if (/Mobi/.test(navigator.userAgent)) {
+                        play = false;
+                        document.getElementById('alert-running-on-mobile').style.display = 'block';
+                    }
 
                     games_played = [];
 
