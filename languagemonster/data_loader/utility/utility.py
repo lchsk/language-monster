@@ -101,10 +101,12 @@ def read_comments(comments):
                 resp.append(comment)
             else:
                 logger.warning(
-                    'Cannot add comment "%s" of type "%s"',
+                    'Coercing comment "%s" of type "%s" to string',
                     comment,
                     type(comment)
                 )
+
+                resp.append(str(comment))
 
     return u' '.join(
         u'{no}) {val}'.format(no=no + 1, val=val)
