@@ -26,6 +26,7 @@ Slang = (
     u'slang',
     u'obraź',
     u'vulg',
+    u'pot',
 )
 
 t = {}
