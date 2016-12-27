@@ -4,7 +4,7 @@ class OutItem(object):
 
     LINE = u"{base}||{target}||{pop}||{english}||{comments}||{pos}\n"
 
-    def __init__(self, b, t, pos=None, e='', c='', i=False, p=0):
+    def __init__(self, b, t, pos=None, e='', c='', i=False, p=0, id_=0):
 
         # word in base language
 
@@ -31,6 +31,9 @@ class OutItem(object):
         self.i = i
 
         self.pos = pos
+
+        # Database id
+        self.id_ = id_
 
     def __eq__(self, other):
         return self.b == other.b

@@ -329,6 +329,7 @@ class Maker(object):
                         p=r.pop,
                         c=comments,
                         pos=self._read_pos(r),
+                        id_=r.id,
                     )
                 )
 
@@ -688,7 +689,7 @@ class Maker(object):
         self._save_metadata()
         length = len(self.items)
 
-        self.items.sort(key = lambda x: x.b)
+        self.items.sort(key=lambda x: x.b and x.id_)
 
         for item in self.items:
             self.outfile.write(item.line())
