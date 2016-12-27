@@ -18,12 +18,14 @@ from conf import languages
 from conf.languages import (
     defs,
     POS,
+    Slang,
 )
 
 # If set to true, English wiki will be used as an intermediate translation
 # in case words are not found in base/target wikis
 
 USE_ENGLISH = True
+REMOVE_SLANG = True
 
 logger = logging.getLogger(__name__)
 
@@ -280,8 +282,25 @@ class Maker(object):
 
                 comments = read_comments(r.comments)
 
+                omit = False
+
                 if comments:
                     logger.info('Found comments: %s', comments)
+
+                    if REMOVE_SLANG:
+                        for slang in Slang:
+                            if slang in comments:
+                                logger.info(
+                                    'Slang word found: "%s" = "%s", omitting',
+                                    b,
+                                    r.word.decode('utf-8'),
+                                )
+
+                                omit = True
+                                break
+
+                if omit:
+                    continue
 
                 _items.add(
                     OutItem(

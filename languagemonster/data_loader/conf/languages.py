@@ -22,6 +22,12 @@ POS = (
     Adjective,
 )
 
+Slang = (
+    u'slang',
+    u'obraź',
+    u'vulg',
+)
+
 t = {}
 
 t['en'] = dict(
@@ -223,8 +229,9 @@ t['fr'] = dict(
 defs = t
 
 __all__ = (
-    defs,
-    POS,
+    'defs',
+    'POS',
+    'Slang',
 )
 
 MANDATORY_FIELDS = (
