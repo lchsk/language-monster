@@ -154,6 +154,11 @@
                                 class="list-group-item">
                                 Sort by pop
                             </a>
+                            <a
+                                href="{% url 'management:edit_set' ds.id %}?sort_by=id&sort_ord=ASC"
+                                class="list-group-item">
+                                Sort by id
+                            </a>
                         </div>
                     </div>
                     <button

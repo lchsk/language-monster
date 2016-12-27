@@ -288,9 +288,9 @@ class EditSetView(SuperUserContextView):
         ).first()
 
         if dataset:
-            sort_by = self.request.GET.get('sort_by', 'base')
-            sort_ord = self.request.GET.get('sort_ord', 'DESC')
-            reverse = sort_ord == 'DESC'
+            sort_by = self.request.GET.get('sort_by', 'id')
+            sort_ord = self.request.GET.get('sort_ord', 'ASC')
+            rev = sort_ord == 'DESC'
 
             wp_tmp = DS2WP.objects.filter(ds=dataset).select_related('wp')
             all_words = [i.wp for i in wp_tmp]
@@ -309,23 +309,23 @@ class EditSetView(SuperUserContextView):
                 susp = sorted(
                     susp,
                     key=lambda s: len(s['wp'].base),
-                    reverse=reverse
+                    reverse=rev
                 )
                 clean = sorted(
                     clean,
                     key=lambda s: len(s['wp'].base),
-                    reverse=reverse
+                    reverse=rev
                 )
             else:
                 susp = sorted(
                     susp,
-                    key=lambda s: s['wp'].pop,
-                    reverse=reverse
+                    key=lambda s: getattr(s['wp'], sort_by),
+                    reverse=rev
                 )
                 clean = sorted(
                     clean,
-                    key=lambda s: s['wp'].pop,
-                    reverse=reverse
+                    key=lambda s: getattr(s['wp'], sort_by),
+                    reverse=rev
                 )
 
             context['clean'] = clean
