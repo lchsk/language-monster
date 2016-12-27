@@ -241,12 +241,15 @@ class Maker(object):
             tmp_results = []
 
             def cond(r):
+                head3 = unicode(r.head3, 'utf-8')
+                head4 = unicode(r.head4, 'utf-8')
+
                 if not r or not word or is_no_text(r.definition):
                     return False
-                if not (r.head3 or r.head3):
+                if not (head3 or head3):
                     return False
 
-                if _type is not None and not (_type in r.head3 or _type in r.head4):
+                if _type is not None and not (_type in head3 or _type in head4):
                     return False
 
                 return True
