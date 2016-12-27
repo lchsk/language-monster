@@ -36,10 +36,14 @@ class OutItem(object):
         self.id_ = id_
 
     def __eq__(self, other):
-        return self.b == other.b
+        return all((
+            self.b == other.b,
+            self.t == other.t,
+            self.pos == other.pos,
+        ))
 
     def __hash__(self):
-        return hash(self.b)
+        return hash(self.b + self.t + self.pos)
 
     def switch(self):
         """
