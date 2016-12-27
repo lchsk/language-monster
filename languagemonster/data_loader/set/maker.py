@@ -164,7 +164,7 @@ class Maker(object):
             self.outfile.write('#base={0}\n'.format(self.base))
             self.outfile.write('#target={0}\n'.format(self.target))
 
-        self.outfile.write('#pos={0}\n'.format(self.type))
+        self.outfile.write('#pos={0}\n'.format(self.type if self.type else ''))
         self.outfile.write('#name_en={0}\n'.format(self.category))
         self.outfile.write('#from_exported_file={0}\n'.format(
             str(self.from_exported_file))
