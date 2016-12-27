@@ -46,11 +46,11 @@ class Maker(object):
             try:
                 languages.validate(lang)
             except Exception as e:
-                print 'Language validation error in definition of: {lang}'.format(
-                    lang = lang
+                logger.critical(
+                    'Language validation error in definition of "%s"',
+                    lang,
                 )
-                print str(e)
-                print 'Shutting down...'
+                logger.critical('%s', e)
                 sys.exit(1)
 
         # Set to True if target is English
@@ -103,7 +103,7 @@ class Maker(object):
         if self.output:
             self.outfile = open(self.output_filepath, 'w')
         else:
-            print 'Problem with opening and output file'
+            logger.critical('Problem with opening and output file')
             sys.exit(1)
 
         self.t = get_tables(self.base)
@@ -180,8 +180,10 @@ class Maker(object):
     ):
         _type = base_config.get('pos', {}).get(self.type, {})
 
+        meaning = base_config.get('meaning')
+
         if not _type:
-            _type = base_config.get('meaning')
+            _type = meaning
 
             logger.info('Type not provided using meaning: "%s"', _type)
 
@@ -197,19 +199,24 @@ class Maker(object):
         logger.info('Using data table "%s"', data_table)
 
         for word, pos in to_translate:
+            logger.info('=' * 80)
+            logger.info('Init word "%s"', word)
+
             if pos:
                 if pos not in POS:
                     logger.critical('Invalid POS "%s" for word "%s"', pos, word)
 
                     sys.exit(1)
 
-                _type = base_config.get('pos', {}).get(pos)
+                pos = base_config.get('pos', {}).get(pos)
 
                 logger.info(
                     'Found POS definition for "%s", new pos: "%s"',
                     word,
-                    _type
+                    pos
                 )
+            else:
+                pos = meaning
 
             q = self.session.query(
                 data_table
@@ -217,9 +224,9 @@ class Maker(object):
                 data_table.word_lower == word.lower()
             ).filter(
                 or_(
-                    data_table.head3.ilike(u'%{0}%'.format(_type)),
-                    data_table.head4.ilike(u'%{0}%'.format(_type)),
-                    _type is None
+                    data_table.head3.ilike(u'%{0}%'.format(pos)),
+                    data_table.head4.ilike(u'%{0}%'.format(pos)),
+                    pos is None
                 )
             ).filter(
                 data_table.language == _language
@@ -233,10 +240,20 @@ class Maker(object):
                 # data_table.word_lower, data_table.head3, data_table.head4
             # )
 
-            logger.info('Preparing translations for "%s"', word)
             logger.info('Executing query: \n%s', get_mysql_query_with_params(q))
 
             rs = q.all()
+
+            rs_cnt = len(rs)
+
+            if rs_cnt:
+                logger.info('Loaded %s results from database', rs_cnt)
+            else:
+                logger.error(
+                    'No data found in database for word "%s" ("%s")',
+                    word,
+                    pos,
+                )
 
             tmp_results = []
 
@@ -249,7 +266,7 @@ class Maker(object):
                 if not (head3 or head3):
                     return False
 
-                if _type is not None and not (_type in head3 or _type in head4):
+                if _type is not None and not (pos in head3 or pos in head4):
                     return False
 
                 return True
@@ -371,7 +388,7 @@ class Maker(object):
                 to_be_translated = [wp['etarget'] for wp in content]
 
                 if self.base == 'en':
-                    print "Base = en"
+                    logger.info("Base = en")
 
                     items = self._translate(
                         to_translate = to_be_translated,
@@ -395,7 +412,7 @@ class Maker(object):
                         self.items = list(items) + list(from_target)
 
                 else:
-                    print "No english"
+                    logger.info("No english")
                     # here: base, target != english
                     target_en = self._translate(
                         to_translate = to_be_translated,
@@ -407,7 +424,7 @@ class Maker(object):
                     target_items = [wp.b for wp in target_en]
                     en_items = [wp.t for wp in target_en]
 
-                    print len(target_items)
+                    logger.info('Number of target items: %s', len(target_items))
 
                     base_en = self._translate(
                         to_translate = en_items,
@@ -416,7 +433,7 @@ class Maker(object):
                         target_config = self.english_config,
                     )
 
-                    print len(base_en)
+                    logger.info('Number of base items: %s', len(base_en))
 
                     cnt = 0
                     self.items = []
@@ -434,13 +451,12 @@ class Maker(object):
                                 ))
                                 # cnt += 1
 
-                    # print cnt
-                    print len(self.items)
+                    logger.info('Number of items: %s', len(self.items))
 
                     self.clean()
                     self.save()
         else:
-            print 'Path {0} does not exist'.format(file_path)
+            logger.info('Path %s does not exist', file_path)
 
     def translate_text_file(self, file_path):
         """
@@ -598,7 +614,6 @@ class Maker(object):
 
             for j in self.items:
                 if i.b == j.b and i.t == j.t and i is not j:
-                    # print i.b, i.t
                     self.items.remove(j)
 
     def validate(self):
@@ -678,7 +693,8 @@ class Maker(object):
         for item in self.items:
             self.outfile.write(item.line())
 
-        print 'Saved to {0}'.format(self.output_filepath)
-        print 'Number of words: {0}'.format(length)
+        logger.info('=' * 80)
+        logger.info('Results saved %s', self.output_filepath)
+        logger.info('Number of words: %s', length)
 
         self.outfile.close()
