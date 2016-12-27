@@ -41,6 +41,7 @@ class Maker(object):
         # final output; consists of OutItem objects
 
         self.items = set()
+        self._errors = []
 
         for lang in languages.WORKING_LANGUAGES:
             try:
@@ -178,6 +179,7 @@ class Maker(object):
         target_config,
         validate = False
     ):
+        self._errors = []
         _type = base_config.get('pos', {}).get(self.type, {})
 
         meaning = base_config.get('meaning')
@@ -254,6 +256,8 @@ class Maker(object):
                     word,
                     pos,
                 )
+
+                self._errors.append((word, pos))
 
             tmp_results = []
 
@@ -697,5 +701,13 @@ class Maker(object):
         logger.info('=' * 80)
         logger.info('Results saved %s', self.output_filepath)
         logger.info('Number of words: %s', length)
+        logger.info('Words not found: %s', len(self._errors))
+
+        errors = u', '.join(
+            u'{} ({})'.format(word, pos)
+            for word, pos in self._errors
+        )
+
+        logger.info('Errors: %s', errors)
 
         self.outfile.close()
