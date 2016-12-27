@@ -270,8 +270,7 @@ class DoRemoveDataset(SuperUserContextView):
         if not dataset:
             raise Http404
 
-        dataset.status = 'X'
-        dataset.save()
+        dataset.delete()
 
         return self.redirect_with_success(
             'management:sets',
