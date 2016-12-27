@@ -19,6 +19,7 @@ class Item(object):
 class ParserPl(Parser):
     def __init__(self, settings, language):
         Parser.__init__(self, settings, language)
+        self.meaning = 0
 
     def _get_languages(self, raw):
         languages = []
@@ -55,7 +56,7 @@ class ParserPl(Parser):
             data = []
 
             for line in val.split('\n'):
-                r3 = re.findall(r'^\{\{znaczenia\}\}.*?$', line, re.M | re.I | re.S | re.UNICODE)
+                r3 = re.findall(r'^\{\{(.+)\}\}.*?$', line, re.M | re.I | re.S | re.UNICODE)
                 r4 = re.findall(r'^\'\'([\w\s,]+)\'\'.*?$', line, re.M | re.I | re.S | re.UNICODE)
                 if r3:
                     head3 = unicode(r3[0])
@@ -70,20 +71,31 @@ class ParserPl(Parser):
 
         return all_data
 
-    def _insert(self, lang, head3, head4, word, definition, meaning, comments, dirty):
-        item = self.data_table(lang, head3, head4, word, definition, meaning, comments, dirty)
-        self.session.add(item)
+    def _insert(self, group):
+        for g in group:
+            item = self.data_table()
+            item.language = g['lang']
+            item.head3 = g['head3']
+            item.head4 = g['head4']
+            item.word = g['w1']
+            item.word_lower = g['w1'].lower()
+            item.definition = g['w2']
+            item.meaning = g['meaning']
+            item.comments = g['comments']
+            item.dirty = g['dirty']
+
+            self.session.add(item)
 
 
     def _parse(self, word, lang, item):
+        sets = []
 
-        meaning = 0
         if item.line.startswith(':'):
             text = item.line[1:]
 
             paren = get_context(text, '(', ')', 1)
             brack = get_context(text, '{', '}', 2)
-            # ref = get_context(text, '<ref>', '</ref>', 1)
+
             comments = paren + brack
 
             p = parse_link(rm(text, [paren, brack])).strip()
@@ -92,8 +104,22 @@ class ParserPl(Parser):
 
             for w in words:
                 dirty = 'F' if is_text_only(w) else 'T'
-                self._insert(lang.strip(), item.head3.strip(), item.head4.strip(), word.strip(), w.strip(), meaning, ''.join(comments), dirty)
-            meaning += 1
+
+                word_group = dict(
+                    w1=word,
+                    lang=lang,
+                    head3=item.head3,
+                    head4=item.head4,
+                    w2=w,
+                    meaning=self.meaning,
+                    comments=''.join(comments),
+                    dirty=dirty,
+                )
+
+                sets.append(word_group)
+                self.meaning += 1
+
+        return sets
 
     def run(self):
         start, p1 = get_time()
@@ -111,7 +137,10 @@ class ParserPl(Parser):
 
             for lang, data in all_data.iteritems():
                 for item in data:
-                    self._parse(r.word, lang, item)
+                    group = self._parse(r.word, lang, item)
+
+                    if group:
+                        self._insert(group)
 
         end, p2 = get_time()
         print 'End time: %s' % p2
