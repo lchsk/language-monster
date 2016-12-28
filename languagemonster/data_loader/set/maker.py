@@ -196,7 +196,7 @@ class Maker(object):
         logger.info(
             'Using language "%s", type "%s"',
             _language,
-            _type.encode('utf-8')
+            _type.encode('utf-8') if _type else None,
         )
         logger.info('Using data table "%s"', data_table)
 

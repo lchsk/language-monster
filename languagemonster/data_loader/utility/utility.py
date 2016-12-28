@@ -97,7 +97,9 @@ def read_comments(comments):
         if comment:
             if isinstance(comment, (tuple, list)):
                 resp.append(u' '.join(comment))
-            elif isinstance(comment, basestring):
+            elif isinstance(comment, str):
+                resp.append(comment.decode('utf-8'))
+            elif isinstance(comment, unicode):
                 resp.append(comment)
             else:
                 logger.warning(
@@ -106,7 +108,7 @@ def read_comments(comments):
                     type(comment)
                 )
 
-                resp.append(str(comment))
+                resp.append(unicode(comment))
 
     return u' '.join(
         u'{no}) {val}'.format(no=no + 1, val=val)
