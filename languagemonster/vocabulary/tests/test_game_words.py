@@ -32,6 +32,44 @@ def test_get_words_one_set_without_repeated(m_ds2wp):
 
     _assert_resp_no_repeated(resp, nsets, rounds, _transform_data(data))
 
+@patch('core.models.DS2WP.objects.filter')
+def test_get_words_one_set_multiple_meanings_without_repeated(m_ds2wp):
+    """Test the same base/target doesn't appear in the same set for a user"""
+
+    nsets = 1
+    rounds = 3
+    repeated = False
+    word1 = Mock(wp=Mock(id=3, base=u'koń', target=u'horse'))
+    word2 = Mock(wp=Mock(id=4, base=u'ryba', target=u'fish'))
+
+    # Should be impossible to have the same base/target in the same set
+    test_data = [
+        [
+            word1,
+            word2,
+            Mock(wp=Mock(id=1, base=u'kot', target=u'cat1')),
+            Mock(wp=Mock(id=2, base=u'kot', target=u'cat2')),
+        ],
+        [
+            word1,
+            word2,
+            Mock(wp=Mock(id=1, base=u'kot', target=u'cat')),
+            Mock(wp=Mock(id=2, base=u'dog', target=u'cat')),
+        ],
+    ]
+
+    for data in test_data:
+        m_ds2wp.return_value.select_related.return_value = data
+
+        resp = get_game_words(
+            dataset_id=None,
+            monster_user=None,
+            rounds=rounds,
+            include_words_to_repeat=repeated,
+            nsets=nsets,
+        )
+
+        _assert_resp_no_repeated(resp, nsets, rounds, _transform_data(data))
 
 @patch('core.models.DS2WP.objects.filter')
 def test_get_words_multiple_sets_without_repeated(m_ds2wp):

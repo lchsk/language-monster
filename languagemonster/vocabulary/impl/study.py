@@ -21,6 +21,12 @@ from utility.exception import NoDataFound
 
 logger = logging.getLogger(__name__)
 
+# Minimum number of words in a set
+MIN_WORDS = 4
+
+# Maximum number of iterations during set generation
+MAX_ITERATIONS = 50
+
 def get_user_games(monster_user):
     return [{
             'game': mu_game.game,
@@ -90,10 +96,12 @@ def get_game_words(
         ).select_related('wp')
     ]
 
-    if len(word_pairs) < 4 or len(word_pairs) < rounds:
+    min_words = max(MIN_WORDS, len(word_pairs))
+
+    if len(word_pairs) < min_words:
         raise RuntimeError(
-            'There must be at least 4 word pairs, instead: {}, '
-            'dataset_id: {}'.format(len(word_pairs), dataset_id)
+            'There must be at least {} word pairs, instead: {}, '
+            'dataset_id: {}'.format(min_words, len(word_pairs), dataset_id)
         )
 
     if include_words_to_repeat:
@@ -109,13 +117,14 @@ def get_game_words(
     returned_words.extend(to_repeat)
 
     items_to_return = nsets * rounds
-    sentinel = 0
+    set_no = 0
 
-    while True or sentinel < 1000:
-        sentinel += 1
+    while True:
+        set_no += 1
 
-        if sentinel == 1000:
-            raise RuntimeError('Too many iterations')
+        if set_no > MAX_ITERATIONS:
+            logger.warning('Too many iterations: %s', set_no)
+            raise RuntimeError('Too many iterations: %s', set_no)
 
         random.shuffle(word_pairs)
         returned_words.extend(word_pairs)
@@ -126,8 +135,42 @@ def get_game_words(
 
         returned_words = returned_words[:rounded_size]
 
+        # Ensure there are no repeated base/target values
+        bases = set(word.base for word in returned_words)
+        targets = set(word.target for word in returned_words)
+
+        if len(bases) != len(targets):
+            logger.warning(
+                'Number of bases different than number of targets: %s, %s. '
+                'Skipping to next iteration',
+                len(bases),
+                len(targets),
+            )
+
+            # Reset
+            returned_words = []
+
+            continue
+
         if len(returned_words) >= items_to_return:
             break
+
+    logger.info(
+        'Requested %s sets generated after %s iterations. set: %s, rounds: %s',
+        nsets,
+        set_no,
+        dataset_id,
+        rounds,
+    )
+
+    if set_no > nsets:
+        logger.warning(
+            'It took more than expected no. of iterations %s > %s, set: %s, words: %s',
+            set_no,
+            nsets,
+            dataset_id,
+            returned_words,
+        )
 
     resp = []
 
