@@ -348,6 +348,12 @@ class Maker(object):
                 ):
                     omit = True
 
+                # For German only
+                if base_config['acronym'] == 'de' and meaning not in (r.head3, r.head4):
+                    logger.info('Omit German, not %s', meaning)
+
+                    omit = True
+
                 if omit:
                     continue
 
