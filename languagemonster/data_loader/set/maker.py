@@ -26,6 +26,7 @@ from conf.languages import (
 
 USE_ENGLISH = True
 REMOVE_SLANG = True
+REMOVE_EXAMPLES = True
 
 logger = logging.getLogger(__name__)
 
@@ -322,6 +323,9 @@ class Maker(object):
 
                                 omit = True
                                 break
+
+                if REMOVE_EXAMPLES and r.definition.strip()[0] in ('*',):
+                    omit = True
 
                 if omit:
                     continue
