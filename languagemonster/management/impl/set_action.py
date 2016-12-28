@@ -75,6 +75,7 @@ def update_set(request, dataset_id):
     name_target = request.POST.get('name_target', 'name_target')
     icon = request.POST.get('icon', '')
     visible = request.POST.get('visible') is not None
+    lowercase_target = request.POST.get('lowercase_target') is not None
 
     ds = DataSet.objects.filter(id=dataset_id).first()
     wp_tmp = DS2WP.objects.filter(ds=ds)
@@ -92,6 +93,10 @@ def update_set(request, dataset_id):
             if key_base in request.POST and key_target in request.POST:
                 p.base = request.POST[key_base]
                 p.target = request.POST[key_target]
+
+                if lowercase_target:
+                    p.target = p.target.lower()
+
                 p.save()
 
                 word_count += 1
