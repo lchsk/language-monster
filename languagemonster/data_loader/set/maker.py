@@ -27,6 +27,9 @@ from conf.languages import (
 USE_ENGLISH = True
 REMOVE_SLANG = True
 REMOVE_EXAMPLES = True
+REMOVE_IF_ONLY_CRAP = True
+REMOVE_AUDIO = True
+REMOVE_PLURAL = True
 
 logger = logging.getLogger(__name__)
 
@@ -327,6 +330,24 @@ class Maker(object):
                 if REMOVE_EXAMPLES and r.definition.strip()[0] in ('*', ':'):
                     omit = True
 
+                if REMOVE_IF_ONLY_CRAP and not rm_nonalnum(
+                        r.definition,
+                        remove_digits=True,
+                        remove_space=True,
+                ):
+                    omit = True
+
+                if REMOVE_AUDIO and (
+                        u'{{Audio' in r.definition
+                        or u'{{audio}}' in r.definition
+                ):
+                    omit = True
+
+                if REMOVE_PLURAL and (
+                        u'{{Pl.}}' in comments
+                ):
+                    omit = True
+
                 if omit:
                     continue
 
@@ -344,8 +365,6 @@ class Maker(object):
         return _items
 
     def _read_pos(self, row):
-
-
         head3 = row.head3.lower()
         head4 = row.head4.lower()
 

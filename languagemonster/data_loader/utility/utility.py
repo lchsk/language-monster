@@ -138,13 +138,18 @@ def is_context(text):
     ''' Whether text contains only {{Something}}'''
     return True if re.match(r'^\{\{.+\}\}$', text, re.M | re.I | re.S | re.UNICODE) else False
 
-def rm_nonalnum(s):
+def rm_nonalnum(s, remove_digits=False, remove_space=False):
     """
     Removes non-alphanumeic characters from a string
     """
 
-    delchars = u'!"#$%&\'()*+,-./:;=>?@[\\]^_`{|}~'
-    # translate_to = None
+    delchars = u'!"#$%&\'()*+,-./:;=>?@[\\]^_`{|}~–'
+
+    if remove_digits:
+        delchars += u''.join(map(unicode, range(10)))
+
+    if remove_space:
+        delchars += u' '
 
     for c in delchars:
         s = s.replace(c, '')
