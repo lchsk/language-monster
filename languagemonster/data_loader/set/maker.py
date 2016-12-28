@@ -324,7 +324,7 @@ class Maker(object):
                                 omit = True
                                 break
 
-                if REMOVE_EXAMPLES and r.definition.strip()[0] in ('*',):
+                if REMOVE_EXAMPLES and r.definition.strip()[0] in ('*', ':'):
                     omit = True
 
                 if omit:
