@@ -103,6 +103,26 @@
                             <td>Susp (zero)</td>
                             <td>{{stats.susp_zero}}</td>
                         </tr>
+                        <tr>
+                            <td>Bases difference</td>
+                            {% if stats.bases_difference %}
+                            <td style="background-color: red;">
+                              {% else %}
+                            <td>
+                              {% endif %}
+                                {{stats.bases_difference}}
+                            </td>
+                        </tr>
+                        <tr>
+                          <td>Targets difference</td>
+                            {% if stats.targets_difference %}
+                          <td style="background-color: red;">
+                            {% else %}
+                          <td>
+                            {% endif %}
+                            {{stats.targets_difference}}
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>

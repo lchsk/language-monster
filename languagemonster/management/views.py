@@ -336,12 +336,17 @@ class EditSetView(SuperUserContextView):
             clean_zero_cnt = len([i for i in clean if i['wp'].pop == 0])
             susp_zero_cnt = len([i for i in susp if i['wp'].pop == 0])
 
+            bases = set(word.base for word in all_words)
+            targets = set(word.target for word in all_words)
+
             context['stats'] = dict(
                 clean=clean_cnt,
                 susp=susp_cnt,
                 susp_zero=susp_zero_cnt,
                 clean_zero=clean_zero_cnt,
                 all=clean_cnt + susp_cnt,
+                bases_difference=len(all_words) - len(bases),
+                targets_difference=len(all_words) - len(targets),
             )
 
             context['words'] = words
