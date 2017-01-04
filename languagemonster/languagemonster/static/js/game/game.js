@@ -255,6 +255,8 @@ MONSTER.Game.prototype.resize = function()
     this.background.scale.x = this.scaleX;
     this.background.scale.y = this.scaleY;
 
+    $(".alert").hide();
+
     if (this.resolutionOK)
     {
         $("#alert-browser-size").hide();
