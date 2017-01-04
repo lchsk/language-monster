@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-26 12:08+0000\n"
-"PO-Revision-Date: 2016-12-26 13:10+0000\n"
+"POT-Creation-Date: 2017-01-04 20:33+0000\n"
+"PO-Revision-Date: 2017-01-04 20:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -103,8 +103,8 @@ msgstr "Strona główna"
 #: languagemonster/templates/app/add_language.html:17
 #: languagemonster/templates/app/game.html:13
 #: languagemonster/templates/app/study.html:18
-#: languagemonster/templates/landing/centre.html:43
-#: languagemonster/templates/landing/centre.html:69
+#: languagemonster/templates/landing/centre.html:48
+#: languagemonster/templates/landing/centre.html:74
 msgid "languages"
 msgstr "Języki"
 
@@ -203,8 +203,8 @@ msgstr ""
 msgid "learning_data_set"
 msgstr "Nauka"
 
-#: languagemonster/templates/app/game.html:76
-#: languagemonster/templates/landing/centre.html:32
+#: languagemonster/templates/app/game.html:78
+#: languagemonster/templates/landing/centre.html:33
 msgid "msg_running_on_mobile"
 msgstr ""
 "Wygląda na to, że używasz urządzenia przenośnego. Przykro nam, ale niestety "
@@ -212,12 +212,12 @@ msgstr ""
 "internetowej na komputerze lub laptopie i odwiedzić nas wkrótce, jako że "
 "pracujemy nad wersjami mobilnymi."
 
-#: languagemonster/templates/app/game.html:79
-#: languagemonster/templates/landing/centre.html:27
+#: languagemonster/templates/app/game.html:81
+#: languagemonster/templates/landing/centre.html:28
 msgid "msg_browser_window_too_small"
 msgstr "Okno przeglądarki jest za małe"
 
-#: languagemonster/templates/app/game.html:82
+#: languagemonster/templates/app/game.html:84
 msgid "msg_no_games_selected"
 msgstr "Nie wybrano żadnych gier!"
 
@@ -594,24 +594,29 @@ msgstr "Ucz się języków obcych grając w gry"
 msgid "btn_play_now"
 msgstr "Graj teraz"
 
-#: languagemonster/templates/landing/centre.html:42
-#: languagemonster/templates/landing/centre.html:68
+#: languagemonster/templates/landing/centre.html:40
+#| msgid "Loading, please wait"
+msgid "msg_please_wait"
+msgstr "Wczytywanie, proszę czekać"
+
+#: languagemonster/templates/landing/centre.html:47
+#: languagemonster/templates/landing/centre.html:73
 msgid "home"
 msgstr "Strona główna"
 
-#: languagemonster/templates/landing/centre.html:44
+#: languagemonster/templates/landing/centre.html:49
 msgid "datasets"
 msgstr "Zestawy"
 
-#: languagemonster/templates/landing/centre.html:60
+#: languagemonster/templates/landing/centre.html:65
 msgid "btn_prev"
 msgstr "Cofnij"
 
-#: languagemonster/templates/landing/centre.html:62
+#: languagemonster/templates/landing/centre.html:67
 msgid "btn_next"
 msgstr "Dalej"
 
-#: languagemonster/templates/landing/centre.html:72
+#: languagemonster/templates/landing/centre.html:77
 msgid "languages_you_can_learn"
 msgstr "Języki których możesz się uczyć"
 
@@ -765,48 +770,48 @@ msgstr "Hasło musi mieć co najmniej 8 znaków"
 msgid "msg_passwords_dont_match"
 msgstr "Hasła muszą do siebie pasować"
 
-#: vocabulary/impl/study.py:191
+#: vocabulary/impl/study.py:234
 msgid "Good"
 msgstr "Dobrze"
 
-#: vocabulary/impl/study.py:192
+#: vocabulary/impl/study.py:235
 msgid "Wrong"
 msgstr "Źle"
 
-#: vocabulary/impl/study.py:193
+#: vocabulary/impl/study.py:236
 msgid "Well done"
 msgstr "Gratulacje"
 
-#: vocabulary/impl/study.py:194
+#: vocabulary/impl/study.py:237
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: vocabulary/impl/study.py:196
+#: vocabulary/impl/study.py:239
 msgid "Error when sending results"
 msgstr "Błąd podczas zapisywania wyników"
 
-#: vocabulary/impl/study.py:197
+#: vocabulary/impl/study.py:240
 msgid "Results were sent"
 msgstr "Wyniki zostały zapisane"
 
-#: vocabulary/impl/study.py:198 vocabulary/impl/study.py:199
+#: vocabulary/impl/study.py:241 vocabulary/impl/study.py:242
 msgid "Sending results..."
 msgstr "Zapisywanie wyników..."
 
-#: vocabulary/impl/study.py:200
+#: vocabulary/impl/study.py:243
 msgid "Language Monster"
 msgstr "Language Monster"
 
-#: vocabulary/impl/study.py:201
+#: vocabulary/impl/study.py:244
 msgid "Loading, please wait"
 msgstr "Wczytywanie, proszę czekać"
 
-#: vocabulary/impl/study.py:202
+#: vocabulary/impl/study.py:245
 msgid "Server error, please try again"
 msgstr ""
 "Nieznany błąd. Proszę spróbować później. Przepraszamy za niedogodności"
 
-#: vocabulary/impl/study.py:203
+#: vocabulary/impl/study.py:246
 msgid "Try again"
 msgstr "Spróbuj ponownie"
 
