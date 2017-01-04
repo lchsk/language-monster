@@ -22,21 +22,23 @@ window.translations = {{xl|safe}};
                     <div v-show="err===null">
                         <a v-on:click="load_game" href="#" class="button3d button3d-large font40px"><span class="large text">{% trans "btn_play_now" %}</span></a>
                     </div>
+                    <div id="alerts" class="hidden">
                     <div v-show="err==='size'">
-                      <div class="alert alert-warning medium-font" role="alert">
-                        {% trans "msg_browser_window_too_small" %}
-                      </div>
+                        <div class="alert alert-warning medium-font" role="alert">
+                            {% trans "msg_browser_window_too_small" %}
+                        </div>
                     </div>
                     <div v-show="err==='mobile'">
-                      <div class="alert alert-warning medium-font" role="alert">
-                        {% trans "msg_running_on_mobile" %}
-                      </div>
+                        <div class="alert alert-warning medium-font" role="alert">
+                            {% trans "msg_running_on_mobile" %}
+                        </div>
                     </div>
+					</div>
                 </div>
-                <div v-show="view=='game'">
-                  <div id="game"></div>
+                <div id="game-screen" class="hidden" v-show="view=='game'">
+                  <div id="game">loading...</div>
                 </div>
-                <div v-show="view=='datasets'" class="menu-container img-rounded">
+                <div id="datasets" v-show="view=='datasets'" class="hidden menu-container img-rounded">
                   <div class="row" style="text-align: left;">
                     <ol class="breadcrumb">
                       <li><a v-on:click="goto('main')" title="{% trans 'home' %}" href="#">{% trans "home" %}</a></li>
@@ -62,7 +64,7 @@ window.translations = {{xl|safe}};
                       <a v-show="datasets_btns[1]" v-on:click="next_sets_page" href="#" class="button3d button3d-small font24px"><span class="small text">{% trans "btn_next" %}</span></a>
                   </div>
                 </div>
-                <div v-show="view=='languages'" class="menu-container img-rounded">
+                <div id="languages" v-show="view=='languages'" class="hidden menu-container img-rounded">
                   <div class="row" style="text-align: left;">
                     <ol class="breadcrumb">
                       <li><a v-on:click="goto('main')" title="{% trans 'home' %}" href="#">{% trans "home" %}</a></li>

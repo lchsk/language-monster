@@ -18,6 +18,10 @@
     font-size: 14px;
 }
 
+.hidden {
+    display: none;
+}
+
 .button3d-small {
     -webkit-box-shadow: 0 4px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);
     -moz-box-shadow: 0 4px 0 $color-button3d-shadow, 0 15px 20px rgba(0, 0, 0, .35);

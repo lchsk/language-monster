@@ -29,6 +29,11 @@ window.MONSTER.home_menu = new Vue({
         window.addEventListener('orientationchange', this.on_resize, false);
         window.addEventListener('resize', this.on_resize, false);
 
+        window.MONSTER.remove_class(document.getElementById('languages'), 'hidden');
+        window.MONSTER.remove_class(document.getElementById('datasets'), 'hidden');
+        window.MONSTER.remove_class(document.getElementById('game-screen'), 'hidden');
+        window.MONSTER.remove_class(document.getElementById('alerts'), 'hidden');
+
         this.on_resize();
     },
     methods: {

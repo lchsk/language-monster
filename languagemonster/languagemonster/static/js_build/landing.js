@@ -10,6 +10,22 @@ window.MONSTER.is_screen_size_fine = function()
     return window.innerWidth > 860;
 };
 
+window.MONSTER.has_class = function(ele, cls)
+{
+    return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+};
+
+window.MONSTER.remove_class = function(ele, cls)
+{
+    if (! ele) return;
+
+    if (window.MONSTER.has_class(ele, cls)) {
+        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+
+        ele.className = ele.className.replace(reg, ' ');
+    }
+};
+
 window.MONSTER = window.MONSTER || {};
 
 window.MONSTER.home_menu = new Vue({
@@ -40,6 +56,11 @@ window.MONSTER.home_menu = new Vue({
 
         window.addEventListener('orientationchange', this.on_resize, false);
         window.addEventListener('resize', this.on_resize, false);
+
+        window.MONSTER.remove_class(document.getElementById('languages'), 'hidden');
+        window.MONSTER.remove_class(document.getElementById('datasets'), 'hidden');
+        window.MONSTER.remove_class(document.getElementById('game-screen'), 'hidden');
+        window.MONSTER.remove_class(document.getElementById('alerts'), 'hidden');
 
         this.on_resize();
     },
