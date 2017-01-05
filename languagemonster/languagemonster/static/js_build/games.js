@@ -649,14 +649,6 @@ MONSTER.Common.sendResults = function(obj)
             window.translations);
         obj.info.position.x = (obj.game.width - obj.info.width) / 2;
 
-        // Go on to the next level with <enter>
-        MONSTER.Common._continue_handler = function(event) {
-            MONSTER.Common.keyup_handler(event, obj.game);
-        };
-
-        document.addEventListener('keyup', MONSTER.Common._continue_handler,
-                                  false);
-
         MONSTER.Common._activate_button(obj, obj.b);
 
     }).error(function() {
@@ -669,6 +661,14 @@ MONSTER.Common.sendResults = function(obj)
 
 MONSTER.Common._activate_button = function(context, button)
 {
+    // Go on to the next level with <enter>
+    MONSTER.Common._continue_handler = function(event) {
+        MONSTER.Common.keyup_handler(event, context.game);
+    };
+
+    document.addEventListener('keyup', MONSTER.Common._continue_handler, false);
+
+    // Show the "Continue" button
     context.game.view.addChild(button);
     button.interactive = true;
 };
