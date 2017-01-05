@@ -36,9 +36,11 @@ window.translations = {{xl|safe}};
 					</div>
                 </div>
                 <div id="game-screen" class="hidden" v-show="view=='game'">
-                    <div class="row"><div class="alert alert-info medium-font col-md-6 col-md-offset-6" role="alert">
+                    <div class="row">
+                        <div class="alert alert-info medium-font col-md-6 col-md-offset-3" role="alert">
                         {% trans "msg_please_wait" %}
-                    </div></div>
+                        </div>
+                    </div>
                     <div id="game"></div>
                 </div>
                 <div id="datasets" v-show="view=='datasets'" class="hidden menu-container img-rounded">
