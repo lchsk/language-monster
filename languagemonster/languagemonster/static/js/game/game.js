@@ -134,7 +134,7 @@ MONSTER.Game = function(fps)
     window.addEventListener('orientationchange', this.resize.bind(this), false);
     window.addEventListener('resize', this.resize.bind(this), false);
 
-    this.isWebGL = (this.renderer instanceof PIXI.WebGLRenderer) ? true : false;
+    this.isWebGL = this.renderer instanceof PIXI.WebGLRenderer;
 
     document.getElementById('game').appendChild(this.renderer.view);
 
@@ -163,6 +163,8 @@ MONSTER.Game.prototype.kick_off = function() {
     var id = Math.floor(Math.random() * this.games.length);
     var game = this.games[id];
     this.current_game = game;
+
+    this.initStage();
 
     if (game == 'simple')
         this.currentScreen = new MONSTER.SimpleGame(this);
