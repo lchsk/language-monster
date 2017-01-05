@@ -553,15 +553,28 @@ MONSTER.Common.parallax = function(delta, parallax_array, parallax_speed, width)
 MONSTER.GoodWrongScreen = function(game, result_screen_x, result_screen_pos)
 {
     var box = new PIXI.Container();
+
     var pos_screen = new PIXI.Graphics();
-    pos_screen.beginFill(0xffffff, 0.8);
-    pos_screen.drawRect(
+    var pos_screen_success = new PIXI.Graphics();
+
+    pos_screen_success.beginFill(game.currentScreen.colors.success, 0.8);
+    pos_screen_success.drawRect(
         result_screen_x.show,
         result_screen_pos.y,
         result_screen_pos.width,
         result_screen_pos.height
     );
-    pos_screen.endFill();
+    pos_screen_success.endFill();
+
+    var pos_screen_failure = new PIXI.Graphics();
+    pos_screen_failure.beginFill(game.currentScreen.colors.failure, 0.8);
+    pos_screen_failure.drawRect(
+        result_screen_x.show,
+        result_screen_pos.y,
+        result_screen_pos.width,
+        result_screen_pos.height
+    );
+    pos_screen_failure.endFill();
 
     var sizes = MONSTER.getFonts(
         MONSTER.Const.DEFAULT_FONT_FAMILY,
@@ -582,6 +595,8 @@ MONSTER.GoodWrongScreen = function(game, result_screen_x, result_screen_pos)
     pos_screen_text.position.y = (game.height - pos_screen_text.height) / 2;
     pos_screen_comment.position.y = (game.height - pos_screen_comment.height) / 4;
 
+    box.addChild(pos_screen_failure);
+    box.addChild(pos_screen_success);
     box.addChild(pos_screen);
     pos_screen.addChild(pos_screen_text);
     pos_screen.addChild(pos_screen_comment);
@@ -592,6 +607,8 @@ MONSTER.GoodWrongScreen = function(game, result_screen_x, result_screen_pos)
     return {
         box: box,
         pos_screen: pos_screen,
+        pos_screen_success: pos_screen_success,
+        pos_screen_failure: pos_screen_failure,
         pos_screen_comment: pos_screen_comment,
         pos_screen_text: pos_screen_text,
         pos_screen_text_line1: pos_screen_text_line1,
@@ -643,9 +660,9 @@ MONSTER.GoodWrongScreen.prepare = function(game_screen, is_correct) {
     var comment = is_correct
             ? MONSTER.Common.trans('Good', game_screen.trans)
             : MONSTER.Common.trans('Wrong', game_screen.trans);
-    box.pos_screen.tint = is_correct ?
-        game_screen.colors.success
-        : game_screen.colors.failure;
+
+    box.pos_screen_success.visible = is_correct;
+    box.pos_screen_failure.visible = ! is_correct;
 
     box.pos_screen_comment.text = comment;
     box.pos_screen_comment.position.x =
