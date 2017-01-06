@@ -133,7 +133,7 @@ def _get_settings():
         DEBUG=settings.DEBUG,
         THUMBNAIL_FORMAT=settings.THUMBNAIL_FORMAT,
         ALLOWED_HOSTS=settings.ALLOWED_HOSTS,
-        INSTALLED_APPS=settings.INSTALLED_APPS,
+        INSTALLED_APPS=sorted(settings.INSTALLED_APPS),
         USE_I18N=settings.USE_I18N,
         LANGUAGE_CODE=settings.LANGUAGE_CODE,
         TIME_ZONE=settings.TIME_ZONE,
