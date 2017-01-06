@@ -168,12 +168,20 @@ MONSTER.ShooterGame.prototype.mousemove = function(mouseData)
     this.crosshair.position.y = mouseData.data.global.y;
 };
 
+MONSTER.ShooterGame.prototype.mouseover = function(mouseData)
+{
+    MONSTER.Common.hideCursor();
+};
+
+MONSTER.ShooterGame.prototype.mouseout = function(mouseData)
+{
+    MONSTER.Common.showCursor();
+};
+
 MONSTER.ShooterGame.prototype.init = function()
 {
     this.game.background.clear();
     this.game.view.removeChildren();
-
-    MONSTER.Common.hideCursor();
 
     var background_t = PIXI.Texture.fromImage(this.urls.shooter_background);
     var clouds_t = PIXI.Texture.fromImage(this.urls.shooter_clouds);
@@ -252,9 +260,11 @@ MONSTER.ShooterGame.prototype.init = function()
     this.crosshair.position.x = this.game.width * 0.5;
     this.crosshair.position.y = this.game.height * 0.5;
 
-    this.game.view.interactive = true;
-    this.game.view.on('mousemove', this.mousemove.bind(this));
-    this.game.view.on('click', this.throw.bind(this));
+    this.game.stage.interactive = true;
+    this.game.stage.on('mousemove', this.mousemove.bind(this));
+    this.game.stage.on('mouseover', this.mouseover.bind(this));
+    this.game.stage.on('mouseout', this.mouseout.bind(this));
+    this.game.stage.on('click', this.throw.bind(this));
 
     this.game.view.addChild(this.top_bar);
 
