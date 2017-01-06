@@ -168,12 +168,12 @@ MONSTER.ShooterGame.prototype.mousemove = function(mouseData)
     this.crosshair.position.y = mouseData.data.global.y;
 };
 
-MONSTER.ShooterGame.prototype.mouseover = function(mouseData)
+MONSTER.ShooterGame.prototype.mouseover = function()
 {
     MONSTER.Common.hideCursor();
 };
 
-MONSTER.ShooterGame.prototype.mouseout = function(mouseData)
+MONSTER.ShooterGame.prototype.mouseout = function()
 {
     MONSTER.Common.showCursor();
 };

@@ -533,19 +533,24 @@ MONSTER.Common.parallax = function(delta, parallax_array, parallax_speed, width)
         var sprites = parallax_array[i];
         var speed = parallax_speed[i];
 
-        for (var j = 0; j < sprites.length; j++) {
-            var bg = sprites[j];
+        // sprites.lenght must be 2
+        var sprite_left = sprites[0];
+        var sprite_right = sprites[1];
 
-            // bg.position.x -= Math.round(speed * delta);
-            bg.position.x -= speed * delta;
+        if (sprites[1].position.x < sprites[0].position.x) {
+            sprite_right = sprites[0];
+            sprite_left = sprites[1];
+        }
 
-            if (bg.position.x <= -width) {
-                var shifted_bg = sprites.shift();
+        sprite_left.position.x -= speed * delta;
+        sprite_right.position.x = sprite_left.position.x + width;
 
-                shifted_bg.position.x = width;
+        if (sprite_left.position.x <= -width) {
+            var shifted_bg = sprites.shift();
 
-                sprites.push(shifted_bg);
-            }
+            shifted_bg.position.x = sprite_right.position.x + width;
+
+            sprites.push(shifted_bg);
         }
     }
 };
