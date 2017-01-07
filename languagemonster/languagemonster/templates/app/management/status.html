@@ -94,6 +94,27 @@
                         </td></tr>
                     </table>
 
+                    <h4>Sets & Words</h4>
+                    <table class="table table-striped">
+                        <tr><td>Visible sets</td><td>{{data.sets.sets_vis_cnt}}</td></tr>
+                        <tr><td>Words</td><td>{{data.sets.words_cnt}}</td></tr>
+                        <tr><td>All sets</td><td>{{data.sets.sets_all_cnt}}</td></tr>
+                        <tr><td>Visible sets per language pair</td><td>
+                            <table>
+                            {% for lang_pair, cnt in data.sets.sets_per_lang_pair %}
+                            <tr>
+                            <td><b>{{lang_pair}}</b></td><td style="width: 20px;"></td><td>{{cnt.0}}</td><td style="width: 20px;"></td><td>{{cnt.1}}</td>
+                            {% endfor %}
+                            </tr>
+							</table>
+                        </td></tr>
+                        <tr><td>Visible sets per language</td><td>
+                            {% for acronym, cnt in data.sets.sets_per_lang.items %}
+                            <b>{{acronym}}</b> {{cnt.0}} {{cnt.1}}<br />
+                            {% endfor %}
+                        </td></tr>
+                    </table>
+
                     <h4>Celery</h4>
                     <table class="table table-striped">
                         <tr><td>Celery beat</td><td>

@@ -10,10 +10,16 @@ from redis import ConnectionError
 
 from django.conf import settings
 
-from core.models import MonsterUser
+from core.models import (
+    MonsterUser,
+    DataSet,
+)
 
 from core.data.base_language import BASE_LANGUAGES
-from core.data.language_pair import LANGUAGE_PAIRS
+from core.data.language_pair import (
+    LANGUAGE_PAIRS,
+    LANGUAGE_PAIRS_FLAT,
+)
 
 def _get_celery_status():
     ERROR_KEY = "ERROR"
@@ -153,6 +159,43 @@ def _get_settings():
         )
     )
 
+def _get_sets_status():
+    sets = DataSet.objects.filter(visible=True)
+
+    sets_per_lang_pair = {
+        lang_pair: (
+            sum(1 for s in sets if s.lang_pair == lang_pair),
+            sum(s.word_count for s in sets if s.lang_pair == lang_pair),
+        )
+        for lang_pair in LANGUAGE_PAIRS_FLAT
+    }
+
+    acronyms = set(b.language.acronym for b in BASE_LANGUAGES.values())
+
+    sets_per_lang = {
+        acronym: (
+            sum(
+                sets_cnt
+                for lang_pair, (sets_cnt, words_cnt) in sets_per_lang_pair.iteritems()
+                if lang_pair[:2] == acronym
+            ),
+            sum(
+                words_cnt
+                for lang_pair, (sets_cnt, words_cnt) in sets_per_lang_pair.iteritems()
+                if lang_pair[:2] == acronym
+            )
+        )
+        for acronym in acronyms
+    }
+
+    return dict(
+        sets_all_cnt=DataSet.objects.count(),
+        sets_vis_cnt=len(sets),
+        sets_per_lang=sets_per_lang,
+        sets_per_lang_pair=sorted(sets_per_lang_pair.items()),
+        words_cnt=sum(words_cnt for _, words_cnt in sets_per_lang.values()),
+    )
+
 def _get_languages_status():
     return dict(
         base_languages=BASE_LANGUAGES,
@@ -170,4 +213,5 @@ def get_status_data():
         settings=_get_settings(),
         files=_get_files_status(),
         languages=_get_languages_status(),
+        sets=_get_sets_status(),
     )
