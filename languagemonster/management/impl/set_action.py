@@ -93,6 +93,7 @@ def update_set(request, dataset_id):
             if key_base in request.POST and key_target in request.POST:
                 p.base = request.POST[key_base]
                 p.target = request.POST[key_target]
+                p.pos = p.pos.strip()
 
                 if lowercase_target:
                     p.target = p.target.lower()
