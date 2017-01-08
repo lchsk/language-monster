@@ -566,11 +566,17 @@ class Maker(object):
 
                     t.c = dict(
                         comm=t.c,
-                        base=b.gloss,
-                        target=t.gloss,
+                        base_desc=b.gloss,
+                        target_desc=t.gloss,
                         method=method,
                         gloss=cmp_desc(b.gloss, t.gloss),
                     )
+
+                    if method != 'equal':
+                        t.c.update(
+                            base=b.b,
+                            target=t.b,
+                        )
 
                     out.append(t)
 
