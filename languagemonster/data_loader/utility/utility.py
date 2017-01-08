@@ -17,6 +17,8 @@ from MySQLdb.converters import (
 
 logger = logging.getLogger(__name__)
 
+desc_re = re.compile(r'(.*?)\s*?\(\d*?\)', re.UNICODE)
+
 def get_engine():
     return create_engine(
         'mysql://{user}:{password}@localhost/{name}?charset=utf8'.format(
@@ -58,6 +60,15 @@ def rm_brackets(d, symbol='[', count = 2):
         return (d.replace('[[', '')).replace(']]', '')
     elif symbol == '{' and count == 2:
         return (d.replace('{{', '')).replace('}}', '')
+
+def cmp_desc(desc1, desc2):
+    r1 = re.match(desc_re, desc1)
+    r2 = re.match(desc_re, desc2)
+
+    if not r1 or not r2:
+        raise Exception("No match found for desc_re")
+
+    return r1.groups()[0] == r2.groups()[0]
 
 def get_context(d, beg, end, n):
     a = b = ''
