@@ -74,6 +74,9 @@ class Maker(object):
         self.target_config = languages.t[target]
         self.english_config = languages.t['en']
 
+        # Language (acronym) used to search for POS
+        self.pos_language = self.target
+
         # eg. Animals
 
         self.category = category
@@ -204,9 +207,12 @@ class Maker(object):
         )
         logger.info('Using data table "%s"', data_table)
 
-        for word, pos in to_translate:
+        for word, extra in to_translate:
             logger.info('=' * 80)
             logger.info('Init word "%s"', word)
+
+            pos = extra.get('pos')
+            comm = extra.get('comm')
 
             if pos:
                 if pos not in POS:
@@ -365,6 +371,7 @@ class Maker(object):
                         c=comments,
                         pos=self._read_pos(r),
                         id_=r.id,
+                        gloss=comm,
                     )
                 )
 
@@ -374,7 +381,7 @@ class Maker(object):
         head3 = row.head3.lower()
         head4 = row.head4.lower()
 
-        for en_pos, POS in defs[self.target]['pos'].iteritems():
+        for en_pos, POS in defs[self.pos_language]['pos'].iteritems():
             pos = POS.encode('utf-8').lower()
 
             if pos in head3 or pos in head4:
@@ -492,6 +499,90 @@ class Maker(object):
         else:
             logger.info('Path %s does not exist', file_path)
 
+    def translate_to_third_lang(self, file_path):
+        """Use an output set file that uses English as the base language to
+        generate a set with base language that's not English."""
+
+        logger.info('Translating to third language: %s', self.base)
+
+        if not os.path.exists(file_path):
+            logger.critical('File "%s" does not exist', file_path)
+
+            sys.exit(1)
+
+        # Needed to search for POS
+        self.pos_language = self.base
+
+        with open(file_path) as f:
+            in_base = []
+            in_target = []
+            out = []
+
+            for line in f:
+                if line.startswith('#'):
+                    continue
+
+                tokens = line.split('||')
+
+                print tokens
+
+                word_base = tokens[0].strip()
+                word_target = tokens[1].strip()
+
+                extra = dict(
+                    comm=tokens[4].strip(),
+                    pos=tokens[5].strip(),
+                )
+
+                logger.info('Word: %s = %s, %s', word_base, word_target, extra)
+
+                in_base.append((word_base, extra))
+                in_target.append((word_target, extra))
+
+            base_to_en = self._translate(
+                to_translate=in_base,
+                data_table=self.data_table,
+                base_config=self.base_config,
+                target_config=self.english_config,
+            )
+
+            target_to_en = self._translate(
+                to_translate=in_target,
+                data_table=self.data_table,
+                base_config=self.base_config,
+                target_config=languages.t[self.target],
+            )
+
+            for b in base_to_en:
+                for t in target_to_en:
+                    if not b.pos or not t.pos or b.pos != t.pos:
+                        continue
+                    elif b.b == t.b:
+                        method = 'equal'
+                    elif b.b in t.b or t.b in b.b:
+                        method = 'include'
+                    else:
+                        continue
+
+                    t.c = dict(
+                        comm=t.c,
+                        base=b.gloss,
+                        target=t.gloss,
+                        method=method,
+                        gloss=cmp_desc(b.gloss, t.gloss),
+                    )
+
+                    out.append(t)
+
+            items = list(set(out))
+
+            for i in items:
+                i.c = json.dumps(i.c)
+
+            self.items = items
+            self.clean()
+            self.save()
+
     def translate_text_file(self, file_path):
         """
         Translates text file with words in separate lines
@@ -516,7 +607,12 @@ class Maker(object):
                     if len(tokens) == 2:
                         pos = tokens[1].strip()
 
-                    to_be_translated.append((word, pos))
+                    extra = dict(
+                        comm=None,
+                        pos=pos,
+                    )
+
+                    to_be_translated.append((word, extra))
 
                 items = self._translate(
                     to_translate = to_be_translated,
@@ -733,8 +829,8 @@ class Maker(object):
         logger.info('Words not found: %s', len(self._errors))
 
         errors = u', '.join(
-            u'{} ({})'.format(word, pos)
-            for word, pos in self._errors
+            u'{} ({})'.format(word.decode('utf-8'), extra)
+            for word, extra in self._errors
         )
 
         logger.info('Errors: %s', errors)

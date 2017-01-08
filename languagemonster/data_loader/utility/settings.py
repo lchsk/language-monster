@@ -1,4 +1,5 @@
-import sys, os
+import os
+import sys
 import getopt
 import argparse
 from db.structure import create
@@ -90,6 +91,12 @@ class Settings(object):
 
         parser.add_argument('--from-file', action="store", dest="from_file", help='Load text file')
 
+        parser.add_argument(
+            '--third-lang',
+            action="store_true",
+            dest="third_lang",
+            help='Whether a set for a third language should be generated',
+        )
 
         args = parser.parse_args()
         # print args
@@ -132,6 +139,18 @@ class Settings(object):
                 args.category
             )
             m.translation()
+
+        # (8)
+        # third language
+        elif args.base_lang and args.target_lang and args.from_file and args.third_lang:
+            m = Maker(
+                args.base_lang,
+                args.target_lang,
+                args.word_type,
+                args.out,
+                None
+            )
+            m.translate_to_third_lang(args.from_file)
 
         # (6)
         # from exported text file
