@@ -578,12 +578,14 @@ class Maker(object):
                             target=t.b,
                         )
 
+                    t.extra = extra
+
                     out.append(t)
 
             items = list(set(out))
 
             for i in items:
-                i.c = json.dumps(extra)
+                i.c = json.dumps(i.extra)
 
             self.items = items
             self.clean()

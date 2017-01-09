@@ -37,6 +37,8 @@ class OutItem(object):
 
         self.gloss = gloss
 
+        self.extra = None
+
     def __eq__(self, other):
         return all((
             self.b == other.b,
