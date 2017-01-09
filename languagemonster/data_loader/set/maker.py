@@ -564,7 +564,7 @@ class Maker(object):
                     else:
                         continue
 
-                    t.c = dict(
+                    extra = dict(
                         comm=t.c,
                         base_desc=b.gloss,
                         target_desc=t.gloss,
@@ -573,7 +573,7 @@ class Maker(object):
                     )
 
                     if method != 'equal':
-                        t.c.update(
+                        extra.update(
                             base=b.b,
                             target=t.b,
                         )
@@ -583,7 +583,7 @@ class Maker(object):
             items = list(set(out))
 
             for i in items:
-                i.c = json.dumps(i.c)
+                i.c = json.dumps(extra)
 
             self.items = items
             self.clean()
