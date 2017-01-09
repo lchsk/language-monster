@@ -565,18 +565,14 @@ class Maker(object):
                         continue
 
                     extra = dict(
-                        comm=t.c,
+                        comments=t.c,
                         base_desc=b.gloss,
                         target_desc=t.gloss,
                         method=method,
-                        gloss=cmp_desc(b.gloss, t.gloss),
+                        desc_ok=cmp_desc(b.gloss, t.gloss),
+                        base=b.b,
+                        target=t.b,
                     )
-
-                    if method != 'equal':
-                        extra.update(
-                            base=b.b,
-                            target=t.b,
-                        )
 
                     t.extra = extra
 
