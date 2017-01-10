@@ -342,10 +342,15 @@ class EditSetView(SuperUserContextView):
             )
 
             for s in susp:
-                comm = json.loads(s['wp'].comments)
+                try:
+                    comm = json.loads(s['wp'].comments).items()
+                    comm_json = True
+                except (ValueError, TypeError):
+                    comm = s['wp'].comments
+                    comm_json = False
 
                 s['wp'].comments = sorted(
-                    comm.items(),
+                    comm,
                     key=lambda x: order.get(x[0], 99),
                 )
 
@@ -369,6 +374,7 @@ class EditSetView(SuperUserContextView):
 
             context['words'] = words
             context['ds'] = dataset
+            context['comm_json'] = comm_json
         else:
             raise Http404
 
