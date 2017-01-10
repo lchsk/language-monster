@@ -60,7 +60,7 @@
 
                     </div></div>
 
-                    <div>Returned: {{sets|length}} item(s)</div>
+                    <div>{{visible_sets_cnt}} / {{sets|length}} set(s) visible</div>
 
                     <form
                         method="post"
@@ -71,7 +71,7 @@
                             class="btn btn-primary"
                             name="accept"
                             value="accept">
-                            Accept
+                            Update
                         </button>
                         {% csrf_token %}
 

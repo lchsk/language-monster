@@ -257,6 +257,7 @@ class SetsView(SuperUserContextView):
 
         context['language_pair'] = language_pair
         context['sets'] = sets
+        context['visible_sets_cnt'] = sum(1 for s in sets if s.visible)
         context['pairs'] = sorted(LANGUAGE_PAIRS_FLAT)
 
         return context
