@@ -265,7 +265,28 @@
                 <td>{{k.wp.pos}}</td>
                 <td title="{{k.wp.english}}">
                     <div>{{k.wp.english}}</div>
-                    <div style="font-weight: bold;">{{k.wp.comments}}</div>
+                    <div>
+                        <table class="table table-hover table-condensed">
+                          {% for k, v in k.wp.comments %}
+                            {% if k == 'desc_ok' and v %}
+                            <tr class="success">
+                              {% elif k == 'desc_ok' and not v %}
+                            <tr class="danger">
+                              {% elif k == 'method' and v == 'equal' %}
+                            <tr class="success">
+                              {% elif k == 'method' and v != 'equal' %}
+                            <tr class="warning">
+                              {% else %}
+                            <tr>
+                              {% endif %}
+                            <td>
+                              <b>{{k}}</b>
+                            </td>
+                            <td>{{v}}</td>
+                          </tr>
+                        {% endfor %}
+                        </table>
+                    </div>
                 </td>
             </tr>
             {% endfor %}

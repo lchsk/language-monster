@@ -331,6 +331,24 @@ class EditSetView(SuperUserContextView):
             context['clean'] = clean
             context['susp'] = susp
 
+            order = dict(
+                method=0,
+                base=1,
+                target=2,
+                desc_ok=3,
+                base_desc=4,
+                target_desc=5,
+                comments=6,
+            )
+
+            for s in susp:
+                comm = json.loads(s['wp'].comments)
+
+                s['wp'].comments = sorted(
+                    comm.items(),
+                    key=lambda x: order.get(x[0], 99),
+                )
+
             clean_cnt = len(clean)
             susp_cnt = len(susp)
             clean_zero_cnt = len([i for i in clean if i['wp'].pop == 0])
