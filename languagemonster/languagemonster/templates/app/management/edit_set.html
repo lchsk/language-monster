@@ -211,7 +211,6 @@
             <tr>
                 <th><input id="selectall" type="checkbox" checked></th>
                 <th>No.</th>
-                <th></th>
                 <th>Pop</th>
                 <th style="min-width: 250px;">Base</th>
                 <th style="min-width: 250px;">Target</th>
@@ -225,22 +224,6 @@
                     <input class="data checkbox save" name="checked" value="{{k.wp.id}}" type="checkbox" checked>
                 </td>
                <td>{{forloop.counter}}</td>
-                <td style="background: #FF3D3D; text-align: center; vertical-align: middle;">
-                    {% if k.wp.from_english %}
-                        {% with basic.urls.static|add:"images/flags/uk.png" as path %}
-                        {% thumbnail path "20x20" crop="center" as im %}
-                        <span>
-                            <img
-                                src="{{ im.url }}"
-                                width="{{ im.width }}"
-                                height="{{ im.height }}"
-                                class="img-circle"
-                                alt="" />
-                        </span>
-                        {% endthumbnail %}
-                        {% endwith %}
-                    {% endif %}
-                </td>
                 <td class="pop">
                     {{ k.wp.pop }}
                 </td>
