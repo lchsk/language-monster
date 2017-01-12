@@ -258,7 +258,21 @@
                     >
                     <div style="text-align: center;">{{k.wp.target_en}}</div>
                 </td>
-                <td>{{k.wp.pos}}</td>
+                <td>
+                  {% if k.wp.pos == 'Noun' %}
+                  <span style="background-color: green; color: white; padding: 2px; font-size: 11px;">
+                    {% elif k.wp.pos == 'Adjective' %}
+                    <span style="background-color: blue; color: white; padding: 2px; font-size: 11px;">
+                    {% elif k.wp.pos == 'Adverb' %}
+                    <span style="background-color: purple; color: white; padding: 2px; font-size: 11px;">
+                    {% elif k.wp.pos == 'Verb' %}
+                    <span style="background-color: orange; color: white; padding: 2px; font-size: 11px;">
+                      {% else %}
+                      <span style="background-color: red; color: white; padding: 2px; font-size: 11px;">
+                  {% endif %}
+                    {{k.wp.pos}}
+                  </span>
+				</td>
                 <td title="{{k.wp.english}}">
                     <div>{{k.wp.english}}</div>
                     <div>
