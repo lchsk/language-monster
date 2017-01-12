@@ -104,23 +104,29 @@
                             <td>{{stats.susp_zero}}</td>
                         </tr>
                         <tr>
-                            <td>Bases difference</td>
-                            {% if stats.bases_difference %}
-                            <td style="background-color: red;">
-                              {% else %}
-                            <td>
-                              {% endif %}
-                                {{stats.bases_difference}}
+                          <td colspan="2">
+                            <b>Base multiples</b>
+                            <table class="table table-hover table-condensed">
+                              {% for word, cnt in stats.bases_repeated.items %}
+                              <tr>
+                                <td>{{word}}</td>
+                                <td>{{cnt}}</td>
+                              </tr>
+                            {% endfor %}
+                            </table>
                             </td>
                         </tr>
                         <tr>
-                          <td>Targets difference</td>
-                            {% if stats.targets_difference %}
-                          <td style="background-color: red;">
-                            {% else %}
-                          <td>
-                            {% endif %}
-                            {{stats.targets_difference}}
+                          <td colspan="2">
+                            <b>Target multiples</b>
+                            <table class="table table-hover table-condensed">
+                              {% for word, cnt in stats.targets_repeated.items %}
+                              <tr>
+                                <td>{{word}}</td>
+                                <td>{{cnt}}</td>
+                              </tr>
+                            {% endfor %}
+                            </table>
                             </td>
                         </tr>
                     </table>

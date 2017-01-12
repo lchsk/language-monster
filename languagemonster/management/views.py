@@ -6,6 +6,7 @@ import os
 import re
 import json
 from difflib import SequenceMatcher
+from collections import Counter
 
 from django.contrib import messages
 from django.core.urlresolvers import reverse
@@ -360,8 +361,17 @@ class EditSetView(SuperUserContextView):
             clean_zero_cnt = len([i for i in clean if i['wp'].pop == 0])
             susp_zero_cnt = len([i for i in susp if i['wp'].pop == 0])
 
-            bases = set(word.base for word in all_words)
-            targets = set(word.target for word in all_words)
+            bases_repeated = {
+                base: cnt
+                for base, cnt in Counter(wp.base for wp in all_words).iteritems()
+                if cnt > 1
+            }
+
+            targets_repeated = {
+                target: cnt
+                for target, cnt in Counter(wp.target for wp in all_words).iteritems()
+                if cnt > 1
+            }
 
             context['stats'] = dict(
                 clean=clean_cnt,
@@ -369,8 +379,8 @@ class EditSetView(SuperUserContextView):
                 susp_zero=susp_zero_cnt,
                 clean_zero=clean_zero_cnt,
                 all=clean_cnt + susp_cnt,
-                bases_difference=len(all_words) - len(bases),
-                targets_difference=len(all_words) - len(targets),
+                bases_repeated=bases_repeated,
+                targets_repeated=targets_repeated,
             )
 
             context['words'] = words
