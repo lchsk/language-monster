@@ -238,7 +238,13 @@
                 </td>
                <td>{{forloop.counter}}</td>
                 <td class="pop">
+                  {% if k.wp.pop == 1 %}
+                    <span style="background-color: yellow; padding: 2px; font-size: 11px;">
+                  {% else %}
+                    <span>
+                  {% endif%}
                     {{ k.wp.pop }}
+                    </span>
                 </td>
                 <td>
                     <input
