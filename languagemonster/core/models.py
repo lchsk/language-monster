@@ -269,6 +269,8 @@ class WordPair(models.Model):
     from_english = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
 
+    visible = models.BooleanField(default=True)
+
     index = models.IntegerField(default=0)
 
     pop = models.IntegerField(default=0, help_text='Popularity')
