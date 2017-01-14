@@ -527,7 +527,7 @@ class SetActionDispatch(SuperUserContextView):
 
         if request.POST.get('update') == 'update':
             update_set(request, dataset_id)
-            return self.redirect('management:index')
+            return self.redirect('management:edit_set', (dataset_id,))
         elif request.POST.get('export') == 'export':
             self.template_name = 'app/management/export.html'
             export_words(request, dataset_id, ctx)
