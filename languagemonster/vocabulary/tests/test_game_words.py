@@ -5,7 +5,36 @@ from mock import (
     patch,
 )
 
-from vocabulary.impl.study import get_game_words
+import pytest
+
+from vocabulary.impl.study import (
+    get_game_words,
+    TooManyWordsRequested,
+)
+
+@patch('core.models.DS2WP.objects.filter')
+def test_get_words_not_too_many_words_requested(m_ds2wp):
+    """Test not too many words are requested"""
+
+    nsets = 1
+    rounds = 3
+    repeated = False
+
+    data = [
+        Mock(wp=Mock(id=1, base=u'kot', target=u'cat', visible=True)),
+        Mock(wp=Mock(id=2, base=u'pies', target=u'dog', visible=True)),
+    ]
+
+    m_ds2wp.return_value.select_related.return_value = data
+
+    with pytest.raises(TooManyWordsRequested):
+        _ = get_game_words(
+            dataset_id=None,
+            monster_user=None,
+            rounds=rounds,
+            include_words_to_repeat=repeated,
+            nsets=nsets,
+        )
 
 @patch('core.models.DS2WP.objects.filter')
 def test_get_words_one_set_without_repeated(m_ds2wp):

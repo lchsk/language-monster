@@ -27,6 +27,9 @@ MIN_WORDS = 4
 # Maximum number of iterations during set generation
 MAX_ITERATIONS = 50
 
+class TooManyWordsRequested(Exception):
+    pass
+
 def get_user_games(monster_user):
     return [{
             'game': mu_game.game,
@@ -94,14 +97,13 @@ def get_game_words(
         for wp in DS2WP.objects.filter(
             ds_id=dataset_id
         ).select_related('wp')
+        if wp.visible
     ]
 
-    min_words = max(MIN_WORDS, len(word_pairs))
-
-    if len(word_pairs) < min_words:
-        raise RuntimeError(
-            'There must be at least {} word pairs, instead: {}, '
-            'dataset_id: {}'.format(min_words, len(word_pairs), dataset_id)
+    if len(word_pairs) < max(MIN_WORDS, rounds):
+        raise TooManyWordsRequested(
+            '{} words were requested, {} available, '
+            'dataset_id: {}'.format(rounds, len(word_pairs), dataset_id)
         )
 
     if include_words_to_repeat:
@@ -124,6 +126,7 @@ def get_game_words(
 
         if set_no > MAX_ITERATIONS:
             logger.warning('Too many iterations: %s', set_no)
+
             raise RuntimeError('Too many iterations: %s', set_no)
 
         random.shuffle(word_pairs)
