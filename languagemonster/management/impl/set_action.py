@@ -69,6 +69,9 @@ def export_set(request, dataset_id, context):
 
 def update_set(request, dataset_id):
     ids = request.POST.getlist('checked')
+    vis_ids = request.POST.getlist('check_vis')
+
+    wps_to_hide = set(wp for wp in set(ids) - set(vis_ids))
 
     name_en = request.POST.get('name_en', 'name_en')
     name_base = request.POST.get('name_base', 'name_base')
@@ -85,6 +88,8 @@ def update_set(request, dataset_id):
 
     for p in pairs:
         if str(p.id) in ids:
+            p.visible = str(p.id) not in wps_to_hide
+
             # Update
             _id = str(p.id)
             key_base = '{0}_base'.format(p.id)
@@ -98,9 +103,9 @@ def update_set(request, dataset_id):
                 if lowercase_target:
                     p.target = p.target.lower()
 
-                p.save()
-
                 word_count += 1
+
+            p.save()
 
         elif str(p.id) not in ids:
             # DO NOT delete a word pair. Instead: unlink word pair from

@@ -374,6 +374,10 @@ class EditSetView(SuperUserContextView):
                 current_col = 0
 
                 for s in susp:
+                    if not s['wp'].visible:
+                        s['colour'] = 'gray';
+                        continue
+
                     if current_base != s['wp'].base:
                         current_base = s['wp'].base
                         current_col += 1

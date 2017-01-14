@@ -225,6 +225,7 @@
                 <th><input id="selectall" type="checkbox" checked></th>
                 <th>No.</th>
                 <th>Pop</th>
+                <th>Vis</th>
                 <th style="min-width: 250px;">Base</th>
                 <th style="min-width: 250px;">Target</th>
                 <th>POS</th>
@@ -247,6 +248,12 @@
                     </span>
                 </td>
                 <td>
+                  <input class="data checkbox save" name="check_vis" value="{{k.wp.id}}" type="checkbox"
+                  {% if k.wp.visible %}
+                    checked
+                  {% endif %}
+                  >
+                </td>                <td>
                     <input
                         type="text"
                         class="data form-control base"
