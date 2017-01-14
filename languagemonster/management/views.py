@@ -361,6 +361,28 @@ class EditSetView(SuperUserContextView):
             clean_zero_cnt = len([i for i in clean if i['wp'].pop == 0])
             susp_zero_cnt = len([i for i in susp if i['wp'].pop == 0])
 
+            colours = [
+                '#96ceb4',
+                '#ffeead',
+                '#ff6f69',
+                '#ffcc5c',
+                '#88d8b0',
+            ]
+
+            if susp:
+                current_base = susp[0]
+                current_col = 0
+
+                for s in susp:
+                    if current_base != s['wp'].base:
+                        current_base = s['wp'].base
+                        current_col += 1
+
+                        if current_col >= len(colours):
+                            current_col = 0
+
+                    s['colour'] = colours[current_col]
+
             bases_repeated = {
                 base: cnt
                 for base, cnt in Counter(wp.base for wp in all_words).iteritems()

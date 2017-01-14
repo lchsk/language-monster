@@ -220,7 +220,7 @@
 			Save
 		</button>
         <br /><br />
-        <table id="word_table" class="table table-striped">
+        <table id="word_table" class="table">
             <tr>
                 <th><input id="selectall" type="checkbox" checked></th>
                 <th>No.</th>
@@ -232,7 +232,7 @@
             </tr>
             {% for k in susp %}
 
-            <tr class="data_item" id="{{k.wp.id}}" title="{{k.reason|join:', '}}">
+            <tr class="data_item" id="{{k.wp.id}}" title="{{k.reason|join:', '}}" style="background-color: {{k.colour}}">
                 <td>
                     <input class="data checkbox save" name="checked" value="{{k.wp.id}}" type="checkbox" checked>
                 </td>
