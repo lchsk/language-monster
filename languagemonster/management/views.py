@@ -343,7 +343,12 @@ class EditSetView(SuperUserContextView):
                 comments=6,
             )
 
+            visible_cnt = 0
+
             for s in susp:
+                if s['wp'].visible:
+                    visible_cnt += 1
+
                 try:
                     comm = json.loads(s['wp'].comments).items()
                     comm_json = True
@@ -400,6 +405,7 @@ class EditSetView(SuperUserContextView):
             }
 
             context['stats'] = dict(
+                visible_cnt=visible_cnt,
                 clean=clean_cnt,
                 susp=susp_cnt,
                 susp_zero=susp_zero_cnt,
