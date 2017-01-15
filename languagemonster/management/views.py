@@ -367,11 +367,13 @@ class EditSetView(SuperUserContextView):
             susp_zero_cnt = len([i for i in susp if i['wp'].pop == 0])
 
             colours = [
-                '#96ceb4',
-                '#ffeead',
+                '#9b59b6',
+                '#f1c40f',
+                '#3498db',
                 '#ff6f69',
+                '#2ecc71',
                 '#ffcc5c',
-                '#88d8b0',
+                '#1abc9c',
             ]
 
             if susp:
