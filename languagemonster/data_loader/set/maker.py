@@ -223,8 +223,8 @@ class Maker(object):
                 pos = base_config.get('pos', {}).get(pos)
 
                 logger.info(
-                    'Found POS definition for "%s", new pos: "%s"',
-                    word,
+                    u'Found POS definition for "%s", new pos: "%s"',
+                    word.decode('utf-8'),
                     pos
                 )
             else:
@@ -262,8 +262,8 @@ class Maker(object):
                 logger.info('Loaded %s results from database', rs_cnt)
             else:
                 logger.error(
-                    'No data found in database for word "%s" ("%s")',
-                    word,
+                    u'No data found in database for word "%s" ("%s")',
+                    word.decode('utf-8'),
                     pos,
                 )
 

@@ -62,13 +62,29 @@ def rm_brackets(d, symbol='[', count = 2):
         return (d.replace('{{', '')).replace('}}', '')
 
 def cmp_desc(desc1, desc2):
-    r1 = re.match(desc_re, desc1)
-    r2 = re.match(desc_re, desc2)
+    try:
+        desc1_d = eval(desc1)
+        desc2_d = eval(desc2)
 
-    if not r1 or not r2:
-        raise Exception("No match found for desc_re")
+        if ('gloss' in desc1_d,
+            'target_no' in desc1_d,
+            'gloss' in desc2_d,
+            'target_no' in desc2_d
+        ):
+            desc_ok = desc1_d['gloss'] == desc2_d['gloss']
+        else:
+            raise Exception()
+    except:
+        r1 = re.match(desc_re, desc1)
+        r2 = re.match(desc_re, desc2)
 
-    return r1.groups()[0] == r2.groups()[0]
+        if not r1 or not r2:
+            logger.warning('No match found for desc_re, %s and %s', desc1, desc2)
+            return False
+
+        desc_ok = r1.groups()[0] == r2.groups()[0]
+
+    return desc_ok
 
 def get_context(d, beg, end, n):
     a = b = ''
