@@ -310,7 +310,19 @@
                             <td>
                               <b>{{k}}</b>
                             </td>
-                            <td>{{v}}</td>
+                              <td>
+                                {% if k == 'base_desc' or k == 'target_desc' %}
+                                <table class="table table-hover table-condensed">
+                                  {% for d_k, d_v in v.items %}
+                                  <tr>
+                                    <td>{{d_k}}</td><td>{{d_v}}</td>
+                                  </tr>
+                                  {% endfor %}
+                                </table>
+                                {% else %}
+                                    {{v}}
+                                {% endif %}
+                            </td>
                           </tr>
                         {% endfor %}
                         </table>

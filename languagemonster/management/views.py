@@ -349,9 +349,17 @@ class EditSetView(SuperUserContextView):
                 if s['wp'].visible:
                     visible_cnt += 1
 
+
                 try:
-                    comm = json.loads(s['wp'].comments).items()
+                    comm = json.loads(s['wp'].comments)
                     comm_json = True
+
+                    for key, value in comm.items():
+                        if key in ('base_desc', 'target_desc'):
+                            comm[key] = dict(eval(value))
+
+                    comm = comm.items()
+
                 except (ValueError, TypeError):
                     comm = s['wp'].comments
                     comm_json = False
