@@ -186,6 +186,7 @@ class DoSaveNewSet(SuperUserContextView):
                             p['b'] == word.wp.base,
                             p['t'] == word.wp.target,
                             p['en'] == word.wp.english,
+                            p['c'] == word.wp.comments,
                         )):
                             current_word_pair = word.wp
                             break
