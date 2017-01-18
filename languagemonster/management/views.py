@@ -195,17 +195,17 @@ class DoSaveNewSet(SuperUserContextView):
                         wp = current_word_pair
                     else:
                         wp = WordPair(
-                            base=p['b'],
-                            target=p['t'],
+                            base=p['b'].strip(),
+                            target=p['t'].strip(),
                             index=i,
-                            english=p['en'],
-                            comments=p['c'],
+                            english=p['en'].strip(),
+                            comments=p['c'].strip(),
                             english_invalid=p['english_invalid'],
-                            base_en=p['base_en'],
-                            target_en=p['target_en'],
+                            base_en=p['base_en'].strip(),
+                            target_en=p['target_en'].strip(),
                             from_english=p['from_english'],
                             verified=p['verified'],
-                            pos=p['pos'],
+                            pos=p['pos'].strip(),
                             pop=p['pop'],
                         )
 
