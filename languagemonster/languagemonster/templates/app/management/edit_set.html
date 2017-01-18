@@ -107,32 +107,6 @@
                             <td>Susp (zero)</td>
                             <td>{{stats.susp_zero}}</td>
                         </tr>
-                        <tr>
-                          <td colspan="2">
-                            <b>Base multiples</b>
-                            <table class="table table-hover table-condensed">
-                              {% for word, cnt in stats.bases_repeated.items %}
-                              <tr>
-                                <td>{{word}}</td>
-                                <td>{{cnt}}</td>
-                              </tr>
-                            {% endfor %}
-                            </table>
-                            </td>
-                        </tr>
-                        <tr>
-                          <td colspan="2">
-                            <b>Target multiples</b>
-                            <table class="table table-hover table-condensed">
-                              {% for word, cnt in stats.targets_repeated.items %}
-                              <tr>
-                                <td>{{word}}</td>
-                                <td>{{cnt}}</td>
-                              </tr>
-                            {% endfor %}
-                            </table>
-                            </td>
-                        </tr>
                     </table>
                 </div>
             </div>
@@ -388,7 +362,35 @@
 </table>
 <button type="submit" class="btn btn-primary" name="update" value="update">Save</button>
                     </form>
-                </div>
+</div>
+<table class="table">
+                        <tr>
+                          <td colspan="2">
+                            <b>Base multiples</b>
+                            <table class="table table-hover table-striped table-condensed">
+                              {% for word, cnt in stats.bases_repeated.items %}
+                              <tr>
+                                <td>{{word}}</td>
+                                <td>{{cnt}}</td>
+                              </tr>
+                            {% endfor %}
+                            </table>
+                            </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2">
+                            <b>Target multiples</b>
+                            <table class="table table-hover table-striped table-condensed">
+                              {% for word, cnt in stats.targets_repeated.items %}
+                              <tr>
+                                <td>{{word}}</td>
+                                <td>{{cnt}}</td>
+                              </tr>
+                            {% endfor %}
+                            </table>
+                            </td>
+                        </tr>
+</table>
             </div>
         </div>
     </div>
