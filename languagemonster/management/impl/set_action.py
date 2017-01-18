@@ -68,7 +68,7 @@ def export_set(request, dataset_id, context):
         context['data'] = json.dumps(data)
 
 def update_set(request, dataset_id):
-    ids = request.POST.getlist('checked')
+    ids = request.POST.getlist('remove')
     vis_ids = request.POST.getlist('check_vis')
 
     wps_to_hide = set(wp for wp in set(ids) - set(vis_ids))
@@ -88,6 +88,11 @@ def update_set(request, dataset_id):
 
     for p in pairs:
         if str(p.id) in ids:
+            # DO NOT delete a word pair. Instead: unlink word pair from
+            # a data set
+            to_be_removed = DS2WP.objects.filter(wp=p, ds=ds).first()
+            to_be_removed.delete()
+        else:
             p.visible = str(p.id) not in wps_to_hide
 
             # Update
@@ -106,12 +111,6 @@ def update_set(request, dataset_id):
                 word_count += 1
 
             p.save()
-
-        elif str(p.id) not in ids:
-            # DO NOT delete a word pair. Instead: unlink word pair from
-            # a data set
-            to_be_removed = DS2WP.objects.filter(wp=p, ds=ds).first()
-            to_be_removed.delete()
 
     if ds:
         ds.word_count = word_count
