@@ -236,6 +236,7 @@
                 <th>Comments</th>
             </tr>
             {% for k in susp %}
+            <input type="hidden" name="word_pairs" value="{{k.wp.id}}" />
 
             <tr class="data_item" id="{{k.wp.id}}" title="{{k.reason|join:', '}}" style="background-color: {{k.colour}}">
                 <td>
