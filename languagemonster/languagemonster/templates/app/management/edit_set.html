@@ -214,9 +214,13 @@
 
             <tr class="data_item" id="{{k.wp.id}}" title="{{k.reason|join:', '}}" style="background-color: {{k.colour}}">
                 <td>
-                    <input class="data checkbox save" name="remove" value="{{k.wp.id}}" type="checkbox">
+                    <input class="data checkbox save check-{{k.uuid}}" name="remove" value="{{k.wp.id}}" type="checkbox">
                 </td>
-               <td>{{forloop.counter}}</td>
+                <td>{{forloop.counter}}
+                  {% if k.first %}
+                  <a href="#" class="select-group" data-uuid="{{k.uuid}}" id="sel-{{k.uuid}}" style="background-color: blue; color: white; padding: 2px; font-size: 11px; text-decoration: none;">sel</a>
+                  {% endif %}
+                </td>
                 <td class="pop">
                   {% if k.wp.pop == 1 %}
                     <span style="background-color: yellow; padding: 2px; font-size: 11px;">

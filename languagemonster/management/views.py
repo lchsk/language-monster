@@ -385,23 +385,35 @@ class EditSetView(SuperUserContextView):
                 '#1abc9c',
             ]
 
+            from uuid import uuid4
+
             if susp:
-                current_base = susp[0]
+                current_base = ''
                 current_col = 0
 
+                current_uuid = uuid4().hex
+                first = False
+
                 for s in susp:
+                    first = False
+
                     if not s['wp'].visible:
                         s['colour'] = 'gray';
+                        s['uuid'] = None
                         continue
 
                     if current_base != s['wp'].base:
                         current_base = s['wp'].base
                         current_col += 1
+                        current_uuid = uuid4().hex
+                        first = True
 
                         if current_col >= len(colours):
                             current_col = 0
 
                     s['colour'] = colours[current_col]
+                    s['uuid'] = current_uuid
+                    s['first'] = first
 
             bases_repeated = {
                 base: cnt

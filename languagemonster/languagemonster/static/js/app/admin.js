@@ -21,4 +21,16 @@ $(document).ready(function() {
             });
         }
     });
+
+    $('.select-group').click(function(e) {
+        e.preventDefault();
+
+        var uuid = $(this).attr('data-uuid');
+
+        $('.check-' + uuid).each(function() {
+            var checked = $(this).attr('checked');
+
+            $(this).prop('checked', ! $(this).prop('checked'));
+        });
+    });
 });
