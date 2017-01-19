@@ -97,7 +97,7 @@ def get_game_words(
         for wp in DS2WP.objects.filter(
             ds_id=dataset_id
         ).select_related('wp')
-        if wp.visible
+        if wp.wp.visible
     ]
 
     if len(word_pairs) < max(MIN_WORDS, rounds):
@@ -138,22 +138,26 @@ def get_game_words(
 
         returned_words = returned_words[:rounded_size]
 
-        # Ensure there are no repeated base/target values
-        bases = set(word.base for word in returned_words)
-        targets = set(word.target for word in returned_words)
+        for n, m in zip(
+            xrange(0, len(returned_words), rounds),
+            xrange(rounds, len(returned_words) + rounds, rounds),
+        ):
+            # Ensure there are no repeated base/target values
+            bases = len(set(word.base for word in returned_words[n:m]))
+            targets = len(set(word.target for word in returned_words[n:m]))
 
-        if len(bases) != len(targets):
-            logger.warning(
-                'Number of bases different than number of targets: %s, %s. '
-                'Skipping to next iteration',
-                len(bases),
-                len(targets),
-            )
+            if bases != targets:
+                logger.warning(
+                    'Number of bases different than number of targets: %s, %s. '
+                    'Skipping to next iteration',
+                    bases,
+                    targets,
+                )
 
-            # Reset
-            returned_words = []
+                # Reset
+                returned_words = []
 
-            continue
+                continue
 
         if len(returned_words) >= items_to_return:
             break
