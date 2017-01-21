@@ -123,29 +123,19 @@ def update_set(request, dataset_id):
         ds.save()
 
 def _get_words_from_request(request, dataset_id):
-    ids = request.POST.getlist('checked')
+    pairs = [
+        i.wp
+        for i in DS2WP.objects.filter(ds__id=dataset_id).select_related('wp')
+        if i.wp.visible
+    ]
 
-    ds = DataSet.objects.filter(pk=dataset_id).first()
-
-    wp_tmp = DS2WP.objects.filter(ds=ds).select_related('wp')
-
-    pairs = [i.wp for i in wp_tmp]
-
-    to_export = []
-
-    for p in pairs:
-        if str(p.id) in ids:
-            _id = str(p.id)
-            key_base = '{0}_base'.format(p.id)
-            key_target = '{0}_target'.format(p.id)
-
-            if key_base in request.POST and key_target in request.POST:
-                item = {}
-
-                item['ebase'] = request.POST[key_base]
-                item['etarget'] = request.POST[key_target]
-                item['pos'] = p.pos
-
-                to_export.append(item)
+    to_export = [
+        dict(
+            ebase=p.base,
+            etarget=p.target,
+            pos=p.pos,
+        )
+        for p in pairs
+    ]
 
     return to_export
