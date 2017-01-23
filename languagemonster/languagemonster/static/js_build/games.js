@@ -412,7 +412,7 @@ MONSTER.Common.addUI = function(game)
 
     var tutorial_id = game.tutorial;
 
-    btn_info.click = function() {
+    btn_info.pointerdown = function() {
         MONSTER.Common._showTutorial(game, tutorial_id);
     };
 
@@ -424,7 +424,7 @@ MONSTER.Common.addUI = function(game)
         document.body.style.cursor = 'default';
     };
 
-    btn_menu.click = function() {
+    btn_menu.pointerdown = function() {
         location.reload();
     };
 
@@ -3213,7 +3213,7 @@ MONSTER.ShooterGame.prototype.init = function()
     this.game.stage.on('mousemove', this.mousemove.bind(this));
     this.game.stage.on('mouseover', this.mouseover.bind(this));
     this.game.stage.on('mouseout', this.mouseout.bind(this));
-    this.game.stage.on('click', this.throw.bind(this));
+    this.game.stage.on('pointerdown', this.throw.bind(this));
 
     this.game.view.addChild(this.top_bar);
 

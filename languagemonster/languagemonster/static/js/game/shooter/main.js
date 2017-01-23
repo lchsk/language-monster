@@ -264,7 +264,7 @@ MONSTER.ShooterGame.prototype.init = function()
     this.game.stage.on('mousemove', this.mousemove.bind(this));
     this.game.stage.on('mouseover', this.mouseover.bind(this));
     this.game.stage.on('mouseout', this.mouseout.bind(this));
-    this.game.stage.on('click', this.throw.bind(this));
+    this.game.stage.on('pointerdown', this.throw.bind(this));
 
     this.game.view.addChild(this.top_bar);
 
