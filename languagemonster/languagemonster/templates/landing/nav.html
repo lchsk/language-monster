@@ -34,20 +34,12 @@
           <ul class="nav navbar-nav navbar-right">
             <li>
                 </li>
-                <!-- {#% if page == 'info' %#}
-                     <li class="page-scroll">
-                     <a href="{% url 'index' %}">{% trans "link_index" %}</a>
-                     </li>
-                     {#% endif %#} -->
                 <li class="page-scroll">
                     <a id="login" href="#" data-toggle="modal" data-target="#modal-login">{% trans "link_login" %}</a>
                 </li>
                 <li class="page-scroll">
                     <a href="#" data-toggle="modal" data-target="#modal-signup">{% trans "link_sign_up" %}</a>
                 </li>
-                <!-- <li class="page-scroll">
-                     <a href="#what-it-is" data-scroll>{% trans "link_what_it_is" %}</a>
-                     </li> -->
                 <li class="page-scroll">
                   <a href="#" data-toggle="modal" data-target="#modal-change">
                             <div title="{{context.language.original_name}}" style="vertical-align: middle; display: inline-block;" class="{{context.language.flag_filename}}_20px img-circle">
