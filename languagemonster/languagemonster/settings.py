@@ -108,7 +108,7 @@ THUMBANIL_ENGINE = 'sorl.thumbnail.engines.pil_engine.Engine'
 GAMES_USE_CANVAS_ONLY = False
 
 # Number of word pairs user learns during a game level
-GAMES_DEFAULT_WORDS_COUNT = 4 if DEBUG else 8
+GAMES_DEFAULT_WORDS_COUNT = 4 if DEBUG else 6
 
 # Number of word sets returned in a single (default) call
 GAMES_DEFAULT_WORD_SETS_COUNT = 10
