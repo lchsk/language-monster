@@ -1,15 +1,23 @@
 {% load i18n %}
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" type="image/png" href="{{STATIC_URL}}images/website/favicon.png" />
-  <title>{% trans "language_monster" %}</title>
-
-  <link href="{{STATIC_URL}}lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="{{STATIC_URL}}css/landing/css.min.css" rel="stylesheet">
-  <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans "landing_title" %}</title>
+    <meta name="description" content="{% trans 'landing_description' %}">
+    <meta name="keywords" content="{% trans 'landing_keywords' %}">
+    <meta property="og:url" content="http://language-monster.com">
+    <meta property="og:title" content="{% trans 'landing_title' %}" />
+    <meta property="og:description" content="{% trans 'landing_description' %}" />
+    <meta property="og:image" content="{{STATIC_URL}}images/website/language_monster_1.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@lang_monster" />
+    <meta name="twitter:title" content="{% trans 'landing_title' %}" />
+    <meta name="twitter:description" content="{% trans 'landing_description' %}" />
+    <meta name="twitter:image" content="{{STATIC_URL}}images/website/language_monster_1.png" />
+    <link rel="icon" type="image/png" href="{{STATIC_URL}}images/website/favicon.png" />
+    <link href="{{STATIC_URL}}lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="{{STATIC_URL}}css/landing/css.min.css" rel="stylesheet" />
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
 </head>

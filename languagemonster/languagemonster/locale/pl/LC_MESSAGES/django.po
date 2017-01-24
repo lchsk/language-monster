@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-04 20:33+0000\n"
-"PO-Revision-Date: 2017-01-21 14:47+0000\n"
+"POT-Creation-Date: 2017-01-24 20:14+0000\n"
+"PO-Revision-Date: 2017-01-24 20:23+0000\n"
 "Last-Translator: lchsk  <mjlechowski@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -103,8 +103,8 @@ msgstr "Strona główna"
 #: languagemonster/templates/app/add_language.html:17
 #: languagemonster/templates/app/game.html:13
 #: languagemonster/templates/app/study.html:18
-#: languagemonster/templates/landing/centre.html:48
-#: languagemonster/templates/landing/centre.html:74
+#: languagemonster/templates/landing/centre.html:50
+#: languagemonster/templates/landing/centre.html:76
 msgid "languages"
 msgstr "Języki"
 
@@ -294,7 +294,6 @@ msgid "game_tut_left_right"
 msgstr "W lewo / prawo"
 
 #: languagemonster/templates/app/head.html:9
-#: languagemonster/templates/landing/head.html:9
 msgid "language_monster"
 msgstr "Language Monster"
 
@@ -594,29 +593,28 @@ msgstr "Ucz się języków grając w gry"
 msgid "btn_play_now"
 msgstr "Graj"
 
-#: languagemonster/templates/landing/centre.html:40
-#| msgid "Loading, please wait"
+#: languagemonster/templates/landing/centre.html:41
 msgid "msg_please_wait"
 msgstr "Wczytywanie, proszę czekać"
 
-#: languagemonster/templates/landing/centre.html:47
-#: languagemonster/templates/landing/centre.html:73
+#: languagemonster/templates/landing/centre.html:49
+#: languagemonster/templates/landing/centre.html:75
 msgid "home"
 msgstr "Strona główna"
 
-#: languagemonster/templates/landing/centre.html:49
+#: languagemonster/templates/landing/centre.html:51
 msgid "datasets"
 msgstr "Zestawy"
 
-#: languagemonster/templates/landing/centre.html:65
+#: languagemonster/templates/landing/centre.html:67
 msgid "btn_prev"
 msgstr "Cofnij"
 
-#: languagemonster/templates/landing/centre.html:67
+#: languagemonster/templates/landing/centre.html:69
 msgid "btn_next"
 msgstr "Dalej"
 
-#: languagemonster/templates/landing/centre.html:77
+#: languagemonster/templates/landing/centre.html:79
 msgid "languages_you_can_learn"
 msgstr "Języki których możesz się uczyć"
 
@@ -660,6 +658,34 @@ msgstr "Potwierdź hasło"
 #: languagemonster/templates/landing/generate_password.html:26
 msgid "btn_ok"
 msgstr "Ok"
+
+#: languagemonster/templates/landing/head.html:6
+#: languagemonster/templates/landing/head.html:10
+#: languagemonster/templates/landing/head.html:15
+#| msgid "landing_header1"
+msgid "landing_title"
+msgstr ""
+"Language Monster - nauka angielskiego, francuskiego, niemieckiego, "
+"hiszpańskiego, włoskiego, portugalskiego. Gry językowe, słownictwo"
+
+#: languagemonster/templates/landing/head.html:7
+#: languagemonster/templates/landing/head.html:11
+#: languagemonster/templates/landing/head.html:16
+#| msgid "landing_header1"
+msgid "landing_description"
+msgstr ""
+"Language Monster - nauka angielskiego, francuskiego, niemieckiego, "
+"hiszpańskiego, włoskiego, portugalskiego. Gry online do nauki języków "
+"obcych. Nauka słownictwa w wielu języków"
+
+#: languagemonster/templates/landing/head.html:8
+#| msgid "landing_header1"
+msgid "landing_keywords"
+msgstr ""
+"nauka angielskiego, nauka niemieckiego, nauka francuskiego, nauka włoskiego,"
+" nauka portugalskiego, nauka hiszpańskiego, język hiszpański, niemiecki, "
+"angielski, włoski, portugalski, francuski, język, języki obce, gry online, "
+"gry online do nauki języków, słownictwo, nauka słownictwa w językach obcych"
 
 #: languagemonster/templates/landing/nav.html:9
 msgid "link_toggle_nav"
@@ -770,48 +796,48 @@ msgstr "Hasło musi mieć co najmniej 8 znaków"
 msgid "msg_passwords_dont_match"
 msgstr "Hasła muszą do siebie pasować"
 
-#: vocabulary/impl/study.py:234
+#: vocabulary/impl/study.py:241
 msgid "Good"
 msgstr "Dobrze"
 
-#: vocabulary/impl/study.py:235
+#: vocabulary/impl/study.py:242
 msgid "Wrong"
 msgstr "Źle"
 
-#: vocabulary/impl/study.py:236
+#: vocabulary/impl/study.py:243
 msgid "Well done"
 msgstr "Gratulacje"
 
-#: vocabulary/impl/study.py:237
+#: vocabulary/impl/study.py:244
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: vocabulary/impl/study.py:239
+#: vocabulary/impl/study.py:246
 msgid "Error when sending results"
 msgstr "Błąd podczas zapisywania wyników"
 
-#: vocabulary/impl/study.py:240
+#: vocabulary/impl/study.py:247
 msgid "Results were sent"
 msgstr "Wyniki zostały zapisane"
 
-#: vocabulary/impl/study.py:241 vocabulary/impl/study.py:242
+#: vocabulary/impl/study.py:248 vocabulary/impl/study.py:249
 msgid "Sending results..."
 msgstr "Zapisywanie wyników..."
 
-#: vocabulary/impl/study.py:243
+#: vocabulary/impl/study.py:250
 msgid "Language Monster"
 msgstr "Language Monster"
 
-#: vocabulary/impl/study.py:244
+#: vocabulary/impl/study.py:251
 msgid "Loading, please wait"
 msgstr "Wczytywanie, proszę czekać"
 
-#: vocabulary/impl/study.py:245
+#: vocabulary/impl/study.py:252
 msgid "Server error, please try again"
 msgstr ""
 "Nieznany błąd. Proszę spróbować później. Przepraszamy za niedogodności"
 
-#: vocabulary/impl/study.py:246
+#: vocabulary/impl/study.py:253
 msgid "Try again"
 msgstr "Spróbuj ponownie"
 
