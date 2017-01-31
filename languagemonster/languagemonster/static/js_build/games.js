@@ -595,7 +595,7 @@ MONSTER.Common.createButton = function(
     secureSize(width);
     b.addChild(text);
 
-    b.click = function()
+    b.pointerdown = function()
     {
         b.clear();
         b.beginFill(context.button_colors.click);
