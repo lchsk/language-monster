@@ -179,12 +179,22 @@ h2.static{
     padding: 80px 0;
 }
 
-.photo-section{
+.links-section{
+    background-color: $color-white;
     height: auto;
     margin: 0 auto;
     width: 100%;
     position: relative;
-    padding: 200px 0;
+    padding: 0 0 20px 0;
+}
+
+.footer-section{
+    height: auto;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    padding: 20px 0;
+    background-color: $color-dark-gray;
 }
 
 #second-section {
@@ -282,6 +292,25 @@ div.menu-container {
 .menu-container h1 {
     color: $color-navy;
     font-family: $font-base;
+}
+
+.content-links h2 a {
+    font-family: $font-base;
+    font-size: 20px;
+    color: $color-navy;
+}
+
+.content-links
+h2 a:focus,
+h2 a:active,
+h2 a:hover {
+    color: $color-red;
+    text-decoration: none;
+}
+
+.content-links .description {
+    text-align: justify;
+    font-family: $font-common;
 }
 
 #game canvas {
