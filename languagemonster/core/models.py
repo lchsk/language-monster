@@ -476,3 +476,39 @@ class DS2WP(models.Model):
         unique_together = ('ds', 'wp')
         verbose_name = 'DS2WP'
         verbose_name_plural = 'DataSet to WordPair'
+
+class Article(models.Model):
+    """An article schema to store short texts """
+
+    title = models.CharField(max_length=128)
+    date = models.DateTimeField(auto_now_add=True)
+    description = models.TextField()
+    text = models.TextField()
+    lang_pair = models.CharField(
+        max_length=5,
+        null=True,
+        help_text='Language Pair',
+        db_index=True,
+        choices=sorted([
+            (symbol, '{b} -> {t}'.format(
+                b=pair.base_language.english_name,
+                t=pair.target_language.english_name
+            ))
+            for symbol, pair in LANGUAGE_PAIRS_FLAT_ALL.items()
+        ])
+    )
+    slug = models.CharField(
+        max_length=128,
+        help_text='URL slug',
+    )
+
+    def __unicode__(self):
+        return u'{0} ({1})'.format(
+            self.title,
+            self.lang_pair
+        )
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+
+        super(Article, self).save(*args, **kwargs)
