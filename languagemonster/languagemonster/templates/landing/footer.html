@@ -1,0 +1,32 @@
+{% load i18n %}
+
+<section class="footer-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5" style="text-align: left;">
+        <div id="links-collection">
+          <span class="link-item"><a title="Language Monster" href="http://language-monster.com">&copy; Language Monster</a></span>
+          <span class="link-item"><a
+                                    title="{% trans 'link_contact' %}"
+                                    href="#"
+                                    data-toggle="modal"
+                                    data-target="#modal-contact"><span class="fa fa-envelope"></span></a></span>
+          <span class="link-item"><a
+                                    title="Language Monster - Facebook"
+                                    href="https://www.facebook.com/languagemonster"
+                                    ><span class="fa fa-facebook"></span></a></span>
+          <span class="link-item"><a
+                                    title="Language Monster - Twitter"
+                                    href="https://twitter.com/lang_monster"><span class="fa fa-twitter"></span>
+          </a></span>
+          <span class="link-item"><a
+                                    title="Language Monster - Google Plus"
+                                    href="https://plus.google.com/u/0/b/108974167410387695649/108974167410387695649/"><span class="fa fa-google-plus"></span></a></span>
+        </div>
+      </div>
+      <div class="col-md-7" style="text-align: right;">
+        <span class="small-print">{% trans "msg_cookies" %}</span>
+      </div>
+    </div>
+  </div>
+</section>
