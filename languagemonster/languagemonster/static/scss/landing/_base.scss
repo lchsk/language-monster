@@ -1,5 +1,5 @@
-html,
-body {
+html#hills,
+body#hills {
     height: 100%;
     background: url(../../images/cover/hills.png) no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -8,9 +8,45 @@ body {
     background-size: cover;
 }
 
-body {
+body#hills {
     text-align: center;
     overflow-y: scroll !important; // modal window, no shifting
+}
+
+html#sky,
+body#sky {
+    height: 100%;
+    background: url(../../images/cover/sky.png) no-repeat #e7f1fa;
+}
+
+div.article-short {
+	text-align: left;
+}
+
+div.article-short h2 {
+    margin-bottom: 0;
+    padding: 0;
+}
+
+div#article {
+    padding: 36px;
+}
+
+div#article h1 {
+    margin-top: 0;
+    margin-left: 0;
+    font-family: $font-base;
+}
+
+div#article p {
+    text-align: justify;
+    font-size: 15px;
+    line-height: 180%;
+    font-family: $font-common;
+}
+
+span.label-primary a {
+    color: #ffffff;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
