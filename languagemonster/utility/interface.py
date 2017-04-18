@@ -15,16 +15,23 @@ from core.models import (
     MonsterUser,
     Progression,
 )
+from core.data.base_language import BASE_LANGUAGES
+from core.data.language_pair import LANGUAGE_PAIRS_FLAT
+from core.data.language import LANGUAGES
 
 from utility.user_language import landing_language
 from utility.context import Context
 from utility.url import get_urls
 
-from core.data.base_language import BASE_LANGUAGES
-from core.data.language_pair import LANGUAGE_PAIRS_FLAT
-from core.data.language import LANGUAGES
-
 logger = logging.getLogger(__name__)
+
+_MAP = {
+    u'{}_{}'.format(
+        lang_pair.base_language.slug,
+        lang_pair.target_language.slug,
+    ): lang_pair
+    for lang_pair in LANGUAGE_PAIRS_FLAT.itervalues()
+}
 
 def get_context(request):
     return Context(request)
@@ -109,14 +116,7 @@ def get_lang_pair_from_langs(base_lang, target_lang):
     return None
 
 def get_lang_pair_from_slugs(base_slug, target_slug):
-    for lang_pair in LANGUAGE_PAIRS_FLAT.itervalues():
-        if (
-            lang_pair.base_language.slug == base_slug and
-            lang_pair.target_language.slug == target_slug
-        ):
-            return lang_pair
-
-    return None
+    return _MAP.get(base_slug + '_' + target_slug)
 
 def get_base_lang(symbol):
     return BASE_LANGUAGES[symbol]

@@ -20,6 +20,7 @@ from core.impl.user import (
     authenticate_user,
     get_games,
 )
+from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 
 from utility.views import (
     ContextView,
@@ -28,10 +29,9 @@ from utility.views import (
 )
 from utility.user_language import landing_language
 
-from vocabulary.impl.study import (
-    get_datasets,
-    get_game_translations,
-)
+from vocabulary.impl.study import get_game_translations
+
+from article.impl.articles import get_newest_articles
 
 logger = logging.getLogger(__name__)
 
@@ -155,6 +155,10 @@ class IndexView(ContextView):
         else:
             self.template_name = 'landing/base.html'
 
+            context['articles'] = [
+                (article, LANGUAGE_PAIRS_FLAT[article.lang_pair])
+                for article in get_newest_articles()
+            ]
             context['games'] = get_games().keys()
             context['xl'] = get_game_translations()
 
