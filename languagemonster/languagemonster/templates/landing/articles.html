@@ -35,11 +35,11 @@
         <div>
           <ul class="pager">
             {% if articles.has_previous %}
-            <a href="{% url 'article:articles_view' lang_slug articles.previous_page_number %}" class="button3d button3d-small font24px"><span class="small text">{% trans "btn_previous" %}</span></a>
+            <a href="{% url 'article:articles_category' lang_slug articles.previous_page_number %}" class="button3d button3d-small font24px"><span class="small text">{% trans "btn_previous" %}</span></a>
             {% endif %}
 
             {% if articles.has_next %}
-            <a href="{% url 'article:articles_view' lang_slug articles.next_page_number %}" class="button3d button3d-small font24px"><span class="small text">{% trans "btn_next" %}</span></a>
+            <a href="{% url 'article:articles_category' lang_slug articles.next_page_number %}" class="button3d button3d-small font24px"><span class="small text">{% trans "btn_next" %}</span></a>
             {% endif %}
           </ul>
         </div>

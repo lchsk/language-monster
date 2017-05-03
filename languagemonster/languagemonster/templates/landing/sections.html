@@ -10,7 +10,7 @@
         <div class="article-short">
           <h2><a title="{{article.title}}" href="{% url 'article:article_view' article.id article.slug %}">{{article.title}}</a></h2>
           <div class="description">{{article.description}}</div>
-          <div><span class="label label-primary"><a href="{% url 'article:articles_view' lang.target_language.slug %}">{{lang.target_language.english_name}} &middot; {{lang.target_language.original_name}}</a></span></div>
+          <div><span class="label label-primary"><a href="{% url 'article:articles_category' lang.target_language.slug %}">{{lang.target_language.english_name}} &middot; {{lang.target_language.original_name}}</a></span></div>
         </div>
         {% endfor %}
       </div>

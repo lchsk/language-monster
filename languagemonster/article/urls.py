@@ -9,8 +9,8 @@ urlpatterns = [
         name='article_view',
     ),
     url(
-        r'^list/(?P<target_lang>\w+)/(?P<page>\d+)?/?$',
+        r'^category/(?P<target_lang>\w+)/(?P<page>\d+)?/?$',
         views.ArticlesView.as_view(),
-        name='articles_view',
+        name='articles_category',
     ),
 ]
