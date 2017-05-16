@@ -1,0 +1,38 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+
+<html lang="en" id="sky">
+    {% include "landing/head.html" %}
+<body id="sky">
+
+{% include "landing/nav.html" %}
+
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 info-block img-rounded" id="article">
+          <ol class="breadcrumb">
+            <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "home" %}</a></li>
+            <li><a title="{% trans 'learn' %} {{language.target_language.english_name}} {{language.target_language.original_name}}" href="{% url 'article:articles_view' language.target_language.slug %}">{{language.target_language.english_name}} &middot; {{language.target_language.original_name}}</a></li>
+          </ol>
+          <h1 title="{{article.title}}">{{article.title}}</h1>
+          <p>{{article.text|safe}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+
+{% include "landing/footer.html" %}
+
+{% include "forms/form-contact.html" %}
+{% include "forms/form-login.html" %}
+{% include "forms/form-signup.html" %}
+{% include "forms/form-language.html" %}
+
+<script src="{{STATIC_URL}}lib/jquery-1.11.2.min.js"></script>
+<script src="{{STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

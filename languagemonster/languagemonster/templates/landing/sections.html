@@ -1,32 +1,22 @@
 {% load i18n %}
+{% load partition %}
 
-<div class="absolute-bottom" style="text-align: left;">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5" style="text-align: left;">
-                <div id="links-collection">
-                    <span class="link-item"><a title="Language Monster" href="http://language-monster.com">&copy; Language Monster</a></span>
-                    <span class="link-item"><a
-                        title="{% trans 'link_contact' %}"
-                        href="#"
-                        data-toggle="modal"
-                        data-target="#modal-contact"><span class="fa fa-envelope"></span></a></span>
-                    <span class="link-item"><a
-                        title="Language Monster - Facebook"
-                        href="https://www.facebook.com/languagemonster"
-                                            ><span class="fa fa-facebook"></span></a></span>
-                    <span class="link-item"><a
-                        title="Language Monster - Twitter"
-                        href="https://twitter.com/lang_monster"><span class="fa fa-twitter"></span>
-                    </a></span>
-                    <span class="link-item"><a
-                        title="Language Monster - Google Plus"
-                        href="https://plus.google.com/u/0/b/108974167410387695649/108974167410387695649/"><span class="fa fa-google-plus"></span></a></span>
-                </div>
-            </div>
-            <div class="col-md-7" style="text-align: right;">
-                <span class="small-print">{% trans "msg_cookies" %}</span>
-            </div>
+<section class="links-section content-links">
+  <div class="container">
+    <div class="row">
+      {% for group in articles|columns:2 %}
+      <div class="col-md-6">
+        {% for article, lang in group %}
+        <div class="article-short">
+          <h2><a title="{{article.title}}" href="{% url 'article:article_view' article.id article.slug %}">{{article.title}}</a></h2>
+          <div class="description">{{article.description}}</div>
+          <div><span class="label label-primary"><a href="{% url 'article:articles_category' lang.target_language.slug %}">{{lang.target_language.english_name}} &middot; {{lang.target_language.original_name}}</a></span></div>
         </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
     </div>
-</div>
+  </div>
+</section>
+
+{% include "landing/footer.html" %}

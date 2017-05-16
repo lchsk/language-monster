@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^monster/', include('core.urls', namespace='core')),
     url(r'^languages/', include('vocabulary.urls', namespace='vocabulary')),
+    url(r'^articles/', include('article.urls', namespace='article')),
 
     url(
         r'^profile/(?P<identifier>.+?)/?$',

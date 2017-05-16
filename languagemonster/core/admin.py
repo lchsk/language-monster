@@ -12,6 +12,7 @@ from .models import (
     MobileDevice,
     SimpleDataset,
     DS2WP,
+    Article,
 )
 
 tables = (
@@ -33,4 +34,8 @@ for table in tables:
 class MonsterUserAdmin(admin.ModelAdmin):
     list_display = ('user', 'public_name', 'gender', 'language')
 
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'lang_pair', 'date')
+
 admin.site.register(MonsterUser, MonsterUserAdmin)
+admin.site.register(Article, ArticleAdmin)

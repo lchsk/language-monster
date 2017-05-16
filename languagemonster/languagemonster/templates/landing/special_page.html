@@ -2,57 +2,56 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
-    {% include "landing/head.html" %}
-<body>
+<html lang="en" id="sky">
+  {% include "landing/head.html" %}
+  <body id="sky">
 
-<div class="site-wrapper">
-  <div class="site-wrapper-inner">
-    <div class="cover-container" style="margin-top: 0; padding-top: 0;">
-        <div class="masthead clearfix">
-            {% include "landing/nav.html" %}
-      </div>
-      <header>
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12 info-block img-rounded" style="text-align: left;">
-              {% if page == 'forgot_password' %}
-              {% include "landing/forgot_password.html" %}
-              {% elif page == 'generate_password' %}
-              {% include "landing/generate_password.html" %}
-              {% elif page == 'success' %}
-              <div id="intro-header" style="color: #333333;">
-                <span id="typed-header">
-                  {% trans "header_msg_success" %}
-                </span>
-              </div>
-              {% elif page == 'failure' %}
-              <div id="intro-header" style="color: #333333;">
-                <span id="typed-header">
-                  {% trans "header_msg_failure" %}
-                </span>
-              </div>
-              {% endif %}
+    {% include "landing/nav.html" %}
 
-              {% for msg in messages %}
-              <div><b>{{msg}}</b></div>
-              {% endfor %}
-
-              {% if page == 'success' or page == 'failure' %}
-              <div id="intro-text" style="color: #555; margin-top: 10px;">
-                {% trans "link_go_back_to" %} <a href="{% url 'index' %}" class="button3d button3d-small font24px"><span class="small text">{% trans "link_home_page" %}</span></a>
-              </div>
-              {% endif %}
-            </div>
-          </div>
+<div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 info-block img-rounded" id="article">
+        {% if page == 'forgot_password' %}
+        {% include "landing/forgot_password.html" %}
+        {% elif page == 'generate_password' %}
+        {% include "landing/generate_password.html" %}
+        {% elif page == 'success' %}
+        <div id="intro-header" style="color: #333333;">
+          <span id="typed-header">
+            {% trans "header_msg_success" %}
+          </span>
         </div>
-      </header>
+        {% elif page == 'failure' %}
+        <div id="intro-header" style="color: #333333;">
+          <span id="typed-header">
+            {% trans "header_msg_failure" %}
+          </span>
+        </div>
+        {% endif %}
+
+        {% for msg in messages %}
+        <div><b>{{msg}}</b></div>
+        {% endfor %}
+
+        {% if page == 'success' or page == 'failure' %}
+        <div id="intro-text" style="color: #555; margin-top: 10px;">
+          {% trans "link_go_back_to" %} <a href="{% url 'index' %}" class="button3d button3d-small font24px"><span class="small text">{% trans "link_home_page" %}</span></a>
+        </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
+
+<br />
+
+{% include "landing/footer.html" %}
+
 {% include "forms/form-login.html" %}
 {% include "forms/form-signup.html" %}
 {% include "forms/form-language.html" %}
+
 <script src="{{STATIC_URL}}lib/jquery-1.11.2.min.js"></script>
 <script src="{{STATIC_URL}}lib/bootstrap/js/bootstrap.min.js"></script>
 </body>
