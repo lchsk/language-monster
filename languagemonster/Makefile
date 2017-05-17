@@ -1,16 +1,8 @@
 
-all: env-dev
+all:
 
 check:
 	py.test --cov ./ --ignore ./data_loader
-
-env-dev:
-	git checkout master
-	python manage.py runserver 8000
-
-env-test:
-	git checkout test
-	python manage.py runserver 8001
 
 send-mail:
 	python manage.py send_queued_mail
