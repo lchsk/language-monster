@@ -14,7 +14,7 @@
       <div class="col-md-12 info-block img-rounded" id="article">
           <ol class="breadcrumb">
             <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "home" %}</a></li>
-            <li><a title="{% trans 'learn' %} {{language.target_language.english_name}} {{language.target_language.original_name}}" href="{% url 'article:articles_view' language.target_language.slug %}">{{language.target_language.english_name}} &middot; {{language.target_language.original_name}}</a></li>
+            <li><a title="{% trans 'learn' %} {{language.target_language.english_name}} {{language.target_language.original_name}}" href="{% url 'article:articles_category' language.target_language.slug %}">{{language.target_language.english_name}} ({{language.target_language.original_name}})</a></li>
           </ol>
           <h1 title="{{article.title}}">{{article.title}}</h1>
           <p>{{article.text|safe}}</p>

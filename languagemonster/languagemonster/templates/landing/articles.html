@@ -15,10 +15,10 @@
       <div class="info-block img-rounded content-links" id="article">
         <ol class="breadcrumb">
           <li><a title="{% trans 'dashboard' %}" href="{% url 'index' %}">{% trans "home" %}</a></li>
-          <li class="active">{{target_lang.english_name}} &middot; {{target_lang.original_name}}</li>
+          <li class="active">{{target_lang.english_name}} ({{target_lang.original_name}})</li>
         </ol>
 
-        <h1>{{target_lang.english_name}} &middot; {{target_lang.original_name}}</h1>
+        <h1>{{target_lang.english_name}} ({{target_lang.original_name}})</h1>
 
         {% for group in articles|columns:2 %}
         <div class="col-md-6">
