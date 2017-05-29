@@ -3,8 +3,24 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% trans "landing_title" %}</title>
-    <meta name="description" content="{% trans 'landing_description' %}">
+    <title>
+      {% if article %}
+      {{article.title}} - Language Monster
+      {% elif target_lang %}
+      {{target_lang.english_name}} ({{target_lang.original_name}}) - Language Monster
+      {% else %}
+      {% trans "landing_title" %}
+      {% endif %}
+    </title>
+    <meta name="description" content="
+        {% if article %}
+        {{article.description}} - Language Monster
+        {% elif target_lang %}
+        {{target_lang.english_name}} ({{target_lang.original_name}}) - Language Monster
+        {% else %}
+        {% trans 'landing_description' %}
+        {% endif %}
+        ">
     <meta name="keywords" content="{% trans 'landing_keywords' %}">
     <meta property="og:url" content="http://language-monster.com">
     <meta property="og:title" content="{% trans 'landing_title' %}" />
