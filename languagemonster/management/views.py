@@ -26,11 +26,20 @@ from core.models import (
 from utility.interface import (
     get_context,
 )
+from utility.views import SuperUserContextView
 from management.impl.security import (
     mark_suspicious_words,
     require_superuser,
 )
-
+from management.impl.set_action import (
+    export_words,
+    export_words_as_table,
+    export_set,
+    update_set,
+    get_words_for_export,
+    export_metadata,
+)
+from management.impl.util import parse_line
 from management.impl.stats import get_status_data
 
 from core.data.language_pair import (
@@ -38,17 +47,6 @@ from core.data.language_pair import (
     get_language_pair,
 )
 
-from utility.views import SuperUserContextView
-
-from management.impl.set_action import (
-    export_words,
-    export_set,
-    update_set,
-    get_words_for_export,
-    export_metadata,
-)
-
-from management.impl.util import parse_line
 
 logger = logging.getLogger(__name__)
 
@@ -560,6 +558,9 @@ class SetActionDispatch(SuperUserContextView):
         elif request.POST.get('export') == 'export':
             self.template_name = 'app/management/export.html'
             export_words(request, dataset_id, ctx)
+        elif request.POST.get('export_table') == 'export_table':
+            self.template_name = 'app/management/export.html'
+            export_words_as_table(request, dataset_id, ctx)
         elif request.POST.get('export_set') == 'export_set':
             self.template_name = 'app/management/export.html'
             export_set(request, dataset_id, ctx)

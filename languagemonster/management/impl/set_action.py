@@ -4,12 +4,46 @@ from core.models import (
     DataSet,
     DS2WP,
 )
+from core.data.language_pair import LANGUAGE_PAIRS_FLAT
 
 def export_words(request, dataset_id, context):
     exported_values = _get_words_from_request(request, dataset_id)
 
     context['count'] = len(exported_values)
     context['data'] = json.dumps(exported_values)
+
+def export_words_as_table(request, dataset_id, context):
+    exported_values = _get_words_from_request(request, dataset_id)
+
+    dataset = DataSet.objects.filter(id=dataset_id).first()
+
+    if not dataset:
+        raise RuntimeError('Set does not exist: %d', dataset_id)
+
+    context['count'] = len(exported_values)
+
+    pair = LANGUAGE_PAIRS_FLAT[dataset.lang_pair]
+
+    data = [
+        u'<tr><td>{base}</td><td>{target}</td></tr>\n'.format(
+            base=word['ebase'],
+            target=word['etarget'],
+        )
+        for word in exported_values
+    ]
+
+    table = u"""
+<table class="vocabulary table table-striped">
+    <th>{base}</th><th>{target}</th>
+    {data}
+</table>
+    """.format(
+        base=pair.base_language.original_name,
+        target=pair.target_language.original_name,
+        data='    '.join(data),
+    )
+
+    context['data'] = table
 
 def export_metadata(ds):
     return dict(
